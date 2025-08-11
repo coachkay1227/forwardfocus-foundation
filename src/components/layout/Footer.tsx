@@ -3,8 +3,8 @@ const Footer = () => {
     <footer className="border-t bg-background">
       <div className="container py-10 grid gap-8 md:grid-cols-4">
         <div>
-          <div className="font-heading font-semibold">Forward Focus Collective</div>
-          <p className="mt-3 text-sm text-muted-foreground">Empowering second chances through resources, education, and community.</p>
+          <div className="font-heading font-semibold">Forward Focus Elevation</div>
+          <p className="mt-3 text-sm text-muted-foreground">Empowering justice-impacted families with the tools to rebuild and thrive.</p>
         </div>
         <nav>
           <div className="font-medium">Explore</div>
@@ -32,7 +32,7 @@ const Footer = () => {
         </div>
       </div>
       <div className="border-t">
-        <div className="container py-4 text-xs text-muted-foreground">© {new Date().getFullYear()} Forward Focus Collective. All rights reserved.</div>
+        <div className="container py-4 text-xs text-muted-foreground">© {new Date().getFullYear()} Forward Focus Elevation. All rights reserved.</div>
       </div>
     </footer>
   );

@@ -17,7 +17,7 @@ const Header = () => {
   return (
     <header className="bg-background/90 backdrop-blur supports-[backdrop-filter]:bg-background/80 border-b">
       <div className="container h-16 flex items-center justify-between">
-        <a href="/" className="font-heading font-semibold text-lg">Forward Focus Collective</a>
+        <a href="/" className="font-heading font-semibold text-lg">Forward Focus Elevation</a>
 
         <nav className="hidden md:flex items-center gap-6">
           <NavLink to="/help" className={linkCls}>Get Help Now</NavLink>
