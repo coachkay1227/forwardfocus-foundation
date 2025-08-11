@@ -24,6 +24,7 @@ const Header = () => {
           <NavLink to="/ohio-resources" className={linkCls}>{selectedState.name} Resources</NavLink>
           <NavLink to="/learn" className={linkCls}>Learn & Grow</NavLink>
           <NavLink to="/community" className={linkCls}>Join Community</NavLink>
+          <NavLink to="/partners" className={linkCls}>Partner Portal</NavLink>
           <NavLink to="/about" className={linkCls}>About Us</NavLink>
         </nav>
 
@@ -52,6 +53,12 @@ const Header = () => {
           </Select>
 
           <NavLink to="/login" className={linkCls}>Member Login</NavLink>
+          <Button asChild size="sm" variant="secondary">
+            <NavLink to="/partners/submit-referral">Submit Referral</NavLink>
+          </Button>
+          <Button asChild size="sm" variant="outline">
+            <NavLink to="/partners/add-resource">Add Resource</NavLink>
+          </Button>
           <Button asChild size="sm">
             <NavLink to="/support">Support</NavLink>
           </Button>
@@ -95,8 +102,15 @@ const Header = () => {
                 <NavLink to="/ohio-resources" onClick={()=>setOpen(false)} className="py-2">{selectedState.name} Resources</NavLink>
                 <NavLink to="/learn" onClick={()=>setOpen(false)} className="py-2">Learn & Grow</NavLink>
                 <NavLink to="/community" onClick={()=>setOpen(false)} className="py-2">Join Community</NavLink>
+                <NavLink to="/partners" onClick={()=>setOpen(false)} className="py-2">Partner Portal</NavLink>
                 <NavLink to="/about" onClick={()=>setOpen(false)} className="py-2">About Us</NavLink>
                 <NavLink to="/login" onClick={()=>setOpen(false)} className="py-2">Member Login</NavLink>
+                <Button asChild className="mt-2" variant="secondary">
+                  <NavLink to="/partners/submit-referral" onClick={()=>setOpen(false)}>Submit Referral</NavLink>
+                </Button>
+                <Button asChild className="mt-2" variant="outline">
+                  <NavLink to="/partners/add-resource" onClick={()=>setOpen(false)}>Add Resource</NavLink>
+                </Button>
                 <Button asChild className="mt-2">
                   <NavLink to="/support" onClick={()=>setOpen(false)}>Support</NavLink>
                 </Button>

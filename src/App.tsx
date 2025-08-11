@@ -14,6 +14,12 @@ import AboutUs from "./pages/AboutUs";
 import Support from "./pages/Support";
 import Login from "./pages/Login";
 import Search from "./pages/Search";
+import Partners from "./pages/Partners";
+import SubmitReferral from "./pages/SubmitReferral";
+import AddResource from "./pages/AddResource";
+import RequestPartnership from "./pages/RequestPartnership";
+import Organizations from "./pages/Organizations";
+import ResourceDetail from "./pages/ResourceDetail";
 import { StateProvider } from "./contexts/StateContext";
 
 const queryClient = new QueryClient();
@@ -36,6 +42,12 @@ const App = () => (
               <Route path="/support" element={<Support />} />
               <Route path="/login" element={<Login />} />
               <Route path="/search" element={<Search />} />
+              <Route path="/partners" element={<Partners />} />
+              <Route path="/partners/submit-referral" element={<SubmitReferral />} />
+              <Route path="/partners/add-resource" element={<AddResource />} />
+              <Route path="/partners/request" element={<RequestPartnership />} />
+              <Route path="/organizations" element={<Organizations />} />
+              <Route path="/resources/:id" element={<ResourceDetail />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>
