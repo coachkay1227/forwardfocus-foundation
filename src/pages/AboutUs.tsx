@@ -115,6 +115,7 @@ const Page = () => {
 
         <section aria-labelledby="programs" className="scroll-mt-16">
           <h2 id="programs" className="font-heading text-2xl md:text-3xl font-semibold">Our Programs: AI-Powered Impact with Human Heart</h2>
+          <p className="mt-2 text-sm text-muted-foreground">All educational content is 100% free (grant-funded). Educational content only — we refer to qualified professionals for personalized advice.</p>
           <div className="mt-4 grid gap-4 md:grid-cols-2">
             <article className="rounded-md border bg-card p-5">
               <h3 className="font-medium">Financial Literacy & Credit Education</h3>
@@ -133,7 +134,7 @@ const Page = () => {
             </article>
             <article className="rounded-md border bg-card p-5">
               <h3 className="font-medium">Community Platform — Forward Focus Collective</h3>
-              <p className="mt-2 text-sm text-muted-foreground">AI community assistant, free and premium tiers, 24/7 support.</p>
+              <p className="mt-2 text-sm text-muted-foreground">AI community assistant and 24/7 support. Education is always 100% free; some community features may be paid.</p>
               <div className="mt-3 flex gap-3">
                 <a className="text-primary hover:underline" href={EXTERNAL.programs.community} target="_blank" rel="noreferrer">Visit Platform →</a>
                 <a className="text-primary hover:underline" href="/community">Join the Collective →</a>

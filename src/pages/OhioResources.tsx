@@ -119,7 +119,7 @@ const Page = () => {
           </article>
           <article className="rounded-lg border bg-card p-5">
             <h3 className="font-semibold">Financial Literacy & Credit Education</h3>
-            <p className="text-muted-foreground text-sm">Money management skills and your credit education ebook.</p>
+            <p className="text-muted-foreground text-sm">Money management skills and a free credit education guide.</p>
             <Button asChild className="mt-3" variant="secondary">
               <a href={EXTERNAL.programs.financial} target="_blank" rel="noopener">Start learning finance</a>
             </Button>

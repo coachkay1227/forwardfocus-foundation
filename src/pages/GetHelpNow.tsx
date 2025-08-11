@@ -38,7 +38,7 @@ const Page = () => {
 
   const benefits = useMemo(
     () => [
-      { text: "Understanding Credit – Complete ebook (immediate download)" },
+      { text: "Free credit education guide (immediate download)" },
       { text: "30-Day Action Plan with checklists" },
       { text: "Ohio Resource Directory (housing, employment, legal aid)" },
       { text: "Financial Stability Starter Kit" },
@@ -288,6 +288,7 @@ const Page = () => {
                     </li>
                   ))}
                 </ul>
+                <p className="text-xs text-muted-foreground">All educational resources are free. Educational content only — we do not provide financial, legal, or business advisory services.</p>
 
                 <label className="flex items-start gap-2 text-sm">
                   <input
