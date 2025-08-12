@@ -1,6 +1,26 @@
-import { useEffect } from "react";
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import type { LucideIcon } from "lucide-react";
+import {
+  ChevronRight,
+  Phone,
+  MessageSquare,
+  Shield,
+  Heart,
+  Scale,
+  DollarSign,
+  Users,
+  X,
+  Send,
+  Bot,
+  Calendar,
+  CheckCircle,
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { toast } from "@/components/ui/use-toast";
 
+// SEO helpers
 const ensureMeta = (name: string, content: string) => {
   let tag = document.querySelector(`meta[name="${name}"]`) as HTMLMetaElement | null;
   if (!tag) {
@@ -21,235 +41,774 @@ const ensureCanonical = () => {
   link.setAttribute("href", window.location.href);
 };
 
-const ensureJsonLd = () => {
-  const id = "jsonld-victim-services";
-  let script = document.getElementById(id) as HTMLScriptElement | null;
-  const data = {
-    "@context": "https://schema.org",
-    "@type": "WebPage",
-    name: "Victim Services",
-    description:
-      "Trauma-informed victim services: federal programs, crisis hotlines, legal rights, and Ohio-specific resources. Direct links to nationwide support.",
-    url: typeof window !== "undefined" ? window.location.href : undefined,
-    isAccessibleForFree: true,
+// AI Assistant (client-only, simulated)
+const AIAssistant = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
+  const [messages, setMessages] = useState<Array<{
+    id: number;
+    type: "ai" | "user";
+    content: string;
+    timestamp: Date;
+    resources?: Array<{ title: string; phone?: string; url?: string; action?: string; available?: string }>;
+  }>>([
+    {
+      id: 1,
+      type: "ai",
+      content:
+        "Hi, I'm here to help you navigate resources and support. I'm trained to understand the unique challenges faced by crime victims. What can I help you find today?",
+      timestamp: new Date(),
+    },
+  ]);
+  const [input, setInput] = useState("");
+  const [isTyping, setIsTyping] = useState(false);
+
+  const getSuggestedResources = (q: string) => {
+    const lower = q.toLowerCase();
+    if (lower.includes("crisis") || lower.includes("emergency") || lower.includes("danger")) {
+      return [
+        { title: "National Domestic Violence Hotline", phone: "1-800-799-7233", available: "24/7" },
+        { title: "Crisis Text Line", action: "Text HOME to 741741", available: "24/7" },
+        { title: "National Suicide & Crisis Lifeline", phone: "988", available: "24/7" },
+      ];
+    }
+    if (lower.includes("compensation") || lower.includes("financial") || lower.includes("money")) {
+      return [
+        {
+          title: "Ohio Victim Compensation",
+          url: "https://www.ohioattorneygeneral.gov/Individuals-and-Families/Victims/Victims-Compensation-Application",
+        },
+        { title: "Federal Victim Compensation Info", url: "https://ovc.ojp.gov/topics/victim-compensation" },
+      ];
+    }
+    return [];
   };
-  if (!script) {
-    script = document.createElement("script");
-    script.type = "application/ld+json";
-    script.id = id;
-    script.text = JSON.stringify(data);
-    document.head.appendChild(script);
-  } else {
-    script.text = JSON.stringify(data);
-  }
+
+  const generateAIResponse = (q: string) => {
+    const lower = q.toLowerCase();
+    if (lower.includes("crisis") || lower.includes("emergency") || lower.includes("danger")) {
+      return "I understand you may be in a crisis situation. Your safety is the top priority. If you're in immediate danger, please call 911. For domestic violence support, call 1-800-799-7233. For crisis text support, text HOME to 741741. Would you like me to help you find additional crisis resources?";
+    }
+    if (lower.includes("compensation") || lower.includes("money") || lower.includes("financial")) {
+      return "There are compensation programs to help with medical bills, lost wages, counseling, and more. I can help you find your state's program and guide you through the application. What expenses do you need help with?";
+    }
+    if (lower.includes("legal") || lower.includes("rights") || lower.includes("lawyer")) {
+      return "You have important legal rights as a crime victim, including the right to be informed and participate in proceedings. I can help you understand your rights and find free legal aid in your area. What specific legal questions do you have?";
+    }
+    if (lower.includes("counseling") || lower.includes("therapy") || lower.includes("trauma")) {
+      return "Healing from trauma takes time, and professional support can help. I can help you find trauma-informed therapists and support groups in your area. Are you looking for individual therapy, group support, or something specific?";
+    }
+    return "I hear you, and I want to help you find the right resources. Can you share a bit more? For example: crisis support, legal help, counseling, compensation, or safety planning?";
+  };
+
+  const handleSend = () => {
+    if (!input.trim()) return;
+    const userMessage = { id: Date.now(), type: "user" as const, content: input, timestamp: new Date() };
+    setMessages((prev) => [...prev, userMessage]);
+    setInput("");
+    setIsTyping(true);
+    setTimeout(() => {
+      const reply = generateAIResponse(userMessage.content);
+      const resources = getSuggestedResources(userMessage.content);
+      const aiMessage = { id: Date.now() + 1, type: "ai" as const, content: reply, timestamp: new Date(), resources };
+      setMessages((prev) => [...prev, aiMessage]);
+      setIsTyping(false);
+    }, 900);
+  };
+
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-end justify-end bg-black/50 p-4">
+      <div className="flex h-[600px] w-full max-w-md flex-col rounded-lg bg-white shadow-xl">
+        {/* Header */}
+        <div className="flex items-center justify-between rounded-t-lg border-b bg-purple-600 p-4 text-white">
+          <div className="flex items-center gap-2">
+            <Bot className="h-5 w-5" />
+            <div>
+              <h3 className="font-semibold">AI Resource Navigator</h3>
+              <p className="text-xs opacity-90">Trauma-informed support guidance</p>
+            </div>
+          </div>
+          <button onClick={onClose} className="rounded p-1 hover:bg-purple-700">
+            <X className="h-4 w-4" />
+          </button>
+        </div>
+
+        {/* Messages */}
+        <div className="flex-1 space-y-4 overflow-y-auto p-4">
+          {messages.map((m) => (
+            <div key={m.id} className={`flex ${m.type === "user" ? "justify-end" : "justify-start"}`}>
+              <div className={`max-w-[80%] rounded-lg p-3 ${m.type === "user" ? "bg-purple-600 text-white" : "bg-gray-100 text-gray-900"}`}>
+                <p className="text-sm">{m.content}</p>
+                {m.type === "ai" && m.resources && m.resources.length > 0 && (
+                  <div className="mt-3 space-y-2">
+                    <p className="text-xs font-medium text-gray-600">Suggested Resources:</p>
+                    {m.resources.map((r, idx) => (
+                      <div key={idx} className="rounded border bg-white p-2 text-xs">
+                        <div className="font-medium text-gray-900">{r.title}</div>
+                        {r.phone && (
+                          <a href={`tel:${r.phone}`} className="text-purple-600 hover:underline">
+                            {r.phone}
+                          </a>
+                        )}
+                        {r.action && <div className="text-gray-600">{r.action}</div>}
+                        {r.url && (
+                          <a href={r.url} target="_blank" rel="noopener" className="text-purple-600 hover:underline">
+                            Learn more →
+                          </a>
+                        )}
+                        {r.available && <div className="font-medium text-green-600">Available {r.available}</div>}
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+          ))}
+
+          {isTyping && (
+            <div className="flex justify-start">
+              <div className="rounded-lg bg-gray-100 p-3">
+                <div className="flex space-x-1">
+                  <div className="h-2 w-2 animate-bounce rounded-full bg-gray-400" />
+                  <div className="h-2 w-2 animate-bounce rounded-full bg-gray-400" style={{ animationDelay: "0.1s" }} />
+                  <div className="h-2 w-2 animate-bounce rounded-full bg-gray-400" style={{ animationDelay: "0.2s" }} />
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Input */}
+        <div className="border-t p-4">
+          <div className="flex gap-2">
+            <Input
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              placeholder="Ask me about resources, rights, or support..."
+              onKeyDown={(e) => e.key === "Enter" && handleSend()}
+              className="flex-1"
+            />
+            <Button onClick={handleSend} size="sm">
+              <Send className="mr-2 h-4 w-4" />
+              Send
+            </Button>
+          </div>
+          <p className="mt-2 text-xs text-gray-500">💜 This conversation is private and confidential</p>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// Coaching Inquiry (client-only)
+const CoachingInquiry = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    incomeRange: "",
+    goals: "",
+    urgency: "",
+    preferredContact: "email",
+  });
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    toast({
+      title: "Coaching inquiry submitted",
+      description: "We'll reach out within 24 hours to schedule your consultation.",
+    });
+    onClose();
+    setFormData({ name: "", email: "", phone: "", incomeRange: "", goals: "", urgency: "", preferredContact: "email" });
+  };
+
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+      <div className="max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-lg bg-white shadow-xl">
+        <div className="p-6">
+          <div className="mb-6 flex items-center justify-between">
+            <div>
+              <h3 className="text-xl font-semibold">Trauma-Informed Life Coaching</h3>
+              <p className="text-gray-600">Income-based pricing • Compassionate support</p>
+            </div>
+            <button onClick={onClose} className="rounded p-2 hover:bg-gray-100">
+              <X className="h-4 w-4" />
+            </button>
+          </div>
+
+          {/* Pricing Tiers */}
+          <div className="mb-6 grid gap-4 md:grid-cols-3">
+            <div className="rounded-lg border bg-green-50 p-4">
+              <h4 className="font-semibold text-green-800">Community Support</h4>
+              <p className="text-2xl font-bold text-green-600">$25-50</p>
+              <p className="mb-3 text-sm text-gray-600">Under $30k income</p>
+              <ul className="space-y-1 text-xs">
+                <li>• 60-minute sessions</li>
+                <li>• Resource navigation</li>
+                <li>• Goal setting support</li>
+                <li>• Crisis support</li>
+              </ul>
+            </div>
+
+            <div className="rounded-lg border bg-blue-50 p-4">
+              <h4 className="font-semibold text-blue-800">Growth Partnership</h4>
+              <p className="text-2xl font-bold text-blue-600">$75-125</p>
+              <p className="mb-3 text-sm text-gray-600">$30k-60k income</p>
+              <ul className="space-y-1 text-xs">
+                <li>• 90-minute sessions</li>
+                <li>• Action planning</li>
+                <li>• Resource advocacy</li>
+                <li>• Text check-ins</li>
+              </ul>
+            </div>
+
+            <div className="rounded-lg border bg-purple-50 p-4">
+              <h4 className="font-semibold text-purple-800">Transformation</h4>
+              <p className="text-2xl font-bold text-purple-600">$150-200</p>
+              <p className="mb-3 text-sm text-gray-600">$60k+ income</p>
+              <ul className="space-y-1 text-xs">
+                <li>• 2-hour intensives</li>
+                <li>• Complete life mapping</li>
+                <li>• Network connections</li>
+                <li>• 24/7 crisis support</li>
+              </ul>
+            </div>
+          </div>
+
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="grid gap-4 md:grid-cols-2">
+              <div>
+                <label className="mb-1 block text-sm font-medium">Name</label>
+                <Input value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} required />
+              </div>
+              <div>
+                <label className="mb-1 block text-sm font-medium">Email</label>
+                <Input type="email" value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} required />
+              </div>
+            </div>
+
+            <div className="grid gap-4 md:grid-cols-2">
+              <div>
+                <label className="mb-1 block text-sm font-medium">Phone (optional)</label>
+                <Input type="tel" value={formData.phone} onChange={(e) => setFormData({ ...formData, phone: e.target.value })} />
+              </div>
+              <div>
+                <label className="mb-1 block text-sm font-medium">Income Range</label>
+                <select
+                  className="w-full rounded border p-2"
+                  value={formData.incomeRange}
+                  onChange={(e) => setFormData({ ...formData, incomeRange: e.target.value })}
+                  required
+                >
+                  <option value="">Select range</option>
+                  <option value="under-30k">Under $30k - Community Support ($25-50)</option>
+                  <option value="30k-60k">$30k-60k - Growth Partnership ($75-125)</option>
+                  <option value="over-60k">$60k+ - Transformation ($150-200)</option>
+                  <option value="hardship">Financial hardship - Scholarship needed</option>
+                </select>
+              </div>
+            </div>
+
+            <div>
+              <label className="mb-1 block text-sm font-medium">What would you like coaching support with?</label>
+              <Textarea
+                value={formData.goals}
+                onChange={(e) => setFormData({ ...formData, goals: e.target.value })}
+                placeholder="For example: healing from trauma, rebuilding relationships, career goals, financial stability, personal growth..."
+                required
+                rows={3}
+              />
+            </div>
+
+            <div>
+              <label className="mb-1 block text-sm font-medium">Timeline</label>
+              <select
+                className="w-full rounded border p-2"
+                value={formData.urgency}
+                onChange={(e) => setFormData({ ...formData, urgency: e.target.value })}
+                required
+              >
+                <option value="">When would you like to start?</option>
+                <option value="asap">As soon as possible (within 1 week)</option>
+                <option value="soon">Soon (within 2-3 weeks)</option>
+                <option value="flexible">Flexible (within a month)</option>
+                <option value="exploring">Just exploring options</option>
+              </select>
+            </div>
+
+            <div className="flex items-center gap-6">
+              <span className="text-sm font-medium">Preferred contact:</span>
+              <label className="flex items-center gap-2">
+                <input
+                  type="radio"
+                  value="email"
+                  checked={formData.preferredContact === "email"}
+                  onChange={(e) => setFormData({ ...formData, preferredContact: e.target.value })}
+                />
+                Email
+              </label>
+              <label className="flex items-center gap-2">
+                <input
+                  type="radio"
+                  value="phone"
+                  checked={formData.preferredContact === "phone"}
+                  onChange={(e) => setFormData({ ...formData, preferredContact: e.target.value })}
+                />
+                Phone
+              </label>
+            </div>
+
+            <div className="rounded-lg bg-purple-50 p-4">
+              <p className="text-sm text-purple-800">
+                <Heart className="mr-2 inline h-4 w-4" />
+                <strong>Our commitment:</strong> All coaching is trauma-informed, judgment-free, and designed to honor your pace and privacy. Payment plans and some scholarship spots available for financial hardship.
+              </p>
+            </div>
+
+            <div className="flex gap-3">
+              <Button type="submit" className="flex-1">
+                <Calendar className="mr-2 h-4 w-4" />
+                Request Consultation
+              </Button>
+              <Button type="button" variant="outline" onClick={onClose}>
+                Cancel
+              </Button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export default function VictimServices() {
+  const [activeSection, setActiveSection] = useState<string>("crisis");
+  const [showAIAssistant, setShowAIAssistant] = useState(false);
+  const [showCoachingInquiry, setShowCoachingInquiry] = useState(false);
+
   useEffect(() => {
-    document.title = "Victim Services: Nationwide Support | Forward Focus Elevation";
+    document.title = "Victim Services: Nationwide Support | Forward Focus Collective";
     ensureMeta(
       "description",
-      "Trauma-informed victim services with direct links to national crisis help, federal compensation, legal rights, and Ohio-specific resources."
+      "Comprehensive trauma-informed victim services hub with AI resource navigation, crisis support, compensation programs, and healing resources nationwide."
     );
     ensureCanonical();
-    ensureJsonLd();
   }, []);
+
+  const navigationSections: { id: string; label: string; icon: LucideIcon; color: string }[] = [
+    { id: "crisis", label: "🆘 Crisis Help", icon: Phone, color: "bg-red-500" },
+    { id: "compensation", label: "💰 Get Compensation", icon: DollarSign, color: "bg-green-500" },
+    { id: "rights", label: "⚖️ Know Your Rights", icon: Scale, color: "bg-blue-500" },
+    { id: "healing", label: "💜 Trauma Recovery", icon: Heart, color: "bg-purple-500" },
+    { id: "safety", label: "🛡️ Safety Planning", icon: Shield, color: "bg-orange-500" },
+    { id: "specialized", label: "👥 Specialized Support", icon: Users, color: "bg-teal-500" },
+  ];
+
+  const scrollToSection = (sectionId: string) => {
+    setActiveSection(sectionId);
+    const el = document.getElementById(sectionId);
+    if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
 
   return (
     <>
-      <header className="border-b bg-background/80">
-        <div className="container py-8 md:py-12">
-          <p className="rounded-md border bg-card px-4 py-2 text-sm">
-            🆘 In immediate danger? Call 911 | National Domestic Violence Hotline: 1-800-799-7233
-          </p>
-          <h1 className="mt-6 font-heading text-3xl font-bold tracking-tight md:text-4xl">
-            Victim Services: Nationwide Support for Your Healing Journey
-          </h1>
-          <p className="mt-3 max-w-3xl text-muted-foreground">
-            Comprehensive trauma-informed resources, professional support, and direct access to services for crime victims and their families nationwide. Access federal programs immediately, with state-specific resources expanding.
-          </p>
-          <p className="mt-4 text-sm text-muted-foreground">
-            Federal resources available nationwide • Ohio resources active • Expanding to more states
-          </p>
+      {/* Emergency Banner */}
+      <div className="bg-red-600 py-2 text-center font-medium text-white">
+        🆘 IMMEDIATE DANGER? CALL 911 NOW | Domestic Violence: 1-800-799-7233 | Crisis Text: 741741
+      </div>
+
+      {/* Hero */}
+      <header className="border-b bg-gradient-to-b from-purple-50 to-white">
+        <div className="container py-12 md:py-16">
+          <div className="mx-auto max-w-4xl text-center">
+            <h1 className="mb-4 font-heading text-4xl font-bold text-gray-900 md:text-5xl">Your Healing Journey Starts Here</h1>
+            <p className="mb-6 text-xl text-gray-600">
+              Comprehensive, trauma-informed support designed specifically for crime victims and survivors. Navigate resources with confidence and find the help you deserve.
+            </p>
+            <div className="mb-8 flex items-center justify-center gap-4 text-sm text-gray-500">
+              <span className="flex items-center gap-2">
+                <CheckCircle className="h-4 w-4 text-green-500" /> Free Resources
+              </span>
+              <span className="flex items-center gap-2">
+                <CheckCircle className="h-4 w-4 text-green-500" /> No Judgment Zone
+              </span>
+              <span className="flex items-center gap-2">
+                <CheckCircle className="h-4 w-4 text-green-500" /> Privacy Protected
+              </span>
+            </div>
+
+            <div className="flex flex-wrap justify-center gap-4">
+              <Button onClick={() => setShowAIAssistant(true)} className="bg-purple-600 hover:bg-purple-700">
+                <Bot className="mr-2 h-4 w-4" /> Ask AI Assistant
+              </Button>
+              <Button onClick={() => setShowCoachingInquiry(true)} variant="outline" className="border-purple-600 text-purple-600 hover:bg-purple-50">
+                <Heart className="mr-2 h-4 w-4" /> Get Personal Support
+              </Button>
+              <Button onClick={() => scrollToSection("crisis")} variant="outline" className="border-red-600 text-red-600 hover:bg-red-50">
+                <Phone className="mr-2 h-4 w-4" /> Crisis Resources
+              </Button>
+            </div>
+          </div>
         </div>
       </header>
 
-      <main>
-        <section className="container py-8 md:py-12">
-          <h2 className="font-semibold text-xl">Need Help Right Now? National Crisis Resources</h2>
-          <p className="mt-2 text-sm text-muted-foreground">Crisis support is available 24/7 nationwide - reach out for immediate help.</p>
-          <ul className="mt-4 grid gap-3 md:grid-cols-2">
-            <li className="rounded-lg border bg-card p-4">
-              <strong>911</strong> — For immediate danger
-            </li>
-            <li className="rounded-lg border bg-card p-4">
-              National Domestic Violence Hotline: 1-800-799-7233 — <a className="underline" href="https://www.thehotline.org/" target="_blank" rel="noopener noreferrer">thehotline.org</a>
-            </li>
-            <li className="rounded-lg border bg-card p-4">
-              National Sexual Assault Hotline: 1-800-656-4673 — <a className="underline" href="https://www.rainn.org/" target="_blank" rel="noopener noreferrer">rainn.org</a>
-            </li>
-            <li className="rounded-lg border bg-card p-4">
-              Crisis Text Line: Text HOME to 741741 — <a className="underline" href="https://www.crisistextline.org/" target="_blank" rel="noopener noreferrer">crisistextline.org</a>
-            </li>
-            <li className="rounded-lg border bg-card p-4">
-              National Suicide & Crisis Lifeline: 988 — <a className="underline" href="https://988lifeline.org/" target="_blank" rel="noopener noreferrer">988lifeline.org</a>
-            </li>
-            <li className="rounded-lg border bg-card p-4">
-              National Human Trafficking Hotline: 1-888-373-7888 — <a className="underline" href="https://humantraffickinghotline.org/" target="_blank" rel="noopener noreferrer">humantraffickinghotline.org</a>
-            </li>
-          </ul>
-        </section>
+      {/* Sticky Nav */}
+      <nav className="sticky top-0 z-40 border-b bg-white shadow-sm">
+        <div className="container py-4">
+          <div className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-6">
+            {navigationSections.map((s) => {
+              const Icon = s.icon;
+              return (
+                <button
+                  key={s.id}
+                  onClick={() => scrollToSection(s.id)}
+                  className={`flex items-center gap-2 rounded-lg border p-3 transition-all ${
+                    activeSection === s.id ? "border-primary bg-primary/10 text-primary" : "border-gray-200 hover:border-gray-300 hover:bg-gray-50"
+                  }`}
+                >
+                  <Icon className="h-4 w-4" />
+                  <span className="hidden text-sm font-medium sm:block">{s.label}</span>
+                  <ChevronRight className="ml-auto h-3 w-3" />
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      </nav>
 
-        <section className="container py-8">
-          <h2 className="font-semibold text-xl">Federal Victim Compensation Programs - Available Nationwide</h2>
-          <ul className="mt-4 grid gap-3 md:grid-cols-2">
-            <li className="rounded-lg border bg-card p-4">
-              Office for Victims of Crime — <a className="underline" href="https://ovc.ojp.gov/topics/victim-compensation" target="_blank" rel="noopener noreferrer">ovc.ojp.gov/topics/victim-compensation</a>
-            </li>
-            <li className="rounded-lg border bg-card p-4">
-              VOCA Victim Compensation (State Directory) — <a className="underline" href="https://ovc.ojp.gov/states" target="_blank" rel="noopener noreferrer">ovc.ojp.gov/states</a>
-            </li>
-            <li className="rounded-lg border bg-card p-4">
-              Federal Crime Victim Rights — <a className="underline" href="https://www.justice.gov/usao/resources/crime-victims-rights" target="_blank" rel="noopener noreferrer">justice.gov/usao/resources/crime-victims-rights</a>
-            </li>
-            <li className="rounded-lg border bg-card p-4">
-              Work Opportunity Tax Credit — <a className="underline" href="https://www.dol.gov/agencies/eta/wotc" target="_blank" rel="noopener noreferrer">dol.gov/agencies/eta/wotc</a>
-            </li>
-          </ul>
-        </section>
+      <main className="bg-gray-50">
+        {/* Crisis Section */}
+        <section id="crisis" className="bg-white py-12">
+          <div className="container">
+            <div className="mx-auto max-w-4xl">
+              <div className="mb-6 flex items-center gap-3">
+                <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-red-500">
+                  <Phone className="h-6 w-6 text-white" />
+                </div>
+                <div>
+                  <h2 className="text-2xl font-bold text-gray-900">Need Help Right Now?</h2>
+                  <p className="text-gray-600">24/7 crisis support available nationwide - you're not alone</p>
+                </div>
+              </div>
 
-        <section className="container py-8">
-          <h2 className="font-semibold text-xl">National Organizations Providing Direct Victim Support</h2>
-          <p className="mt-2 text-sm text-muted-foreground">Click to access services directly - no referrals needed.</p>
-          <ul className="mt-4 grid gap-3 md:grid-cols-2">
-            <li className="rounded-lg border bg-card p-4">RAINN — <a className="underline" href="https://www.rainn.org/get-help" target="_blank" rel="noopener noreferrer">rainn.org/get-help</a></li>
-            <li className="rounded-lg border bg-card p-4">National Center for Victims of Crime — <a className="underline" href="https://victimsofcrime.org/help-for-crime-victims" target="_blank" rel="noopener noreferrer">victimsofcrime.org/help-for-crime-victims</a></li>
-            <li className="rounded-lg border bg-card p-4">National Organization for Victim Assistance — <a className="underline" href="https://trynova.org/" target="_blank" rel="noopener noreferrer">trynova.org</a></li>
-            <li className="rounded-lg border bg-card p-4">Victim Rights Law Center — <a className="underline" href="https://victimrights.org/" target="_blank" rel="noopener noreferrer">victimrights.org</a></li>
-            <li className="rounded-lg border bg-card p-4">National Crime Victim Bar Association — <a className="underline" href="https://victimbar.org/" target="_blank" rel="noopener noreferrer">victimbar.org</a></li>
-          </ul>
-        </section>
+              <div className="grid gap-4 md:grid-cols-2">
+                <div className="rounded-lg border border-red-200 bg-red-50 p-6">
+                  <h3 className="mb-3 font-semibold text-red-900">Immediate Danger</h3>
+                  <div className="space-y-2">
+                    <a href="tel:911" className="flex items-center gap-3 rounded-lg bg-red-600 p-3 font-medium text-white transition-colors hover:bg-red-700">
+                      <Phone className="h-5 w-5" />
+                      <span>Call 911 Now</span>
+                    </a>
+                  </div>
+                </div>
 
-        <section className="container py-8">
-          <h2 className="font-semibold text-xl">Our Trauma-Informed Support Services</h2>
-          <ul className="mt-4 grid gap-2 text-muted-foreground">
-            <li>Life coaching focused on trauma recovery and empowerment (income-based pricing)</li>
-            <li>AI support assistant for 24/7 guidance and resource navigation</li>
-            <li>Educational resources on trauma recovery and healing</li>
-            <li>Connection to verified professional network</li>
-            <li>Crisis intervention and safety planning support</li>
-          </ul>
-          <p className="mt-3">Personalized support designed specifically for trauma survivors. <Link to="/support" className="underline">Contact us</Link> for consultation and service access.</p>
-        </section>
+                <div className="rounded-lg border border-blue-200 bg-blue-50 p-6">
+                  <h3 className="mb-3 font-semibold text-blue-900">Crisis Support</h3>
+                  <div className="space-y-3">
+                    <a href="tel:1-800-799-7233" className="flex items-center gap-3 rounded p-2 transition-colors hover:bg-blue-100">
+                      <Phone className="h-4 w-4 text-blue-600" />
+                      <div className="text-sm">
+                        <div className="font-medium">Domestic Violence Hotline</div>
+                        <div className="text-gray-600">1-800-799-7233</div>
+                      </div>
+                    </a>
+                    <a href="tel:1-800-656-4673" className="flex items-center gap-3 rounded p-2 transition-colors hover:bg-blue-100">
+                      <Phone className="h-4 w-4 text-blue-600" />
+                      <div className="text-sm">
+                        <div className="font-medium">Sexual Assault Hotline</div>
+                        <div className="text-gray-600">1-800-656-4673</div>
+                      </div>
+                    </a>
+                    <a href="sms:741741?&body=HOME" className="flex items-center gap-3 rounded p-2 transition-colors hover:bg-blue-100">
+                      <MessageSquare className="h-4 w-4 text-blue-600" />
+                      <div className="text-sm">
+                        <div className="font-medium">Crisis Text Line</div>
+                        <div className="text-gray-600">Text HOME to 741741</div>
+                      </div>
+                    </a>
+                    <a href="tel:988" className="flex items-center gap-3 rounded p-2 transition-colors hover:bg-blue-100">
+                      <Phone className="h-4 w-4 text-blue-600" />
+                      <div className="text-sm">
+                        <div className="font-medium">Suicide Prevention</div>
+                        <div className="text-gray-600">988</div>
+                      </div>
+                    </a>
+                  </div>
+                </div>
+              </div>
 
-        <section className="container py-8">
-          <h2 className="font-semibold text-xl">Ohio-Specific Victim Services and Compensation</h2>
-          <ul className="mt-4 grid gap-3 md:grid-cols-2">
-            <li className="rounded-lg border bg-card p-4">Ohio Attorney General Victim Services — <a className="underline" href="https://www.ohioattorneygeneral.gov/Individuals-and-Families/Victims" target="_blank" rel="noopener noreferrer">ohioattorneygeneral.gov/.../Victims</a></li>
-            <li className="rounded-lg border bg-card p-4">Ohio Crime Victim Compensation — <a className="underline" href="https://www.ohioattorneygeneral.gov/Individuals-and-Families/Victims/Victims-Compensation-Application" target="_blank" rel="noopener noreferrer">Compensation Application</a></li>
-            <li className="rounded-lg border bg-card p-4">Ohio Domestic Violence Network — <a className="underline" href="https://www.odvn.org/" target="_blank" rel="noopener noreferrer">odvn.org</a></li>
-            <li className="rounded-lg border bg-card p-4">Ohio Alliance to End Sexual Violence — <a className="underline" href="https://www.oaesv.org/" target="_blank" rel="noopener noreferrer">oaesv.org</a></li>
-            <li className="rounded-lg border bg-card p-4">Legal Aid Society of Columbus — <a className="underline" href="https://www.columbuslegalaid.org/" target="_blank" rel="noopener noreferrer">columbuslegalaid.org</a></li>
-          </ul>
-          <p className="mt-2 text-sm text-muted-foreground">Ohio residents have access to these additional state-specific resources.</p>
-        </section>
-
-        <section className="container py-8">
-          <h2 className="font-semibold text-xl">Coming Soon: State-Specific Resources</h2>
-          <ul className="mt-4 grid gap-2 text-muted-foreground">
-            <li>Texas — Launching 2025: Crime victim compensation and state resources</li>
-            <li>California — Launching 2025: Comprehensive victim services directory</li>
-            <li>Florida — Launching 2025: State compensation and advocacy resources</li>
-            <li>Pennsylvania — Launching 2025: Victim rights and support services</li>
-            <li>Illinois — Launching 2025: Trauma-informed state resource network</li>
-          </ul>
-          <p className="mt-3">Get notified when we launch in your state — <Link to="/support" className="underline">request priority</Link>.</p>
-        </section>
-
-        <section className="container py-8">
-          <h2 className="font-semibold text-xl">Specialized Support for Unique Needs</h2>
-          <ul className="mt-4 grid gap-3 md:grid-cols-2">
-            <li className="rounded-lg border bg-card p-4">Domestic Violence — <a className="underline" href="https://ncadv.org/" target="_blank" rel="noopener noreferrer">ncadv.org</a></li>
-            <li className="rounded-lg border bg-card p-4">Sexual Assault — <a className="underline" href="https://www.rainn.org/" target="_blank" rel="noopener noreferrer">rainn.org</a></li>
-            <li className="rounded-lg border bg-card p-4">Human Trafficking — <a className="underline" href="https://polarisproject.org/" target="_blank" rel="noopener noreferrer">polarisproject.org</a></li>
-            <li className="rounded-lg border bg-card p-4">Child Abuse Survivors — <a className="underline" href="https://www.childwelfare.gov/" target="_blank" rel="noopener noreferrer">childwelfare.gov</a></li>
-            <li className="rounded-lg border bg-card p-4">Elder Abuse — <a className="underline" href="https://ncea.acl.gov/" target="_blank" rel="noopener noreferrer">ncea.acl.gov</a></li>
-            <li className="rounded-lg border bg-card p-4">LGBTQ+ Crime Victims — <a className="underline" href="https://avp.org/" target="_blank" rel="noopener noreferrer">avp.org</a></li>
-            <li className="rounded-lg border bg-card p-4">Immigrant Crime Victims — <a className="underline" href="https://legalaidatwork.org/" target="_blank" rel="noopener noreferrer">legalaidatwork.org</a></li>
-          </ul>
-        </section>
-
-        <section className="container py-8">
-          <h2 className="font-semibold text-xl">Know Your Rights as a Crime Victim - Federal and State</h2>
-          <ul className="mt-4 grid gap-3 md:grid-cols-2">
-            <li className="rounded-lg border bg-card p-4">Federal Victim Rights — <a className="underline" href="https://www.justice.gov/usao/resources/crime-victims-rights" target="_blank" rel="noopener noreferrer">justice.gov/usao/resources/crime-victims-rights</a></li>
-            <li className="rounded-lg border bg-card p-4">Crime Victims' Rights Act — <a className="underline" href="https://www.justice.gov/criminal/vns/crime-victims-rights-act-cvra" target="_blank" rel="noopener noreferrer">justice.gov/.../cvra</a></li>
-            <li className="rounded-lg border bg-card p-4">Victim Impact Statements — <a className="underline" href="https://ovc.ojp.gov/topics/victim-impact-statements" target="_blank" rel="noopener noreferrer">ovc.ojp.gov/topics/victim-impact-statements</a></li>
-            <li className="rounded-lg border bg-card p-4">Victim Compensation by State — <a className="underline" href="https://www.nacvcb.org/state-programs" target="_blank" rel="noopener noreferrer">nacvcb.org/state-programs</a></li>
-            <li className="rounded-lg border bg-card p-4">Legal Aid Locator — <a className="underline" href="https://www.lsc.gov/about-lsc/what-legal-aid/find-legal-aid" target="_blank" rel="noopener noreferrer">lsc.gov/find-legal-aid</a></li>
-          </ul>
-        </section>
-
-        <section className="container py-8">
-          <h2 className="font-semibold text-xl">Trauma Recovery and Mental Health Support</h2>
-          <ul className="mt-4 grid gap-3 md:grid-cols-2">
-            <li className="rounded-lg border bg-card p-4">SAMHSA National Helpline — <a className="underline" href="https://www.samhsa.gov/find-help/national-helpline" target="_blank" rel="noopener noreferrer">samhsa.gov/find-help/national-helpline</a></li>
-            <li className="rounded-lg border bg-card p-4">Trauma Recovery Network — <a className="underline" href="https://www.emdrhap.org/content/training/trn/" target="_blank" rel="noopener noreferrer">emdrhap.org/trn</a></li>
-            <li className="rounded-lg border bg-card p-4">National Child Traumatic Stress Network — <a className="underline" href="https://www.nctsn.org/" target="_blank" rel="noopener noreferrer">nctsn.org</a></li>
-            <li className="rounded-lg border bg-card p-4">International Society for Traumatic Stress Studies — <a className="underline" href="https://www.istss.org/" target="_blank" rel="noopener noreferrer">istss.org</a></li>
-            <li className="rounded-lg border bg-card p-4">Mental Health America — <a className="underline" href="https://mhanational.org/finding-help" target="_blank" rel="noopener noreferrer">mhanational.org/finding-help</a></li>
-          </ul>
-        </section>
-
-        <section className="container py-8">
-          <h2 className="font-semibold text-xl">Safety Planning Resources and Tools</h2>
-          <ul className="mt-4 grid gap-3 md:grid-cols-2">
-            <li className="rounded-lg border bg-card p-4">Personal Safety Planning — <a className="underline" href="https://www.thehotline.org/plan-for-safety/" target="_blank" rel="noopener noreferrer">thehotline.org/plan-for-safety</a></li>
-            <li className="rounded-lg border bg-card p-4">Technology Safety — <a className="underline" href="https://www.techsafety.org/" target="_blank" rel="noopener noreferrer">techsafety.org</a></li>
-            <li className="rounded-lg border bg-card p-4">Stalking Prevention — <a className="underline" href="https://www.stalkingprevention.org/" target="_blank" rel="noopener noreferrer">stalkingprevention.org</a></li>
-            <li className="rounded-lg border bg-card p-4">Safety Apps and Tools — <a className="underline" href="https://www.techsafety.org/appsafetycenter" target="_blank" rel="noopener noreferrer">techsafety.org/appsafetycenter</a></li>
-            <li className="rounded-lg border bg-card p-4">Legal Protection Orders — <a className="underline" href="https://www.womenslaw.org/" target="_blank" rel="noopener noreferrer">womenslaw.org</a></li>
-          </ul>
-        </section>
-
-        <section className="container py-8">
-          <h2 className="font-semibold text-xl">Financial Recovery and Compensation Programs</h2>
-          <ul className="mt-4 grid gap-3 md:grid-cols-2">
-            <li className="rounded-lg border bg-card p-4">State Victim Compensation Programs — <a className="underline" href="https://www.nacvcb.org/state-programs" target="_blank" rel="noopener noreferrer">nacvcb.org/state-programs</a></li>
-            <li className="rounded-lg border bg-card p-4">Victim Restitution Information — <a className="underline" href="https://ovc.ojp.gov/topics/restitution" target="_blank" rel="noopener noreferrer">ovc.ojp.gov/topics/restitution</a></li>
-            <li className="rounded-lg border bg-card p-4">Financial Recovery Planning — <a className="underline" href="https://www.consumerfinance.gov/" target="_blank" rel="noopener noreferrer">consumerfinance.gov</a></li>
-            <li className="rounded-lg border bg-card p-4">Emergency Financial Assistance — <a className="underline" href="https://www.211.org/" target="_blank" rel="noopener noreferrer">211.org</a></li>
-            <li className="rounded-lg border bg-card p-4">Identity Theft Recovery — <a className="underline" href="https://www.identitytheft.gov/" target="_blank" rel="noopener noreferrer">identitytheft.gov</a></li>
-          </ul>
-        </section>
-
-        <section className="container py-10">
-          <h2 className="font-semibold text-xl">Ready to Access Support?</h2>
-          <ul className="mt-3 list-disc pl-5 text-muted-foreground">
-            <li>Call our trauma-informed support line for immediate assistance</li>
-            <li>Use our online contact form for non-urgent support requests</li>
-            <li>Access our 24/7 AI assistant for resource navigation</li>
-            <li>Schedule a consultation for personalized support planning</li>
-          </ul>
-          <div className="mt-4 flex flex-wrap gap-3">
-            <Link to="/support" className="inline-flex items-center rounded-md border bg-primary px-4 py-2 text-primary-foreground">Contact Support</Link>
-            <Link to="/support" className="inline-flex items-center rounded-md border px-4 py-2">Ask our AI Assistant</Link>
+              <div className="mt-8 rounded-lg border border-purple-200 bg-purple-50 p-6">
+                <div className="mb-4 flex items-center gap-3">
+                  <Bot className="h-6 w-6 text-purple-600" />
+                  <h3 className="font-semibold text-purple-900">Need Help Finding Resources?</h3>
+                </div>
+                <p className="mb-4 text-purple-800">
+                  Our AI assistant is trained to understand the unique challenges faced by crime victims. Get personalized resource recommendations and guidance 24/7.
+                </p>
+                <Button onClick={() => setShowAIAssistant(true)} className="bg-purple-600 hover:bg-purple-700">
+                  <Bot className="mr-2 h-4 w-4" /> Ask AI Assistant
+                </Button>
+              </div>
+            </div>
           </div>
         </section>
 
-        <section className="container pb-12">
-          <h2 className="font-semibold text-xl">Your Safety and Privacy Are Protected</h2>
-          <ul className="mt-3 list-disc pl-5 text-muted-foreground">
-            <li>All communications are confidential and secure</li>
-            <li>You control what information you share and when</li>
-            <li>No identifying information required for resource access</li>
-            <li>Your healing journey is private and personal</li>
-          </ul>
-          <p className="mt-3 text-sm text-muted-foreground">
-            We prioritize your safety in every interaction.
-          </p>
+        {/* Compensation */}
+        <section id="compensation" className="py-12">
+          <div className="container">
+            <div className="mx-auto max-w-4xl">
+              <div className="mb-6 flex items-center gap-3">
+                <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-green-500">
+                  <DollarSign className="h-6 w-6 text-white" />
+                </div>
+                <div>
+                  <h2 className="text-2xl font-bold text-gray-900">Get Financial Compensation</h2>
+                  <p className="text-gray-600">Federal and state programs to help with expenses from crime</p>
+                </div>
+              </div>
+
+              <div className="mb-6 rounded-lg border bg-white p-6">
+                <h3 className="mb-4 font-semibold text-green-800">✨ What You Can Get Help With:</h3>
+                <div className="grid gap-4 text-sm md:grid-cols-3">
+                  <div className="flex items-center gap-2">
+                    <CheckCircle className="h-4 w-4 text-green-500" /> Medical expenses
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <CheckCircle className="h-4 w-4 text-green-500" /> Counseling/therapy
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <CheckCircle className="h-4 w-4 text-green-500" /> Lost wages
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <CheckCircle className="h-4 w-4 text-green-500" /> Funeral costs
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <CheckCircle className="h-4 w-4 text-green-500" /> Relocation & safety
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <CheckCircle className="h-4 w-4 text-green-500" /> Medical equipment
+                  </div>
+                </div>
+              </div>
+
+              <ul className="grid gap-3 md:grid-cols-2">
+                <li className="rounded-lg border bg-white p-4">
+                  Office for Victims of Crime —
+                  <a className="ml-1 underline" href="https://ovc.ojp.gov/topics/victim-compensation" target="_blank" rel="noopener noreferrer">
+                    ovc.ojp.gov/topics/victim-compensation
+                  </a>
+                </li>
+                <li className="rounded-lg border bg-white p-4">
+                  VOCA Victim Compensation (State Directory) —
+                  <a className="ml-1 underline" href="https://ovc.ojp.gov/states" target="_blank" rel="noopener noreferrer">
+                    ovc.ojp.gov/states
+                  </a>
+                </li>
+                <li className="rounded-lg border bg-white p-4">
+                  Ohio Crime Victim Compensation —
+                  <a
+                    className="ml-1 underline"
+                    href="https://www.ohioattorneygeneral.gov/Individuals-and-Families/Victims/Victims-Compensation-Application"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Application link
+                  </a>
+                </li>
+                <li className="rounded-lg border bg-white p-4">
+                  Federal Crime Victim Rights —
+                  <a className="ml-1 underline" href="https://www.justice.gov/usao/resources/crime-victims-rights" target="_blank" rel="noopener noreferrer">
+                    justice.gov/usao/resources/crime-victims-rights
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        {/* Rights */}
+        <section id="rights" className="bg-white py-12">
+          <div className="container">
+            <div className="mx-auto max-w-4xl">
+              <div className="mb-6 flex items-center gap-3">
+                <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-blue-500">
+                  <Scale className="h-6 w-6 text-white" />
+                </div>
+                <div>
+                  <h2 className="text-2xl font-bold text-gray-900">Know Your Rights</h2>
+                  <p className="text-gray-600">Understand legal protections and find free legal aid</p>
+                </div>
+              </div>
+
+              <ul className="grid gap-3 md:grid-cols-2">
+                <li className="rounded-lg border bg-white p-4">
+                  Federal Victim Rights —
+                  <a className="ml-1 underline" href="https://www.justice.gov/usao/resources/crime-victims-rights" target="_blank" rel="noopener noreferrer">
+                    justice.gov/usao/resources/crime-victims-rights
+                  </a>
+                </li>
+                <li className="rounded-lg border bg-white p-4">
+                  Crime Victims' Rights Act —
+                  <a className="ml-1 underline" href="https://www.justice.gov/criminal/vns/crime-victims-rights-act-cvra" target="_blank" rel="noopener noreferrer">
+                    justice.gov/.../cvra
+                  </a>
+                </li>
+                <li className="rounded-lg border bg-white p-4">
+                  Legal Aid Locator —
+                  <a className="ml-1 underline" href="https://www.lsc.gov/about-lsc/what-legal-aid/find-legal-aid" target="_blank" rel="noopener noreferrer">
+                    lsc.gov/find-legal-aid
+                  </a>
+                </li>
+                <li className="rounded-lg border bg-white p-4">
+                  Victim Impact Statements —
+                  <a className="ml-1 underline" href="https://ovc.ojp.gov/topics/victim-impact-statements" target="_blank" rel="noopener noreferrer">
+                    ovc.ojp.gov/topics/victim-impact-statements
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        {/* Healing */}
+        <section id="healing" className="py-12">
+          <div className="container">
+            <div className="mx-auto max-w-4xl">
+              <div className="mb-6 flex items-center gap-3">
+                <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-purple-500">
+                  <Heart className="h-6 w-6 text-white" />
+                </div>
+                <div>
+                  <h2 className="text-2xl font-bold text-gray-900">Trauma Recovery</h2>
+                  <p className="text-gray-600">Find mental health resources and trauma-informed care</p>
+                </div>
+              </div>
+
+              <ul className="grid gap-3 md:grid-cols-2">
+                <li className="rounded-lg border bg-white p-4">
+                  SAMHSA National Helpline —
+                  <a className="ml-1 underline" href="https://www.samhsa.gov/find-help/national-helpline" target="_blank" rel="noopener noreferrer">
+                    samhsa.gov/find-help/national-helpline
+                  </a>
+                </li>
+                <li className="rounded-lg border bg-white p-4">
+                  Trauma Recovery Network —
+                  <a className="ml-1 underline" href="https://www.emdrhap.org/content/training/trn/" target="_blank" rel="noopener noreferrer">
+                    emdrhap.org/trn
+                  </a>
+                </li>
+                <li className="rounded-lg border bg-white p-4">
+                  NCTSN —
+                  <a className="ml-1 underline" href="https://www.nctsn.org/" target="_blank" rel="noopener noreferrer">
+                    nctsn.org
+                  </a>
+                </li>
+                <li className="rounded-lg border bg-white p-4">
+                  ISTSS —
+                  <a className="ml-1 underline" href="https://www.istss.org/" target="_blank" rel="noopener noreferrer">
+                    istss.org
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        {/* Safety */}
+        <section id="safety" className="bg-white py-12">
+          <div className="container">
+            <div className="mx-auto max-w-4xl">
+              <div className="mb-6 flex items-center gap-3">
+                <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-orange-500">
+                  <Shield className="h-6 w-6 text-white" />
+                </div>
+                <div>
+                  <h2 className="text-2xl font-bold text-gray-900">Safety Planning</h2>
+                  <p className="text-gray-600">Plan for safety with trusted tools and guides</p>
+                </div>
+              </div>
+
+              <ul className="grid gap-3 md:grid-cols-2">
+                <li className="rounded-lg border bg-white p-4">
+                  Personal Safety Planning —
+                  <a className="ml-1 underline" href="https://www.thehotline.org/plan-for-safety/" target="_blank" rel="noopener noreferrer">
+                    thehotline.org/plan-for-safety
+                  </a>
+                </li>
+                <li className="rounded-lg border bg-white p-4">
+                  Technology Safety —
+                  <a className="ml-1 underline" href="https://www.techsafety.org/" target="_blank" rel="noopener noreferrer">
+                    techsafety.org
+                  </a>
+                </li>
+                <li className="rounded-lg border bg-white p-4">
+                  Stalking Prevention —
+                  <a className="ml-1 underline" href="https://www.stalkingprevention.org/" target="_blank" rel="noopener noreferrer">
+                    stalkingprevention.org
+                  </a>
+                </li>
+                <li className="rounded-lg border bg-white p-4">
+                  Legal Protection Orders —
+                  <a className="ml-1 underline" href="https://www.womenslaw.org/" target="_blank" rel="noopener noreferrer">
+                    womenslaw.org
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        {/* Specialized */}
+        <section id="specialized" className="py-12">
+          <div className="container">
+            <div className="mx-auto max-w-4xl">
+              <div className="mb-6 flex items-center gap-3">
+                <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-teal-500">
+                  <Users className="h-6 w-6 text-white" />
+                </div>
+                <div>
+                  <h2 className="text-2xl font-bold text-gray-900">Specialized Support</h2>
+                  <p className="text-gray-600">Find organizations tailored to your specific situation</p>
+                </div>
+              </div>
+
+              <ul className="grid gap-3 md:grid-cols-2">
+                <li className="rounded-lg border bg-white p-4">Domestic Violence — <a className="underline" href="https://ncadv.org/" target="_blank" rel="noopener noreferrer">ncadv.org</a></li>
+                <li className="rounded-lg border bg-white p-4">Sexual Assault — <a className="underline" href="https://www.rainn.org/" target="_blank" rel="noopener noreferrer">rainn.org</a></li>
+                <li className="rounded-lg border bg-white p-4">Human Trafficking — <a className="underline" href="https://polarisproject.org/" target="_blank" rel="noopener noreferrer">polarisproject.org</a></li>
+                <li className="rounded-lg border bg-white p-4">Child Abuse Survivors — <a className="underline" href="https://www.childwelfare.gov/" target="_blank" rel="noopener noreferrer">childwelfare.gov</a></li>
+                <li className="rounded-lg border bg-white p-4">Elder Abuse — <a className="underline" href="https://ncea.acl.gov/" target="_blank" rel="noopener noreferrer">ncea.acl.gov</a></li>
+                <li className="rounded-lg border bg-white p-4">LGBTQ+ Crime Victims — <a className="underline" href="https://avp.org/" target="_blank" rel="noopener noreferrer">avp.org</a></li>
+                <li className="rounded-lg border bg-white p-4">Immigrant Crime Victims — <a className="underline" href="https://legalaidatwork.org/" target="_blank" rel="noopener noreferrer">legalaidatwork.org</a></li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        {/* CTA */}
+        <section className="py-12">
+          <div className="container">
+            <div className="mx-auto max-w-4xl rounded-lg border bg-white p-6 text-center">
+              <h2 className="text-xl font-semibold">Ready to Access Support?</h2>
+              <p className="mt-2 text-muted-foreground">Our team and tools are here for you—confidentially and judgment-free.</p>
+              <div className="mt-4 flex flex-wrap justify-center gap-3">
+                <Button onClick={() => setShowAIAssistant(true)} className="bg-purple-600 hover:bg-purple-700">
+                  <Bot className="mr-2 h-4 w-4" /> Open AI Assistant
+                </Button>
+                <Button onClick={() => setShowCoachingInquiry(true)} variant="outline">
+                  <Calendar className="mr-2 h-4 w-4" /> Request Coaching
+                </Button>
+              </div>
+            </div>
+          </div>
         </section>
       </main>
+
+      {/* Modals */}
+      <AIAssistant isOpen={showAIAssistant} onClose={() => setShowAIAssistant(false)} />
+      <CoachingInquiry isOpen={showCoachingInquiry} onClose={() => setShowCoachingInquiry(false)} />
     </>
   );
 }
