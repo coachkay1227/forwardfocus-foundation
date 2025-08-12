@@ -171,7 +171,7 @@ const Index = () => {
       <section className="container py-12 md:py-16">
         <h2 className="font-heading text-2xl md:text-3xl font-semibold">Our community impact</h2>
         <div className="mt-6 grid grid-cols-2 md:grid-cols-3 gap-4">
-          {[{ label: 'People helped', value: '1,200+' }, { label: 'Organizations', value: '80+' }, { label: 'Resources listed', value: '300+' }].map((m) => (
+          {[{ label: 'Community', value: 'Growing community of supporters' }, { label: 'Partnerships', value: 'Trusted local partnerships' }, { label: 'Directory', value: 'Curated resource directory' }].map((m) => (
             <Card key={m.label}>
               <CardContent className="pt-6">
                 <div className="text-3xl font-bold">{m.value}</div>
