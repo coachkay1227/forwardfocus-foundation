@@ -8,6 +8,7 @@ import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import GetHelpNow from "./pages/GetHelpNow";
 import OhioResources from "./pages/OhioResources";
+import VictimServices from "./pages/VictimServices";
 import LearnGrow from "./pages/LearnGrow";
 import JoinCommunity from "./pages/JoinCommunity";
 import AboutUs from "./pages/AboutUs";
@@ -36,6 +37,7 @@ const App = () => (
               <Route path="/" element={<Index />} />
               <Route path="/help" element={<GetHelpNow />} />
               <Route path="/ohio-resources" element={<OhioResources />} />
+              <Route path="/victim-services" element={<VictimServices />} />
               <Route path="/learn" element={<LearnGrow />} />
               <Route path="/community" element={<JoinCommunity />} />
               <Route path="/about" element={<AboutUs />} />

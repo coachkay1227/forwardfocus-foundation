@@ -22,9 +22,9 @@ const Header = () => {
         <nav className="hidden md:flex items-center gap-6">
           <NavLink to="/help" className={linkCls}>Get Help Now</NavLink>
           <NavLink to="/ohio-resources" className={linkCls}>{selectedState.name} Resources</NavLink>
+          <NavLink to="/victim-services" className={linkCls}>Victim Services</NavLink>
           <NavLink to="/learn" className={linkCls}>Learn & Grow</NavLink>
           <NavLink to="/community" className={linkCls}>Join Community</NavLink>
-          <NavLink to="/partners" className={linkCls}>Partner Portal</NavLink>
           <NavLink to="/about" className={linkCls}>About Us</NavLink>
         </nav>
 
@@ -100,9 +100,9 @@ const Header = () => {
 
                 <NavLink to="/help" onClick={()=>setOpen(false)} className="py-2">Get Help Now</NavLink>
                 <NavLink to="/ohio-resources" onClick={()=>setOpen(false)} className="py-2">{selectedState.name} Resources</NavLink>
+                <NavLink to="/victim-services" onClick={()=>setOpen(false)} className="py-2">Victim Services</NavLink>
                 <NavLink to="/learn" onClick={()=>setOpen(false)} className="py-2">Learn & Grow</NavLink>
                 <NavLink to="/community" onClick={()=>setOpen(false)} className="py-2">Join Community</NavLink>
-                <NavLink to="/partners" onClick={()=>setOpen(false)} className="py-2">Partner Portal</NavLink>
                 <NavLink to="/about" onClick={()=>setOpen(false)} className="py-2">About Us</NavLink>
                 <NavLink to="/login" onClick={()=>setOpen(false)} className="py-2">Member Login</NavLink>
                 <Button asChild className="mt-2" variant="secondary">
