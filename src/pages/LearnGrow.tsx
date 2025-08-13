@@ -664,6 +664,8 @@ export default function CommunityLearning() {
               </p>
             </div>
           </div>
+        </div>
+      </div>
 
           <div className="mt-12 bg-blue-50 border border-blue-200 rounded-lg p-6">
             <h3 className="font-semibold text-blue-900 mb-3">Not Ready to Apply Yet?</h3>
@@ -744,3 +746,5 @@ export default function CommunityLearning() {
     onClose={() => setShowApplication(false)} 
   />
 </>
+);
+}

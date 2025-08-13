@@ -1,16 +1,13 @@
-### **2. Replace JoinCommunity.tsx with this simple redirect:**
-
-```tsx
 import { useEffect } from "react";
 import { Navigate } from "react-router-dom";
 
-const Page = () => {
+const JoinCommunityRedirect = () => {
   useEffect(() => {
     // Redirect to the combined community/learning page
-    window.location.href = "/learn";
+    window.location.replace("/learn");
   }, []);
-  
+
   return <Navigate to="/learn" replace />;
 };
 
-export default Page;
+export default JoinCommunityRedirect;
