@@ -14,149 +14,6 @@ export type Database = {
   }
   public: {
     Tables: {
-      affiliate_clicks: {
-        Row: {
-          affiliate_code: string
-          created_at: string
-          id: string
-          ip_address: string | null
-          module_bundle: string | null
-          user_agent: string | null
-        }
-        Insert: {
-          affiliate_code: string
-          created_at?: string
-          id?: string
-          ip_address?: string | null
-          module_bundle?: string | null
-          user_agent?: string | null
-        }
-        Update: {
-          affiliate_code?: string
-          created_at?: string
-          id?: string
-          ip_address?: string | null
-          module_bundle?: string | null
-          user_agent?: string | null
-        }
-        Relationships: []
-      }
-      affiliate_commissions: {
-        Row: {
-          affiliate_code: string
-          commission_amount: number
-          commission_rate: number
-          created_at: string
-          id: string
-          order_id: string | null
-          paid_at: string | null
-          status: string
-        }
-        Insert: {
-          affiliate_code: string
-          commission_amount: number
-          commission_rate: number
-          created_at?: string
-          id?: string
-          order_id?: string | null
-          paid_at?: string | null
-          status?: string
-        }
-        Update: {
-          affiliate_code?: string
-          commission_amount?: number
-          commission_rate?: number
-          created_at?: string
-          id?: string
-          order_id?: string | null
-          paid_at?: string | null
-          status?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "affiliate_commissions_order_id_fkey"
-            columns: ["order_id"]
-            isOneToOne: false
-            referencedRelation: "orders"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      affiliates: {
-        Row: {
-          affiliate_code: string
-          created_at: string
-          email: string
-          experience: string | null
-          id: string
-          name: string
-          social_media: string | null
-          status: string
-          updated_at: string
-          website: string | null
-        }
-        Insert: {
-          affiliate_code: string
-          created_at?: string
-          email: string
-          experience?: string | null
-          id?: string
-          name: string
-          social_media?: string | null
-          status?: string
-          updated_at?: string
-          website?: string | null
-        }
-        Update: {
-          affiliate_code?: string
-          created_at?: string
-          email?: string
-          experience?: string | null
-          id?: string
-          name?: string
-          social_media?: string | null
-          status?: string
-          updated_at?: string
-          website?: string | null
-        }
-        Relationships: []
-      }
-      credit_transactions: {
-        Row: {
-          amount: number
-          created_at: string
-          email: string
-          id: string
-          metadata: Json | null
-          order_id: string | null
-          reason: string
-          stripe_session_id: string | null
-          user_id: string
-        }
-        Insert: {
-          amount: number
-          created_at?: string
-          email: string
-          id?: string
-          metadata?: Json | null
-          order_id?: string | null
-          reason: string
-          stripe_session_id?: string | null
-          user_id: string
-        }
-        Update: {
-          amount?: number
-          created_at?: string
-          email?: string
-          id?: string
-          metadata?: Json | null
-          order_id?: string | null
-          reason?: string
-          stripe_session_id?: string | null
-          user_id?: string
-        }
-        Relationships: []
-      }
       modules: {
         Row: {
           bundle: string
@@ -205,338 +62,107 @@ export type Database = {
         }
         Relationships: []
       }
-      orders: {
+      partner_referrals: {
         Row: {
-          amount: number | null
-          bundle: string
-          coupon_code: string | null
-          created_at: string
-          currency: string | null
-          email: string
-          id: string
-          status: string | null
-          stripe_session_id: string | null
-          updated_at: string
-          user_id: string | null
-        }
-        Insert: {
-          amount?: number | null
-          bundle: string
-          coupon_code?: string | null
-          created_at?: string
-          currency?: string | null
-          email: string
-          id?: string
-          status?: string | null
-          stripe_session_id?: string | null
-          updated_at?: string
-          user_id?: string | null
-        }
-        Update: {
-          amount?: number | null
-          bundle?: string
-          coupon_code?: string | null
-          created_at?: string
-          currency?: string | null
-          email?: string
-          id?: string
-          status?: string | null
-          stripe_session_id?: string | null
-          updated_at?: string
-          user_id?: string | null
-        }
-        Relationships: []
-      }
-      otp_codes: {
-        Row: {
-          code: string
-          created_at: string
-          email: string
-          expires_at: string
-          id: string
-          module_id: string | null
-          used_at: string | null
-        }
-        Insert: {
-          code: string
-          created_at?: string
-          email: string
-          expires_at?: string
-          id?: string
-          module_id?: string | null
-          used_at?: string | null
-        }
-        Update: {
-          code?: string
-          created_at?: string
-          email?: string
-          expires_at?: string
-          id?: string
-          module_id?: string | null
-          used_at?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "otp_codes_module_id_fkey"
-            columns: ["module_id"]
-            isOneToOne: false
-            referencedRelation: "modules"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      reviews: {
-        Row: {
-          album_title: string | null
+          contact_info: string
           created_at: string
           id: string
-          rating: number
-          review_text: string
-          reviewer_email: string | null
-          reviewer_name: string | null
+          name: string
+          notes: string
           status: string
           updated_at: string
         }
         Insert: {
-          album_title?: string | null
+          contact_info: string
           created_at?: string
           id?: string
-          rating: number
-          review_text: string
-          reviewer_email?: string | null
-          reviewer_name?: string | null
+          name: string
+          notes: string
           status?: string
           updated_at?: string
         }
         Update: {
-          album_title?: string | null
+          contact_info?: string
           created_at?: string
-          id?: string
-          rating?: number
-          review_text?: string
-          reviewer_email?: string | null
-          reviewer_name?: string | null
-          status?: string
-          updated_at?: string
-        }
-        Relationships: []
-      }
-      shop_custom_ai_art_requests: {
-        Row: {
-          budget: string | null
-          created_at: string
-          description: string
-          email: string
-          id: string
-          name: string
-          reference_url: string | null
-          status: string
-          style: string | null
-          updated_at: string
-        }
-        Insert: {
-          budget?: string | null
-          created_at?: string
-          description: string
-          email: string
-          id?: string
-          name: string
-          reference_url?: string | null
-          status?: string
-          style?: string | null
-          updated_at?: string
-        }
-        Update: {
-          budget?: string | null
-          created_at?: string
-          description?: string
-          email?: string
           id?: string
           name?: string
-          reference_url?: string | null
+          notes?: string
           status?: string
-          style?: string | null
           updated_at?: string
         }
         Relationships: []
       }
-      shop_digital_assets: {
+      partnership_requests: {
         Row: {
+          contact_email: string
           created_at: string
-          display_name: string | null
-          file_path: string
-          file_type: string | null
+          description: string
           id: string
-          product_id: string
-          sort_order: number
+          organization_name: string
+          status: string
+          updated_at: string
         }
         Insert: {
+          contact_email: string
           created_at?: string
-          display_name?: string | null
-          file_path: string
-          file_type?: string | null
+          description: string
           id?: string
-          product_id: string
-          sort_order?: number
+          organization_name: string
+          status?: string
+          updated_at?: string
         }
         Update: {
+          contact_email?: string
           created_at?: string
-          display_name?: string | null
-          file_path?: string
-          file_type?: string | null
+          description?: string
           id?: string
-          product_id?: string
-          sort_order?: number
+          organization_name?: string
+          status?: string
+          updated_at?: string
         }
-        Relationships: [
-          {
-            foreignKeyName: "shop_digital_assets_product_id_fkey"
-            columns: ["product_id"]
-            isOneToOne: false
-            referencedRelation: "shop_digital_products"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
       }
-      shop_digital_products: {
+      resources: {
         Row: {
-          cover_image_path: string | null
+          category: string | null
+          contact_info: string | null
           created_at: string
-          currency: string
           description: string | null
           id: string
           is_active: boolean
-          price_cents: number
-          slug: string
+          organization: string | null
+          state_code: string | null
           title: string
           updated_at: string
+          website_url: string | null
         }
         Insert: {
-          cover_image_path?: string | null
+          category?: string | null
+          contact_info?: string | null
           created_at?: string
-          currency?: string
           description?: string | null
           id?: string
           is_active?: boolean
-          price_cents?: number
-          slug: string
+          organization?: string | null
+          state_code?: string | null
           title: string
           updated_at?: string
+          website_url?: string | null
         }
         Update: {
-          cover_image_path?: string | null
+          category?: string | null
+          contact_info?: string | null
           created_at?: string
-          currency?: string
           description?: string | null
           id?: string
           is_active?: boolean
-          price_cents?: number
-          slug?: string
+          organization?: string | null
+          state_code?: string | null
           title?: string
           updated_at?: string
+          website_url?: string | null
         }
         Relationships: []
-      }
-      shop_newsletter_signups: {
-        Row: {
-          created_at: string
-          email: string
-          id: string
-          name: string | null
-          source: string
-        }
-        Insert: {
-          created_at?: string
-          email: string
-          id?: string
-          name?: string | null
-          source?: string
-        }
-        Update: {
-          created_at?: string
-          email?: string
-          id?: string
-          name?: string | null
-          source?: string
-        }
-        Relationships: []
-      }
-      shop_signed_art_pieces: {
-        Row: {
-          active: boolean
-          art_image_path: string
-          autograph_image_path: string
-          created_at: string
-          description: string | null
-          id: string
-          number: number
-          title: string
-          updated_at: string
-        }
-        Insert: {
-          active?: boolean
-          art_image_path: string
-          autograph_image_path: string
-          created_at?: string
-          description?: string | null
-          id?: string
-          number: number
-          title: string
-          updated_at?: string
-        }
-        Update: {
-          active?: boolean
-          art_image_path?: string
-          autograph_image_path?: string
-          created_at?: string
-          description?: string | null
-          id?: string
-          number?: number
-          title?: string
-          updated_at?: string
-        }
-        Relationships: []
-      }
-      shop_signed_artwork_requests: {
-        Row: {
-          created_at: string
-          details: string
-          email: string
-          id: string
-          name: string
-          piece_id: string | null
-          status: string
-          updated_at: string
-        }
-        Insert: {
-          created_at?: string
-          details: string
-          email: string
-          id?: string
-          name: string
-          piece_id?: string | null
-          status?: string
-          updated_at?: string
-        }
-        Update: {
-          created_at?: string
-          details?: string
-          email?: string
-          id?: string
-          name?: string
-          piece_id?: string | null
-          status?: string
-          updated_at?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "shop_signed_artwork_requests_piece_id_fkey"
-            columns: ["piece_id"]
-            isOneToOne: false
-            referencedRelation: "shop_signed_art_pieces"
-            referencedColumns: ["id"]
-          },
-        ]
       }
       subscriptions: {
         Row: {
@@ -589,74 +215,6 @@ export type Database = {
         }
         Relationships: []
       }
-      tool_submissions: {
-        Row: {
-          created_at: string
-          data: Json | null
-          id: string
-          preview_url: string | null
-          summary: string | null
-          tool: string
-          user_email: string | null
-        }
-        Insert: {
-          created_at?: string
-          data?: Json | null
-          id?: string
-          preview_url?: string | null
-          summary?: string | null
-          tool: string
-          user_email?: string | null
-        }
-        Update: {
-          created_at?: string
-          data?: Json | null
-          id?: string
-          preview_url?: string | null
-          summary?: string | null
-          tool?: string
-          user_email?: string | null
-        }
-        Relationships: []
-      }
-      tool_usage: {
-        Row: {
-          id: string
-          metadata: Json | null
-          subscription_id: string
-          tool_name: string
-          usage_count: number
-          usage_date: string
-          user_id: string
-        }
-        Insert: {
-          id?: string
-          metadata?: Json | null
-          subscription_id: string
-          tool_name: string
-          usage_count?: number
-          usage_date?: string
-          user_id: string
-        }
-        Update: {
-          id?: string
-          metadata?: Json | null
-          subscription_id?: string
-          tool_name?: string
-          usage_count?: number
-          usage_date?: string
-          user_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "tool_usage_subscription_id_fkey"
-            columns: ["subscription_id"]
-            isOneToOne: false
-            referencedRelation: "subscriptions"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
       trials: {
         Row: {
           created_at: string
@@ -678,81 +236,6 @@ export type Database = {
           expires_at?: string
           id?: string
           started_at?: string
-        }
-        Relationships: []
-      }
-      user_access: {
-        Row: {
-          access_type: string
-          created_at: string
-          email: string
-          expires_at: string | null
-          granted_at: string
-          id: string
-          module_id: string | null
-          order_id: string | null
-        }
-        Insert: {
-          access_type: string
-          created_at?: string
-          email: string
-          expires_at?: string | null
-          granted_at?: string
-          id?: string
-          module_id?: string | null
-          order_id?: string | null
-        }
-        Update: {
-          access_type?: string
-          created_at?: string
-          email?: string
-          expires_at?: string | null
-          granted_at?: string
-          id?: string
-          module_id?: string | null
-          order_id?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "user_access_module_id_fkey"
-            columns: ["module_id"]
-            isOneToOne: false
-            referencedRelation: "modules"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "user_access_order_id_fkey"
-            columns: ["order_id"]
-            isOneToOne: false
-            referencedRelation: "orders"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      user_credits: {
-        Row: {
-          balance: number
-          created_at: string
-          email: string
-          id: string
-          updated_at: string
-          user_id: string
-        }
-        Insert: {
-          balance?: number
-          created_at?: string
-          email: string
-          id?: string
-          updated_at?: string
-          user_id: string
-        }
-        Update: {
-          balance?: number
-          created_at?: string
-          email?: string
-          id?: string
-          updated_at?: string
-          user_id?: string
         }
         Relationships: []
       }

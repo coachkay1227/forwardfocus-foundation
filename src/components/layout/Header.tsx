@@ -1,10 +1,13 @@
 import { NavLink } from "react-router-dom";
-import { useState } from "react";
-import { Menu } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Menu, User, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { useStateContext } from "@/contexts/StateContext";
+import { useAuth } from "@/contexts/AuthContext";
+import { supabase } from "@/integrations/supabase/client";
 import { STATES } from "@/data/states";
 
 const linkCls = ({ isActive }: { isActive: boolean }) =>
@@ -12,7 +15,30 @@ const linkCls = ({ isActive }: { isActive: boolean }) =>
 
 const Header = () => {
   const { selectedState, setSelectedState } = useStateContext();
+  const { user, signOut, loading } = useAuth();
   const [open, setOpen] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  useEffect(() => {
+    const checkAdminStatus = async () => {
+      if (!user) {
+        setIsAdmin(false);
+        return;
+      }
+
+      try {
+        const { data } = await supabase.rpc('is_user_admin', {
+          p_user_id: user.id
+        });
+        setIsAdmin(data || false);
+      } catch (error) {
+        console.error('Error checking admin status:', error);
+        setIsAdmin(false);
+      }
+    };
+
+    checkAdminStatus();
+  }, [user]);
 
   return (
     <header className="bg-background/90 backdrop-blur supports-[backdrop-filter]:bg-background/80 border-b">
@@ -52,7 +78,29 @@ const Header = () => {
             </SelectContent>
           </Select>
 
-          <NavLink to="/login" className={linkCls}>Member Login</NavLink>
+          {user ? (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size="sm" className="flex items-center gap-2">
+                  <User className="h-4 w-4" />
+                  {user.email}
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                {isAdmin && (
+                  <DropdownMenuItem asChild>
+                    <NavLink to="/admin">Admin Dashboard</NavLink>
+                  </DropdownMenuItem>
+                )}
+                <DropdownMenuItem onClick={signOut}>
+                  <LogOut className="h-4 w-4 mr-2" />
+                  Sign Out
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          ) : (
+            <NavLink to="/auth" className={linkCls}>Sign In</NavLink>
+          )}
           <Button asChild size="sm" variant="secondary">
             <NavLink to="/partners/submit-referral">Submit Referral</NavLink>
           </Button>
@@ -104,7 +152,31 @@ const Header = () => {
                 <NavLink to="/learn" onClick={()=>setOpen(false)} className="py-2">Reentry Community</NavLink>
                 
                 <NavLink to="/about" onClick={()=>setOpen(false)} className="py-2">About Us</NavLink>
-                <NavLink to="/login" onClick={()=>setOpen(false)} className="py-2">Member Login</NavLink>
+                {user ? (
+                  <>
+                    <div className="flex items-center gap-2 py-2 text-sm text-muted-foreground">
+                      <User className="h-4 w-4" />
+                      {user.email}
+                    </div>
+                    {isAdmin && (
+                      <NavLink to="/admin" onClick={()=>setOpen(false)} className="py-2">Admin Dashboard</NavLink>
+                    )}
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => {
+                        signOut();
+                        setOpen(false);
+                      }}
+                      className="justify-start px-0"
+                    >
+                      <LogOut className="h-4 w-4 mr-2" />
+                      Sign Out
+                    </Button>
+                  </>
+                ) : (
+                  <NavLink to="/auth" onClick={()=>setOpen(false)} className="py-2">Sign In</NavLink>
+                )}
                 <Button asChild className="mt-2" variant="secondary">
                   <NavLink to="/partners/submit-referral" onClick={()=>setOpen(false)}>Submit Referral</NavLink>
                 </Button>
