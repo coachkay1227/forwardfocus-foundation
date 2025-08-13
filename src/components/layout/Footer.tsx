@@ -10,9 +10,9 @@ const Footer = () => {
           <div className="font-medium">Explore</div>
           <ul className="mt-3 space-y-2 text-sm">
             <li><a href="/help" className="hover:underline">Get Help Now</a></li>
-            <li><a href="/ohio-resources" className="hover:underline">Ohio Resources</a></li>
-            <li><a href="/learn" className="hover:underline">Learn & Grow</a></li>
-            <li><a href="/community" className="hover:underline">Join Community</a></li>
+            
+            <li><a href="/learn" className="hover:underline">Reentry Community</a></li>
+            
           </ul>
         </nav>
         <div>

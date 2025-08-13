@@ -677,7 +677,7 @@ export default function CommunityLearning() {
                 <div className="font-medium text-blue-900">Get Immediate Help</div>
                 <div className="text-sm text-blue-700">Crisis resources and immediate support</div>
               </Link>
-              <Link to="/ohio-resources" className="block p-3 bg-white border rounded hover:bg-blue-50 transition-colors">
+              <Link to="/help#ohio-resources" className="block p-3 bg-white border rounded hover:bg-blue-50 transition-colors">
                 <div className="font-medium text-blue-900">Browse Resources</div>
                 <div className="text-sm text-blue-700">Ohio resource directory</div>
               </Link>

@@ -214,7 +214,7 @@ export default function AboutUs() {
                     Curated directory of housing, employment, legal, health, and education resources across Ohio counties.
                   </p>
                   <Button asChild variant="outline" size="sm">
-                    <Link to="/ohio-resources">Browse Resources</Link>
+                    <Link to="/help#ohio-resources">Browse Resources</Link>
                   </Button>
                 </CardContent>
               </Card>
@@ -345,7 +345,7 @@ export default function AboutUs() {
                   <h3 className="font-semibold mb-2">Find Resources</h3>
                   <p className="text-sm opacity-90 mb-4">Browse our Ohio directory</p>
                   <Button asChild variant="outline" className="border-white/30 text-white hover:bg-white/10">
-                    <Link to="/ohio-resources">Explore</Link>
+                    <Link to="/help#ohio-resources">Explore</Link>
                   </Button>
                 </div>
 
