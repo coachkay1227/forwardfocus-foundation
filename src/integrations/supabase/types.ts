@@ -794,6 +794,10 @@ export type Database = {
         Args: { p_user_id: string; p_tool_name: string }
         Returns: boolean
       }
+      has_active_tool_subscription_self: {
+        Args: { p_tool_name: string }
+        Returns: boolean
+      }
       has_role: {
         Args: {
           _user_id: string
@@ -805,6 +809,10 @@ export type Database = {
         Args: { user_email: string }
         Returns: boolean
       }
+      is_trial_active_self: {
+        Args: Record<PropertyKey, never>
+        Returns: boolean
+      }
       is_user_admin: {
         Args: { p_user_id: string }
         Returns: boolean
@@ -813,8 +821,16 @@ export type Database = {
         Args: { p_user_id: string; p_email: string; p_tool_name: string }
         Returns: string
       }
+      start_tool_trial_self: {
+        Args: { p_tool_name: string }
+        Returns: string
+      }
       start_trial: {
         Args: { user_email: string }
+        Returns: boolean
+      }
+      start_trial_self: {
+        Args: Record<PropertyKey, never>
         Returns: boolean
       }
       track_affiliate_click: {
