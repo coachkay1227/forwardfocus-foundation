@@ -1,7 +1,16 @@
-const Page = () => (
-  <main id="main" className="container py-12">
-    <h1 className="font-heading text-3xl font-semibold">Join Community</h1>
-    <p className="mt-3 text-muted-foreground">Connect with peers, mentors, and local organizations.</p>
-  </main>
-);
+### **2. Replace JoinCommunity.tsx with this simple redirect:**
+
+```tsx
+import { useEffect } from "react";
+import { Navigate } from "react-router-dom";
+
+const Page = () => {
+  useEffect(() => {
+    // Redirect to the combined community/learning page
+    window.location.href = "/learn";
+  }, []);
+  
+  return <Navigate to="/learn" replace />;
+};
+
 export default Page;
