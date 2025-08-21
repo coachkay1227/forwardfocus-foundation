@@ -16,11 +16,19 @@ import {
   CheckCircle,
   ArrowRight,
   HelpCircle,
+  ChevronDown,
+  ExternalLink,
+  LogIn,
+  Eye,
+  EyeOff
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "@/components/ui/use-toast";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription } from "@/components/ui/dialog";
 import SignupModal from "@/components/healing/SignupModal";
 import diverseFamiliesImage from "@/assets/diverse-families-healing.jpg";
 import healingCommunityImage from "@/assets/healing-community.jpg";
@@ -415,12 +423,381 @@ const CoachingInquiry = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => 
   );
 };
 
+// Resource Data and Components
+const resourceSections = [
+  {
+    id: "financial-help",
+    title: "Get Financial Compensation",
+    description: "Federal and state programs to help with expenses from crime",
+    icon: DollarSign,
+    color: "secondary",
+    expandable: true,
+    preview: [
+      { title: "Ohio Crime Victim Compensation", description: "State application for compensation", type: "Government Resource" },
+      { title: "Federal Victim Compensation Info", description: "National compensation programs", type: "Government Resource" },
+      { title: "Medical Expenses Coverage", description: "Help with medical bills and therapy", type: "Financial Aid" }
+    ],
+    resources: [
+      {
+        title: "Office for Victims of Crime",
+        description: "Federal resource for victim compensation programs across all states",
+        url: "https://ovc.ojp.gov/topics/victim-compensation",
+        type: "Government Resource",
+        available: "24/7"
+      },
+      {
+        title: "VOCA Victim Compensation Directory",
+        description: "Directory of state victim compensation programs",
+        url: "https://ovc.ojp.gov/states",
+        type: "Government Resource",
+        available: "24/7"
+      },
+      {
+        title: "Ohio Crime Victim Compensation",
+        description: "Application for Ohio state victim compensation program",
+        url: "https://www.ohioattorneygeneral.gov/Individuals-and-Families/Victims/Victims-Compensation-Application",
+        type: "State Resource",
+        available: "Business Hours"
+      },
+      {
+        title: "Federal Crime Victim Rights",
+        description: "Information about federal rights and compensation",
+        url: "https://www.justice.gov/usao/resources/crime-victims-rights",
+        type: "Government Resource",
+        available: "24/7"
+      }
+    ]
+  },
+  {
+    id: "legal-rights",
+    title: "Know Your Rights",
+    description: "Understand legal protections and find free legal aid",
+    icon: Scale,
+    color: "primary",
+    expandable: true,
+    preview: [
+      { title: "Federal Victim Rights", description: "Your legal protections under federal law", type: "Legal Resource" },
+      { title: "Legal Aid Locator", description: "Find free legal help in your area", type: "Legal Aid" },
+      { title: "Victim Impact Statements", description: "How to make your voice heard in court", type: "Court Resource" }
+    ],
+    resources: [
+      {
+        title: "Federal Victim Rights",
+        description: "Comprehensive guide to federal victim rights and protections",
+        url: "https://www.justice.gov/usao/resources/crime-victims-rights",
+        type: "Legal Resource",
+        available: "24/7"
+      },
+      {
+        title: "Crime Victims' Rights Act (CVRA)",
+        description: "Federal law establishing rights for crime victims in federal cases",
+        url: "https://www.justice.gov/criminal/vns/crime-victims-rights-act-cvra",
+        type: "Legal Resource",
+        available: "24/7"
+      },
+      {
+        title: "Legal Aid Locator",
+        description: "Find free and low-cost legal services in your area",
+        url: "https://www.lsc.gov/about-lsc/what-legal-aid/find-legal-aid",
+        type: "Legal Aid",
+        available: "Business Hours"
+      },
+      {
+        title: "Victim Impact Statements",
+        description: "Resources for preparing and delivering victim impact statements",
+        url: "https://ovc.ojp.gov/topics/victim-impact-statements",
+        type: "Court Resource",
+        available: "24/7"
+      }
+    ]
+  },
+  {
+    id: "healing-recovery",
+    title: "Trauma Recovery",
+    description: "Find mental health resources and trauma-informed care",
+    icon: Heart,
+    color: "accent",
+    expandable: true,
+    preview: [
+      { title: "SAMHSA National Helpline", description: "24/7 mental health and substance abuse help", type: "Crisis Support" },
+      { title: "Trauma Recovery Network", description: "Specialized trauma therapy resources", type: "Therapy" },
+      { title: "National Child Traumatic Stress Network", description: "Resources for trauma in children", type: "Specialized Care" }
+    ],
+    resources: [
+      {
+        title: "SAMHSA National Helpline",
+        description: "24/7 treatment referral and information service for mental health and substance use disorders",
+        url: "https://www.samhsa.gov/find-help/national-helpline",
+        phone: "1-800-662-4357",
+        type: "Crisis Support",
+        available: "24/7"
+      },
+      {
+        title: "Trauma Recovery Network",
+        description: "Network providing pro bono and reduced-fee trauma therapy",
+        url: "https://www.emdrhap.org/content/training/trn/",
+        type: "Therapy",
+        available: "Varies by Location"
+      },
+      {
+        title: "National Child Traumatic Stress Network",
+        description: "Resources and treatments for children who have experienced trauma",
+        url: "https://www.nctsn.org/",
+        type: "Specialized Care",
+        available: "24/7"
+      },
+      {
+        title: "International Society for Traumatic Stress Studies",
+        description: "Research-based resources for trauma treatment and recovery",
+        url: "https://www.istss.org/",
+        type: "Research Resource",
+        available: "24/7"
+      }
+    ]
+  },
+  {
+    id: "safety-planning",
+    title: "Safety Planning",
+    description: "Plan for safety with trusted tools and guides",
+    icon: Shield,
+    color: "secondary",
+    expandable: true,
+    preview: [
+      { title: "Personal Safety Planning", description: "Create a personalized safety plan", type: "Safety Tool" },
+      { title: "Technology Safety", description: "Protect yourself online and with devices", type: "Digital Safety" },
+      { title: "Stalking Prevention", description: "Resources for stalking victims", type: "Specialized Safety" }
+    ],
+    resources: [
+      {
+        title: "Personal Safety Planning",
+        description: "Interactive tools to create a personalized safety plan for various situations",
+        url: "https://www.thehotline.org/plan-for-safety/",
+        type: "Safety Tool",
+        available: "24/7"
+      },
+      {
+        title: "Technology Safety",
+        description: "Resources for digital privacy, tech abuse, and online safety",
+        url: "https://www.techsafety.org/",
+        type: "Digital Safety",
+        available: "24/7"
+      },
+      {
+        title: "Stalking Prevention",
+        description: "Comprehensive resources for stalking victims and safety planning",
+        url: "https://www.stalkingprevention.org/",
+        type: "Specialized Safety",
+        available: "24/7"
+      },
+      {
+        title: "Legal Protection Orders",
+        description: "Information about restraining orders and legal protections by state",
+        url: "https://www.womenslaw.org/",
+        type: "Legal Protection",
+        available: "24/7"
+      }
+    ]
+  },
+  {
+    id: "specialized-support",
+    title: "Specialized Support",
+    description: "Find organizations tailored to your specific situation",
+    icon: Users,
+    color: "accent",
+    expandable: true,
+    preview: [
+      { title: "Domestic Violence Coalition", description: "Specialized domestic violence support", type: "DV Support" },
+      { title: "Sexual Assault Network", description: "RAINN and sexual assault resources", type: "SA Support" },
+      { title: "Human Trafficking Resources", description: "Support for trafficking survivors", type: "HT Support" }
+    ],
+    resources: [
+      {
+        title: "National Coalition Against Domestic Violence",
+        description: "Comprehensive resources and advocacy for domestic violence survivors",
+        url: "https://ncadv.org/",
+        type: "DV Support",
+        available: "24/7"
+      },
+      {
+        title: "RAINN - National Sexual Assault Network",
+        description: "Largest anti-sexual violence organization with hotline and resources",
+        url: "https://www.rainn.org/",
+        phone: "1-800-656-4673",
+        type: "SA Support",
+        available: "24/7"
+      },
+      {
+        title: "Polaris Project - Human Trafficking",
+        description: "Leading organization fighting human trafficking with survivor services",
+        url: "https://polarisproject.org/",
+        type: "HT Support",
+        available: "24/7"
+      },
+      {
+        title: "National Child Welfare Information Gateway",
+        description: "Resources for child abuse survivors and child welfare services",
+        url: "https://www.childwelfare.gov/",
+        type: "Child Protection",
+        available: "24/7"
+      },
+      {
+        title: "National Center on Elder Abuse",
+        description: "Resources and support for elder abuse victims",
+        url: "https://ncea.acl.gov/",
+        type: "Elder Protection",
+        available: "Business Hours"
+      },
+      {
+        title: "Anti-Violence Project (LGBTQ+)",
+        description: "Support for LGBTQ+ survivors of violence and harassment",
+        url: "https://avp.org/",
+        type: "LGBTQ+ Support",
+        available: "24/7"
+      },
+      {
+        title: "Legal Aid at Work - Immigrant Victims",
+        description: "Legal support for immigrant crime victims and workers",
+        url: "https://legalaidatwork.org/",
+        type: "Immigration Support",
+        available: "Business Hours"
+      }
+    ]
+  }
+];
+
+// Sign In Component
+const SignInModal = ({ isOpen, onClose, onSignIn }: { isOpen: boolean; onClose: () => void; onSignIn: (data: { email: string; password: string }) => void }) => {
+  const [formData, setFormData] = useState({ email: "", password: "" });
+  const [showPassword, setShowPassword] = useState(false);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    onSignIn(formData);
+    onClose();
+    setFormData({ email: "", password: "" });
+  };
+
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+      <div className="w-full max-w-md rounded-lg bg-white shadow-xl">
+        <div className="p-6">
+          <div className="mb-6 flex items-center justify-between">
+            <div>
+              <h3 className="text-xl font-semibold">Welcome Back</h3>
+              <p className="text-gray-600">Sign in to access your personalized resources</p>
+            </div>
+            <button onClick={onClose} className="rounded p-2 hover:bg-gray-100">
+              <X className="h-4 w-4" />
+            </button>
+          </div>
+
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div>
+              <label className="mb-1 block text-sm font-medium">Email</label>
+              <Input 
+                type="email" 
+                value={formData.email} 
+                onChange={(e) => setFormData({ ...formData, email: e.target.value })} 
+                required 
+              />
+            </div>
+            <div>
+              <label className="mb-1 block text-sm font-medium">Password</label>
+              <div className="relative">
+                <Input 
+                  type={showPassword ? "text" : "password"} 
+                  value={formData.password} 
+                  onChange={(e) => setFormData({ ...formData, password: e.target.value })} 
+                  required 
+                />
+                <button 
+                  type="button" 
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                >
+                  {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                </button>
+              </div>
+            </div>
+
+            <div className="flex gap-3">
+              <Button type="submit" className="flex-1">
+                <LogIn className="mr-2 h-4 w-4" />
+                Sign In
+              </Button>
+              <Button type="button" variant="outline" onClick={onClose}>
+                Cancel
+              </Button>
+            </div>
+          </form>
+
+          <p className="mt-4 text-center text-sm text-gray-600">
+            Don't have an account? <button onClick={() => { onClose(); }} className="text-primary hover:underline">Sign up here</button>
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// Resource Card Component  
+const ResourceCard = ({ resource, isPreview = false }: { resource: any; isPreview?: boolean }) => (
+  <Card className="transition-all hover:shadow-md">
+    <CardContent className="p-4">
+      <div className="mb-3 flex items-start justify-between">
+        <div className="flex-1">
+          <h4 className="font-medium text-card-foreground">{resource.title}</h4>
+          <p className="text-sm text-muted-foreground">{resource.description}</p>
+        </div>
+        <span className={`ml-2 rounded-full px-2 py-1 text-xs font-medium ${
+          resource.type === 'Government Resource' ? 'bg-blue-100 text-blue-800' :
+          resource.type === 'Crisis Support' ? 'bg-red-100 text-red-800' :
+          resource.type === 'Legal Aid' ? 'bg-purple-100 text-purple-800' :
+          'bg-green-100 text-green-800'
+        }`}>
+          {resource.type}
+        </span>
+      </div>
+      
+      <div className="flex items-center justify-between">
+        <div className="flex gap-2">
+          {resource.url && (
+            <Button asChild size="sm" className="h-8">
+              <a href={resource.url} target="_blank" rel="noopener noreferrer">
+                <ExternalLink className="mr-1 h-3 w-3" />
+                Visit Resource
+              </a>
+            </Button>
+          )}
+          {resource.phone && (
+            <Button asChild size="sm" variant="outline" className="h-8">
+              <a href={`tel:${resource.phone}`}>
+                <Phone className="mr-1 h-3 w-3" />
+                Call
+              </a>
+            </Button>
+          )}
+        </div>
+        {resource.available && (
+          <span className="text-xs text-green-600 font-medium">
+            {resource.available}
+          </span>
+        )}
+      </div>
+    </CardContent>
+  </Card>
+);
+
 export default function VictimServices() {
   const [activeSection, setActiveSection] = useState<string>("support-tiles");
   const [showAIAssistant, setShowAIAssistant] = useState(false);
   const [showCoachingInquiry, setShowCoachingInquiry] = useState(false);
   const [showSignupModal, setShowSignupModal] = useState(false);
+  const [showSignInModal, setShowSignInModal] = useState(false);
   const [isSignedUp, setIsSignedUp] = useState(false);
+  const [expandedSections, setExpandedSections] = useState<string[]>([]);
 
   useEffect(() => {
     document.title = "Healing & Safety Hub | Forward Focus Elevation";
@@ -439,8 +816,18 @@ export default function VictimServices() {
 
   const handleSignup = (data: { name: string; email: string }) => {
     setIsSignedUp(true);
-    // Here you could integrate with your auth system
-    console.log("User signed up:", data);
+    toast({
+      title: "Welcome to your Healing & Safety Hub!",
+      description: "Your account has been created. You now have access to all personalized resources."
+    });
+  };
+
+  const handleSignIn = (data: { email: string; password: string }) => {
+    setIsSignedUp(true);
+    toast({
+      title: "Welcome back!",
+      description: "You're now signed in and can access all your saved resources."
+    });
   };
 
   const supportTiles = [
@@ -580,6 +967,26 @@ export default function VictimServices() {
               <Button onClick={() => document.getElementById('crisis')?.scrollIntoView({ behavior: 'smooth' })} variant="outline" className="border-primary text-primary hover:bg-primary/10">
                 <Phone className="mr-2 h-4 w-4" /> Crisis Resources
               </Button>
+            </div>
+
+            {/* Auth Actions */}
+            <div className="mt-6 flex items-center justify-center gap-4 text-sm">
+              {isSignedUp ? (
+                <span className="flex items-center gap-2 text-green-600">
+                  <CheckCircle className="h-4 w-4" />
+                  Signed in - Access all resources below
+                </span>
+              ) : (
+                <>
+                  <Button onClick={() => setShowSignupModal(true)} variant="link" className="p-0 h-auto text-primary hover:underline">
+                    Create free account
+                  </Button>
+                  <span className="text-muted-foreground">|</span>
+                  <Button onClick={() => setShowSignInModal(true)} variant="link" className="p-0 h-auto text-primary hover:underline">
+                    Already a member? Sign in
+                  </Button>
+                </>
+              )}
             </div>
           </div>
         </div>
@@ -738,22 +1145,19 @@ export default function VictimServices() {
           </div>
         </section>
 
-        {/* Compensation */}
-        <section id="financial-help" className="py-16 pt-12">
+        {/* Collapsible Resource Hub */}
+        <section className="py-16 pt-12">
           <div className="container">
-            <div className="mx-auto max-w-4xl">
-              <div className="mb-6 flex items-center gap-3">
-                <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-secondary">
-                  <DollarSign className="h-6 w-6 text-secondary-foreground" />
-                </div>
-                <div>
-                  <h2 className="text-2xl font-bold text-gray-900">Get Financial Compensation</h2>
-                  <p className="text-gray-600">Federal and state programs to help with expenses from crime</p>
-                </div>
+            <div className="mx-auto max-w-6xl">
+              <div className="mb-8 text-center">
+                <h2 className="mb-4 font-heading text-3xl font-bold text-foreground">Your Resource Hub</h2>
+                <p className="text-lg text-muted-foreground">
+                  Organized, trusted resources for your healing journey. {!isSignedUp && "Sign up to unlock personalized features."}
+                </p>
               </div>
 
-              <div className="mb-6 rounded-lg border bg-white p-6">
-                <h3 className="mb-4 font-semibold text-green-800">✨ What You Can Get Help With:</h3>
+              <div className="mb-6 rounded-lg border bg-card p-6">
+                <h3 className="mb-4 font-semibold text-accent">✨ What You Can Get Help With:</h3>
                 <div className="grid gap-4 text-sm md:grid-cols-3">
                   <div className="flex items-center gap-2">
                     <CheckCircle className="h-4 w-4 text-green-500" /> Medical expenses
@@ -776,196 +1180,66 @@ export default function VictimServices() {
                 </div>
               </div>
 
-              <ul className="grid gap-3 md:grid-cols-2">
-                <li className="rounded-lg border bg-white p-4">
-                  Office for Victims of Crime —
-                  <a className="ml-1 underline" href="https://ovc.ojp.gov/topics/victim-compensation" target="_blank" rel="noopener noreferrer">
-                    ovc.ojp.gov/topics/victim-compensation
-                  </a>
-                </li>
-                <li className="rounded-lg border bg-white p-4">
-                  VOCA Victim Compensation (State Directory) —
-                  <a className="ml-1 underline" href="https://ovc.ojp.gov/states" target="_blank" rel="noopener noreferrer">
-                    ovc.ojp.gov/states
-                  </a>
-                </li>
-                <li className="rounded-lg border bg-white p-4">
-                  Ohio Crime Victim Compensation —
-                  <a
-                    className="ml-1 underline"
-                    href="https://www.ohioattorneygeneral.gov/Individuals-and-Families/Victims/Victims-Compensation-Application"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    Application link
-                  </a>
-                </li>
-                <li className="rounded-lg border bg-white p-4">
-                  Federal Crime Victim Rights —
-                  <a className="ml-1 underline" href="https://www.justice.gov/usao/resources/crime-victims-rights" target="_blank" rel="noopener noreferrer">
-                    justice.gov/usao/resources/crime-victims-rights
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </section>
+              <Accordion type="multiple" value={expandedSections} onValueChange={setExpandedSections} className="space-y-4">
+                {resourceSections.map((section) => {
+                  const Icon = section.icon;
+                  const isExpanded = expandedSections.includes(section.id);
+                  const showPreview = !isExpanded && !isSignedUp;
+                  const resourcesToShow = showPreview ? section.preview : section.resources;
 
-        {/* Rights */}
-        <section id="legal-rights" className="bg-card py-16 pt-12">
-          <div className="container">
-            <div className="mx-auto max-w-4xl">
-              <div className="mb-6 flex items-center gap-3">
-                <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary">
-                  <Scale className="h-6 w-6 text-primary-foreground" />
-                </div>
-                <div>
-                  <h2 className="text-2xl font-bold text-gray-900">Know Your Rights</h2>
-                  <p className="text-gray-600">Understand legal protections and find free legal aid</p>
-                </div>
-              </div>
-
-              <ul className="grid gap-3 md:grid-cols-2">
-                <li className="rounded-lg border bg-white p-4">
-                  Federal Victim Rights —
-                  <a className="ml-1 underline" href="https://www.justice.gov/usao/resources/crime-victims-rights" target="_blank" rel="noopener noreferrer">
-                    justice.gov/usao/resources/crime-victims-rights
-                  </a>
-                </li>
-                <li className="rounded-lg border bg-white p-4">
-                  Crime Victims' Rights Act —
-                  <a className="ml-1 underline" href="https://www.justice.gov/criminal/vns/crime-victims-rights-act-cvra" target="_blank" rel="noopener noreferrer">
-                    justice.gov/.../cvra
-                  </a>
-                </li>
-                <li className="rounded-lg border bg-white p-4">
-                  Legal Aid Locator —
-                  <a className="ml-1 underline" href="https://www.lsc.gov/about-lsc/what-legal-aid/find-legal-aid" target="_blank" rel="noopener noreferrer">
-                    lsc.gov/find-legal-aid
-                  </a>
-                </li>
-                <li className="rounded-lg border bg-white p-4">
-                  Victim Impact Statements —
-                  <a className="ml-1 underline" href="https://ovc.ojp.gov/topics/victim-impact-statements" target="_blank" rel="noopener noreferrer">
-                    ovc.ojp.gov/topics/victim-impact-statements
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </section>
-
-        {/* Healing */}
-        <section id="healing-recovery" className="py-16 pt-12">
-          <div className="container">
-            <div className="mx-auto max-w-4xl">
-              <div className="mb-6 flex items-center gap-3">
-                <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-accent">
-                  <Heart className="h-6 w-6 text-accent-foreground" />
-                </div>
-                <div>
-                  <h2 className="text-2xl font-bold text-gray-900">Trauma Recovery</h2>
-                  <p className="text-gray-600">Find mental health resources and trauma-informed care</p>
-                </div>
-              </div>
-
-              <ul className="grid gap-3 md:grid-cols-2">
-                <li className="rounded-lg border bg-white p-4">
-                  SAMHSA National Helpline —
-                  <a className="ml-1 underline" href="https://www.samhsa.gov/find-help/national-helpline" target="_blank" rel="noopener noreferrer">
-                    samhsa.gov/find-help/national-helpline
-                  </a>
-                </li>
-                <li className="rounded-lg border bg-white p-4">
-                  Trauma Recovery Network —
-                  <a className="ml-1 underline" href="https://www.emdrhap.org/content/training/trn/" target="_blank" rel="noopener noreferrer">
-                    emdrhap.org/trn
-                  </a>
-                </li>
-                <li className="rounded-lg border bg-white p-4">
-                  NCTSN —
-                  <a className="ml-1 underline" href="https://www.nctsn.org/" target="_blank" rel="noopener noreferrer">
-                    nctsn.org
-                  </a>
-                </li>
-                <li className="rounded-lg border bg-white p-4">
-                  ISTSS —
-                  <a className="ml-1 underline" href="https://www.istss.org/" target="_blank" rel="noopener noreferrer">
-                    istss.org
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </section>
-
-        {/* Safety */}
-        <section id="safety-planning" className="bg-card py-16 pt-12">
-          <div className="container">
-            <div className="mx-auto max-w-4xl">
-              <div className="mb-6 flex items-center gap-3">
-                <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-secondary">
-                  <Shield className="h-6 w-6 text-secondary-foreground" />
-                </div>
-                <div>
-                  <h2 className="text-2xl font-bold text-gray-900">Safety Planning</h2>
-                  <p className="text-gray-600">Plan for safety with trusted tools and guides</p>
-                </div>
-              </div>
-
-              <ul className="grid gap-3 md:grid-cols-2">
-                <li className="rounded-lg border bg-white p-4">
-                  Personal Safety Planning —
-                  <a className="ml-1 underline" href="https://www.thehotline.org/plan-for-safety/" target="_blank" rel="noopener noreferrer">
-                    thehotline.org/plan-for-safety
-                  </a>
-                </li>
-                <li className="rounded-lg border bg-white p-4">
-                  Technology Safety —
-                  <a className="ml-1 underline" href="https://www.techsafety.org/" target="_blank" rel="noopener noreferrer">
-                    techsafety.org
-                  </a>
-                </li>
-                <li className="rounded-lg border bg-white p-4">
-                  Stalking Prevention —
-                  <a className="ml-1 underline" href="https://www.stalkingprevention.org/" target="_blank" rel="noopener noreferrer">
-                    stalkingprevention.org
-                  </a>
-                </li>
-                <li className="rounded-lg border bg-white p-4">
-                  Legal Protection Orders —
-                  <a className="ml-1 underline" href="https://www.womenslaw.org/" target="_blank" rel="noopener noreferrer">
-                    womenslaw.org
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </section>
-
-        {/* Specialized */}
-        <section id="specialized-support" className="py-16 pt-12">
-          <div className="container">
-            <div className="mx-auto max-w-4xl">
-              <div className="mb-6 flex items-center gap-3">
-                <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-accent">
-                  <Users className="h-6 w-6 text-accent-foreground" />
-                </div>
-                <div>
-                  <h2 className="text-2xl font-bold text-gray-900">Specialized Support</h2>
-                  <p className="text-gray-600">Find organizations tailored to your specific situation</p>
-                </div>
-              </div>
-
-              <ul className="grid gap-3 md:grid-cols-2">
-                <li className="rounded-lg border bg-white p-4">Domestic Violence — <a className="underline" href="https://ncadv.org/" target="_blank" rel="noopener noreferrer">ncadv.org</a></li>
-                <li className="rounded-lg border bg-white p-4">Sexual Assault — <a className="underline" href="https://www.rainn.org/" target="_blank" rel="noopener noreferrer">rainn.org</a></li>
-                <li className="rounded-lg border bg-white p-4">Human Trafficking — <a className="underline" href="https://polarisproject.org/" target="_blank" rel="noopener noreferrer">polarisproject.org</a></li>
-                <li className="rounded-lg border bg-white p-4">Child Abuse Survivors — <a className="underline" href="https://www.childwelfare.gov/" target="_blank" rel="noopener noreferrer">childwelfare.gov</a></li>
-                <li className="rounded-lg border bg-white p-4">Elder Abuse — <a className="underline" href="https://ncea.acl.gov/" target="_blank" rel="noopener noreferrer">ncea.acl.gov</a></li>
-                <li className="rounded-lg border bg-white p-4">LGBTQ+ Crime Victims — <a className="underline" href="https://avp.org/" target="_blank" rel="noopener noreferrer">avp.org</a></li>
-                <li className="rounded-lg border bg-white p-4">Immigrant Crime Victims — <a className="underline" href="https://legalaidatwork.org/" target="_blank" rel="noopener noreferrer">legalaidatwork.org</a></li>
-              </ul>
+                  return (
+                    <AccordionItem key={section.id} value={section.id} className="border rounded-lg bg-card">
+                      <AccordionTrigger 
+                        className="px-6 py-4 hover:no-underline hover:bg-muted/50 rounded-t-lg data-[state=open]:rounded-b-none"
+                        id={section.id}
+                      >
+                        <div className="flex items-center gap-4">
+                          <div className={`flex h-12 w-12 items-center justify-center rounded-lg bg-${section.color}/10`}>
+                            <Icon className={`h-6 w-6 text-${section.color}`} />
+                          </div>
+                          <div className="text-left">
+                            <h3 className="font-semibold text-card-foreground">{section.title}</h3>
+                            <p className="text-sm text-muted-foreground">{section.description}</p>
+                          </div>
+                        </div>
+                      </AccordionTrigger>
+                      
+                      <AccordionContent className="px-6 pb-6">
+                        <div className="space-y-4">
+                          {showPreview && (
+                            <div className="mb-4 rounded-lg border border-orange-200 bg-orange-50 p-4">
+                              <div className="flex items-center justify-between">
+                                <div>
+                                  <p className="font-medium text-orange-800">Preview - {resourcesToShow.length} resources shown</p>
+                                  <p className="text-sm text-orange-600">Sign up to see all {section.resources.length} resources and save your favorites</p>
+                                </div>
+                                <Button onClick={() => setShowSignupModal(true)} size="sm" className="bg-accent text-accent-foreground">
+                                  Sign Up Free
+                                </Button>
+                              </div>
+                            </div>
+                          )}
+                          
+                          <div className="grid gap-4 md:grid-cols-2">
+                            {resourcesToShow.map((resource, index) => (
+                              <ResourceCard key={index} resource={resource} isPreview={showPreview} />
+                            ))}
+                          </div>
+                          
+                          {!isSignedUp && isExpanded && section.resources.length > section.preview.length && (
+                            <div className="mt-4 rounded-lg border border-accent/20 bg-accent/10 p-4 text-center">
+                              <p className="mb-2 font-medium text-accent">Want to see {section.resources.length - section.preview.length} more resources?</p>
+                              <Button onClick={() => setShowSignupModal(true)} size="sm" className="bg-accent text-accent-foreground">
+                                Sign Up Free - It's Quick!
+                              </Button>
+                            </div>
+                          )}
+                        </div>
+                      </AccordionContent>
+                    </AccordionItem>
+                  );
+                })}
+              </Accordion>
             </div>
           </div>
         </section>
@@ -998,6 +1272,11 @@ export default function VictimServices() {
         isOpen={showSignupModal}
         onClose={() => setShowSignupModal(false)}
         onSignup={handleSignup}
+      />
+      <SignInModal
+        isOpen={showSignInModal}
+        onClose={() => setShowSignInModal(false)}
+        onSignIn={handleSignIn}
       />
     </>
   );
