@@ -125,7 +125,7 @@ const AIAssistant = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void
   return (
     <div className="fixed inset-0 z-50 flex items-end justify-end bg-black/50 p-4">
       <div className="flex h-[600px] w-full max-w-md flex-col rounded-lg bg-white shadow-xl">
-        <div className="flex items-center justify-between rounded-t-lg border-b bg-blue-600 p-4 text-white">
+        <div className="flex items-center justify-between rounded-t-lg border-b bg-primary p-4 text-primary-foreground">
           <div className="flex items-center gap-2">
             <Bot className="h-5 w-5" />
             <div>
@@ -133,7 +133,7 @@ const AIAssistant = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void
               <p className="text-xs opacity-90">Personalized guidance for your situation</p>
             </div>
           </div>
-          <button onClick={onClose} className="rounded p-1 hover:bg-blue-700">
+          <button onClick={onClose} className="rounded p-1 hover:bg-primary/80">
             <X className="h-4 w-4" />
           </button>
         </div>
@@ -141,7 +141,7 @@ const AIAssistant = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void
         <div className="flex-1 space-y-4 overflow-y-auto p-4">
           {messages.map((m) => (
             <div key={m.id} className={`flex ${m.type === "user" ? "justify-end" : "justify-start"}`}>
-              <div className={`max-w-[80%] rounded-lg p-3 ${m.type === "user" ? "bg-blue-600 text-white" : "bg-gray-100 text-gray-900"}`}>
+              <div className={`max-w-[80%] rounded-lg p-3 ${m.type === "user" ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"}`}>
                 <p className="text-sm">{m.content}</p>
                 {m.type === "ai" && m.resources && m.resources.length > 0 && (
                   <div className="mt-3 space-y-2">
@@ -150,17 +150,17 @@ const AIAssistant = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void
                       <div key={idx} className="rounded border bg-white p-2 text-xs">
                         <div className="font-medium text-gray-900">{r.title}</div>
                         {r.phone && (
-                          <a href={`tel:${r.phone}`} className="text-blue-600 hover:underline">
+                          <a href={`tel:${r.phone}`} className="text-primary hover:underline">
                             Call: {r.phone}
                           </a>
                         )}
-                        {r.action && <div className="text-gray-600">{r.action}</div>}
+                        {r.action && <div className="text-muted-foreground">{r.action}</div>}
                         {r.url && (
-                          <Link to={r.url} className="text-blue-600 hover:underline">
+                          <Link to={r.url} className="text-primary hover:underline">
                             Learn more →
                           </Link>
                         )}
-                        {r.available && <div className="font-medium text-green-600">{r.available}</div>}
+                        {r.available && <div className="font-medium text-accent">{r.available}</div>}
                       </div>
                     ))}
                   </div>
@@ -269,7 +269,7 @@ export default function GetHelpNow() {
       </div>
 
       {/* Hero Section */}
-      <header className="bg-gradient-to-br from-cream via-white to-warm-blue/10 border-b">
+      <header className="bg-gradient-to-br from-cream via-white to-primary/5 border-b">
         <div className="container py-12 md:py-16">
           <div className="max-w-4xl mx-auto text-center">
             <h1 className="font-heading text-4xl md:text-5xl font-bold text-foreground mb-4">
@@ -307,7 +307,7 @@ export default function GetHelpNow() {
                 onClick={() => setShowAIAssistant(true)}
                 variant="outline"
                 size="lg"
-                className="border-warm-blue text-warm-blue hover:bg-warm-blue/10"
+                className="border-accent text-accent hover:bg-accent/10"
               >
                 <Bot className="h-4 w-4 mr-2" />
                 Start with AI Guide

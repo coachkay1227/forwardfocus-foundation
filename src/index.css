@@ -17,17 +17,17 @@ All colors MUST be HSL.
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
 
-    --primary: 20 100% 40%;
+    --primary: 195 100% 15%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 33 100% 52%;
+    --secondary-foreground: 0 0% 100%;
 
     --muted: 210 40% 96.1%;
     --muted-foreground: 215.4 16.3% 46.9%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent: 142 71% 45%;
+    --accent-foreground: 0 0% 100%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
@@ -55,16 +55,16 @@ All colors MUST be HSL.
     --sidebar-ring: 217.2 91.2% 59.8%;
 
     /* Brand Colors */
-    --burned-orange: 20 100% 40%;
+    --burned-orange: 33 100% 52%;
     --burned-orange-foreground: 0 0% 100%;
     
-    --warm-blue: 205 82% 52%;
+    --warm-blue: 195 100% 15%;
     --warm-blue-foreground: 0 0% 100%;
     
     --cream: 45 29% 92%;
     --cream-foreground: 20 14% 25%;
     
-    --navy-900: 215 28% 17%;
+    --navy-900: 195 100% 15%;
   }
 
   .dark {
@@ -77,17 +77,17 @@ All colors MUST be HSL.
     --popover: 222.2 84% 4.9%;
     --popover-foreground: 210 40% 98%;
 
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
+    --primary: 195 100% 20%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
+    --secondary: 33 100% 62%;
+    --secondary-foreground: 0 0% 100%;
 
     --muted: 217.2 32.6% 17.5%;
     --muted-foreground: 215 20.2% 65.1%;
 
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
+    --accent: 142 71% 55%;
+    --accent-foreground: 0 0% 100%;
 
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
@@ -105,16 +105,16 @@ All colors MUST be HSL.
     --sidebar-ring: 217.2 91.2% 59.8%;
 
     /* Brand Colors - Dark Mode */
-    --burned-orange: 20 100% 50%;
+    --burned-orange: 33 100% 62%;
     --burned-orange-foreground: 0 0% 100%;
     
-    --warm-blue: 205 82% 62%;
+    --warm-blue: 195 100% 20%;
     --warm-blue-foreground: 0 0% 100%;
     
     --cream: 45 29% 15%;
     --cream-foreground: 45 29% 92%;
     
-    --navy-900: 215 28% 12%;
+    --navy-900: 195 100% 20%;
   }
 }
 
