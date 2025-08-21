@@ -14,6 +14,140 @@ export type Database = {
   }
   public: {
     Tables: {
+      learning_modules: {
+        Row: {
+          compliance_note: string | null
+          created_at: string
+          id: string
+          link: string | null
+          minutes: number | null
+          order_index: number | null
+          pathway_id: string | null
+          slug: string
+          summary: string | null
+          tags: string[] | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          compliance_note?: string | null
+          created_at?: string
+          id?: string
+          link?: string | null
+          minutes?: number | null
+          order_index?: number | null
+          pathway_id?: string | null
+          slug: string
+          summary?: string | null
+          tags?: string[] | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          compliance_note?: string | null
+          created_at?: string
+          id?: string
+          link?: string | null
+          minutes?: number | null
+          order_index?: number | null
+          pathway_id?: string | null
+          slug?: string
+          summary?: string | null
+          tags?: string[] | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "learning_modules_pathway_id_fkey"
+            columns: ["pathway_id"]
+            isOneToOne: false
+            referencedRelation: "learning_pathways"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      learning_pathways: {
+        Row: {
+          category: string
+          created_at: string
+          description: string | null
+          educational_only: boolean
+          free: boolean
+          id: string
+          slug: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          category: string
+          created_at?: string
+          description?: string | null
+          educational_only?: boolean
+          free?: boolean
+          id?: string
+          slug: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          description?: string | null
+          educational_only?: boolean
+          free?: boolean
+          id?: string
+          slug?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      organizations: {
+        Row: {
+          address: string | null
+          city: string | null
+          created_at: string
+          description: string | null
+          email: string | null
+          id: string
+          name: string
+          phone: string | null
+          state_code: string | null
+          updated_at: string
+          verified: boolean
+          website: string | null
+        }
+        Insert: {
+          address?: string | null
+          city?: string | null
+          created_at?: string
+          description?: string | null
+          email?: string | null
+          id?: string
+          name: string
+          phone?: string | null
+          state_code?: string | null
+          updated_at?: string
+          verified?: boolean
+          website?: string | null
+        }
+        Update: {
+          address?: string | null
+          city?: string | null
+          created_at?: string
+          description?: string | null
+          email?: string | null
+          id?: string
+          name?: string
+          phone?: string | null
+          state_code?: string | null
+          updated_at?: string
+          verified?: boolean
+          website?: string | null
+        }
+        Relationships: []
+      }
       partner_referrals: {
         Row: {
           contact_info: string
@@ -73,6 +207,158 @@ export type Database = {
           updated_at?: string
         }
         Relationships: []
+      }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          bio: string | null
+          created_at: string
+          display_name: string | null
+          id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          bio?: string | null
+          created_at?: string
+          display_name?: string | null
+          id?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          avatar_url?: string | null
+          bio?: string | null
+          created_at?: string
+          display_name?: string | null
+          id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      resources: {
+        Row: {
+          address: string | null
+          city: string
+          county: string
+          created_at: string
+          description: string | null
+          id: string
+          justice_friendly: boolean
+          name: string
+          organization: string
+          phone: string | null
+          rating: number | null
+          state_code: string
+          type: string
+          updated_at: string
+          verified: string
+          website: string | null
+        }
+        Insert: {
+          address?: string | null
+          city: string
+          county: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          justice_friendly?: boolean
+          name: string
+          organization: string
+          phone?: string | null
+          rating?: number | null
+          state_code: string
+          type: string
+          updated_at?: string
+          verified?: string
+          website?: string | null
+        }
+        Update: {
+          address?: string | null
+          city?: string
+          county?: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          justice_friendly?: boolean
+          name?: string
+          organization?: string
+          phone?: string | null
+          rating?: number | null
+          state_code?: string
+          type?: string
+          updated_at?: string
+          verified?: string
+          website?: string | null
+        }
+        Relationships: []
+      }
+      states: {
+        Row: {
+          active: boolean
+          code: string
+          coming_soon: boolean
+          created_at: string
+          id: string
+          name: string
+        }
+        Insert: {
+          active?: boolean
+          code: string
+          coming_soon?: boolean
+          created_at?: string
+          id?: string
+          name: string
+        }
+        Update: {
+          active?: boolean
+          code?: string
+          coming_soon?: boolean
+          created_at?: string
+          id?: string
+          name?: string
+        }
+        Relationships: []
+      }
+      user_learning_progress: {
+        Row: {
+          completed: boolean
+          completed_at: string | null
+          created_at: string
+          id: string
+          module_id: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          completed?: boolean
+          completed_at?: string | null
+          created_at?: string
+          id?: string
+          module_id?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          completed?: boolean
+          completed_at?: string | null
+          created_at?: string
+          id?: string
+          module_id?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_learning_progress_module_id_fkey"
+            columns: ["module_id"]
+            isOneToOne: false
+            referencedRelation: "learning_modules"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       user_roles: {
         Row: {
