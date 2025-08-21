@@ -76,7 +76,7 @@ const Index = () => {
               <Button size="lg" variant="outline" className="h-12 bg-white/10 text-white border-white/30 hover:bg-white/20" asChild>
                 <a href="/victim-services">
                   <Shield className="mr-2 h-4 w-4" />
-                  Victim Services
+                  Healing & Safety Hub
                 </a>
               </Button>
             </div>
@@ -208,11 +208,11 @@ const Index = () => {
               </CardHeader>
               <CardContent>
                 <p className="text-muted-foreground mb-4">
-                  Comprehensive victim services hub with crisis support, compensation guidance, and specialized trauma-informed coaching.
+                  Comprehensive healing & safety hub with crisis support, compensation guidance, and specialized trauma-informed coaching.
                 </p>
                 <Button asChild className="w-full bg-warm-blue hover:bg-warm-blue/90">
                   <a href="/victim-services">
-                    Access Victim Services →
+                    Access Healing & Safety Hub →
                   </a>
                 </Button>
               </CardContent>

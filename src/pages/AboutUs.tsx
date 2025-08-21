@@ -39,7 +39,7 @@ export default function AboutUs() {
       description: 'Trauma-informed support for justice-impacted families and crime victims.',
       areaServed: 'Ohio',
       serviceType: [
-        'Victim Services',
+        'Healing & Safety Hub',
         'Community Support',
         'Educational Resources',
         'Crisis Support'
@@ -189,7 +189,7 @@ export default function AboutUs() {
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <Shield className="h-5 w-5 text-purple-600" />
-                    Victim Services Hub
+                    Healing & Safety Hub
                   </CardTitle>
                 </CardHeader>
                 <CardContent>

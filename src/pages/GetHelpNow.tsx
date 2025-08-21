@@ -71,7 +71,7 @@ const AIAssistant = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void
     }
     if (lower.includes("victim") || lower.includes("crime") || lower.includes("assault")) {
       return [
-        { title: "Victim Services Hub", url: "/victim-services", action: "Specialized support for crime victims" },
+        { title: "Healing & Safety Hub", url: "/victim-services", action: "Specialized support for crime victims" },
         { title: "National Domestic Violence Hotline", phone: "1-800-799-7233", available: "24/7" },
         { title: "Sexual Assault Hotline", phone: "1-800-656-4673", available: "24/7" },
       ];
@@ -88,7 +88,7 @@ const AIAssistant = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void
       return "I understand you may be in crisis. Your safety is the top priority. If you're in immediate danger, please call 911. For crisis support, call 988 or text HOME to 741741. Would you like me to help you find additional crisis resources in your area?";
     }
     if (lower.includes("victim") || lower.includes("crime") || lower.includes("assault")) {
-      return "I hear that you may be a crime victim seeking support. We have a dedicated Victim Services hub with specialized trauma-informed resources, compensation programs, and personal support. Would you like me to direct you there, or are there specific victim services you're looking for?";
+      return "I hear that you may be a crime victim seeking support. We have a dedicated Healing & Safety Hub with specialized trauma-informed resources, compensation programs, and personal support. Would you like me to direct you there, or are there specific victim services you're looking for?";
     }
     if (lower.includes("reentry") || lower.includes("prison") || lower.includes("jail") || lower.includes("formerly incarcerated")) {
       return "I can help you find reentry resources! We have comprehensive programs for housing, employment, mental health, and education. Are you looking for immediate needs like housing and jobs, or longer-term support like education and coaching? Our learning community also provides ongoing peer support.";
