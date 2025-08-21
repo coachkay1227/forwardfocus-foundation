@@ -331,4 +331,63 @@ export const PATHWAYS: Pathway[] = [
       },
     ],
   },
+  {
+    id: "ai-basics",
+    title: "AI Basics - Reentry Community: Navigate Technology with Confidence",
+    description:
+      "Learn how AI tools can support your reentry journey with practical, beginner-friendly education.",
+    category: "Technology & AI Literacy",
+    free: true,
+    educationalOnly: true,
+    modules: [
+      {
+        id: "ai-intro",
+        title: "Introduction to AI for Reentry",
+        summary: "Understand what AI is and how it can help with job searching, education, and daily tasks.",
+        minutes: 15,
+        link: EXTERNAL.programs.community,
+        tags: ["ai-basics", "reentry"],
+      },
+      {
+        id: "ai-job-search",
+        title: "AI-Powered Job Search Tools",
+        summary: "Use AI to improve resumes, find job opportunities, and prepare for interviews.",
+        minutes: 20,
+        link: EXTERNAL.programs.community,
+        tags: ["ai-tools", "employment"],
+      },
+      {
+        id: "ai-communication",
+        title: "AI for Better Communication",
+        summary: "Learn how AI can help with emails, applications, and professional writing.",
+        minutes: 18,
+        link: EXTERNAL.programs.community,
+        tags: ["communication", "writing"],
+      },
+      {
+        id: "ai-learning",
+        title: "AI as Your Learning Assistant",
+        summary: "Use AI chatbots and tools to learn new skills, get explanations, and practice concepts.",
+        minutes: 16,
+        link: EXTERNAL.programs.community,
+        tags: ["education", "skills"],
+      },
+      {
+        id: "ai-safety",
+        title: "AI Safety & Privacy for Reentry",
+        summary: "Stay safe online while using AI tools and protect your personal information.",
+        minutes: 12,
+        link: EXTERNAL.programs.community,
+        tags: ["safety", "privacy"],
+      },
+      {
+        id: "ai-financial",
+        title: "AI for Financial Management",
+        summary: "Use AI tools to track budgets, understand financial documents, and plan expenses.",
+        minutes: 14,
+        link: EXTERNAL.programs.community,
+        tags: ["finance", "budgeting"],
+      }
+    ],
+  },
 ];
