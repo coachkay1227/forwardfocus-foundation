@@ -22,6 +22,8 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "@/components/ui/use-toast";
 import SignupModal from "@/components/healing/SignupModal";
+import diverseFamiliesImage from "@/assets/diverse-families-healing.jpg";
+import healingCommunityImage from "@/assets/healing-community.jpg";
 
 // SEO helpers
 const ensureMeta = (name: string, content: string) => {
@@ -186,28 +188,28 @@ const AIAssistant = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void
           <p className="mb-3 text-sm font-medium text-foreground">Quick options to get started:</p>
           <div className="mb-4 grid gap-2">
             <button
-              onClick={() => setInput("I need help paying for therapy")}
-              className="rounded bg-accent p-2 text-left text-sm hover:bg-accent/80"
+              onClick={() => setInput("Help me find financial aid")}
+              className="rounded bg-accent p-2 text-left text-sm text-accent-foreground hover:bg-accent/80"
             >
-              "I need help paying for therapy"
+              "Help me find financial aid"
             </button>
             <button
-              onClick={() => setInput("I want to know my legal rights")}
-              className="rounded bg-accent p-2 text-left text-sm hover:bg-accent/80"
+              onClick={() => setInput("I need a recovery plan")}
+              className="rounded bg-accent p-2 text-left text-sm text-accent-foreground hover:bg-accent/80"
             >
-              "I want to know my legal rights"
+              "I need a recovery plan"
             </button>
             <button
-              onClick={() => setInput("I don't feel safe at home")}
-              className="rounded bg-accent p-2 text-left text-sm hover:bg-accent/80"
+              onClick={() => setInput("I don't know where to start")}
+              className="rounded bg-accent p-2 text-left text-sm text-accent-foreground hover:bg-accent/80"
             >
-              "I don't feel safe at home"
+              "I don't know where to start"
             </button>
             <button
-              onClick={() => setInput("I'm not sure what I need yet")}
-              className="rounded bg-accent p-2 text-left text-sm hover:bg-accent/80"
+              onClick={() => setInput("Connect me to emotional support")}
+              className="rounded bg-accent p-2 text-left text-sm text-accent-foreground hover:bg-accent/80"
             >
-              "I'm not sure what I need yet"
+              "Connect me to emotional support"
             </button>
           </div>
           <div className="flex gap-2">
@@ -492,18 +494,49 @@ export default function VictimServices() {
     },
   ];
 
+  const scrollToSection = (sectionId: string) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  };
+
   const handleTileAction = (tileId: string, requiresAuth: boolean) => {
     if (requiresAuth && !isSignedUp) {
       setShowSignupModal(true);
       return;
     }
 
+    // Show signup prompt for certain actions
+    const showSignupPrompt = () => {
+      toast({
+        title: "Want to save your plan or come back later?",
+        description: "Sign up for a free account to personalize your support.",
+        action: (
+          <Button onClick={() => setShowSignupModal(true)} size="sm">
+            Sign Up Free
+          </Button>
+        ),
+      });
+    };
+
     if (tileId === "ai-assistant") {
       setShowAIAssistant(true);
-    } else {
-      // Navigate to specific resource sections or show content
-      const el = document.getElementById(tileId);
-      if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+    } else if (tileId === "financial-help") {
+      scrollToSection("financial-help");
+      if (!isSignedUp) showSignupPrompt();
+    } else if (tileId === "know-rights") {
+      scrollToSection("legal-rights");
+      if (!isSignedUp) showSignupPrompt();
+    } else if (tileId === "healing-recovery") {
+      scrollToSection("healing-recovery");
+      if (!isSignedUp) showSignupPrompt();
+    } else if (tileId === "safety-planning") {
+      scrollToSection("safety-planning");
+      if (!isSignedUp) showSignupPrompt();
+    } else if (tileId === "specialized-support") {
+      scrollToSection("specialized-support");
+      if (!isSignedUp) showSignupPrompt();
     }
   };
 
@@ -553,28 +586,28 @@ export default function VictimServices() {
       </header>
 
       {/* Support Path Tiles */}
-      <section id="support-tiles" className="py-12 bg-background">
+      <section id="support-tiles" className="py-16 bg-background">
         <div className="container">
           <div className="mx-auto max-w-6xl">
-            <div className="mb-8 text-center">
-              <h2 className="mb-3 font-heading text-3xl font-bold text-foreground">Choose Your Support Path</h2>
+            <div className="mb-12 text-center">
+              <h2 className="mb-4 font-heading text-3xl font-bold text-foreground">Choose Your Support Path</h2>
               <p className="text-lg text-muted-foreground">Select the area where you need help most. We'll guide you to the right resources.</p>
             </div>
             
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
               {supportTiles.map((tile) => {
                 const Icon = tile.icon;
                 return (
                   <div
                     key={tile.id}
-                    className="group relative rounded-lg border bg-card p-6 shadow-sm transition-all hover:shadow-lg hover:-translate-y-1"
+                    className="group relative rounded-lg border bg-card p-8 shadow-sm transition-all hover:shadow-lg hover:-translate-y-1"
                   >
-                    <div className="mb-4 flex items-start gap-3">
-                      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary/10">
-                        <Icon className="h-5 w-5 text-primary" />
+                    <div className="mb-6 flex items-start gap-3">
+                      <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-primary/10">
+                        <Icon className="h-6 w-6 text-primary" />
                       </div>
                       <div className="flex-1">
-                        <h3 className="mb-2 font-semibold text-card-foreground">{tile.title}</h3>
+                        <h3 className="mb-3 font-semibold text-card-foreground">{tile.title}</h3>
                         <p className="text-sm text-muted-foreground">{tile.description}</p>
                       </div>
                     </div>
@@ -594,9 +627,43 @@ export default function VictimServices() {
         </div>
       </section>
 
-      <main className="bg-gray-50">
+      {/* Diverse Visual Banner */}
+      <section className="py-12 bg-muted/30">
+        <div className="container">
+          <div className="mx-auto max-w-6xl">
+            <div className="grid gap-8 md:grid-cols-2">
+              <div className="relative overflow-hidden rounded-lg">
+                <img 
+                  src={diverseFamiliesImage} 
+                  alt="Diverse families healing together showing resilience and strength" 
+                  className="h-64 w-full object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                <div className="absolute bottom-4 left-4 text-white">
+                  <p className="text-lg font-medium">You're not alone</p>
+                  <p className="text-sm opacity-90">Strength comes from community</p>
+                </div>
+              </div>
+              <div className="relative overflow-hidden rounded-lg">
+                <img 
+                  src={healingCommunityImage} 
+                  alt="People engaged in healing activities showing community support and recovery" 
+                  className="h-64 w-full object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                <div className="absolute bottom-4 left-4 text-white">
+                  <p className="text-lg font-medium">Your healing matters</p>
+                  <p className="text-sm opacity-90">Recovery is possible</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <main className="bg-muted/20">
         {/* Crisis Section */}
-        <section id="crisis" className="bg-white py-12">
+        <section id="crisis" className="bg-card py-16 pt-12">
           <div className="container">
             <div className="mx-auto max-w-4xl">
               <div className="mb-6 flex items-center gap-3">
@@ -655,15 +722,15 @@ export default function VictimServices() {
                 </div>
               </div>
 
-              <div className="mt-8 rounded-lg border border-purple-200 bg-purple-50 p-6">
+              <div className="mt-8 rounded-lg border border-accent/20 bg-accent/10 p-6">
                 <div className="mb-4 flex items-center gap-3">
-                  <Bot className="h-6 w-6 text-purple-600" />
-                  <h3 className="font-semibold text-purple-900">Need Help Finding Resources?</h3>
+                  <Bot className="h-6 w-6 text-accent" />
+                  <h3 className="font-semibold text-card-foreground">Need Help Finding Resources?</h3>
                 </div>
-                <p className="mb-4 text-purple-800">
+                <p className="mb-4 text-muted-foreground">
                   Our AI assistant is trained to understand the unique challenges faced by crime victims. Get personalized resource recommendations and guidance 24/7.
                 </p>
-                <Button onClick={() => setShowAIAssistant(true)} className="bg-purple-600 hover:bg-purple-700">
+                <Button onClick={() => setShowAIAssistant(true)} className="bg-accent text-accent-foreground hover:bg-accent/90">
                   <Bot className="mr-2 h-4 w-4" /> Ask AI Assistant
                 </Button>
               </div>
@@ -672,12 +739,12 @@ export default function VictimServices() {
         </section>
 
         {/* Compensation */}
-        <section id="compensation" className="py-12">
+        <section id="financial-help" className="py-16 pt-12">
           <div className="container">
             <div className="mx-auto max-w-4xl">
               <div className="mb-6 flex items-center gap-3">
-                <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-green-500">
-                  <DollarSign className="h-6 w-6 text-white" />
+                <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-secondary">
+                  <DollarSign className="h-6 w-6 text-secondary-foreground" />
                 </div>
                 <div>
                   <h2 className="text-2xl font-bold text-gray-900">Get Financial Compensation</h2>
@@ -745,12 +812,12 @@ export default function VictimServices() {
         </section>
 
         {/* Rights */}
-        <section id="rights" className="bg-white py-12">
+        <section id="legal-rights" className="bg-card py-16 pt-12">
           <div className="container">
             <div className="mx-auto max-w-4xl">
               <div className="mb-6 flex items-center gap-3">
-                <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-blue-500">
-                  <Scale className="h-6 w-6 text-white" />
+                <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary">
+                  <Scale className="h-6 w-6 text-primary-foreground" />
                 </div>
                 <div>
                   <h2 className="text-2xl font-bold text-gray-900">Know Your Rights</h2>
@@ -789,12 +856,12 @@ export default function VictimServices() {
         </section>
 
         {/* Healing */}
-        <section id="healing" className="py-12">
+        <section id="healing-recovery" className="py-16 pt-12">
           <div className="container">
             <div className="mx-auto max-w-4xl">
               <div className="mb-6 flex items-center gap-3">
-                <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-purple-500">
-                  <Heart className="h-6 w-6 text-white" />
+                <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-accent">
+                  <Heart className="h-6 w-6 text-accent-foreground" />
                 </div>
                 <div>
                   <h2 className="text-2xl font-bold text-gray-900">Trauma Recovery</h2>
@@ -833,12 +900,12 @@ export default function VictimServices() {
         </section>
 
         {/* Safety */}
-        <section id="safety" className="bg-white py-12">
+        <section id="safety-planning" className="bg-card py-16 pt-12">
           <div className="container">
             <div className="mx-auto max-w-4xl">
               <div className="mb-6 flex items-center gap-3">
-                <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-orange-500">
-                  <Shield className="h-6 w-6 text-white" />
+                <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-secondary">
+                  <Shield className="h-6 w-6 text-secondary-foreground" />
                 </div>
                 <div>
                   <h2 className="text-2xl font-bold text-gray-900">Safety Planning</h2>
@@ -877,12 +944,12 @@ export default function VictimServices() {
         </section>
 
         {/* Specialized */}
-        <section id="specialized" className="py-12">
+        <section id="specialized-support" className="py-16 pt-12">
           <div className="container">
             <div className="mx-auto max-w-4xl">
               <div className="mb-6 flex items-center gap-3">
-                <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-teal-500">
-                  <Users className="h-6 w-6 text-white" />
+                <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-accent">
+                  <Users className="h-6 w-6 text-accent-foreground" />
                 </div>
                 <div>
                   <h2 className="text-2xl font-bold text-gray-900">Specialized Support</h2>

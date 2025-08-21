@@ -17,16 +17,16 @@ All colors MUST be HSL.
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
 
-    --primary: 195 100% 15%;
+    --primary: 195 100% 12%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 33 100% 52%;
+    --secondary: 28 85% 45%;
     --secondary-foreground: 0 0% 100%;
 
     --muted: 210 40% 96.1%;
     --muted-foreground: 215.4 16.3% 46.9%;
 
-    --accent: 142 71% 45%;
+    --accent: 120 25% 35%;
     --accent-foreground: 0 0% 100%;
 
     --destructive: 0 84.2% 60.2%;
@@ -55,16 +55,16 @@ All colors MUST be HSL.
     --sidebar-ring: 217.2 91.2% 59.8%;
 
     /* Brand Colors */
-    --burned-orange: 33 100% 52%;
+    --burned-orange: 28 85% 45%;
     --burned-orange-foreground: 0 0% 100%;
     
-    --warm-blue: 195 100% 15%;
+    --warm-blue: 195 100% 12%;
     --warm-blue-foreground: 0 0% 100%;
     
     --cream: 45 29% 92%;
     --cream-foreground: 20 14% 25%;
     
-    --navy-900: 195 100% 15%;
+    --navy-900: 195 100% 12%;
   }
 
   .dark {
@@ -77,16 +77,16 @@ All colors MUST be HSL.
     --popover: 222.2 84% 4.9%;
     --popover-foreground: 210 40% 98%;
 
-    --primary: 195 100% 20%;
+    --primary: 195 100% 15%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 33 100% 62%;
+    --secondary: 28 85% 55%;
     --secondary-foreground: 0 0% 100%;
 
     --muted: 217.2 32.6% 17.5%;
     --muted-foreground: 215 20.2% 65.1%;
 
-    --accent: 142 71% 55%;
+    --accent: 120 25% 45%;
     --accent-foreground: 0 0% 100%;
 
     --destructive: 0 62.8% 30.6%;
@@ -105,16 +105,16 @@ All colors MUST be HSL.
     --sidebar-ring: 217.2 91.2% 59.8%;
 
     /* Brand Colors - Dark Mode */
-    --burned-orange: 33 100% 62%;
+    --burned-orange: 28 85% 55%;
     --burned-orange-foreground: 0 0% 100%;
     
-    --warm-blue: 195 100% 20%;
+    --warm-blue: 195 100% 15%;
     --warm-blue-foreground: 0 0% 100%;
     
     --cream: 45 29% 15%;
     --cream-foreground: 45 29% 92%;
     
-    --navy-900: 195 100% 20%;
+    --navy-900: 195 100% 15%;
   }
 }
 
