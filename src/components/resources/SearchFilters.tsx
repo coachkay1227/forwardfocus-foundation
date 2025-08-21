@@ -29,16 +29,16 @@ export type QuickFilter = "all" | "emergency" | "ongoing" | "new" | "partner";
 
 interface Props {
   county: string;
-  setCounty: Dispatch<SetStateAction<string>>;
-  types: string[];
-  setTypes: Dispatch<SetStateAction<string[]>>;
-  quick: QuickFilter;
-  setQuick: Dispatch<SetStateAction<QuickFilter>>;
+  selectedTypes: string[];
+  quickFilter: QuickFilter;
+  onCountyChange: Dispatch<SetStateAction<string>>;
+  onTypesChange: Dispatch<SetStateAction<string[]>>;
+  onQuickFilterChange: Dispatch<SetStateAction<QuickFilter>>;
 }
 
-const SearchFilters = ({ county, setCounty, types, setTypes, quick, setQuick }: Props) => {
+const SearchFilters = ({ county, selectedTypes, quickFilter, onCountyChange, onTypesChange, onQuickFilterChange }: Props) => {
   const toggleType = (t: string) => {
-    setTypes((prev) => (prev.includes(t) ? prev.filter((x) => x !== t) : [...prev, t]));
+    onTypesChange((prev) => (prev.includes(t) ? prev.filter((x) => x !== t) : [...prev, t]));
   };
 
   return (
@@ -54,9 +54,9 @@ const SearchFilters = ({ county, setCounty, types, setTypes, quick, setQuick }: 
         ].map((c) => (
           <Button
             key={c.key}
-            variant={quick === (c.key as QuickFilter) ? "secondary" : "outline"}
+            variant={quickFilter === (c.key as QuickFilter) ? "secondary" : "outline"}
             size="sm"
-            onClick={() => setQuick(c.key as QuickFilter)}
+            onClick={() => onQuickFilterChange(c.key as QuickFilter)}
           >
             {c.label}
           </Button>
@@ -67,7 +67,7 @@ const SearchFilters = ({ county, setCounty, types, setTypes, quick, setQuick }: 
         {/* County */}
         <div>
           <Label className="mb-2 block">Location</Label>
-          <Select value={county} onValueChange={setCounty}>
+          <Select value={county} onValueChange={onCountyChange}>
             <SelectTrigger>
               <SelectValue placeholder="Select location" />
             </SelectTrigger>
@@ -85,7 +85,7 @@ const SearchFilters = ({ county, setCounty, types, setTypes, quick, setQuick }: 
           <div className="flex flex-wrap gap-3">
             {SERVICE_TYPES.map((t) => (
               <label key={t} className="inline-flex items-center gap-2 text-sm">
-                <Checkbox checked={types.includes(t)} onCheckedChange={() => toggleType(t)} />
+                <Checkbox checked={selectedTypes.includes(t)} onCheckedChange={() => toggleType(t)} />
                 <span>{t}</span>
               </label>
             ))}

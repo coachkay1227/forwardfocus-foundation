@@ -390,6 +390,10 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: boolean
       }
+      create_user_profile: {
+        Args: { p_email: string; p_user_id: string }
+        Returns: undefined
+      }
       is_user_admin: {
         Args: { user_id?: string }
         Returns: boolean

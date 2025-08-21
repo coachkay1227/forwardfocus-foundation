@@ -28,7 +28,7 @@ const Header = () => {
 
       try {
         const { data } = await supabase.rpc('is_user_admin', {
-          p_user_id: user.id
+          user_id: user.id
         });
         setIsAdmin(data || false);
       } catch (error) {
