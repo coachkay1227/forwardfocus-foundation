@@ -39,11 +39,11 @@ export default function CommunityLearning() {
   }, []);
 
   const navigationSections = [
-    { id: "overview", label: "🏠 Community Overview", icon: Users, color: "bg-secondary" },
-    { id: "learning", label: "📚 Learning Modules", icon: BookOpen, color: "bg-accent" },
-    { id: "support", label: "💜 Peer Support", icon: Heart, color: "bg-primary" },
-    { id: "features", label: "✨ Features & Benefits", icon: Star, color: "bg-secondary" },
-    { id: "apply", label: "🚀 Join Today", icon: ArrowRight, color: "bg-accent" }
+    { id: "overview", label: "Community Overview", icon: Users, color: "bg-secondary" },
+    { id: "learning", label: "Learning Modules", icon: BookOpen, color: "bg-accent" },
+    { id: "support", label: "Peer Support", icon: Heart, color: "bg-primary" },
+    { id: "features", label: "Features & Benefits", icon: Star, color: "bg-secondary" },
+    { id: "apply", label: "Join Today", icon: ArrowRight, color: "bg-accent" }
   ];
 
   const scrollToSection = (sectionId: string) => {
@@ -63,11 +63,11 @@ export default function CommunityLearning() {
             <h1 className="font-heading text-4xl md:text-5xl font-bold text-foreground mb-4">
               Your Learning & Growth Community
             </h1>
-            <p className="text-xl text-foreground/80 mb-6">
+            <p className="text-xl text-foreground/90 mb-6">
               Free education, peer support, and guidance designed specifically for justice-impacted individuals and families. 
               Learn at your pace, connect with others who understand, and build the future you deserve.
             </p>
-            <div className="flex items-center justify-center gap-4 text-sm text-foreground/70 mb-8">
+            <div className="flex items-center justify-center gap-4 text-sm text-foreground/80 mb-8">
               <span className="flex items-center gap-2">
                 <CheckCircle className="h-4 w-4 text-accent" />
                 100% Free Education
@@ -86,16 +86,15 @@ export default function CommunityLearning() {
               <Button 
                 onClick={() => setShowApplication(true)}
                 size="lg"
-                className="bg-secondary hover:bg-secondary/90"
+                className="bg-secondary hover:bg-secondary/90 text-secondary-foreground"
               >
                 <Users className="h-4 w-4 mr-2" />
                 Apply to Join Community
               </Button>
               <Button 
                 onClick={() => scrollToSection('learning')}
-                variant="outline"
                 size="lg"
-                className="border-accent text-accent hover:bg-accent/10"
+                className="bg-accent hover:bg-accent/90 text-accent-foreground"
               >
                 <BookOpen className="h-4 w-4 mr-2" />
                 Explore Learning Modules
@@ -114,10 +113,10 @@ export default function CommunityLearning() {
               alt="Diverse fathers and families engaged in learning activities together"
               className="w-full h-64 md:h-80 object-cover"
             />
-            <div className="absolute inset-0 bg-gradient-to-r from-primary/80 to-secondary/60 flex items-center justify-center">
+            <div className="absolute inset-0 bg-gradient-to-r from-primary/90 to-secondary/80 flex items-center justify-center">
               <div className="text-center text-white">
                 <h2 className="text-2xl md:text-3xl font-bold mb-2">Building Stronger Families Through Learning</h2>
-                <p className="text-lg opacity-90">Real community. Real support. Real results.</p>
+                <p className="text-lg text-white/90">Real community. Real support. Real results.</p>
               </div>
             </div>
           </div>
@@ -161,17 +160,17 @@ export default function CommunityLearning() {
                 </div>
                 <div>
                   <h2 className="text-2xl font-bold text-foreground">How Our Community Works</h2>
-                  <p className="text-foreground/70">A safe space for learning, healing, and growth</p>
+                  <p className="text-foreground/80">A safe space for learning, healing, and growth</p>
                 </div>
               </div>
 
               <div className="grid md:grid-cols-3 gap-6">
                 <div className="bg-secondary/10 border border-secondary/20 rounded-lg p-6">
-                  <h3 className="font-semibold text-secondary-foreground mb-3 flex items-center gap-2">
+                  <h3 className="font-semibold text-foreground mb-3 flex items-center gap-2">
                     <Shield className="h-5 w-5 text-secondary" />
                     Application-Based Access
                   </h3>
-                  <ul className="space-y-2 text-sm text-secondary-foreground/80">
+                  <ul className="space-y-2 text-sm text-foreground/90">
                     <li>• Careful vetting for community safety</li>
                     <li>• 24-48 hour review process</li>
                     <li>• Background questions ensure alignment</li>
@@ -180,11 +179,11 @@ export default function CommunityLearning() {
                 </div>
 
                 <div className="bg-accent/10 border border-accent/20 rounded-lg p-6">
-                  <h3 className="font-semibold text-accent-foreground mb-3 flex items-center gap-2">
+                  <h3 className="font-semibold text-foreground mb-3 flex items-center gap-2">
                     <BookOpen className="h-5 w-5 text-accent" />
                     Self-Paced Learning
                   </h3>
-                  <ul className="space-y-2 text-sm text-accent-foreground/80">
+                  <ul className="space-y-2 text-sm text-foreground/90">
                     <li>• No deadlines or pressure</li>
                     <li>• Progress at your own speed</li>
                     <li>• Mobile-optimized content</li>
@@ -193,11 +192,11 @@ export default function CommunityLearning() {
                 </div>
 
                 <div className="bg-primary/10 border border-primary/20 rounded-lg p-6">
-                  <h3 className="font-semibold text-primary-foreground mb-3 flex items-center gap-2">
+                  <h3 className="font-semibold text-foreground mb-3 flex items-center gap-2">
                     <Heart className="h-5 w-5 text-primary" />
                     Peer Support
                   </h3>
-                  <ul className="space-y-2 text-sm text-primary-foreground/80">
+                  <ul className="space-y-2 text-sm text-foreground/90">
                     <li>• Connect with people who understand</li>
                     <li>• Shared experiences and wisdom</li>
                     <li>• Mutual encouragement</li>
@@ -248,11 +247,11 @@ export default function CommunityLearning() {
             <div className="max-w-6xl mx-auto">
               <div className="flex items-center gap-3 mb-6">
                 <div className="w-12 h-12 bg-secondary rounded-lg flex items-center justify-center">
-                  <BookOpen className="h-6 w-6 text-white" />
+                  <BookOpen className="h-6 w-6 text-secondary-foreground" />
                 </div>
                 <div>
                   <h2 className="text-2xl font-bold text-foreground">Topics Covered in Our Skool Community</h2>
-                  <p className="text-foreground/70">Preview the key areas we focus on - full modules available after joining</p>
+                  <p className="text-foreground/80">Preview the key areas we focus on - full modules available after joining</p>
                 </div>
               </div>
 
@@ -260,11 +259,11 @@ export default function CommunityLearning() {
               <div className="mb-8 bg-secondary/10 border border-secondary/20 rounded-lg p-6">
                 <div className="flex items-center gap-3 mb-4">
                   <div className="w-8 h-8 bg-secondary rounded-lg flex items-center justify-center">
-                    <Star className="h-5 w-5 text-white" />
+                    <Star className="h-5 w-5 text-secondary-foreground" />
                   </div>
                   <h3 className="font-semibold text-foreground">AI Learning Assistant</h3>
                 </div>
-                <p className="text-foreground/70 mb-4">
+                <p className="text-foreground/80 mb-4">
                   Get personalized help with your learning journey. Ask questions about modules, get study tips, or practice concepts.
                 </p>
                 <AICompanion />
@@ -310,7 +309,7 @@ export default function CommunityLearning() {
                     <div className="absolute inset-0 bg-gradient-to-br from-secondary/20 to-accent/20 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                     <div className="relative z-10">
                       <h3 className="font-semibold text-foreground mb-2">{topic.title}</h3>
-                      <p className="text-foreground/70 text-sm group-hover:text-foreground transition-colors duration-300">
+                      <p className="text-foreground/80 text-sm group-hover:text-foreground transition-colors duration-300">
                         {topic.description}
                       </p>
                       <div className="mt-3 text-xs text-secondary font-medium">Available in Community</div>
@@ -324,7 +323,7 @@ export default function CommunityLearning() {
                   <Shield className="h-5 w-5 text-secondary" />
                   Full Access After Community Approval
                 </h3>
-                <p className="text-foreground/70">
+                <p className="text-foreground/80">
                   These topic previews give you a taste of what's covered in our private Skool community. 
                   Once approved, you'll get access to full interactive modules, video content, downloadable resources, 
                   progress tracking, and direct peer discussions with CoachKay and community members.
@@ -344,7 +343,7 @@ export default function CommunityLearning() {
                 </div>
                 <div>
                   <h2 className="text-2xl font-bold text-foreground">Peer Support & Connection</h2>
-                  <p className="text-muted-foreground">Learn alongside people who understand your journey</p>
+                  <p className="text-foreground/80">Learn alongside people who understand your journey</p>
                 </div>
               </div>
 
@@ -355,10 +354,10 @@ export default function CommunityLearning() {
                   alt="Diverse group of people in a supportive discussion circle"
                   className="w-full h-48 md:h-64 object-cover"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-primary/60 to-transparent flex items-end">
+                <div className="absolute inset-0 bg-gradient-to-t from-primary/80 to-transparent flex items-end">
                   <div className="p-6 text-white">
                     <h3 className="text-xl font-semibold mb-2">Real Stories. Real Support. Real Results.</h3>
-                    <p className="opacity-90">Join conversations that matter with people who understand.</p>
+                    <p className="text-white/90">Join conversations that matter with people who understand.</p>
                   </div>
                 </div>
               </div>
@@ -387,8 +386,8 @@ export default function CommunityLearning() {
                 </div>
 
                 <div className="bg-muted border border-border rounded-lg p-6">
-                  <h3 className="font-semibold mb-4">Community Guidelines</h3>
-                  <ul className="space-y-2 text-sm text-muted-foreground">
+                  <h3 className="font-semibold mb-4 text-foreground">Community Guidelines</h3>
+                  <ul className="space-y-2 text-sm text-foreground/80">
                     <li className="flex items-start gap-2">
                       <CheckCircle className="h-4 w-4 text-primary mt-0.5" />
                       Respect and dignity for all members
@@ -414,26 +413,26 @@ export default function CommunityLearning() {
               </div>
 
               <div className="mt-8 bg-accent/10 border border-accent/20 rounded-lg p-6">
-                <h3 className="font-semibold text-accent-foreground mb-3">Success Stories From Our Community</h3>
+                <h3 className="font-semibold text-foreground mb-3">Success Stories From Our Community</h3>
                 <div className="grid md:grid-cols-3 gap-4">
                   <blockquote className="bg-card p-4 rounded border text-sm">
-                    <p className="text-muted-foreground mb-2">"The credit module helped me go from a 480 to 650 credit score in 8 months."</p>
-                    <cite className="text-accent-foreground font-medium">— Maria, Community Member</cite>
+                    <p className="text-foreground/80 mb-2">"The credit module helped me go from a 480 to 650 credit score in 8 months."</p>
+                    <cite className="text-accent font-medium">— Maria, Community Member</cite>
                   </blockquote>
                   <blockquote className="bg-card p-4 rounded border text-sm">
-                    <p className="text-muted-foreground mb-2">"I found my people here. Finally, a community that gets it."</p>
-                    <cite className="text-accent-foreground font-medium">— James, Community Member</cite>
+                    <p className="text-foreground/80 mb-2">"I found my people here. Finally, a community that gets it."</p>
+                    <cite className="text-accent font-medium">— James, Community Member</cite>
                   </blockquote>
                   <blockquote className="bg-card p-4 rounded border text-sm">
-                    <p className="text-muted-foreground mb-2">"The peer support helped me stay motivated when things got tough."</p>
-                    <cite className="text-accent-foreground font-medium">— Sarah, Community Member</cite>
+                    <p className="text-foreground/80 mb-2">"The peer support helped me stay motivated when things got tough."</p>
+                    <cite className="text-accent font-medium">— Sarah, Community Member</cite>
                   </blockquote>
                 </div>
 
                 <div className="mt-6 text-center">
                   <Button 
                     onClick={() => setShowApplication(true)}
-                    className="bg-primary hover:bg-primary/90"
+                    className="bg-primary hover:bg-primary/90 text-primary-foreground"
                   >
                     <Heart className="h-4 w-4 mr-2" />
                     Join Peer Support
@@ -454,7 +453,7 @@ export default function CommunityLearning() {
                 </div>
                 <div>
                   <h2 className="text-2xl font-bold text-foreground">Features & Benefits</h2>
-                  <p className="text-muted-foreground">Everything you need for successful learning and growth</p>
+                  <p className="text-foreground/80">Everything you need for successful learning and growth</p>
                 </div>
               </div>
 
@@ -479,7 +478,7 @@ export default function CommunityLearning() {
                         <Icon className="h-6 w-6" />
                       </div>
                       <h3 className="font-semibold text-foreground mb-2">{feature.title}</h3>
-                      <p className="text-sm text-muted-foreground">{feature.desc}</p>
+                      <p className="text-sm text-foreground/80">{feature.desc}</p>
                     </div>
                   );
                 })}
@@ -499,8 +498,8 @@ export default function CommunityLearning() {
                     alt="Coach Kay - Professional community coach and mentor"
                     className="w-full max-w-sm mx-auto rounded-lg shadow-lg"
                   />
-                  <div className="absolute -bottom-4 -right-4 bg-secondary text-white px-4 py-2 rounded-lg shadow-lg">
-                    <span className="text-sm font-medium">CoachKay</span>
+                  <div className="absolute -bottom-4 -right-4 bg-secondary text-secondary-foreground px-4 py-2 rounded-lg shadow-lg">
+                    <span className="text-sm font-medium">Coach Kay</span>
                   </div>
                 </div>
                 <div>
@@ -526,7 +525,7 @@ export default function CommunityLearning() {
                   </div>
                   <Button 
                     onClick={() => setShowApplication(true)}
-                    className="bg-secondary hover:bg-secondary/90"
+                    className="bg-secondary hover:bg-secondary/90 text-secondary-foreground"
                   >
                     <UserCheck className="h-4 w-4 mr-2" />
                     Connect with Our Community
@@ -547,7 +546,7 @@ export default function CommunityLearning() {
                 </div>
                 <div>
                   <h2 className="text-2xl font-bold text-foreground">Ready to Join Our Community?</h2>
-                  <p className="text-muted-foreground">Start your free learning journey today</p>
+                  <p className="text-foreground/80">Start your free learning journey today</p>
                 </div>
               </div>
 
@@ -558,29 +557,29 @@ export default function CommunityLearning() {
                     <div className="flex items-start gap-3">
                       <div className="w-8 h-8 bg-accent/20 rounded-full flex items-center justify-center text-accent font-semibold text-sm">1</div>
                       <div>
-                        <h4 className="font-medium">Submit Application</h4>
-                        <p className="text-sm text-muted-foreground">Share basic info about your situation and goals</p>
+                        <h4 className="font-medium text-foreground">Submit Application</h4>
+                        <p className="text-sm text-foreground/80">Share basic info about your situation and goals</p>
                       </div>
                     </div>
                     <div className="flex items-start gap-3">
                       <div className="w-8 h-8 bg-accent/20 rounded-full flex items-center justify-center text-accent font-semibold text-sm">2</div>
                       <div>
-                        <h4 className="font-medium">Review Process</h4>
-                        <p className="text-sm text-muted-foreground">We review within 24-48 hours for community safety</p>
+                        <h4 className="font-medium text-foreground">Review Process</h4>
+                        <p className="text-sm text-foreground/80">We review within 24-48 hours for community safety</p>
                       </div>
                     </div>
                     <div className="flex items-start gap-3">
                       <div className="w-8 h-8 bg-accent/20 rounded-full flex items-center justify-center text-accent font-semibold text-sm">3</div>
                       <div>
-                        <h4 className="font-medium">Welcome & Onboarding</h4>
-                        <p className="text-sm text-muted-foreground">Get access to all modules and community features</p>
+                        <h4 className="font-medium text-foreground">Welcome & Onboarding</h4>
+                        <p className="text-sm text-foreground/80">Get access to all modules and community features</p>
                       </div>
                     </div>
                   </div>
                 </div>
 
                 <div className="bg-accent/10 border border-accent/20 rounded-lg p-6">
-                  <h3 className="text-xl font-semibold text-accent-foreground mb-4">What You Get (Free Forever)</h3>
+                  <h3 className="text-xl font-semibold text-foreground mb-4">What You Get (Free Forever)</h3>
                   <div className="space-y-3">
                     {[
                       "8+ comprehensive learning pathways",
@@ -593,7 +592,7 @@ export default function CommunityLearning() {
                       "Mobile-optimized learning platform",
                       "Success milestone celebrations"
                     ].map((benefit, index) => (
-                      <div key={index} className="flex items-center gap-2 text-sm text-accent-foreground/80">
+                      <div key={index} className="flex items-center gap-2 text-sm text-foreground/90">
                         <CheckCircle className="h-4 w-4 text-accent" />
                         {benefit}
                       </div>
@@ -602,14 +601,14 @@ export default function CommunityLearning() {
 
                   <Button 
                     onClick={() => setShowApplication(true)}
-                    className="w-full mt-6 bg-secondary hover:bg-secondary/90"
+                    className="w-full mt-6 bg-secondary hover:bg-secondary/90 text-secondary-foreground"
                     size="lg"
                   >
                     <Users className="h-4 w-4 mr-2" />
                     Apply for Community Access
                   </Button>
 
-                  <p className="text-xs text-accent-foreground/60 text-center mt-3">
+                  <p className="text-xs text-foreground/60 text-center mt-3">
                     No credit card required • Always free • Secure application
                   </p>
                 </div>
@@ -617,21 +616,21 @@ export default function CommunityLearning() {
 
               <div className="mt-12 bg-primary/10 border border-primary/20 rounded-lg p-6">
                 <h3 className="font-semibold text-primary mb-3">Not Ready to Apply Yet?</h3>
-                <p className="text-primary/80 mb-4">
+                <p className="text-foreground/80 mb-4">
                   That's completely okay. Everyone moves at their own pace. Here are other ways to get support:
                 </p>
                 <div className="grid md:grid-cols-3 gap-4">
                   <Link to="/help" className="block p-3 bg-card border border-border rounded hover:bg-primary/5 transition-colors">
                     <div className="font-medium text-foreground">Get Immediate Help</div>
-                    <div className="text-sm text-muted-foreground">Crisis resources and immediate support</div>
+                    <div className="text-sm text-foreground/80">Crisis resources and immediate support</div>
                   </Link>
                   <Link to="/help#ohio-resources" className="block p-3 bg-card border border-border rounded hover:bg-primary/5 transition-colors">
                     <div className="font-medium text-foreground">Browse Resources</div>
-                    <div className="text-sm text-muted-foreground">Ohio resource directory</div>
+                    <div className="text-sm text-foreground/80">Ohio resource directory</div>
                   </Link>
                   <Link to="/support" className="block p-3 bg-card border border-border rounded hover:bg-primary/5 transition-colors">
                     <div className="font-medium text-foreground">Contact Us</div>
-                    <div className="text-sm text-muted-foreground">Questions about our community</div>
+                    <div className="text-sm text-foreground/80">Questions about our community</div>
                   </Link>
                 </div>
               </div>
@@ -652,7 +651,7 @@ export default function CommunityLearning() {
               <div className="flex flex-wrap justify-center gap-4">
                 <Button 
                   onClick={() => setShowApplication(true)}
-                  className="bg-secondary hover:bg-secondary/90"
+                  className="bg-secondary hover:bg-secondary/90 text-secondary-foreground"
                   size="lg"
                 >
                   <Users className="h-4 w-4 mr-2" />
