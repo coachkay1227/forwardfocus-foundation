@@ -383,53 +383,13 @@ export type Database = {
       }
     }
     Views: {
-      organizations_public: {
-        Row: {
-          address: string | null
-          city: string | null
-          created_at: string | null
-          description: string | null
-          email: string | null
-          id: string | null
-          name: string | null
-          phone: string | null
-          state_code: string | null
-          updated_at: string | null
-          verified: boolean | null
-          website: string | null
-        }
-        Insert: {
-          address?: never
-          city?: string | null
-          created_at?: string | null
-          description?: string | null
-          email?: never
-          id?: string | null
-          name?: string | null
-          phone?: never
-          state_code?: string | null
-          updated_at?: string | null
-          verified?: boolean | null
-          website?: string | null
-        }
-        Update: {
-          address?: never
-          city?: string | null
-          created_at?: string | null
-          description?: string | null
-          email?: never
-          id?: string | null
-          name?: string | null
-          phone?: never
-          state_code?: string | null
-          updated_at?: string | null
-          verified?: boolean | null
-          website?: string | null
-        }
-        Relationships: []
-      }
+      [_ in never]: never
     }
     Functions: {
+      can_view_org_contacts: {
+        Args: Record<PropertyKey, never>
+        Returns: boolean
+      }
       is_user_admin: {
         Args: { user_id?: string }
         Returns: boolean
