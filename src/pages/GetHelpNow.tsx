@@ -25,7 +25,7 @@ const AIAssistant = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void
     {
       id: 1,
       type: "ai",
-      content: "Hi! I'm here to help you find the right resources and support. I can help with reentry programs, mental health services, education grants, and more. What type of help are you looking for today?",
+      content: "Welcome! I'm your personal guide to opportunities and resources in Ohio. Whether you're seeking growth, education, fresh starts, or community support, I'm here to help you find the right path forward. What would you like to explore today?",
       timestamp: new Date(),
     },
   ]);
@@ -204,13 +204,13 @@ const AIAssistant = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void
 };
 
 export default function GetHelpNow() {
-  const [activeSection, setActiveSection] = useState<string>("crisis");
+  const [activeSection, setActiveSection] = useState<string>("support");
   const [showAIAssistant, setShowAIAssistant] = useState(false);
   const [email, setEmail] = useState("");
 
   useEffect(() => {
-    document.title = "Get Help Now | Forward Focus Collective";
-    const desc = "Immediate crisis support, comprehensive Ohio resources, and personalized guidance for justice-impacted individuals, families, and crime victims. 24/7 support available.";
+    document.title = "Start Your Journey Forward | Forward Focus Elevation";
+    const desc = "Empowering resources, personalized guidance, and community support to help you rise above challenges and achieve your highest potential. Ohio's premier platform for forward-thinking growth.";
     
     let meta = document.querySelector('meta[name="description"]') as HTMLMetaElement | null;
     if (!meta) {
@@ -230,10 +230,10 @@ export default function GetHelpNow() {
   }, []);
 
   const navigationSections = [
-    { id: "crisis", label: "🆘 Crisis Help", icon: Phone, color: "bg-red-500" },
-    { id: "ohio-resources", label: "🏠 Ohio Resources", icon: Home, color: "bg-blue-500" },
-    { id: "pathways", label: "🛤️ Choose Your Path", icon: ArrowRight, color: "bg-purple-500" },
-    { id: "toolkit", label: "📧 Resource Toolkit", icon: CheckCircle, color: "bg-green-500" }
+    { id: "support", label: "🤝 Immediate Support", icon: Phone, color: "bg-primary" },
+    { id: "ohio-resources", label: "🏠 Ohio Opportunities", icon: Home, color: "bg-warm-blue" },
+    { id: "pathways", label: "🚀 Growth Pathways", icon: ArrowRight, color: "bg-accent" },
+    { id: "toolkit", label: "📧 Success Toolkit", icon: CheckCircle, color: "bg-secondary" }
   ];
 
   const scrollToSection = (sectionId: string) => {
@@ -263,63 +263,63 @@ export default function GetHelpNow() {
 
   return (
     <>
-      {/* Emergency Banner */}
-      <div className="bg-red-600 text-white py-2 text-center font-medium">
-        🆘 IMMEDIATE DANGER? CALL 911 NOW | Crisis Support: 988 | Text HOME to 741741
+      {/* Support Banner */}
+      <div className="bg-primary text-primary-foreground py-2 text-center font-medium">
+        🚨 Emergency? Call 911 | Crisis Support: 988 | Safe Text: HOME to 741741
       </div>
 
       {/* Hero Section */}
-      <header className="bg-gradient-to-b from-blue-50 to-white border-b">
+      <header className="bg-gradient-to-br from-cream via-white to-warm-blue/10 border-b">
         <div className="container py-12 md:py-16">
           <div className="max-w-4xl mx-auto text-center">
-            <h1 className="font-heading text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-              Get Help Now
+            <h1 className="font-heading text-4xl md:text-5xl font-bold text-foreground mb-4">
+              Start Your Journey Forward
             </h1>
-            <p className="text-xl text-gray-600 mb-6">
-              Immediate crisis support and comprehensive Ohio resources for justice-impacted individuals, families, and crime victims. 
-              Find the help you need, when you need it most.
+            <p className="text-xl text-muted-foreground mb-6">
+              Access empowering resources, personalized guidance, and community support to rise above challenges and achieve your highest potential. 
+              Your path to growth starts here.
             </p>
-            <div className="flex items-center justify-center gap-4 text-sm text-gray-500 mb-8">
+            <div className="flex items-center justify-center gap-4 text-sm text-muted-foreground mb-8">
               <span className="flex items-center gap-2">
-                <CheckCircle className="h-4 w-4 text-green-500" />
-                24/7 Crisis Support
+                <CheckCircle className="h-4 w-4 text-secondary" />
+                24/7 Support Available
               </span>
               <span className="flex items-center gap-2">
-                <CheckCircle className="h-4 w-4 text-green-500" />
-                No Signup Required
+                <CheckCircle className="h-4 w-4 text-secondary" />
+                No Barriers to Access
               </span>
               <span className="flex items-center gap-2">
-                <CheckCircle className="h-4 w-4 text-green-500" />
+                <CheckCircle className="h-4 w-4 text-secondary" />
                 AI-Powered Guidance
               </span>
             </div>
             
             <div className="flex flex-wrap justify-center gap-4">
               <Button 
-                onClick={() => scrollToSection('crisis')}
+                onClick={() => scrollToSection('support')}
                 size="lg"
-                className="bg-red-600 hover:bg-red-700"
+                className="bg-primary hover:bg-primary/90"
               >
                 <Phone className="h-4 w-4 mr-2" />
-                Crisis Contacts
+                Get Immediate Support
               </Button>
               <Button 
                 onClick={() => setShowAIAssistant(true)}
                 variant="outline"
                 size="lg"
-                className="border-blue-600 text-blue-600 hover:bg-blue-50"
+                className="border-warm-blue text-warm-blue hover:bg-warm-blue/10"
               >
                 <Bot className="h-4 w-4 mr-2" />
-                Ask AI Assistant
+                Start with AI Guide
               </Button>
               <Button 
                 onClick={() => scrollToSection('ohio-resources')}
                 variant="outline"
                 size="lg"
-                className="border-green-600 text-green-600 hover:bg-green-50"
+                className="border-secondary text-secondary hover:bg-secondary/10"
               >
                 <Home className="h-4 w-4 mr-2" />
-                Ohio Resources
+                Explore Opportunities
               </Button>
             </div>
           </div>
@@ -353,153 +353,153 @@ export default function GetHelpNow() {
       </nav>
 
       <main className="bg-gray-50">
-        {/* Crisis Help Section */}
-        <section id="crisis" className="py-12 bg-white">
+        {/* Immediate Support Section */}
+        <section id="support" className="py-12 bg-white">
           <div className="container">
             <div className="max-w-4xl mx-auto">
               <div className="flex items-center gap-3 mb-6">
-                <div className="w-12 h-12 bg-red-500 rounded-lg flex items-center justify-center">
-                  <Phone className="h-6 w-6 text-white" />
+                <div className="w-12 h-12 bg-primary rounded-lg flex items-center justify-center">
+                  <Phone className="h-6 w-6 text-primary-foreground" />
                 </div>
                 <div>
-                  <h2 className="text-2xl font-bold text-gray-900">Need Help Right Now?</h2>
-                  <p className="text-gray-600">24/7 crisis support available nationwide - you're not alone</p>
+                  <h2 className="text-2xl font-bold text-foreground">Need Support Right Now?</h2>
+                  <p className="text-muted-foreground">24/7 support available nationwide - you're never alone in this journey</p>
                 </div>
               </div>
               
               <div className="grid md:grid-cols-2 gap-4 mb-8">
                 <div className="bg-red-50 border border-red-200 rounded-lg p-6">
-                  <h3 className="font-semibold text-red-900 mb-3">Immediate Danger</h3>
+                  <h3 className="font-semibold text-red-900 mb-3">Emergency Situations</h3>
                   <a href="tel:911" className="flex items-center gap-3 p-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors">
                     <Phone className="h-5 w-5" />
                     <span className="font-medium">Call 911 Now</span>
                   </a>
                 </div>
 
-                <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
-                  <h3 className="font-semibold text-blue-900 mb-3">Crisis Support Lines</h3>
+                <div className="bg-warm-blue/10 border border-warm-blue/30 rounded-lg p-6">
+                  <h3 className="font-semibold text-warm-blue mb-3">Crisis Support Lines</h3>
                   <div className="space-y-3">
-                    <a href="tel:988" className="flex items-center gap-3 p-2 hover:bg-blue-100 rounded transition-colors">
-                      <Phone className="h-4 w-4 text-blue-600" />
+                    <a href="tel:988" className="flex items-center gap-3 p-2 hover:bg-warm-blue/10 rounded transition-colors">
+                      <Phone className="h-4 w-4 text-warm-blue" />
                       <div className="text-sm">
                         <div className="font-medium">Call 988</div>
-                        <div className="text-gray-600">Suicide & Crisis Lifeline - 24/7</div>
+                        <div className="text-muted-foreground">Suicide & Crisis Lifeline - 24/7</div>
                       </div>
                     </a>
-                    <a href="sms:741741?&body=HOME" className="flex items-center gap-3 p-2 hover:bg-blue-100 rounded transition-colors">
-                      <MessageSquare className="h-4 w-4 text-blue-600" />
+                    <a href="sms:741741?&body=HOME" className="flex items-center gap-3 p-2 hover:bg-warm-blue/10 rounded transition-colors">
+                      <MessageSquare className="h-4 w-4 text-warm-blue" />
                       <div className="text-sm">
                         <div className="font-medium">Text HOME to 741741</div>
-                        <div className="text-gray-600">Crisis Text Line - 24/7</div>
+                        <div className="text-muted-foreground">Crisis Text Line - 24/7</div>
                       </div>
                     </a>
-                    <a href="tel:211" className="flex items-center gap-3 p-2 hover:bg-blue-100 rounded transition-colors">
-                      <Phone className="h-4 w-4 text-blue-600" />
+                    <a href="tel:211" className="flex items-center gap-3 p-2 hover:bg-warm-blue/10 rounded transition-colors">
+                      <Phone className="h-4 w-4 text-warm-blue" />
                       <div className="text-sm">
                         <div className="font-medium">Call 211</div>
-                        <div className="text-gray-600">General crisis support & resources</div>
+                        <div className="text-muted-foreground">Resource navigation & support</div>
                       </div>
                     </a>
                   </div>
                 </div>
               </div>
 
-              <div className="bg-purple-50 border border-purple-200 rounded-lg p-6">
+              <div className="bg-accent/10 border border-accent/30 rounded-lg p-6">
                 <div className="flex items-center gap-3 mb-4">
-                  <Bot className="h-6 w-6 text-purple-600" />
-                  <h3 className="font-semibold text-purple-900">Need Help Finding Resources?</h3>
+                  <Bot className="h-6 w-6 text-accent" />
+                  <h3 className="font-semibold text-accent">Ready to Explore Your Options?</h3>
                 </div>
-                <p className="text-purple-800 mb-4">
-                  Our AI assistant is loaded with Ohio resources and can help you find exactly what you need based on your specific situation.
+                <p className="text-accent/80 mb-4">
+                  Our AI guide is loaded with Ohio resources and can help you discover opportunities based on your unique situation and goals.
                 </p>
-                <Button onClick={() => setShowAIAssistant(true)} className="bg-purple-600 hover:bg-purple-700">
+                <Button onClick={() => setShowAIAssistant(true)} className="bg-accent hover:bg-accent/90">
                   <Bot className="mr-2 h-4 w-4" />
-                  Ask AI Assistant
+                  Start Your Journey with AI
                 </Button>
               </div>
             </div>
           </div>
         </section>
 
-        {/* Ohio Resources Section */}
+        {/* Ohio Opportunities Section */}
         <section id="ohio-resources" className="py-12">
           <div className="container">
             <div className="max-w-6xl mx-auto">
               <div className="flex items-center gap-3 mb-6">
-                <div className="w-12 h-12 bg-blue-500 rounded-lg flex items-center justify-center">
+                <div className="w-12 h-12 bg-warm-blue rounded-lg flex items-center justify-center">
                   <Home className="h-6 w-6 text-white" />
                 </div>
                 <div>
-                  <h2 className="text-2xl font-bold text-gray-900">Ohio Resources by Category</h2>
-                  <p className="text-gray-600">Comprehensive directory organized for easy navigation</p>
+                  <h2 className="text-2xl font-bold text-foreground">Discover Ohio Opportunities by Focus Area</h2>
+                  <p className="text-muted-foreground">Comprehensive pathways organized to accelerate your progress</p>
                 </div>
               </div>
 
               {/* Resource Categories */}
               <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-                <Card className="hover:border-blue-300 hover:bg-blue-50 transition-all">
+                <Card className="hover:border-warm-blue/30 hover:bg-warm-blue/5 transition-all">
                   <CardHeader className="pb-3">
                     <CardTitle className="flex items-center gap-2 text-lg">
-                      <Activity className="h-5 w-5 text-blue-600" />
-                      Reentry Programs
+                      <Activity className="h-5 w-5 text-warm-blue" />
+                      Fresh Start Programs
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="pt-0">
-                    <p className="text-sm text-gray-600 mb-3">Housing, employment, mental health, and transition support</p>
+                    <p className="text-sm text-muted-foreground mb-3">Housing, career development, wellness, and transition support</p>
                     <div className="space-y-2 text-xs">
-                      <div>• Relink.org - Free resource tool</div>
-                      <div>• CAP4Kids - Document assistance</div>
-                      <div>• Alvis Programs - Comprehensive support</div>
+                      <div>• Relink.org - Comprehensive resource tool</div>
+                      <div>• CAP4Kids - Document & housing assistance</div>
+                      <div>• Alvis Programs - Holistic reentry support</div>
                       <div>• Community Transition Program</div>
                     </div>
                   </CardContent>
                 </Card>
 
-                <Card className="hover:border-green-300 hover:bg-green-50 transition-all">
+                <Card className="hover:border-secondary/30 hover:bg-secondary/5 transition-all">
                   <CardHeader className="pb-3">
                     <CardTitle className="flex items-center gap-2 text-lg">
-                      <Heart className="h-5 w-5 text-green-600" />
-                      Mental Health
+                      <Heart className="h-5 w-5 text-secondary" />
+                      Wellness & Growth
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="pt-0">
-                    <p className="text-sm text-gray-600 mb-3">Counseling, support groups, and crisis intervention</p>
+                    <p className="text-sm text-muted-foreground mb-3">Mental wellness, counseling, and personal development</p>
                     <div className="space-y-2 text-xs">
-                      <div>• NAMI Franklin County - Free support</div>
+                      <div>• NAMI Franklin County - Peer support</div>
                       <div>• Franklin County ADAMH - Sliding scale</div>
-                      <div>• Healing Together - Family support</div>
-                      <div>• Mindfulness programs</div>
+                      <div>• Healing Together - Family wellness</div>
+                      <div>• Mindfulness & resilience programs</div>
                     </div>
                   </CardContent>
                 </Card>
 
-                <Card className="hover:border-purple-300 hover:bg-purple-50 transition-all">
+                <Card className="hover:border-accent/30 hover:bg-accent/5 transition-all">
                   <CardHeader className="pb-3">
                     <CardTitle className="flex items-center gap-2 text-lg">
-                      <GraduationCap className="h-5 w-5 text-purple-600" />
-                      Education & Grants
+                      <GraduationCap className="h-5 w-5 text-accent" />
+                      Education & Scholarships
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="pt-0">
-                    <p className="text-sm text-gray-600 mb-3">Scholarships and funding for justice-impacted families</p>
+                    <p className="text-sm text-muted-foreground mb-3">Scholarships and funding for justice-impacted families</p>
                     <div className="space-y-2 text-xs">
                       <div>• ScholarCHIPS - $3,500 + books</div>
-                      <div>• Venus Morris Griffin - $10,000</div>
+                      <div>• Venus Morris Griffin - $10,000 annually</div>
                       <div>• Transform Business - $1,000 grants</div>
-                      <div>• Ohio Access to Justice</div>
+                      <div>• Ohio Access to Justice Foundation</div>
                     </div>
                   </CardContent>
                 </Card>
 
-                <Card className="hover:border-orange-300 hover:bg-orange-50 transition-all">
+                <Card className="hover:border-primary/30 hover:bg-primary/5 transition-all">
                   <CardHeader className="pb-3">
                     <CardTitle className="flex items-center gap-2 text-lg">
-                      <Users className="h-5 w-5 text-orange-600" />
-                      Life Coaching
+                      <Users className="h-5 w-5 text-primary" />
+                      Personal Elevation
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="pt-0">
-                    <p className="text-sm text-gray-600 mb-3">Personal development and goal achievement support</p>
+                    <p className="text-sm text-muted-foreground mb-3">Life coaching and goal achievement support</p>
                     <div className="space-y-2 text-xs">
                       <div>• Goodwill Columbus - Free coaching</div>
                       <div>• OhioMeansJobs - Career development</div>
@@ -511,202 +511,202 @@ export default function GetHelpNow() {
               </div>
 
               {/* County Focus */}
-              <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
-                <h3 className="font-semibold text-blue-800 mb-4 flex items-center gap-2">
+              <div className="bg-warm-blue/10 border border-warm-blue/30 rounded-lg p-6">
+                <h3 className="font-semibold text-warm-blue mb-4 flex items-center gap-2">
                   <MapPin className="h-5 w-5" />
                   Franklin County Deep Dive
                 </h3>
-                <p className="text-blue-700 mb-4">
-                  We've mapped comprehensive resources for Franklin County (Columbus area) with detailed program information, 
-                  eligibility requirements, and application guidance.
+                <p className="text-warm-blue/80 mb-4">
+                  We've curated comprehensive opportunities for Franklin County (Columbus area) with detailed program information, 
+                  eligibility requirements, and success strategies.
                 </p>
                 <div className="grid md:grid-cols-3 gap-4 text-sm">
                   <div>
-                    <div className="font-medium text-blue-900">🏠 Housing & Emergency</div>
-                    <div className="text-blue-700">• CAP4Kids housing assistance</div>
-                    <div className="text-blue-700">• Emergency shelter programs</div>
+                    <div className="font-medium text-warm-blue">🏠 Housing & Stability</div>
+                    <div className="text-warm-blue/80">• CAP4Kids housing assistance</div>
+                    <div className="text-warm-blue/80">• Emergency shelter programs</div>
                   </div>
                   <div>
-                    <div className="font-medium text-blue-900">💼 Employment & Training</div>
-                    <div className="text-blue-700">• OhioMeansJobs career services</div>
-                    <div className="text-blue-700">• Goodwill job readiness</div>
+                    <div className="font-medium text-warm-blue">💼 Career & Training</div>
+                    <div className="text-warm-blue/80">• OhioMeansJobs career services</div>
+                    <div className="text-warm-blue/80">• Goodwill job readiness</div>
                   </div>
                   <div>
-                    <div className="font-medium text-blue-900">🧠 Mental Health & Wellness</div>
-                    <div className="text-blue-700">• 14 specialized programs</div>
-                    <div className="text-blue-700">• Family support services</div>
+                    <div className="font-medium text-warm-blue">🧠 Wellness & Growth</div>
+                    <div className="text-warm-blue/80">• 14 specialized programs</div>
+                    <div className="text-warm-blue/80">• Family support services</div>
                   </div>
                 </div>
                 <Button 
                   onClick={() => setShowAIAssistant(true)} 
-                  className="mt-4 bg-blue-600 hover:bg-blue-700"
+                  className="mt-4 bg-warm-blue hover:bg-warm-blue/90"
                 >
                   <Bot className="mr-2 h-4 w-4" />
-                  Get Personalized Franklin County Guide
+                  Get Your Personalized Franklin County Guide
                 </Button>
               </div>
             </div>
           </div>
         </section>
 
-        {/* Choose Your Path Section */}
+        {/* Growth Pathways Section */}
         <section id="pathways" className="py-12 bg-white">
           <div className="container">
             <div className="max-w-4xl mx-auto">
               <div className="flex items-center gap-3 mb-6">
-                <div className="w-12 h-12 bg-purple-500 rounded-lg flex items-center justify-center">
+                <div className="w-12 h-12 bg-accent rounded-lg flex items-center justify-center">
                   <ArrowRight className="h-6 w-6 text-white" />
                 </div>
                 <div>
-                  <h2 className="text-2xl font-bold text-gray-900">Choose Your Path for Ongoing Support</h2>
-                  <p className="text-gray-600">Different paths for different journeys</p>
+                  <h2 className="text-2xl font-bold text-foreground">Choose Your Growth Pathway</h2>
+                  <p className="text-muted-foreground">Tailored journeys designed for lasting transformation</p>
                 </div>
               </div>
 
               <div className="grid md:grid-cols-2 gap-6">
-                <Card className="border-2 border-green-200 bg-green-50">
+                <Card className="border-2 border-secondary/30 bg-secondary/5">
                   <CardHeader>
                     <div className="flex items-center gap-3">
-                      <Users className="h-8 w-8 text-green-600" />
+                      <Users className="h-8 w-8 text-secondary" />
                       <div>
-                        <CardTitle className="text-green-900">Justice-Impacted Individuals & Families</CardTitle>
-                        <p className="text-green-700 text-sm">Reentry support, family resources, personal growth</p>
+                        <CardTitle className="text-foreground">Justice-Impacted Individuals & Families</CardTitle>
+                        <p className="text-muted-foreground text-sm">Fresh start support, family resources, personal elevation</p>
                       </div>
                     </div>
                   </CardHeader>
                   <CardContent>
-                    <p className="text-green-800 mb-4">
-                      Join our learning community for free education, peer support, and income-based life coaching. 
-                      Designed specifically for justice-impacted individuals and families.
+                    <p className="text-muted-foreground mb-4">
+                      Join our empowering learning community for education, peer connections, and income-based life coaching. 
+                      Designed to elevate justice-impacted individuals and families toward their highest potential.
                     </p>
-                    <ul className="space-y-2 text-sm text-green-700 mb-4">
+                    <ul className="space-y-2 text-sm text-muted-foreground mb-4">
                       <li className="flex items-center gap-2">
-                        <CheckCircle className="h-4 w-4" />
-                        7 self-paced learning modules
+                        <CheckCircle className="h-4 w-4 text-secondary" />
+                        7 transformational learning modules
                       </li>
                       <li className="flex items-center gap-2">
-                        <CheckCircle className="h-4 w-4" />
-                        Peer support groups
+                        <CheckCircle className="h-4 w-4 text-secondary" />
+                        Peer elevation groups
                       </li>
                       <li className="flex items-center gap-2">
-                        <CheckCircle className="h-4 w-4" />
-                        Income-based life coaching
+                        <CheckCircle className="h-4 w-4 text-secondary" />
+                        Income-based personal coaching
                       </li>
                       <li className="flex items-center gap-2">
-                        <CheckCircle className="h-4 w-4" />
-                        Application and resource guidance
+                        <CheckCircle className="h-4 w-4 text-secondary" />
+                        Opportunity navigation & strategy
                       </li>
                     </ul>
-                    <Button asChild className="w-full bg-green-600 hover:bg-green-700">
+                    <Button asChild className="w-full bg-secondary hover:bg-secondary/90">
                       <Link to="/learn">
                         <Users className="h-4 w-4 mr-2" />
-                        Join Learning Community
+                        Start Your Growth Journey
                       </Link>
                     </Button>
                   </CardContent>
                 </Card>
 
-                <Card className="border-2 border-purple-200 bg-purple-50">
+                <Card className="border-2 border-warm-blue/30 bg-warm-blue/5">
                   <CardHeader>
                     <div className="flex items-center gap-3">
-                      <Shield className="h-8 w-8 text-purple-600" />
+                      <Shield className="h-8 w-8 text-warm-blue" />
                       <div>
-                        <CardTitle className="text-purple-900">Crime Victims & Survivors</CardTitle>
-                        <p className="text-purple-700 text-sm">Specialized trauma-informed support and resources</p>
+                        <CardTitle className="text-foreground">Survivors & Victim Service Seekers</CardTitle>
+                        <p className="text-muted-foreground text-sm">Specialized trauma-informed support and empowerment</p>
                       </div>
                     </div>
                   </CardHeader>
                   <CardContent>
-                    <p className="text-purple-800 mb-4">
-                      Access our comprehensive victim services hub with specialized support, compensation programs, 
-                      and trauma-informed personal coaching.
+                    <p className="text-muted-foreground mb-4">
+                      Access our comprehensive survivor services hub with specialized empowerment programs, compensation guidance, 
+                      and trauma-informed personal coaching designed to help you reclaim your power.
                     </p>
-                    <ul className="space-y-2 text-sm text-purple-700 mb-4">
+                    <ul className="space-y-2 text-sm text-muted-foreground mb-4">
                       <li className="flex items-center gap-2">
-                        <CheckCircle className="h-4 w-4" />
-                        Crisis support and safety planning
+                        <CheckCircle className="h-4 w-4 text-warm-blue" />
+                        Crisis support & safety planning
                       </li>
                       <li className="flex items-center gap-2">
-                        <CheckCircle className="h-4 w-4" />
-                        Compensation program guidance
+                        <CheckCircle className="h-4 w-4 text-warm-blue" />
+                        Compensation program navigation
                       </li>
                       <li className="flex items-center gap-2">
-                        <CheckCircle className="h-4 w-4" />
-                        Legal rights information
+                        <CheckCircle className="h-4 w-4 text-warm-blue" />
+                        Rights advocacy & information
                       </li>
                       <li className="flex items-center gap-2">
-                        <CheckCircle className="h-4 w-4" />
-                        Trauma recovery resources
+                        <CheckCircle className="h-4 w-4 text-warm-blue" />
+                        Healing & resilience resources
                       </li>
                     </ul>
-                    <Button asChild className="w-full bg-purple-600 hover:bg-purple-700">
+                    <Button asChild className="w-full bg-warm-blue hover:bg-warm-blue/90">
                       <Link to="/victim-services">
                         <Shield className="h-4 w-4 mr-2" />
-                        Access Victim Services
+                        Access Survivor Services
                       </Link>
                     </Button>
                   </CardContent>
                 </Card>
               </div>
 
-              <div className="mt-8 bg-yellow-50 border border-yellow-200 rounded-lg p-6">
-                <h3 className="font-semibold text-yellow-800 mb-3">💡 Not Sure Which Path Is Right for You?</h3>
-                <p className="text-yellow-700 mb-4">
-                  Our AI assistant can help you determine the best resources and support path based on your specific situation and needs.
+              <div className="mt-8 bg-cream/50 border border-cream rounded-lg p-6">
+                <h3 className="font-semibold text-foreground mb-3">💡 Uncertain Which Path Fits Your Vision?</h3>
+                <p className="text-muted-foreground mb-4">
+                  Our AI guide can help you discover the optimal resources and growth pathway aligned with your unique situation, goals, and aspirations.
                 </p>
                 <Button 
                   onClick={() => setShowAIAssistant(true)} 
                   variant="outline" 
-                  className="border-yellow-600 text-yellow-600 hover:bg-yellow-100"
+                  className="border-accent text-accent hover:bg-accent/10"
                 >
                   <Bot className="mr-2 h-4 w-4" />
-                  Get Personalized Guidance
+                  Discover Your Optimal Path
                 </Button>
               </div>
             </div>
           </div>
         </section>
 
-        {/* Resource Toolkit Section */}
+        {/* Success Toolkit Section */}
         <section id="toolkit" className="py-12">
           <div className="container">
             <div className="max-w-4xl mx-auto">
               <div className="flex items-center gap-3 mb-6">
-                <div className="w-12 h-12 bg-green-500 rounded-lg flex items-center justify-center">
+                <div className="w-12 h-12 bg-secondary rounded-lg flex items-center justify-center">
                   <CheckCircle className="h-6 w-6 text-white" />
                 </div>
                 <div>
-                  <h2 className="text-2xl font-bold text-gray-900">Get Your Complete Ohio Resource Toolkit</h2>
-                  <p className="text-gray-600">Comprehensive guide with direct links and application tips</p>
+                  <h2 className="text-2xl font-bold text-foreground">Get Your Ohio Success Toolkit</h2>
+                  <p className="text-muted-foreground">Comprehensive guide with direct access and strategic tips</p>
                 </div>
               </div>
 
-              <div className="bg-green-50 border border-green-200 rounded-lg p-6">
-                <h3 className="font-semibold text-green-800 mb-4">📧 What You'll Receive Instantly:</h3>
+              <div className="bg-secondary/10 border border-secondary/30 rounded-lg p-6">
+                <h3 className="font-semibold text-secondary mb-4">📧 What You'll Receive Instantly:</h3>
                 <div className="grid md:grid-cols-2 gap-4 mb-6">
-                  <div className="flex items-center gap-2 text-sm text-green-700">
-                    <CheckCircle className="h-4 w-4" />
-                    Complete Ohio resource directory (PDF)
+                  <div className="flex items-center gap-2 text-sm text-secondary/80">
+                    <CheckCircle className="h-4 w-4 text-secondary" />
+                    Complete Ohio opportunity directory (PDF)
                   </div>
-                  <div className="flex items-center gap-2 text-sm text-green-700">
-                    <CheckCircle className="h-4 w-4" />
-                    Direct application links and contact info
+                  <div className="flex items-center gap-2 text-sm text-secondary/80">
+                    <CheckCircle className="h-4 w-4 text-secondary" />
+                    Direct application links & contact info
                   </div>
-                  <div className="flex items-center gap-2 text-sm text-green-700">
-                    <CheckCircle className="h-4 w-4" />
-                    Eligibility checklists for each program
+                  <div className="flex items-center gap-2 text-sm text-secondary/80">
+                    <CheckCircle className="h-4 w-4 text-secondary" />
+                    Eligibility & readiness checklists
                   </div>
-                  <div className="flex items-center gap-2 text-sm text-green-700">
-                    <CheckCircle className="h-4 w-4" />
-                    Application tips and success strategies
+                  <div className="flex items-center gap-2 text-sm text-secondary/80">
+                    <CheckCircle className="h-4 w-4 text-secondary" />
+                    Application success strategies
                   </div>
-                  <div className="flex items-center gap-2 text-sm text-green-700">
-                    <CheckCircle className="h-4 w-4" />
-                    Crisis contact quick reference card
+                  <div className="flex items-center gap-2 text-sm text-secondary/80">
+                    <CheckCircle className="h-4 w-4 text-secondary" />
+                    Emergency support quick reference
                   </div>
-                  <div className="flex items-center gap-2 text-sm text-green-700">
-                    <CheckCircle className="h-4 w-4" />
-                    First 30 days action plan
+                  <div className="flex items-center gap-2 text-sm text-secondary/80">
+                    <CheckCircle className="h-4 w-4 text-secondary" />
+                    Your first 30 days elevation plan
                   </div>
                 </div>
 
@@ -719,37 +719,37 @@ export default function GetHelpNow() {
                     className="h-12 flex-1"
                     required
                   />
-                  <Button type="submit" className="h-12 bg-green-600 hover:bg-green-700">
-                    Send Toolkit
+                  <Button type="submit" className="h-12 bg-secondary hover:bg-secondary/90">
+                    Send My Toolkit
                   </Button>
                 </form>
 
-                <p className="text-xs text-green-600 mt-3">
-                  ✨ Completely free • No spam • Unsubscribe anytime • Direct links included
+                <p className="text-xs text-secondary/80 mt-3">
+                  ✨ Completely free • No spam • Unsubscribe anytime • Direct access included
                 </p>
               </div>
             </div>
           </div>
         </section>
 
-        {/* Call to Action */}
-        <section className="py-16 bg-gradient-to-r from-blue-600 to-purple-600 text-white">
+        {/* Elevation Call to Action */}
+        <section className="py-16 bg-gradient-to-br from-primary via-primary/90 to-warm-blue text-primary-foreground">
           <div className="container">
             <div className="max-w-3xl mx-auto text-center">
-              <h2 className="text-3xl font-bold mb-4">You Don't Have to Navigate This Alone</h2>
+              <h2 className="text-3xl font-bold mb-4">Your Journey Forward Starts Here</h2>
               <p className="text-xl mb-8 opacity-90">
-                Whether you need immediate crisis support, comprehensive resources, or ongoing guidance - 
-                we're here to help you find the right path forward.
+                Whether you need immediate support, transformational resources, or ongoing empowerment - 
+                we're here to help you elevate to your highest potential.
               </p>
               
               <div className="flex flex-wrap justify-center gap-4">
                 <Button 
-                  onClick={() => scrollToSection('crisis')}
-                  className="bg-white text-blue-600 hover:bg-gray-100"
+                  onClick={() => scrollToSection('support')}
+                  className="bg-white text-primary hover:bg-cream"
                   size="lg"
                 >
                   <Phone className="h-4 w-4 mr-2" />
-                  Get Crisis Help
+                  Get Immediate Support
                 </Button>
                 <Button 
                   onClick={() => setShowAIAssistant(true)}
@@ -758,7 +758,7 @@ export default function GetHelpNow() {
                   size="lg"
                 >
                   <Bot className="h-4 w-4 mr-2" />
-                  Ask AI Assistant
+                  Start with AI Guide
                 </Button>
                 <Button 
                   onClick={() => scrollToSection('ohio-resources')}
@@ -767,7 +767,7 @@ export default function GetHelpNow() {
                   size="lg"
                 >
                   <Home className="h-4 w-4 mr-2" />
-                  Browse Resources
+                  Explore Opportunities
                 </Button>
               </div>
 
@@ -778,11 +778,11 @@ export default function GetHelpNow() {
                 </div>
                 <div className="flex items-center justify-center gap-2 text-sm opacity-90">
                   <Heart className="h-4 w-4" />
-                  Trauma-informed approach
+                  Empowerment-focused approach
                 </div>
                 <div className="flex items-center justify-center gap-2 text-sm opacity-90">
                   <CheckCircle className="h-4 w-4" />
-                  Always available
+                  Always accessible
                 </div>
               </div>
             </div>
