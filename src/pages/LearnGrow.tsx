@@ -10,7 +10,7 @@ import AICompanion from "@/components/learn/AICompanion";
 
 // Import community images
 import diverseFathersLearning from "@/assets/diverse-fathers-learning.jpg";
-import coachKayPortrait from "@/assets/coach-kay-portrait.jpg";
+// Using uploaded CoachKay portrait
 import peerSupportCircle from "@/assets/peer-support-circle.jpg";
 
 export default function CommunityLearning() {
@@ -495,8 +495,8 @@ export default function CommunityLearning() {
               <div className="grid md:grid-cols-2 gap-8 items-center">
                 <div className="relative">
                   <img 
-                    src={coachKayPortrait} 
-                    alt="CoachKay - Professional community coach and mentor"
+                    src="/lovable-uploads/b15cb09e-4953-4418-a57d-138bbe12c175.png" 
+                    alt="Coach Kay - Professional community coach and mentor"
                     className="w-full max-w-sm mx-auto rounded-lg shadow-lg"
                   />
                   <div className="absolute -bottom-4 -right-4 bg-secondary text-white px-4 py-2 rounded-lg shadow-lg">
