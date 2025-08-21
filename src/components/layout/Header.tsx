@@ -48,7 +48,7 @@ const Header = () => {
         <nav className="hidden md:flex items-center gap-6">
           <NavLink to="/help" className={linkCls}>Get Help Now</NavLink>
           
-          <NavLink to="/victim-services" className={linkCls}>Victim Services</NavLink>
+          <NavLink to="/victim-services" className={linkCls}>Healing & Safety Hub</NavLink>
           <NavLink to="/learn" className={linkCls}>Reentry Community</NavLink>
           
           <NavLink to="/about" className={linkCls}>About Us</NavLink>
@@ -148,7 +148,7 @@ const Header = () => {
 
                 <NavLink to="/help" onClick={()=>setOpen(false)} className="py-2">Get Help Now</NavLink>
                 
-                <NavLink to="/victim-services" onClick={()=>setOpen(false)} className="py-2">Victim Services</NavLink>
+                <NavLink to="/victim-services" onClick={()=>setOpen(false)} className="py-2">Healing & Safety Hub</NavLink>
                 <NavLink to="/learn" onClick={()=>setOpen(false)} className="py-2">Reentry Community</NavLink>
                 
                 <NavLink to="/about" onClick={()=>setOpen(false)} className="py-2">About Us</NavLink>

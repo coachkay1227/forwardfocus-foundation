@@ -14,11 +14,14 @@ import {
   Bot,
   Calendar,
   CheckCircle,
+  ArrowRight,
+  HelpCircle,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "@/components/ui/use-toast";
+import SignupModal from "@/components/healing/SignupModal";
 
 // SEO helpers
 const ensureMeta = (name: string, content: string) => {
@@ -120,15 +123,15 @@ const AIAssistant = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void
     <div className="fixed inset-0 z-50 flex items-end justify-end bg-black/50 p-4">
       <div className="flex h-[600px] w-full max-w-md flex-col rounded-lg bg-white shadow-xl">
         {/* Header */}
-        <div className="flex items-center justify-between rounded-t-lg border-b bg-purple-600 p-4 text-white">
+        <div className="flex items-center justify-between rounded-t-lg border-b bg-primary p-4 text-primary-foreground">
           <div className="flex items-center gap-2">
             <Bot className="h-5 w-5" />
             <div>
-              <h3 className="font-semibold">AI Resource Navigator</h3>
-              <p className="text-xs opacity-90">Trauma-informed support guidance</p>
+              <h3 className="font-semibold">Hi, I'm here to help you find resources and next steps that fit your unique journey. Let's do this together.</h3>
+              <p className="text-xs opacity-90">Trauma-informed healing companion</p>
             </div>
           </div>
-          <button onClick={onClose} className="rounded p-1 hover:bg-purple-700">
+          <button onClick={onClose} className="rounded p-1 hover:bg-primary/80">
             <X className="h-4 w-4" />
           </button>
         </div>
@@ -137,7 +140,7 @@ const AIAssistant = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void
         <div className="flex-1 space-y-4 overflow-y-auto p-4">
           {messages.map((m) => (
             <div key={m.id} className={`flex ${m.type === "user" ? "justify-end" : "justify-start"}`}>
-              <div className={`max-w-[80%] rounded-lg p-3 ${m.type === "user" ? "bg-purple-600 text-white" : "bg-gray-100 text-gray-900"}`}>
+              <div className={`max-w-[80%] rounded-lg p-3 ${m.type === "user" ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"}`}>
                 <p className="text-sm">{m.content}</p>
                 {m.type === "ai" && m.resources && m.resources.length > 0 && (
                   <div className="mt-3 space-y-2">
@@ -146,13 +149,13 @@ const AIAssistant = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void
                       <div key={idx} className="rounded border bg-white p-2 text-xs">
                         <div className="font-medium text-gray-900">{r.title}</div>
                         {r.phone && (
-                          <a href={`tel:${r.phone}`} className="text-purple-600 hover:underline">
+                          <a href={`tel:${r.phone}`} className="text-primary hover:underline">
                             {r.phone}
                           </a>
                         )}
-                        {r.action && <div className="text-gray-600">{r.action}</div>}
+                        {r.action && <div className="text-muted-foreground">{r.action}</div>}
                         {r.url && (
-                          <a href={r.url} target="_blank" rel="noopener" className="text-purple-600 hover:underline">
+                          <a href={r.url} target="_blank" rel="noopener" className="text-primary hover:underline">
                             Learn more →
                           </a>
                         )}
@@ -178,22 +181,49 @@ const AIAssistant = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void
           )}
         </div>
 
-        {/* Input */}
-        <div className="border-t p-4">
+        {/* Quick Actions */}
+        <div className="border-t bg-muted/50 p-4">
+          <p className="mb-3 text-sm font-medium text-foreground">Quick options to get started:</p>
+          <div className="mb-4 grid gap-2">
+            <button
+              onClick={() => setInput("I need help paying for therapy")}
+              className="rounded bg-accent p-2 text-left text-sm hover:bg-accent/80"
+            >
+              "I need help paying for therapy"
+            </button>
+            <button
+              onClick={() => setInput("I want to know my legal rights")}
+              className="rounded bg-accent p-2 text-left text-sm hover:bg-accent/80"
+            >
+              "I want to know my legal rights"
+            </button>
+            <button
+              onClick={() => setInput("I don't feel safe at home")}
+              className="rounded bg-accent p-2 text-left text-sm hover:bg-accent/80"
+            >
+              "I don't feel safe at home"
+            </button>
+            <button
+              onClick={() => setInput("I'm not sure what I need yet")}
+              className="rounded bg-accent p-2 text-left text-sm hover:bg-accent/80"
+            >
+              "I'm not sure what I need yet"
+            </button>
+          </div>
           <div className="flex gap-2">
             <Input
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              placeholder="Ask me about resources, rights, or support..."
+              placeholder="Or type your own question..."
               onKeyDown={(e) => e.key === "Enter" && handleSend()}
               className="flex-1"
             />
-            <Button onClick={handleSend} size="sm">
+            <Button onClick={handleSend} size="sm" className="bg-primary text-primary-foreground hover:bg-primary/90">
               <Send className="mr-2 h-4 w-4" />
               Send
             </Button>
           </div>
-          <p className="mt-2 text-xs text-gray-500">💜 This conversation is private and confidential</p>
+          <p className="mt-2 text-xs text-muted-foreground">💚 This conversation is private and confidential</p>
         </div>
       </div>
     </div>
@@ -384,69 +414,137 @@ const CoachingInquiry = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => 
 };
 
 export default function VictimServices() {
-  const [activeSection, setActiveSection] = useState<string>("crisis");
+  const [activeSection, setActiveSection] = useState<string>("support-tiles");
   const [showAIAssistant, setShowAIAssistant] = useState(false);
   const [showCoachingInquiry, setShowCoachingInquiry] = useState(false);
+  const [showSignupModal, setShowSignupModal] = useState(false);
+  const [isSignedUp, setIsSignedUp] = useState(false);
 
   useEffect(() => {
-    document.title = "Victim Services: Nationwide Support | Forward Focus Collective";
+    document.title = "Healing & Safety Hub | Forward Focus Elevation";
     ensureMeta(
       "description",
-      "Comprehensive trauma-informed victim services hub with AI resource navigation, crisis support, compensation programs, and healing resources nationwide."
+      "Your personalized healing and safety hub. Compassionate, trauma-informed support built for survivors of crime and violence. Confidential tools, personalized guidance, and community support."
     );
     ensureCanonical();
   }, []);
 
-  const navigationSections: { id: string; label: string; icon: LucideIcon; color: string }[] = [
-    { id: "crisis", label: "🆘 Crisis Help", icon: Phone, color: "bg-red-500" },
-    { id: "compensation", label: "💰 Get Compensation", icon: DollarSign, color: "bg-green-500" },
-    { id: "rights", label: "⚖️ Know Your Rights", icon: Scale, color: "bg-blue-500" },
-    { id: "healing", label: "💜 Trauma Recovery", icon: Heart, color: "bg-purple-500" },
-    { id: "safety", label: "🛡️ Safety Planning", icon: Shield, color: "bg-orange-500" },
-    { id: "specialized", label: "👥 Specialized Support", icon: Users, color: "bg-teal-500" },
+  const handleTileClick = (requiresAuth: boolean = false) => {
+    if (requiresAuth && !isSignedUp) {
+      setShowSignupModal(true);
+    }
+  };
+
+  const handleSignup = (data: { name: string; email: string }) => {
+    setIsSignedUp(true);
+    // Here you could integrate with your auth system
+    console.log("User signed up:", data);
+  };
+
+  const supportTiles = [
+    {
+      id: "financial-help",
+      title: "Financial Help",
+      description: "Learn how to access compensation, medical bill relief, and emergency assistance.",
+      icon: DollarSign,
+      buttonText: "Get Financial Support",
+      requiresAuth: true,
+    },
+    {
+      id: "know-rights",
+      title: "Know Your Rights", 
+      description: "Find your legal protections and understand what justice means for you.",
+      icon: Scale,
+      buttonText: "See Legal Support Options",
+      requiresAuth: true,
+    },
+    {
+      id: "healing-recovery",
+      title: "Healing & Recovery",
+      description: "Explore mental health, coaching, and trauma recovery tailored to your needs.",
+      icon: Heart, 
+      buttonText: "Start Recovery Plan",
+      requiresAuth: true,
+    },
+    {
+      id: "safety-planning",
+      title: "Safety Planning",
+      description: "Protect yourself with tools, checklists, and secure personal plans.",
+      icon: Shield,
+      buttonText: "Create My Safety Plan", 
+      requiresAuth: true,
+    },
+    {
+      id: "specialized-support", 
+      title: "Specialized Support",
+      description: "Connect to organizations based on your specific identity or need.",
+      icon: Users,
+      buttonText: "Explore Custom Support",
+      requiresAuth: true,
+    },
+    {
+      id: "ai-assistant",
+      title: "Not Sure Where to Start?",
+      description: "Let our AI assistant walk you through options that fit your situation.",
+      icon: HelpCircle,
+      buttonText: "Ask AI Assistant", 
+      requiresAuth: false,
+    },
   ];
 
-  const scrollToSection = (sectionId: string) => {
-    setActiveSection(sectionId);
-    const el = document.getElementById(sectionId);
-    if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+  const handleTileAction = (tileId: string, requiresAuth: boolean) => {
+    if (requiresAuth && !isSignedUp) {
+      setShowSignupModal(true);
+      return;
+    }
+
+    if (tileId === "ai-assistant") {
+      setShowAIAssistant(true);
+    } else {
+      // Navigate to specific resource sections or show content
+      const el = document.getElementById(tileId);
+      if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
   };
 
   return (
     <>
       {/* Emergency Banner */}
-      <div className="bg-red-600 py-2 text-center font-medium text-white">
+      <div className="bg-primary py-2 text-center font-medium text-primary-foreground">
         🆘 IMMEDIATE DANGER? CALL 911 NOW | Domestic Violence: 1-800-799-7233 | Crisis Text: 741741
       </div>
 
       {/* Hero */}
-      <header className="border-b bg-gradient-to-b from-purple-50 to-white">
+      <header className="border-b bg-gradient-to-b from-accent/20 to-background">
         <div className="container py-12 md:py-16">
           <div className="mx-auto max-w-4xl text-center">
-            <h1 className="mb-4 font-heading text-4xl font-bold text-gray-900 md:text-5xl">Your Healing Journey Starts Here</h1>
-            <p className="mb-6 text-xl text-gray-600">
-              Comprehensive, trauma-informed support designed specifically for crime victims and survivors. Navigate resources with confidence and find the help you deserve.
+            <h1 className="mb-4 font-heading text-4xl font-bold text-foreground md:text-5xl">Your Healing & Safety Hub</h1>
+            <p className="mb-6 text-xl text-muted-foreground">
+              Compassionate, trauma-informed support built for survivors of crime and violence. Confidential tools, personalized guidance, and your community — all in one place.
             </p>
-            <div className="mb-8 flex items-center justify-center gap-4 text-sm text-gray-500">
+            <div className="mb-8 flex flex-wrap items-center justify-center gap-6 text-sm text-muted-foreground">
               <span className="flex items-center gap-2">
-                <CheckCircle className="h-4 w-4 text-green-500" /> Free Resources
+                <CheckCircle className="h-4 w-4 text-accent" /> Free Support
               </span>
               <span className="flex items-center gap-2">
-                <CheckCircle className="h-4 w-4 text-green-500" /> No Judgment Zone
+                <CheckCircle className="h-4 w-4 text-accent" /> No Judgment
               </span>
               <span className="flex items-center gap-2">
-                <CheckCircle className="h-4 w-4 text-green-500" /> Privacy Protected
+                <CheckCircle className="h-4 w-4 text-accent" /> Privacy Protected
+              </span>
+              <span className="flex items-center gap-2">
+                <CheckCircle className="h-4 w-4 text-accent" /> Always Available
               </span>
             </div>
 
             <div className="flex flex-wrap justify-center gap-4">
-              <Button onClick={() => setShowAIAssistant(true)} className="bg-purple-600 hover:bg-purple-700">
+              <Button onClick={() => setShowAIAssistant(true)} className="bg-accent text-accent-foreground hover:bg-accent/90">
                 <Bot className="mr-2 h-4 w-4" /> Ask AI Assistant
               </Button>
-              <Button onClick={() => setShowCoachingInquiry(true)} variant="outline" className="border-purple-600 text-purple-600 hover:bg-purple-50">
-                <Heart className="mr-2 h-4 w-4" /> Get Personal Support
+              <Button onClick={() => handleTileClick(true)} className="bg-secondary text-secondary-foreground hover:bg-secondary/90">
+                <Heart className="mr-2 h-4 w-4" /> Start Personal Recovery Plan
               </Button>
-              <Button onClick={() => scrollToSection("crisis")} variant="outline" className="border-red-600 text-red-600 hover:bg-red-50">
+              <Button onClick={() => document.getElementById('crisis')?.scrollIntoView({ behavior: 'smooth' })} variant="outline" className="border-primary text-primary hover:bg-primary/10">
                 <Phone className="mr-2 h-4 w-4" /> Crisis Resources
               </Button>
             </div>
@@ -454,29 +552,47 @@ export default function VictimServices() {
         </div>
       </header>
 
-      {/* Sticky Nav */}
-      <nav className="sticky top-0 z-40 border-b bg-white shadow-sm">
-        <div className="container py-4">
-          <div className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-6">
-            {navigationSections.map((s) => {
-              const Icon = s.icon;
-              return (
-                <button
-                  key={s.id}
-                  onClick={() => scrollToSection(s.id)}
-                  className={`flex items-center gap-2 rounded-lg border p-3 transition-all ${
-                    activeSection === s.id ? "border-primary bg-primary/10 text-primary" : "border-gray-200 hover:border-gray-300 hover:bg-gray-50"
-                  }`}
-                >
-                  <Icon className="h-4 w-4" />
-                  <span className="hidden text-sm font-medium sm:block">{s.label}</span>
-                  <ChevronRight className="ml-auto h-3 w-3" />
-                </button>
-              );
-            })}
+      {/* Support Path Tiles */}
+      <section id="support-tiles" className="py-12 bg-background">
+        <div className="container">
+          <div className="mx-auto max-w-6xl">
+            <div className="mb-8 text-center">
+              <h2 className="mb-3 font-heading text-3xl font-bold text-foreground">Choose Your Support Path</h2>
+              <p className="text-lg text-muted-foreground">Select the area where you need help most. We'll guide you to the right resources.</p>
+            </div>
+            
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+              {supportTiles.map((tile) => {
+                const Icon = tile.icon;
+                return (
+                  <div
+                    key={tile.id}
+                    className="group relative rounded-lg border bg-card p-6 shadow-sm transition-all hover:shadow-lg hover:-translate-y-1"
+                  >
+                    <div className="mb-4 flex items-start gap-3">
+                      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary/10">
+                        <Icon className="h-5 w-5 text-primary" />
+                      </div>
+                      <div className="flex-1">
+                        <h3 className="mb-2 font-semibold text-card-foreground">{tile.title}</h3>
+                        <p className="text-sm text-muted-foreground">{tile.description}</p>
+                      </div>
+                    </div>
+                    
+                    <Button
+                      onClick={() => handleTileAction(tile.id, tile.requiresAuth)}
+                      className="w-full justify-between bg-primary text-primary-foreground hover:bg-primary/90"
+                    >
+                      <span>{tile.buttonText}</span>
+                      <ArrowRight className="h-4 w-4" />
+                    </Button>
+                  </div>
+                );
+              })}
+            </div>
           </div>
         </div>
-      </nav>
+      </section>
 
       <main className="bg-gray-50">
         {/* Crisis Section */}
@@ -787,18 +903,20 @@ export default function VictimServices() {
           </div>
         </section>
 
-        {/* CTA */}
-        <section className="py-12">
+        {/* Final CTA */}
+        <section className="py-12 bg-muted/50">
           <div className="container">
-            <div className="mx-auto max-w-4xl rounded-lg border bg-white p-6 text-center">
-              <h2 className="text-xl font-semibold">Ready to Access Support?</h2>
-              <p className="mt-2 text-muted-foreground">Our team and tools are here for you—confidentially and judgment-free.</p>
-              <div className="mt-4 flex flex-wrap justify-center gap-3">
-                <Button onClick={() => setShowAIAssistant(true)} className="bg-purple-600 hover:bg-purple-700">
-                  <Bot className="mr-2 h-4 w-4" /> Open AI Assistant
+            <div className="mx-auto max-w-4xl rounded-lg border bg-card p-8 text-center shadow-lg">
+              <h2 className="mb-3 text-2xl font-semibold text-card-foreground">Need a Personal Guide?</h2>
+              <p className="mb-6 text-lg text-muted-foreground">
+                You don't have to go through this alone. Talk to a real coach or let our digital assistant guide your first step.
+              </p>
+              <div className="flex flex-wrap justify-center gap-4">
+                <Button onClick={() => setShowAIAssistant(true)} className="bg-accent text-accent-foreground hover:bg-accent/90">
+                  <Bot className="mr-2 h-4 w-4" /> Open Assistant
                 </Button>
-                <Button onClick={() => setShowCoachingInquiry(true)} variant="outline">
-                  <Calendar className="mr-2 h-4 w-4" /> Request Coaching
+                <Button onClick={() => setShowCoachingInquiry(true)} className="bg-secondary text-secondary-foreground hover:bg-secondary/90">
+                  <Calendar className="mr-2 h-4 w-4" /> Request a Coach
                 </Button>
               </div>
             </div>
@@ -809,6 +927,11 @@ export default function VictimServices() {
       {/* Modals */}
       <AIAssistant isOpen={showAIAssistant} onClose={() => setShowAIAssistant(false)} />
       <CoachingInquiry isOpen={showCoachingInquiry} onClose={() => setShowCoachingInquiry(false)} />
+      <SignupModal
+        isOpen={showSignupModal}
+        onClose={() => setShowSignupModal(false)}
+        onSignup={handleSignup}
+      />
     </>
   );
 }
