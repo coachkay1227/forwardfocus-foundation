@@ -5,13 +5,12 @@ import {
   MessageSquare, Shield, Clock, Star, ArrowRight, Award, UserCheck
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import PathwayList from "@/components/learn/PathwayList";
 import { CommunityApplication } from "@/components/learn/CommunityApplication";
 import AICompanion from "@/components/learn/AICompanion";
 
 // Import community images
 import diverseFathersLearning from "@/assets/diverse-fathers-learning.jpg";
-import coachPortrait from "@/assets/coach-portrait.jpg";
+import coachKayPortrait from "@/assets/coach-kay-portrait.jpg";
 import peerSupportCircle from "@/assets/peer-support-circle.jpg";
 
 export default function CommunityLearning() {
@@ -64,11 +63,11 @@ export default function CommunityLearning() {
             <h1 className="font-heading text-4xl md:text-5xl font-bold text-foreground mb-4">
               Your Learning & Growth Community
             </h1>
-            <p className="text-xl text-muted-foreground mb-6">
+            <p className="text-xl text-foreground/80 mb-6">
               Free education, peer support, and guidance designed specifically for justice-impacted individuals and families. 
               Learn at your pace, connect with others who understand, and build the future you deserve.
             </p>
-            <div className="flex items-center justify-center gap-4 text-sm text-muted-foreground mb-8">
+            <div className="flex items-center justify-center gap-4 text-sm text-foreground/70 mb-8">
               <span className="flex items-center gap-2">
                 <CheckCircle className="h-4 w-4 text-accent" />
                 100% Free Education
@@ -162,7 +161,7 @@ export default function CommunityLearning() {
                 </div>
                 <div>
                   <h2 className="text-2xl font-bold text-foreground">How Our Community Works</h2>
-                  <p className="text-muted-foreground">A safe space for learning, healing, and growth</p>
+                  <p className="text-foreground/70">A safe space for learning, healing, and growth</p>
                 </div>
               </div>
 
@@ -243,17 +242,17 @@ export default function CommunityLearning() {
           </div>
         </section>
 
-        {/* Learning Modules */}
+        {/* Learning Topic Previews */}
         <section id="learning" className="py-12">
           <div className="container">
             <div className="max-w-6xl mx-auto">
               <div className="flex items-center gap-3 mb-6">
-                <div className="w-12 h-12 bg-accent rounded-lg flex items-center justify-center">
-                  <BookOpen className="h-6 w-6 text-accent-foreground" />
+                <div className="w-12 h-12 bg-secondary rounded-lg flex items-center justify-center">
+                  <BookOpen className="h-6 w-6 text-white" />
                 </div>
                 <div>
-                  <h2 className="text-2xl font-bold text-foreground">Free Learning Pathways</h2>
-                  <p className="text-muted-foreground">Self-paced education designed for your journey - including AI Basics</p>
+                  <h2 className="text-2xl font-bold text-foreground">Topics Covered in Our Skool Community</h2>
+                  <p className="text-foreground/70">Preview the key areas we focus on - full modules available after joining</p>
                 </div>
               </div>
 
@@ -261,25 +260,74 @@ export default function CommunityLearning() {
               <div className="mb-8 bg-secondary/10 border border-secondary/20 rounded-lg p-6">
                 <div className="flex items-center gap-3 mb-4">
                   <div className="w-8 h-8 bg-secondary rounded-lg flex items-center justify-center">
-                    <Star className="h-5 w-5 text-secondary-foreground" />
+                    <Star className="h-5 w-5 text-white" />
                   </div>
-                  <h3 className="font-semibold text-secondary-foreground">AI Learning Assistant</h3>
+                  <h3 className="font-semibold text-foreground">AI Learning Assistant</h3>
                 </div>
-                <p className="text-sm text-secondary-foreground/80 mb-4">
+                <p className="text-foreground/70 mb-4">
                   Get personalized help with your learning journey. Ask questions about modules, get study tips, or practice concepts.
                 </p>
                 <AICompanion />
               </div>
 
-              {/* Actual Learning Pathways */}
-              <PathwayList />
+              {/* 8 Topic Preview Cards */}
+              <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                {[
+                  {
+                    title: "Welcome Rest Your Path",
+                    description: "Begin your healing journey with trauma-informed practices and community connection"
+                  },
+                  {
+                    title: "Financial Foundations", 
+                    description: "Banking basics, budgeting strategies, and financial literacy for stability"
+                  },
+                  {
+                    title: "Clarity Support & Wellness",
+                    description: "Mental health resources, mindfulness practices, and emotional wellness tools"
+                  },
+                  {
+                    title: "AI Basics Training",
+                    description: "Learn how AI can support your reentry journey and daily life navigation"
+                  },
+                  {
+                    title: "Credit Confidence Starter",
+                    description: "Build and repair credit, understand credit reports, and establish financial trust"
+                  },
+                  {
+                    title: "Business Essentials",
+                    description: "Entrepreneurship fundamentals, business planning, and creating your own opportunities"
+                  },
+                  {
+                    title: "Reentry & Life Tools Vault",
+                    description: "Practical resources for housing, employment, documentation, and system navigation"
+                  },
+                  {
+                    title: "Purpose, Planning & Pathways",
+                    description: "Goal setting, life planning, and creating sustainable pathways forward"
+                  }
+                ].map((topic, index) => (
+                  <div key={index} className="group relative bg-card border border-border rounded-lg p-4 hover:shadow-lg transition-all duration-300 hover:scale-105">
+                    <div className="absolute inset-0 bg-gradient-to-br from-secondary/20 to-accent/20 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    <div className="relative z-10">
+                      <h3 className="font-semibold text-foreground mb-2">{topic.title}</h3>
+                      <p className="text-foreground/70 text-sm group-hover:text-foreground transition-colors duration-300">
+                        {topic.description}
+                      </p>
+                      <div className="mt-3 text-xs text-secondary font-medium">Available in Community</div>
+                    </div>
+                  </div>
+                ))}
+              </div>
 
-              <div className="mt-8 bg-primary/10 border border-primary/20 rounded-lg p-6">
-                <h3 className="font-semibold text-primary mb-3">📚 Full Access After Approval</h3>
-                <p className="text-primary/80 text-sm">
-                  These are preview descriptions. Approved community members get access to interactive content, 
-                  downloadable resources, video lessons, practical exercises, progress tracking, and peer discussions 
-                  for all pathways including our new AI Basics module.
+              <div className="bg-secondary/10 border border-secondary/20 rounded-lg p-6">
+                <h3 className="font-semibold text-foreground mb-3 flex items-center gap-2">
+                  <Shield className="h-5 w-5 text-secondary" />
+                  Full Access After Community Approval
+                </h3>
+                <p className="text-foreground/70">
+                  These topic previews give you a taste of what's covered in our private Skool community. 
+                  Once approved, you'll get access to full interactive modules, video content, downloadable resources, 
+                  progress tracking, and direct peer discussions with CoachKay and community members.
                 </p>
               </div>
             </div>
@@ -447,33 +495,33 @@ export default function CommunityLearning() {
               <div className="grid md:grid-cols-2 gap-8 items-center">
                 <div className="relative">
                   <img 
-                    src={coachPortrait} 
-                    alt="Community coach - Moroccan mentor with glasses and short hair"
+                    src={coachKayPortrait} 
+                    alt="CoachKay - Professional community coach and mentor"
                     className="w-full max-w-sm mx-auto rounded-lg shadow-lg"
                   />
-                  <div className="absolute -bottom-4 -right-4 bg-secondary text-secondary-foreground px-4 py-2 rounded-lg shadow-lg">
-                    <span className="text-sm font-medium">Your Coach</span>
+                  <div className="absolute -bottom-4 -right-4 bg-secondary text-white px-4 py-2 rounded-lg shadow-lg">
+                    <span className="text-sm font-medium">CoachKay</span>
                   </div>
                 </div>
                 <div>
-                  <h2 className="text-2xl font-bold text-foreground mb-4">Meet Your Community Coach</h2>
-                  <p className="text-muted-foreground mb-4">
+                  <h2 className="text-2xl font-bold text-foreground mb-4">Meet CoachKay</h2>
+                  <p className="text-foreground/80 mb-4">
                     I understand the challenges of reentry because I've walked this path. As someone who has navigated 
                     the system and emerged stronger, I'm here to guide you through your learning journey with compassion, 
                     understanding, and practical wisdom.
                   </p>
                   <div className="space-y-3 mb-6">
                     <div className="flex items-center gap-3">
-                      <div className="w-2 h-2 bg-accent rounded-full"></div>
-                      <span className="text-sm">Lived experience with reentry challenges</span>
+                      <div className="w-2 h-2 bg-secondary rounded-full"></div>
+                      <span className="text-foreground/80">Lived experience with reentry challenges</span>
                     </div>
                     <div className="flex items-center gap-3">
-                      <div className="w-2 h-2 bg-accent rounded-full"></div>
-                      <span className="text-sm">Trauma-informed coaching approach</span>
+                      <div className="w-2 h-2 bg-secondary rounded-full"></div>
+                      <span className="text-foreground/80">Trauma-informed coaching approach</span>
                     </div>
                     <div className="flex items-center gap-3">
-                      <div className="w-2 h-2 bg-accent rounded-full"></div>
-                      <span className="text-sm">Dedicated to community empowerment</span>
+                      <div className="w-2 h-2 bg-secondary rounded-full"></div>
+                      <span className="text-foreground/80">Dedicated to community empowerment</span>
                     </div>
                   </div>
                   <Button 
