@@ -61,6 +61,21 @@ export default {
 						'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 						border: 'hsl(var(--sidebar-border))',
 						ring: 'hsl(var(--sidebar-ring))'
+					},
+					'burned-orange': {
+						DEFAULT: 'hsl(var(--burned-orange))',
+						foreground: 'hsl(var(--burned-orange-foreground))'
+					},
+					'warm-blue': {
+						DEFAULT: 'hsl(var(--warm-blue))',
+						foreground: 'hsl(var(--warm-blue-foreground))'
+					},
+					cream: {
+						DEFAULT: 'hsl(var(--cream))',
+						foreground: 'hsl(var(--cream-foreground))'
+					},
+					navy: {
+						900: 'hsl(var(--navy-900))'
 					}
 				},
 				borderRadius: {

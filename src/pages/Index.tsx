@@ -11,8 +11,8 @@ const Index = () => {
   const [email, setEmail] = useState("");
 
   useEffect(() => {
-    document.title = "Forward Focus Collective | Trauma-Informed Support for Justice-Impacted Families";
-    const desc = "Trauma-informed support, AI-enhanced guidance, and comprehensive resources for justice-impacted individuals, families, and crime victims. Starting in Ohio, expanding nationwide.";
+    document.title = "Forward Focus Elevation | Empowering Justice-Impacted Families";
+    const desc = "Empowering justice-impacted families with the tools to rebuild and thrive. AI-enhanced guidance and comprehensive resources for justice-impacted individuals, families, and crime victims.";
     const existing = document.querySelector('meta[name="description"]');
     if (existing) existing.setAttribute("content", desc);
     else {
@@ -47,37 +47,40 @@ const Index = () => {
       </div>
 
       {/* Hero */}
-      <section className="bg-gradient-to-b from-primary/10 via-background to-background">
+      <section 
+        className="bg-[url('/images/families-collage.jpg')] bg-cover bg-center relative"
+        style={{
+          backgroundImage: "linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('/images/families-collage.jpg')"
+        }}
+      >
         <div className="container py-16 md:py-24">
           <div className="max-w-3xl">
-            <p className="text-sm text-muted-foreground tracking-wide uppercase">Now serving Ohio</p>
-            <h1 className="mt-3 font-heading text-4xl md:text-5xl font-bold">
-              Your Journey Forward Starts Here
+            <p className="text-sm text-white/80 tracking-wide uppercase font-medium">Now serving Ohio</p>
+            <h1 className="mt-3 font-heading text-4xl md:text-5xl font-bold text-white drop-shadow-lg">
+              Forward Focus Elevation
             </h1>
-            <p className="mt-4 text-lg text-muted-foreground">
-              Trauma-informed support, AI-enhanced guidance, and comprehensive resources for justice-impacted individuals, families, and crime victims.
+            <p className="mt-4 text-lg md:text-xl text-white/90 font-medium">
+              Empowering justice-impacted families with the tools to rebuild and thrive.
             </p>
             <div className="mt-8 flex flex-col sm:flex-row gap-3">
-              <Button size="lg" className="h-12 bg-red-600 hover:bg-red-700" asChild>
+              <Button size="lg" className="h-12 bg-burned-orange hover:bg-burned-orange/90" asChild>
                 <a href="/help">
-                  <Phone className="mr-2 h-4 w-4" />
-                  Get Immediate Help
+                  📞 Get Immediate Help
                 </a>
               </Button>
-              <Button size="lg" variant="secondary" className="h-12" asChild>
+              <Button size="lg" variant="secondary" className="h-12 bg-white/20 text-white border-white/30 hover:bg-white/30" asChild>
                 <a href="/learn">
-                  <Users className="mr-2 h-4 w-4" />
-                  Join Learning Community
+                  👥 Join Learning Community
                 </a>
               </Button>
-              <Button size="lg" variant="outline" className="h-12" asChild>
+              <Button size="lg" variant="outline" className="h-12 bg-white/10 text-white border-white/30 hover:bg-white/20" asChild>
                 <a href="/victim-services">
                   <Shield className="mr-2 h-4 w-4" />
                   Victim Services
                 </a>
               </Button>
             </div>
-            <div className="mt-6 flex items-center gap-2 text-sm text-muted-foreground">
+            <div className="mt-6 flex items-center gap-2 text-sm text-white/80">
               <MapPin className="h-4 w-4" aria-hidden />
               <span>AI-enhanced • Trauma-informed • Income-based support</span>
             </div>
@@ -87,24 +90,24 @@ const Index = () => {
 
       {/* How it works */}
       <section className="container py-12 md:py-16">
-        <h2 className="font-heading text-2xl md:text-3xl font-semibold">How we support your journey</h2>
+        <h2 className="font-heading text-2xl md:text-3xl font-semibold">How We Support Your Journey</h2>
         <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {[{
-            icon: Phone,
-            title: 'Get immediate help',
-            desc: '24/7 crisis support, AI-powered guidance, and comprehensive Ohio resource directory.'
+            icon: '📞',
+            title: 'Get Immediate Help',
+            desc: '24/7 support, AI-powered guidance, and live human assistance.'
           },{
-            icon: Bot,
-            title: 'AI-enhanced navigation',
-            desc: 'Smart technology that understands justice-impacted experiences and guides you to the right resources.'
+            icon: '🤖',
+            title: 'AI-Enhanced Navigation',
+            desc: 'Smart tech to guide justice-impacted individuals to the right tools.'
           },{
-            icon: Users,
-            title: 'Join supportive community',
-            desc: 'Free education, peer support, and income-based life coaching designed for your journey.'
+            icon: '👥',
+            title: 'Supportive Community',
+            desc: 'Peer support, mentorship, and life coaching designed for your journey.'
           }].map((item) => (
-            <Card key={item.title}>
+            <Card key={item.title} className="bg-cream/50">
               <CardHeader className="flex-row items-center gap-3">
-                <item.icon className="h-6 w-6 text-primary" aria-hidden />
+                <div className="text-3xl" aria-hidden>{item.icon}</div>
                 <CardTitle className="text-base md:text-lg">{item.title}</CardTitle>
               </CardHeader>
               <CardContent className="text-sm text-muted-foreground">{item.desc}</CardContent>
@@ -114,16 +117,16 @@ const Index = () => {
       </section>
 
       {/* Success stories */}
-      <section className="bg-muted/30">
+      <section className="bg-cream/30">
         <div className="container py-12 md:py-16">
-          <h2 className="font-heading text-2xl md:text-3xl font-semibold">Real stories, real progress</h2>
+          <h2 className="font-heading text-2xl md:text-3xl font-semibold">Real Stories, Real Progress</h2>
           <div className="mt-6 grid gap-4 md:grid-cols-3">
             {[
-              "The AI assistant helped me find resources I didn't even know existed.", 
-              "Finally found a community that actually understands what I'm going through.", 
-              "The trauma-informed approach made all the difference in my healing."
+              "The trauma-informed approach made all the difference in my healing.", 
+              "Finally found a community that understands what I'm going through.", 
+              "The AI assistant helped me find resources I didn't know existed."
             ].map((quote, i) => (
-              <Card key={i}>
+              <Card key={i} className="bg-white shadow-sm">
                 <CardContent className="pt-6 text-sm text-muted-foreground">"{quote}"</CardContent>
               </Card>
             ))}
@@ -167,51 +170,49 @@ const Index = () => {
       </section>
 
       {/* Choose Your Path */}
-      <section className="bg-muted/30">
+      <section className="bg-gradient-to-r from-burned-orange/10 via-cream/50 to-warm-blue/10">
         <div className="container py-12 md:py-16">
-          <h2 className="font-heading text-2xl md:text-3xl font-semibold">Choose your path forward</h2>
+          <h2 className="font-heading text-2xl md:text-3xl font-semibold">Choose Your Path Forward</h2>
           <div className="mt-6 grid gap-6 md:grid-cols-2">
-            <Card className="border-2 border-green-200 bg-green-50">
+            <Card className="border-2 border-burned-orange/30 bg-white shadow-md border-l-8 border-l-burned-orange">
               <CardHeader>
                 <div className="flex items-center gap-3">
-                  <Users className="h-6 w-6 text-green-600" />
+                  <Users className="h-6 w-6 text-burned-orange" />
                   <div>
-                    <CardTitle className="text-green-900">Justice-Impacted Families</CardTitle>
-                    <p className="text-sm text-green-700">Reentry support, education, and community</p>
+                    <CardTitle className="text-xl font-bold">Justice-Impacted Families</CardTitle>
+                    <p className="text-sm text-muted-foreground">Free learning community, peer support, and life coaching.</p>
                   </div>
                 </div>
               </CardHeader>
               <CardContent>
-                <p className="text-green-800 mb-4">
+                <p className="text-muted-foreground mb-4">
                   Free learning community, peer support, and income-based life coaching designed specifically for justice-impacted individuals and families.
                 </p>
-                <Button asChild className="w-full bg-green-600 hover:bg-green-700">
+                <Button asChild className="w-full bg-burned-orange hover:bg-burned-orange/90">
                   <a href="/learn">
-                    <Users className="mr-2 h-4 w-4" />
-                    Join Learning Community
+                    Join Learning Community →
                   </a>
                 </Button>
               </CardContent>
             </Card>
 
-            <Card className="border-2 border-purple-200 bg-purple-50">
+            <Card className="border-2 border-warm-blue/30 bg-white shadow-md border-l-8 border-l-warm-blue">
               <CardHeader>
                 <div className="flex items-center gap-3">
-                  <Shield className="h-6 w-6 text-purple-600" />
+                  <Shield className="h-6 w-6 text-warm-blue" />
                   <div>
-                    <CardTitle className="text-purple-900">Crime Victims & Survivors</CardTitle>
-                    <p className="text-sm text-purple-700">Specialized trauma-informed support</p>
+                    <CardTitle className="text-xl font-bold">Crime Victims & Survivors</CardTitle>
+                    <p className="text-sm text-muted-foreground">Specialized trauma-informed support and crisis tools.</p>
                   </div>
                 </div>
               </CardHeader>
               <CardContent>
-                <p className="text-purple-800 mb-4">
+                <p className="text-muted-foreground mb-4">
                   Comprehensive victim services hub with crisis support, compensation guidance, and specialized trauma-informed coaching.
                 </p>
-                <Button asChild className="w-full bg-purple-600 hover:bg-purple-700">
+                <Button asChild className="w-full bg-warm-blue hover:bg-warm-blue/90">
                   <a href="/victim-services">
-                    <Shield className="mr-2 h-4 w-4" />
-                    Access Victim Services
+                    Access Victim Services →
                   </a>
                 </Button>
               </CardContent>
@@ -222,29 +223,40 @@ const Index = () => {
 
       {/* Our Impact */}
       <section className="container py-12 md:py-16">
-        <h2 className="font-heading text-2xl md:text-3xl font-semibold">What makes us different</h2>
+        <h2 className="font-heading text-2xl md:text-3xl font-semibold">What Makes Us Different</h2>
         <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-6">
-          <Card>
+          <Card className="bg-cream/50">
             <CardContent className="pt-6 text-center">
-              <Bot className="h-12 w-12 text-blue-600 mx-auto mb-3" />
+              <Bot className="h-12 w-12 text-warm-blue mx-auto mb-3" />
               <div className="font-semibold text-gray-900 mb-2">AI-Enhanced Guidance</div>
               <div className="text-sm text-muted-foreground">Smart technology that understands justice-impacted experiences</div>
             </CardContent>
           </Card>
-          <Card>
+          <Card className="bg-cream/50">
             <CardContent className="pt-6 text-center">
-              <HeartHandshake className="h-12 w-12 text-purple-600 mx-auto mb-3" />
+              <HeartHandshake className="h-12 w-12 text-burned-orange mx-auto mb-3" />
               <div className="font-semibold text-gray-900 mb-2">Trauma-Informed Care</div>
               <div className="text-sm text-muted-foreground">Every interaction designed with safety, trust, and empowerment</div>
             </CardContent>
           </Card>
-          <Card>
+          <Card className="bg-cream/50">
             <CardContent className="pt-6 text-center">
-              <Users className="h-12 w-12 text-green-600 mx-auto mb-3" />
+              <Users className="h-12 w-12 text-warm-blue mx-auto mb-3" />
               <div className="font-semibold text-gray-900 mb-2">Income-Based Support</div>
               <div className="text-sm text-muted-foreground">Accessible life coaching and support regardless of financial situation</div>
             </CardContent>
           </Card>
+        </div>
+      </section>
+
+      {/* Footer Teaser */}
+      <section className="bg-navy-900 text-white py-12 text-center">
+        <div className="container">
+          <h3 className="text-lg font-semibold">Want to Get Involved?</h3>
+          <p className="text-sm mb-6 text-white/80">Whether you're a family, nonprofit, or mentor — there's a place for you here.</p>
+          <Button size="lg" className="bg-burned-orange hover:bg-burned-orange/90 shadow-md">
+            <a href="/partners">Join the Movement</a>
+          </Button>
         </div>
       </section>
     </main>
