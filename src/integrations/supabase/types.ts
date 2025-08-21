@@ -7,13 +7,49 @@ export type Json =
   | Json[]
 
 export type Database = {
-  // Allows to automatically instanciate createClient with right options
+  // Allows to automatically instantiate createClient with right options
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
     PostgrestVersion: "13.0.4"
   }
   public: {
     Tables: {
+      credit_transactions: {
+        Row: {
+          amount: number
+          created_at: string
+          email: string
+          id: string
+          metadata: Json | null
+          order_id: string | null
+          reason: string
+          stripe_session_id: string | null
+          user_id: string
+        }
+        Insert: {
+          amount: number
+          created_at?: string
+          email: string
+          id?: string
+          metadata?: Json | null
+          order_id?: string | null
+          reason: string
+          stripe_session_id?: string | null
+          user_id: string
+        }
+        Update: {
+          amount?: number
+          created_at?: string
+          email?: string
+          id?: string
+          metadata?: Json | null
+          order_id?: string | null
+          reason?: string
+          stripe_session_id?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       modules: {
         Row: {
           bundle: string
@@ -59,6 +95,45 @@ export type Database = {
           price?: number | null
           title?: string
           updated_at?: string
+        }
+        Relationships: []
+      }
+      orders: {
+        Row: {
+          amount: number
+          bundle: string
+          created_at: string
+          currency: string
+          email: string
+          id: string
+          status: string
+          stripe_session_id: string | null
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          amount: number
+          bundle: string
+          created_at?: string
+          currency?: string
+          email: string
+          id?: string
+          status?: string
+          stripe_session_id?: string | null
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          amount?: number
+          bundle?: string
+          created_at?: string
+          currency?: string
+          email?: string
+          id?: string
+          status?: string
+          stripe_session_id?: string | null
+          updated_at?: string
+          user_id?: string | null
         }
         Relationships: []
       }
@@ -164,6 +239,212 @@ export type Database = {
         }
         Relationships: []
       }
+      shop_custom_ai_art_requests: {
+        Row: {
+          budget: string | null
+          created_at: string
+          description: string
+          email: string
+          id: string
+          name: string
+          reference_url: string | null
+          status: string
+          style: string | null
+        }
+        Insert: {
+          budget?: string | null
+          created_at?: string
+          description: string
+          email: string
+          id?: string
+          name: string
+          reference_url?: string | null
+          status?: string
+          style?: string | null
+        }
+        Update: {
+          budget?: string | null
+          created_at?: string
+          description?: string
+          email?: string
+          id?: string
+          name?: string
+          reference_url?: string | null
+          status?: string
+          style?: string | null
+        }
+        Relationships: []
+      }
+      shop_digital_assets: {
+        Row: {
+          created_at: string
+          display_name: string | null
+          file_path: string
+          file_type: string | null
+          id: string
+          product_id: string
+          sort_order: number | null
+        }
+        Insert: {
+          created_at?: string
+          display_name?: string | null
+          file_path: string
+          file_type?: string | null
+          id?: string
+          product_id: string
+          sort_order?: number | null
+        }
+        Update: {
+          created_at?: string
+          display_name?: string | null
+          file_path?: string
+          file_type?: string | null
+          id?: string
+          product_id?: string
+          sort_order?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "shop_digital_assets_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "shop_digital_products"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      shop_digital_products: {
+        Row: {
+          cover_image_path: string | null
+          created_at: string
+          currency: string
+          description: string | null
+          id: string
+          is_active: boolean
+          price_cents: number
+          slug: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          cover_image_path?: string | null
+          created_at?: string
+          currency?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          price_cents: number
+          slug: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          cover_image_path?: string | null
+          created_at?: string
+          currency?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          price_cents?: number
+          slug?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      shop_newsletter_signups: {
+        Row: {
+          created_at: string | null
+          email: string
+          id: string
+          is_active: boolean
+          name: string | null
+          source: string | null
+          subscribed_at: string
+        }
+        Insert: {
+          created_at?: string | null
+          email: string
+          id?: string
+          is_active?: boolean
+          name?: string | null
+          source?: string | null
+          subscribed_at?: string
+        }
+        Update: {
+          created_at?: string | null
+          email?: string
+          id?: string
+          is_active?: boolean
+          name?: string | null
+          source?: string | null
+          subscribed_at?: string
+        }
+        Relationships: []
+      }
+      shop_signed_art_pieces: {
+        Row: {
+          active: boolean
+          art_image_path: string | null
+          autograph_image_path: string | null
+          created_at: string
+          description: string | null
+          id: string
+          number: number
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          active?: boolean
+          art_image_path?: string | null
+          autograph_image_path?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          number: number
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          active?: boolean
+          art_image_path?: string | null
+          autograph_image_path?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          number?: number
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      shop_signed_artwork_requests: {
+        Row: {
+          created_at: string
+          details: string
+          email: string
+          id: string
+          name: string
+          status: string
+        }
+        Insert: {
+          created_at?: string
+          details: string
+          email: string
+          id?: string
+          name: string
+          status?: string
+        }
+        Update: {
+          created_at?: string
+          details?: string
+          email?: string
+          id?: string
+          name?: string
+          status?: string
+        }
+        Relationships: []
+      }
       subscriptions: {
         Row: {
           created_at: string
@@ -215,6 +496,36 @@ export type Database = {
         }
         Relationships: []
       }
+      tool_submissions: {
+        Row: {
+          created_at: string
+          data: Json | null
+          id: string
+          preview_url: string | null
+          summary: string
+          tool: string
+          user_email: string | null
+        }
+        Insert: {
+          created_at?: string
+          data?: Json | null
+          id?: string
+          preview_url?: string | null
+          summary: string
+          tool: string
+          user_email?: string | null
+        }
+        Update: {
+          created_at?: string
+          data?: Json | null
+          id?: string
+          preview_url?: string | null
+          summary?: string
+          tool?: string
+          user_email?: string | null
+        }
+        Relationships: []
+      }
       trials: {
         Row: {
           created_at: string
@@ -236,6 +547,33 @@ export type Database = {
           expires_at?: string
           id?: string
           started_at?: string
+        }
+        Relationships: []
+      }
+      user_credits: {
+        Row: {
+          balance: number
+          created_at: string
+          email: string
+          id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          balance?: number
+          created_at?: string
+          email: string
+          id?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          balance?: number
+          created_at?: string
+          email?: string
+          id?: string
+          updated_at?: string
+          user_id?: string
         }
         Relationships: []
       }
@@ -274,7 +612,7 @@ export type Database = {
         Returns: string
       }
       has_active_tool_subscription: {
-        Args: { p_user_id: string; p_tool_name: string }
+        Args: { p_tool_name: string; p_user_id: string }
         Returns: boolean
       }
       has_active_tool_subscription_self: {
@@ -283,8 +621,8 @@ export type Database = {
       }
       has_role: {
         Args: {
-          _user_id: string
           _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
         }
         Returns: boolean
       }
@@ -301,7 +639,7 @@ export type Database = {
         Returns: boolean
       }
       start_tool_trial: {
-        Args: { p_user_id: string; p_email: string; p_tool_name: string }
+        Args: { p_email: string; p_tool_name: string; p_user_id: string }
         Returns: string
       }
       start_tool_trial_self: {
@@ -319,8 +657,8 @@ export type Database = {
       track_affiliate_click: {
         Args: {
           p_affiliate_code: string
-          p_module_bundle?: string
           p_ip_address?: string
+          p_module_bundle?: string
           p_user_agent?: string
         }
         Returns: boolean
