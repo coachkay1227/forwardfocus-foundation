@@ -91,46 +91,48 @@ const Support = () => {
     <main id="main" className="container py-8">
       <div className="max-w-6xl mx-auto">
         {/* Hero Section */}
-        <div className="text-center mb-12">
-          <div className="inline-flex items-center gap-2 mb-4">
-            <Heart className="h-6 w-6 text-primary" />
-            <Badge variant="secondary" className="text-sm">
+        <div className="text-center mb-16">
+          <div className="inline-flex items-center gap-3 mb-6">
+            <div className="p-3 bg-primary/10 rounded-xl">
+              <Heart className="h-8 w-8 text-primary" />
+            </div>
+            <Badge variant="secondary" className="text-lg px-4 py-2">
               Community-Powered Impact
             </Badge>
           </div>
-          <h1 className="font-heading text-4xl font-bold mb-4">
+          <h1 className="font-heading text-5xl md:text-6xl font-bold mb-6">
             Support Our Mission
           </h1>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+          <p className="text-2xl text-muted-foreground max-w-4xl mx-auto leading-relaxed">
             Your contribution helps us expand resources, build community connections, 
             and create lasting change for justice-impacted individuals and families across Ohio.
           </p>
         </div>
 
         {/* Impact Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
-          <Card>
-            <CardContent className="p-6 text-center">
-              <div className="text-3xl font-bold text-primary mb-1">2,500+</div>
-              <div className="text-sm text-muted-foreground">People Served</div>
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-16">
+          <Card className="bg-card shadow-lg border-0 hover:shadow-xl transition-shadow">
+            <CardContent className="p-8 text-center">
+              <div className="text-4xl font-bold text-primary mb-2">2,500+</div>
+              <div className="text-lg text-muted-foreground">People Served</div>
             </CardContent>
           </Card>
-          <Card>
-            <CardContent className="p-6 text-center">
-              <div className="text-3xl font-bold text-primary mb-1">150+</div>
-              <div className="text-sm text-muted-foreground">Partner Organizations</div>
+          <Card className="bg-card shadow-lg border-0 hover:shadow-xl transition-shadow">
+            <CardContent className="p-8 text-center">
+              <div className="text-4xl font-bold text-primary mb-2">150+</div>
+              <div className="text-lg text-muted-foreground">Partner Organizations</div>
             </CardContent>
           </Card>
-          <Card>
-            <CardContent className="p-6 text-center">
-              <div className="text-3xl font-bold text-primary mb-1">85%</div>
-              <div className="text-sm text-muted-foreground">Success Rate</div>
+          <Card className="bg-card shadow-lg border-0 hover:shadow-xl transition-shadow">
+            <CardContent className="p-8 text-center">
+              <div className="text-4xl font-bold text-primary mb-2">85%</div>
+              <div className="text-lg text-muted-foreground">Success Rate</div>
             </CardContent>
           </Card>
-          <Card>
-            <CardContent className="p-6 text-center">
-              <div className="text-3xl font-bold text-primary mb-1">12</div>
-              <div className="text-sm text-muted-foreground">Counties Served</div>
+          <Card className="bg-card shadow-lg border-0 hover:shadow-xl transition-shadow">
+            <CardContent className="p-8 text-center">
+              <div className="text-4xl font-bold text-primary mb-2">12</div>
+              <div className="text-lg text-muted-foreground">Counties Served</div>
             </CardContent>
           </Card>
         </div>

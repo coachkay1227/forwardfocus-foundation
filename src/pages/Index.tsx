@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { ArrowRight, BookOpen, HeartHandshake, MapPin, Users, Phone, Shield, Bot } from "lucide-react";
+import { ArrowRight, BookOpen, HeartHandshake, MapPin, Users, Phone, Shield, Bot, Heart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -42,8 +42,11 @@ const Index = () => {
   return (
     <main id="main" className="min-h-screen">
       {/* Emergency Banner */}
-      <div className="bg-red-600 text-white py-2 text-center text-sm font-medium">
-        🆘 CRISIS? Call 911 • Crisis Support: 988 • Text HOME to 741741
+      <div className="bg-destructive text-destructive-foreground py-3 text-center font-medium shadow-sm">
+        <div className="container flex items-center justify-center gap-2">
+          <Shield className="h-4 w-4" />
+          <span>CRISIS? Call 911 • Crisis Support: 988 • Text HOME to 741741</span>
+        </div>
       </div>
 
       {/* Hero */}
@@ -56,26 +59,28 @@ const Index = () => {
         <div className="container py-16 md:py-24">
           <div className="max-w-3xl">
             <p className="text-sm text-white/80 tracking-wide uppercase font-medium">Now serving Ohio</p>
-            <h1 className="mt-3 font-heading text-4xl md:text-5xl font-bold text-white drop-shadow-lg">
+            <h1 className="mt-3 font-heading text-5xl md:text-6xl font-bold text-white drop-shadow-lg leading-tight">
               Forward Focus Elevation
             </h1>
-            <p className="mt-4 text-lg md:text-xl text-white/90 font-medium">
+            <p className="mt-6 text-xl md:text-2xl text-white/90 font-medium leading-relaxed">
               Empowering justice-impacted families with the tools to rebuild and thrive.
             </p>
-            <div className="mt-8 flex flex-col sm:flex-row gap-3">
-              <Button size="lg" className="h-12 bg-burned-orange hover:bg-burned-orange/90" asChild>
+            <div className="mt-10 flex flex-col sm:flex-row gap-4">
+              <Button size="lg" variant="premium" className="h-14 px-8 text-lg shadow-lg" asChild>
                 <a href="/help">
-                  📞 Get Immediate Help
+                  <Phone className="mr-2 h-5 w-5" />
+                  Get Immediate Help
                 </a>
               </Button>
-              <Button size="lg" variant="secondary" className="h-12 bg-white/20 text-white border-white/30 hover:bg-white/30" asChild>
+              <Button size="lg" variant="hero" className="h-14 px-8 text-lg" asChild>
                 <a href="/learn">
-                  👥 Join Learning Community
+                  <Users className="mr-2 h-5 w-5" />
+                  Join Learning Community
                 </a>
               </Button>
-              <Button size="lg" variant="outline" className="h-12 bg-white/10 text-white border-white/30 hover:bg-white/20" asChild>
+              <Button size="lg" variant="hero" className="h-14 px-8 text-lg" asChild>
                 <a href="/victim-services">
-                  <Shield className="mr-2 h-4 w-4" />
+                  <Shield className="mr-2 h-5 w-5" />
                   Healing & Safety Hub
                 </a>
               </Button>
@@ -89,45 +94,61 @@ const Index = () => {
       </section>
 
       {/* How it works */}
-      <section className="container py-12 md:py-16">
-        <h2 className="font-heading text-2xl md:text-3xl font-semibold">How We Support Your Journey</h2>
-        <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <section className="container py-16 md:py-20">
+        <h2 className="font-heading text-3xl md:text-4xl font-bold text-center mb-4">How We Support Your Journey</h2>
+        <p className="text-xl text-muted-foreground text-center mb-12 max-w-3xl mx-auto">Comprehensive support designed for your unique path forward</p>
+        <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {[{
-            icon: '📞',
+            icon: Phone,
             title: 'Get Immediate Help',
             desc: '24/7 support, AI-powered guidance, and live human assistance.'
           },{
-            icon: '🤖',
+            icon: Bot,
             title: 'AI-Enhanced Navigation',
             desc: 'Smart tech to guide justice-impacted individuals to the right tools.'
           },{
-            icon: '👥',
+            icon: Users,
             title: 'Supportive Community',
             desc: 'Peer support, mentorship, and life coaching designed for your journey.'
-          }].map((item) => (
-            <Card key={item.title} className="bg-cream/50">
-              <CardHeader className="flex-row items-center gap-3">
-                <div className="text-3xl" aria-hidden>{item.icon}</div>
-                <CardTitle className="text-base md:text-lg">{item.title}</CardTitle>
-              </CardHeader>
-              <CardContent className="text-sm text-muted-foreground">{item.desc}</CardContent>
-            </Card>
-          ))}
+          }].map((item) => {
+            const IconComponent = item.icon;
+            return (
+              <Card key={item.title} className="bg-card hover:shadow-lg transition-all duration-300 hover:scale-105 border-0 shadow-md">
+                <CardHeader className="pb-4">
+                  <div className="flex items-center gap-4">
+                    <div className="p-3 bg-primary/10 rounded-lg">
+                      <IconComponent className="h-6 w-6 text-primary" />
+                    </div>
+                    <CardTitle className="text-xl font-bold">{item.title}</CardTitle>
+                  </div>
+                </CardHeader>
+                <CardContent className="text-muted-foreground leading-relaxed">{item.desc}</CardContent>
+              </Card>
+            );
+          })}
         </div>
       </section>
 
       {/* Success stories */}
-      <section className="bg-cream/30">
-        <div className="container py-12 md:py-16">
-          <h2 className="font-heading text-2xl md:text-3xl font-semibold">Real Stories, Real Progress</h2>
-          <div className="mt-6 grid gap-4 md:grid-cols-3">
+      <section className="bg-muted/30">
+        <div className="container py-16 md:py-20">
+          <h2 className="font-heading text-3xl md:text-4xl font-bold text-center mb-4">Real Stories, Real Progress</h2>
+          <p className="text-xl text-muted-foreground text-center mb-12 max-w-3xl mx-auto">Hear from community members about their transformative experiences</p>
+          <div className="mt-8 grid gap-6 md:grid-cols-3">
             {[
               "The trauma-informed approach made all the difference in my healing.", 
               "Finally found a community that understands what I'm going through.", 
               "The AI assistant helped me find resources I didn't know existed."
             ].map((quote, i) => (
-              <Card key={i} className="bg-white shadow-sm">
-                <CardContent className="pt-6 text-sm text-muted-foreground">"{quote}"</CardContent>
+              <Card key={i} className="bg-card shadow-lg hover:shadow-xl transition-shadow duration-300 border-0">
+                <CardContent className="pt-8 pb-6">
+                  <div className="text-primary/20 text-6xl mb-4">"</div>
+                  <p className="text-lg text-foreground leading-relaxed mb-4">{quote}</p>
+                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                    <Heart className="h-4 w-4 text-secondary" />
+                    <span>Community Member</span>
+                  </div>
+                </CardContent>
               </Card>
             ))}
           </div>

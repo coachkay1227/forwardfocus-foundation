@@ -230,10 +230,10 @@ export default function GetHelpNow() {
   }, []);
 
   const navigationSections = [
-    { id: "support", label: "🤝 Immediate Support", icon: Phone, color: "bg-primary" },
-    { id: "ohio-resources", label: "🏠 Ohio Opportunities", icon: Home, color: "bg-warm-blue" },
-    { id: "pathways", label: "🚀 Growth Pathways", icon: ArrowRight, color: "bg-accent" },
-    { id: "toolkit", label: "📧 Success Toolkit", icon: CheckCircle, color: "bg-secondary" }
+    { id: "support", label: "Immediate Support", icon: Phone, color: "bg-primary" },
+    { id: "ohio-resources", label: "Ohio Opportunities", icon: Home, color: "bg-secondary" },
+    { id: "pathways", label: "Growth Pathways", icon: ArrowRight, color: "bg-accent" },
+    { id: "toolkit", label: "Success Toolkit", icon: CheckCircle, color: "bg-secondary" }
   ];
 
   const scrollToSection = (sectionId: string) => {
@@ -264,32 +264,35 @@ export default function GetHelpNow() {
   return (
     <>
       {/* Support Banner */}
-      <div className="bg-primary text-primary-foreground py-2 text-center font-medium">
-        🚨 Emergency? Call 911 | Crisis Support: 988 | Safe Text: HOME to 741741
+      <div className="bg-destructive text-destructive-foreground py-3 text-center font-medium shadow-sm">
+        <div className="container flex items-center justify-center gap-2">
+          <AlertTriangle className="h-4 w-4" />
+          <span>Emergency? Call 911 | Crisis Support: 988 | Safe Text: HOME to 741741</span>
+        </div>
       </div>
 
       {/* Hero Section */}
-      <header className="bg-gradient-to-br from-cream via-white to-primary/5 border-b">
-        <div className="container py-12 md:py-16">
+      <header className="bg-gradient-to-br from-primary/5 via-background to-secondary/5 border-b">
+        <div className="container py-16 md:py-20">
           <div className="max-w-4xl mx-auto text-center">
-            <h1 className="font-heading text-4xl md:text-5xl font-bold text-foreground mb-4">
+            <h1 className="font-heading text-5xl md:text-6xl font-bold text-foreground mb-6">
               Start Your Journey Forward
             </h1>
-            <p className="text-xl text-muted-foreground mb-6">
+            <p className="text-2xl text-muted-foreground mb-8 leading-relaxed">
               Access empowering resources, personalized guidance, and community support to rise above challenges and achieve your highest potential. 
               Your path to growth starts here.
             </p>
-            <div className="flex items-center justify-center gap-4 text-sm text-muted-foreground mb-8">
+            <div className="flex items-center justify-center gap-6 text-lg text-muted-foreground mb-10">
               <span className="flex items-center gap-2">
-                <CheckCircle className="h-4 w-4 text-secondary" />
+                <CheckCircle className="h-5 w-5 text-secondary" />
                 24/7 Support Available
               </span>
               <span className="flex items-center gap-2">
-                <CheckCircle className="h-4 w-4 text-secondary" />
+                <CheckCircle className="h-5 w-5 text-secondary" />
                 No Barriers to Access
               </span>
               <span className="flex items-center gap-2">
-                <CheckCircle className="h-4 w-4 text-secondary" />
+                <CheckCircle className="h-5 w-5 text-secondary" />
                 AI-Powered Guidance
               </span>
             </div>
@@ -298,27 +301,28 @@ export default function GetHelpNow() {
               <Button 
                 onClick={() => scrollToSection('support')}
                 size="lg"
-                className="bg-primary hover:bg-primary/90"
+                variant="premium"
+                className="h-14 px-8 text-lg"
               >
-                <Phone className="h-4 w-4 mr-2" />
+                <Phone className="h-5 w-5 mr-2" />
                 Get Immediate Support
               </Button>
               <Button 
                 onClick={() => setShowAIAssistant(true)}
-                variant="outline"
+                variant="secondary"
                 size="lg"
-                className="border-accent text-accent hover:bg-accent/10"
+                className="h-14 px-8 text-lg"
               >
-                <Bot className="h-4 w-4 mr-2" />
+                <Bot className="h-5 w-5 mr-2" />
                 Start with AI Guide
               </Button>
               <Button 
                 onClick={() => scrollToSection('ohio-resources')}
                 variant="outline"
                 size="lg"
-                className="border-secondary text-secondary hover:bg-secondary/10"
+                className="h-14 px-8 text-lg"
               >
-                <Home className="h-4 w-4 mr-2" />
+                <Home className="h-5 w-5 mr-2" />
                 Explore Opportunities
               </Button>
             </div>
@@ -327,7 +331,7 @@ export default function GetHelpNow() {
       </header>
 
       {/* Smart Navigation Hub */}
-      <nav className="bg-white border-b sticky top-0 z-40 shadow-sm">
+      <nav className="bg-card border-b sticky top-[64px] z-40 shadow-sm">
         <div className="container py-4">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
             {navigationSections.map((section) => {
@@ -339,7 +343,7 @@ export default function GetHelpNow() {
                   className={`flex items-center gap-2 p-3 rounded-lg border transition-all ${
                     activeSection === section.id 
                       ? 'border-primary bg-primary/10 text-primary' 
-                      : 'border-gray-200 hover:border-gray-300 hover:bg-gray-50'
+                      : 'border-border hover:border-primary/30 hover:bg-primary/5'
                   }`}
                 >
                   <Icon className="h-4 w-4" />
@@ -352,71 +356,76 @@ export default function GetHelpNow() {
         </div>
       </nav>
 
-      <main className="bg-gray-50">
+      <main className="bg-muted/30">
         {/* Immediate Support Section */}
-        <section id="support" className="py-12 bg-white">
+        <section id="support" className="py-16 bg-card">
           <div className="container">
             <div className="max-w-4xl mx-auto">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="w-12 h-12 bg-primary rounded-lg flex items-center justify-center">
-                  <Phone className="h-6 w-6 text-primary-foreground" />
+              <div className="flex items-center gap-4 mb-8">
+                <div className="w-16 h-16 bg-primary rounded-xl flex items-center justify-center">
+                  <Phone className="h-8 w-8 text-primary-foreground" />
                 </div>
                 <div>
-                  <h2 className="text-2xl font-bold text-foreground">Need Support Right Now?</h2>
-                  <p className="text-muted-foreground">24/7 support available nationwide - you're never alone in this journey</p>
+                  <h2 className="text-3xl font-bold text-foreground">Immediate Support Available</h2>
+                  <p className="text-xl text-muted-foreground">Get help right now, no barriers, no judgment</p>
                 </div>
               </div>
               
-              <div className="grid md:grid-cols-2 gap-4 mb-8">
-                <div className="bg-red-50 border border-red-200 rounded-lg p-6">
-                  <h3 className="font-semibold text-red-900 mb-3">Emergency Situations</h3>
-                  <a href="tel:911" className="flex items-center gap-3 p-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors">
-                    <Phone className="h-5 w-5" />
-                    <span className="font-medium">Call 911 Now</span>
-                  </a>
-                </div>
+              <div className="grid md:grid-cols-2 gap-6 mb-8">
+                <Card className="bg-destructive/10 border border-destructive/30 shadow-lg">
+                  <CardContent className="p-6">
+                    <h3 className="font-semibold text-destructive mb-4 text-xl">Emergency Situations</h3>
+                    <Button asChild variant="destructive" size="lg" className="w-full h-14 text-lg">
+                      <a href="tel:911">
+                        <Phone className="h-5 w-5 mr-2" />
+                        Call 911 Now
+                      </a>
+                    </Button>
+                  </CardContent>
+                </Card>
 
-                <div className="bg-warm-blue/10 border border-warm-blue/30 rounded-lg p-6">
-                  <h3 className="font-semibold text-warm-blue mb-3">Crisis Support Lines</h3>
-                  <div className="space-y-3">
-                    <a href="tel:988" className="flex items-center gap-3 p-2 hover:bg-warm-blue/10 rounded transition-colors">
-                      <Phone className="h-4 w-4 text-warm-blue" />
-                      <div className="text-sm">
-                        <div className="font-medium">Call 988</div>
-                        <div className="text-muted-foreground">Suicide & Crisis Lifeline - 24/7</div>
-                      </div>
-                    </a>
-                    <a href="sms:741741?&body=HOME" className="flex items-center gap-3 p-2 hover:bg-warm-blue/10 rounded transition-colors">
-                      <MessageSquare className="h-4 w-4 text-warm-blue" />
-                      <div className="text-sm">
-                        <div className="font-medium">Text HOME to 741741</div>
-                        <div className="text-muted-foreground">Crisis Text Line - 24/7</div>
-                      </div>
-                    </a>
-                    <a href="tel:211" className="flex items-center gap-3 p-2 hover:bg-warm-blue/10 rounded transition-colors">
-                      <Phone className="h-4 w-4 text-warm-blue" />
-                      <div className="text-sm">
-                        <div className="font-medium">Call 211</div>
-                        <div className="text-muted-foreground">Resource navigation & support</div>
-                      </div>
-                    </a>
+                <Card className="bg-primary/10 border border-primary/30 shadow-lg">
+                  <CardContent className="p-6">
+                    <h3 className="font-semibold text-primary mb-4 text-xl">Crisis Support Lines</h3>
+                    <div className="space-y-4">
+                      <Button asChild variant="outline" className="w-full h-12 border-primary/30 hover:bg-primary/10">
+                        <a href="tel:988">
+                          <Phone className="h-4 w-4 mr-2" />
+                          Call 988 - Suicide & Crisis Lifeline
+                        </a>
+                      </Button>
+                      <Button asChild variant="outline" className="w-full h-12 border-primary/30 hover:bg-primary/10">
+                        <a href="sms:741741?&body=HOME">
+                          <MessageSquare className="h-4 w-4 mr-2" />
+                          Text HOME to 741741
+                        </a>
+                      </Button>
+                      <Button asChild variant="outline" className="w-full h-12 border-primary/30 hover:bg-primary/10">
+                        <a href="tel:211">
+                          <Phone className="h-4 w-4 mr-2" />
+                          Call 211 - Resource Navigation
+                        </a>
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+
+              <Card className="bg-secondary/10 border border-secondary/30 shadow-lg">
+                <CardContent className="p-6">
+                  <div className="flex items-center gap-3 mb-4">
+                    <Bot className="h-8 w-8 text-secondary" />
+                    <h3 className="font-semibold text-secondary text-xl">Ready to Explore Your Options?</h3>
                   </div>
-                </div>
-              </div>
-
-              <div className="bg-accent/10 border border-accent/30 rounded-lg p-6">
-                <div className="flex items-center gap-3 mb-4">
-                  <Bot className="h-6 w-6 text-accent" />
-                  <h3 className="font-semibold text-accent">Ready to Explore Your Options?</h3>
-                </div>
-                <p className="text-accent/80 mb-4">
-                  Our AI guide is loaded with Ohio resources and can help you discover opportunities based on your unique situation and goals.
-                </p>
-                <Button onClick={() => setShowAIAssistant(true)} className="bg-accent hover:bg-accent/90">
-                  <Bot className="mr-2 h-4 w-4" />
-                  Start Your Journey with AI
-                </Button>
-              </div>
+                  <p className="text-foreground/80 mb-6 text-lg leading-relaxed">
+                    Our AI guide is loaded with Ohio resources and can help you discover opportunities based on your unique situation and goals.
+                  </p>
+                  <Button onClick={() => setShowAIAssistant(true)} variant="secondary" size="lg" className="h-14 text-lg">
+                    <Bot className="mr-2 h-5 w-5" />
+                    Start Your Journey with AI
+                  </Button>
+                </CardContent>
+              </Card>
             </div>
           </div>
         </section>
