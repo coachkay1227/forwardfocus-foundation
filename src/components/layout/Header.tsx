@@ -41,7 +41,7 @@ const Header = () => {
   }, [user]);
 
   return (
-    <header className="bg-background/90 backdrop-blur supports-[backdrop-filter]:bg-background/80 border-b">
+    <header className="sticky top-[40px] z-40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/90 border-b shadow-sm">
       <div className="container h-16 flex items-center justify-between">
         <a href="/" className="font-heading font-semibold text-lg">Forward Focus Elevation</a>
 
