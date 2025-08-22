@@ -137,8 +137,8 @@ const Organizations = () => {
             <Building2 className="h-6 w-6 text-primary" />
             <Badge variant="secondary">Trusted Partners</Badge>
           </div>
-          <h1 className="font-heading text-4xl font-bold mb-4">Our Partner Network</h1>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+          <h1 className="font-heading text-5xl font-bold mb-6">Our Partner Network</h1>
+          <p className="text-xl text-foreground/80 max-w-3xl mx-auto leading-relaxed">
             A comprehensive directory of organizations committed to supporting justice-impacted 
             individuals and families across Ohio. Each partner shares our commitment to dignity, 
             respect, and second chances.
@@ -146,25 +146,25 @@ const Organizations = () => {
         </div>
 
         {/* Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          <Card>
-            <CardContent className="p-6 text-center">
-              <div className="text-3xl font-bold text-primary mb-1">{organizations.length}</div>
-              <div className="text-sm text-muted-foreground">Partner Organizations</div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+          <Card className="hover:shadow-lg transition-all duration-300 border-0 shadow-md">
+            <CardContent className="p-8 text-center">
+              <div className="text-4xl font-bold text-primary mb-2">{organizations.length}</div>
+              <div className="text-base font-medium text-foreground">Partner Organizations</div>
             </CardContent>
           </Card>
-          <Card>
-            <CardContent className="p-6 text-center">
-              <div className="text-3xl font-bold text-primary mb-1">{uniqueCities.length}</div>
-              <div className="text-sm text-muted-foreground">Cities Served</div>
+          <Card className="hover:shadow-lg transition-all duration-300 border-0 shadow-md">
+            <CardContent className="p-8 text-center">
+              <div className="text-4xl font-bold text-primary mb-2">{uniqueCities.length}</div>
+              <div className="text-base font-medium text-foreground">Cities Served</div>
             </CardContent>
           </Card>
-          <Card>
-            <CardContent className="p-6 text-center">
-              <div className="text-3xl font-bold text-primary mb-1">
+          <Card className="hover:shadow-lg transition-all duration-300 border-0 shadow-md">
+            <CardContent className="p-8 text-center">
+              <div className="text-4xl font-bold text-primary mb-2">
                 {organizations.filter(org => org.verified).length}
               </div>
-              <div className="text-sm text-muted-foreground">Verified Partners</div>
+              <div className="text-base font-medium text-foreground">Verified Partners</div>
             </CardContent>
           </Card>
         </div>
@@ -273,21 +273,21 @@ const Organizations = () => {
             </CardContent>
           </Card>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {filteredOrgs.map((org) => (
-              <Card key={org.id} className="hover:shadow-lg transition-shadow">
-                <CardHeader>
+              <Card key={org.id} className="hover:shadow-xl transition-all duration-300 border-0 shadow-md">
+                <CardHeader className="pb-4">
                   <div className="flex items-start justify-between gap-2">
                     <div className="flex-1">
-                      <CardTitle className="text-lg mb-2">{org.name}</CardTitle>
-                      <div className="flex flex-wrap gap-2 mb-3">
+                      <CardTitle className="text-xl font-bold mb-3">{org.name}</CardTitle>
+                      <div className="flex flex-wrap gap-2 mb-4">
                         {org.verified ? (
-                          <Badge variant="default" className="flex items-center gap-1">
+                          <Badge variant="default" className="flex items-center gap-1 font-medium">
                             <ShieldCheck className="h-3 w-3" />
                             Verified Partner
                           </Badge>
                         ) : (
-                          <Badge variant="outline" className="flex items-center gap-1">
+                          <Badge variant="outline" className="flex items-center gap-1 font-medium border-primary/20">
                             <Users className="h-3 w-3" />
                             Community Verified
                           </Badge>
@@ -295,7 +295,7 @@ const Organizations = () => {
                       </div>
                     </div>
                   </div>
-                  <CardDescription className="line-clamp-3">
+                  <CardDescription className="line-clamp-3 text-base leading-relaxed">
                     {org.description || "Supporting the community with various services and programs."}
                   </CardDescription>
                 </CardHeader>

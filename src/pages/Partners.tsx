@@ -145,12 +145,12 @@ const Partners = () => {
     <main id="main" className="container py-8">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <div className="mb-8">
-          <div className="flex items-center gap-3 mb-4">
-            <Building2 className="h-8 w-8 text-primary" />
+        <div className="mb-10">
+          <div className="flex items-center gap-4 mb-6">
+            <Building2 className="h-10 w-10 text-primary" />
             <div>
-              <h1 className="font-heading text-3xl font-bold">Partner Portal</h1>
-              <p className="text-muted-foreground">
+              <h1 className="font-heading text-5xl font-bold">Partner Portal</h1>
+              <p className="text-xl text-foreground/80 leading-relaxed">
                 Collaborate, contribute, and track your impact in our community network
               </p>
             </div>
@@ -178,15 +178,15 @@ const Partners = () => {
               <>
                 {/* Stats Overview */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                  <Card>
-                    <CardContent className="p-6">
+                  <Card className="hover:shadow-lg transition-all duration-300 border-0 shadow-md">
+                    <CardContent className="p-8">
                       <div className="flex items-center gap-4">
-                        <div className="p-3 bg-primary/10 rounded-lg">
-                          <Users className="h-6 w-6 text-primary" />
+                        <div className="p-4 bg-primary/10 rounded-xl">
+                          <Users className="h-7 w-7 text-primary" />
                         </div>
                         <div>
-                          <div className="text-2xl font-bold">{stats.totalReferrals}</div>
-                          <div className="text-sm text-muted-foreground">Total Referrals</div>
+                          <div className="text-3xl font-bold">{stats.totalReferrals}</div>
+                          <div className="text-base font-medium text-foreground">Total Referrals</div>
                         </div>
                       </div>
                     </CardContent>

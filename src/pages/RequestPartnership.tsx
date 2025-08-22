@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { Card, CardContent } from "@/components/ui/card";
 import { toast } from "@/components/ui/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -65,39 +66,59 @@ const RequestPartnership = () => {
   };
 
   return (
-    <main id="main" className="container py-10">
-      <h1 className="font-heading text-3xl font-semibold">Request Partnership</h1>
-      <form onSubmit={onSubmit} className="mt-6 grid gap-4 max-w-xl">
-        <div>
-          <label className="block text-sm mb-1">Organization Name</label>
-          <Input 
-            required 
-            placeholder="Your nonprofit or program" 
-            value={organizationName}
-            onChange={(e) => setOrganizationName(e.target.value)}
-          />
-        </div>
-        <div>
-          <label className="block text-sm mb-1">Contact Email</label>
-          <Input 
-            required 
-            type="email" 
-            placeholder="you@org.org" 
-            value={contactEmail}
-            onChange={(e) => setContactEmail(e.target.value)}
-          />
-        </div>
-        <div>
-          <label className="block text-sm mb-1">How would you like to collaborate?</label>
-          <Textarea 
-            required 
-            placeholder="Tell us about your programs and needs" 
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-          />
-        </div>
-        <Button type="submit" disabled={loading}>{loading ? "Sending..." : "Send Request"}</Button>
-      </form>
+    <main id="main" className="container py-16">
+      <div className="max-w-3xl mx-auto">
+        <header className="text-center mb-12">
+          <h1 className="font-heading text-5xl font-bold mb-6">Request Partnership</h1>
+          <p className="text-xl text-foreground/80 leading-relaxed">
+            Join our network of organizations committed to supporting justice-impacted individuals and families.
+          </p>
+        </header>
+        
+        <Card className="shadow-lg border-0">
+          <CardContent className="p-10">
+            <form onSubmit={onSubmit} className="grid gap-8">
+              <div>
+                <label className="block text-base font-medium mb-3" htmlFor="org-name">Organization Name</label>
+                <Input 
+                  id="org-name"
+                  required 
+                  placeholder="Your nonprofit or program" 
+                  value={organizationName}
+                  onChange={(e) => setOrganizationName(e.target.value)}
+                  className="h-12 text-base"
+                />
+              </div>
+              <div>
+                <label className="block text-base font-medium mb-3" htmlFor="contact-email">Contact Email</label>
+                <Input 
+                  id="contact-email"
+                  required 
+                  type="email" 
+                  placeholder="you@org.org" 
+                  value={contactEmail}
+                  onChange={(e) => setContactEmail(e.target.value)}
+                  className="h-12 text-base"
+                />
+              </div>
+              <div>
+                <label className="block text-base font-medium mb-3" htmlFor="collaboration">How would you like to collaborate?</label>
+                <Textarea 
+                  id="collaboration"
+                  required 
+                  placeholder="Tell us about your programs and needs" 
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                  className="min-h-32 text-base resize-none"
+                />
+              </div>
+              <Button type="submit" disabled={loading} size="lg" className="shadow-md">
+                {loading ? "Sending..." : "Send Request"}
+              </Button>
+            </form>
+          </CardContent>
+        </Card>
+      </div>
     </main>
   );
 };

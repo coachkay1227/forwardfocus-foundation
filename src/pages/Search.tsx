@@ -127,9 +127,9 @@ const Search = () => {
     <main id="main" className="container py-8">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <div className="text-center mb-8">
-          <h1 className="font-heading text-4xl font-bold mb-4">Find Resources</h1>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+        <div className="text-center mb-12">
+          <h1 className="font-heading text-5xl font-bold mb-6">Find Resources</h1>
+          <p className="text-xl text-foreground/80 max-w-3xl mx-auto leading-relaxed">
             Search our comprehensive directory of resources, organizations, and support services 
             for justice-impacted individuals and families.
           </p>
@@ -158,7 +158,7 @@ const Search = () => {
               >
                 <Filter className="h-4 w-4" />
               </Button>
-              <Button type="submit" className="px-6">
+              <Button type="submit" className="px-8 shadow-md">
                 Search
               </Button>
             </div>

@@ -15,34 +15,46 @@ const ResourceCard = ({ resource }: { resource: Resource }) => {
   const onReport = () => toast({ title: "Report received", description: "Thanks for helping keep info up to date." });
 
   return (
-    <article className="rounded-lg border bg-card p-5">
-      <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
-        <div>
-          <h3 className="font-semibold text-lg">{resource.name}</h3>
-          <p className="text-sm text-muted-foreground">{resource.org} • {resource.city}{resource.address ? ` • ${resource.address}` : ""}</p>
-          <div className="mt-2 flex flex-wrap items-center gap-2">
+    <article className="rounded-lg border-0 bg-card p-8 shadow-md hover:shadow-xl transition-all duration-300">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+        <div className="flex-1">
+          <h3 className="font-bold text-xl mb-2">{resource.name}</h3>
+          <p className="text-base text-foreground/80 mb-4">{resource.org} • {resource.city}{resource.address ? ` • ${resource.address}` : ""}</p>
+          <div className="flex flex-wrap items-center gap-3">
             {badge}
-            {resource.justiceFriendly && <Badge className="inline-flex items-center gap-1"><ShieldCheck className="size-3" /> Justice-Impacted Friendly</Badge>}
-            <Badge variant="outline" className="inline-flex items-center gap-1"><Star className="size-3" /> {resource.rating.toFixed(1)}</Badge>
-            <span className="text-xs text-muted-foreground">Updated {new Date(resource.updatedAt).toLocaleDateString()}</span>
+            {resource.justiceFriendly && (
+              <Badge className="inline-flex items-center gap-1 font-medium">
+                <ShieldCheck className="size-3" /> Justice-Friendly
+              </Badge>
+            )}
+            <Badge variant="outline" className="inline-flex items-center gap-1 font-medium border-primary/20">
+              <Star className="size-3" /> {resource.rating.toFixed(1)}
+            </Badge>
+            <span className="text-sm text-foreground/60">Updated {new Date(resource.updatedAt).toLocaleDateString()}</span>
           </div>
         </div>
-        <div className="mt-2 flex gap-2">
+        <div className="flex flex-wrap gap-2">
           {resource.phone && (
-            <Button asChild variant="secondary">
-              <a href={resource.phone}><Phone /> Call</a>
+            <Button asChild variant="secondary" className="shadow-sm">
+              <a href={resource.phone}><Phone className="h-4 w-4" /> Call</a>
             </Button>
           )}
           {resource.address && (
-            <Button asChild variant="outline">
-              <a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(resource.address)}`} target="_blank" rel="noopener"><MapPin /> Directions</a>
+            <Button asChild variant="outline" className="shadow-sm">
+              <a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(resource.address)}`} target="_blank" rel="noopener">
+                <MapPin className="h-4 w-4" /> Directions
+              </a>
             </Button>
           )}
-          <Button variant="ghost" onClick={onSave}><Bookmark /> Save</Button>
-          <Button variant="ghost" onClick={onReport}><Flag /> Report Update</Button>
+          <Button variant="ghost" onClick={onSave} className="hover:bg-primary/10">
+            <Bookmark className="h-4 w-4" /> Save
+          </Button>
+          <Button variant="ghost" onClick={onReport} className="hover:bg-primary/10">
+            <Flag className="h-4 w-4" /> Report
+          </Button>
         </div>
       </div>
-      <p className="mt-3 text-sm text-muted-foreground">{resource.description}</p>
+      <p className="mt-6 text-base text-foreground/80 leading-relaxed">{resource.description}</p>
     </article>
   );
 };
