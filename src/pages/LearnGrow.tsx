@@ -133,13 +133,15 @@ export default function CommunityLearning() {
                 <button
                   key={section.id}
                   onClick={() => scrollToSection(section.id)}
-                  className={`flex items-center gap-2 p-3 rounded-lg border transition-all ${
+                  className={`flex items-center gap-2 p-4 rounded-lg border-2 transition-all shadow-md hover:shadow-lg ${
                     activeSection === section.id 
-                      ? 'border-primary bg-primary/10 text-primary' 
-                      : 'border-border hover:border-primary/30 hover:bg-primary/5'
+                      ? 'border-primary bg-gradient-to-r from-primary/20 to-secondary/20 text-primary font-semibold shadow-lg' 
+                      : 'border-border bg-gradient-to-r from-background to-muted/30 hover:border-primary/50 hover:from-primary/5 hover:to-secondary/5 hover:text-primary'
                   }`}
                 >
-                  <Icon className="h-4 w-4" />
+                  <div className={`p-1 rounded-md ${activeSection === section.id ? 'bg-primary/20' : 'bg-muted/50'}`}>
+                    <Icon className="h-4 w-4" />
+                  </div>
                   <span className="text-sm font-medium hidden sm:block">{section.label}</span>
                   <ChevronRight className="h-3 w-3 ml-auto" />
                 </button>
@@ -196,7 +198,7 @@ export default function CommunityLearning() {
                     <Heart className="h-5 w-5 text-primary" />
                     Peer Support
                   </h3>
-                  <ul className="space-y-2 text-sm text-foreground/90">
+                  <ul className="space-y-2 text-sm text-foreground/80">
                     <li>• Connect with people who understand</li>
                     <li>• Shared experiences and wisdom</li>
                     <li>• Mutual encouragement</li>
@@ -364,8 +366,8 @@ export default function CommunityLearning() {
 
               <div className="grid md:grid-cols-2 gap-6">
                 <div className="bg-primary/10 border border-primary/20 rounded-lg p-6">
-                  <h3 className="font-semibold text-primary-foreground mb-4">Discussion Groups</h3>
-                  <ul className="space-y-3 text-sm text-primary-foreground/80">
+                  <h3 className="font-semibold text-foreground mb-4">Discussion Groups</h3>
+                  <ul className="space-y-3 text-sm text-foreground/80">
                     <li className="flex items-start gap-2">
                       <MessageSquare className="h-4 w-4 mt-0.5 text-primary" />
                       Module-specific discussions

@@ -10,6 +10,9 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { useToast } from "@/hooks/use-toast";
 
+// Import hero image
+import communitySearchResources from "@/assets/community-search-resources.jpg";
+
 type QuickFilter = "all" | "emergency" | "ongoing" | "new" | "partner";
 
 interface Resource {
@@ -126,13 +129,24 @@ const Search = () => {
   return (
     <main id="main" className="container py-8">
       <div className="max-w-7xl mx-auto">
-        {/* Header */}
-        <div className="text-center mb-12">
-          <h1 className="font-heading text-5xl font-bold mb-6">Find Resources</h1>
-          <p className="text-xl text-foreground/80 max-w-3xl mx-auto leading-relaxed">
-            Search our comprehensive directory of resources, organizations, and support services 
-            for justice-impacted individuals and families.
-          </p>
+        {/* Hero Section */}
+        <div className="relative mb-12">
+          <div className="relative rounded-2xl overflow-hidden shadow-xl">
+            <img 
+              src={communitySearchResources} 
+              alt="Diverse individuals using search and digital resources in a community center"
+              className="w-full h-96 object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-primary/90 to-accent/80 flex items-center justify-center">
+              <div className="text-center text-primary-foreground max-w-4xl px-8">
+                <h1 className="font-heading text-5xl md:text-6xl font-bold mb-6">Find Resources</h1>
+                <p className="text-xl leading-relaxed">
+                  Search our comprehensive directory of resources, organizations, and support services 
+                  for justice-impacted individuals and families.
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* Search Bar */}

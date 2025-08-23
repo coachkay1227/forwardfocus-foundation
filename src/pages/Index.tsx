@@ -51,9 +51,9 @@ const Index = () => {
 
       {/* Hero */}
       <section 
-        className="bg-[url('/images/families-collage.jpg')] bg-cover bg-center relative"
+        className="bg-[url('/images/diverse-families-community.jpg')] bg-cover bg-center relative"
         style={{
-          backgroundImage: "linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('/images/families-collage.jpg')"
+          backgroundImage: "linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('/images/diverse-families-community.jpg')"
         }}
       >
         <div className="container py-16 md:py-24">

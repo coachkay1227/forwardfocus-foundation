@@ -7,6 +7,9 @@ import {
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
+// Import hero image
+import aboutUsTeamDiverse from "@/assets/about-us-team-diverse.jpg";
+
 export default function AboutUs() {
   useEffect(() => {
     document.title = "About Forward Focus Elevation | Empowering Justice-Impacted Families";
@@ -121,13 +124,19 @@ export default function AboutUs() {
                   </p>
                 </div>
               </div>
-              <div className="bg-gradient-to-br from-accent/10 to-primary/10 rounded-2xl p-12 text-center shadow-lg">
-                <div className="w-28 h-28 bg-accent rounded-full flex items-center justify-center mx-auto mb-8 shadow-md">
-                  <Heart className="h-14 w-14 text-accent-foreground" />
+              <div className="relative rounded-2xl overflow-hidden shadow-xl">
+                <img 
+                  src={aboutUsTeamDiverse} 
+                  alt="Diverse team of community leaders, counselors, and advocates"
+                  className="w-full h-80 object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-accent/90 to-transparent flex items-end">
+                  <div className="p-8 text-accent-foreground w-full text-center">
+                    <p className="text-2xl font-semibold">
+                      Built by community, for community
+                    </p>
+                  </div>
                 </div>
-                <p className="text-xl font-semibold text-foreground">
-                  Built by community, for community
-                </p>
               </div>
             </div>
           </div>

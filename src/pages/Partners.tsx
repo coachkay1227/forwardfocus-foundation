@@ -25,6 +25,9 @@ import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/components/ui/use-toast";
 
+// Import hero image
+import partnershipCollaboration from "@/assets/partnership-collaboration.jpg";
+
 interface PartnerStats {
   totalReferrals: number;
   activeReferrals: number;
@@ -144,24 +147,32 @@ const Partners = () => {
   return (
     <main id="main" className="container py-8">
       <div className="max-w-7xl mx-auto">
-        {/* Header */}
-        <div className="mb-10">
-          <div className="flex items-center gap-4 mb-6">
-            <Building2 className="h-10 w-10 text-primary" />
-            <div>
-              <h1 className="font-heading text-5xl font-bold">Partner Portal</h1>
-              <p className="text-xl text-foreground/80 leading-relaxed">
-                Collaborate, contribute, and track your impact in our community network
-              </p>
+        {/* Header with Hero Image */}
+        <div className="mb-12">
+          <div className="relative rounded-2xl overflow-hidden shadow-xl">
+            <img 
+              src={partnershipCollaboration} 
+              alt="Diverse team of professionals working together on community partnerships"
+              className="w-full h-80 object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-primary/90 to-accent/80 flex items-center justify-center">
+              <div className="text-center text-primary-foreground max-w-4xl px-8">
+                <div className="flex items-center justify-center gap-4 mb-6">
+                  <Building2 className="h-12 w-12" />
+                  {user && (
+                    <Badge variant="secondary" className="text-lg px-4 py-2 inline-flex items-center gap-2">
+                      <CheckCircle className="h-5 w-5" />
+                      Authenticated Partner
+                    </Badge>
+                  )}
+                </div>
+                <h1 className="font-heading text-5xl md:text-6xl font-bold mb-4">Partner Portal</h1>
+                <p className="text-2xl leading-relaxed">
+                  Collaborate, contribute, and track your impact in our community network
+                </p>
+              </div>
             </div>
           </div>
-          
-          {user && (
-            <Badge variant="secondary" className="inline-flex items-center gap-2">
-              <CheckCircle className="h-4 w-4" />
-              Authenticated Partner
-            </Badge>
-          )}
         </div>
 
         <Tabs defaultValue="dashboard" className="space-y-6">
