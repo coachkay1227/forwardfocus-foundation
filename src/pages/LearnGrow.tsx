@@ -257,15 +257,15 @@ export default function CommunityLearning() {
 
               {/* AI Assistant Integration */}
               <div className="mb-8 bg-secondary/10 border border-secondary/20 rounded-lg p-6">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="w-8 h-8 bg-secondary rounded-lg flex items-center justify-center">
-                    <Star className="h-5 w-5 text-secondary-foreground" />
-                  </div>
-                  <h3 className="font-semibold text-foreground">AI Learning Assistant</h3>
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-8 h-8 bg-secondary rounded-lg flex items-center justify-center">
+                  <Star className="h-5 w-5 text-secondary-foreground" />
                 </div>
-                <p className="text-foreground/80 mb-4">
-                  Get personalized help with your learning journey. Ask questions about modules, get study tips, or practice concepts.
-                </p>
+                <h3 className="font-semibold text-foreground">Reentry Success Navigator</h3>
+              </div>
+              <p className="text-foreground/80 mb-4">
+                Get personalized help specifically for your reentry journey. Ask about housing, employment, legal questions, or family support strategies.
+              </p>
                 <AICompanion />
               </div>
 
