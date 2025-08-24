@@ -1,0 +1,231 @@
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
+import { Mail, Send, CheckCircle, AlertCircle } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
+
+interface ContactFormProps {
+  type?: 'contact' | 'coaching' | 'booking';
+  title?: string;
+  description?: string;
+  className?: string;
+}
+
+export default function ContactForm({ 
+  type = 'contact', 
+  title,
+  description,
+  className = ""
+}: ContactFormProps) {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    subject: '',
+    message: ''
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setFormData(prev => ({
+      ...prev,
+      [e.target.name]: e.target.value
+    }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!formData.name || !formData.email || !formData.message) {
+      toast.error("Please fill in all required fields");
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      const { error } = await supabase.functions.invoke('send-contact-email', {
+        body: {
+          ...formData,
+          type,
+          subject: formData.subject || getDefaultSubject()
+        }
+      });
+
+      if (error) {
+        console.error('Error sending email:', error);
+        toast.error("Failed to send message. Please try again.");
+      } else {
+        setIsSubmitted(true);
+        toast.success("Message sent successfully! We'll get back to you soon.");
+        setFormData({ name: '', email: '', subject: '', message: '' });
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      toast.error("Failed to send message. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const getDefaultSubject = () => {
+    switch (type) {
+      case 'coaching':
+        return 'Coaching Inquiry';
+      case 'booking':
+        return 'Consultation Booking Request';
+      default:
+        return 'General Inquiry';
+    }
+  };
+
+  const getFormTitle = () => {
+    if (title) return title;
+    switch (type) {
+      case 'coaching':
+        return 'Connect with Coach Kay';
+      case 'booking':
+        return 'Book a Consultation';
+      default:
+        return 'Contact Us';
+    }
+  };
+
+  const getFormDescription = () => {
+    if (description) return description;
+    switch (type) {
+      case 'coaching':
+        return 'Get personalized guidance from Coach Kay. Share your goals and challenges, and let\'s create a path forward together.';
+      case 'booking':
+        return 'Schedule a one-on-one consultation to discuss your specific needs and how we can support your journey.';
+      default:
+        return 'Have questions or need support? We\'re here to help. Send us a message and we\'ll get back to you soon.';
+    }
+  };
+
+  if (isSubmitted) {
+    return (
+      <Card className={`${className} border-accent/20 bg-accent/5`}>
+        <CardContent className="p-8 text-center">
+          <div className="w-16 h-16 bg-accent rounded-full flex items-center justify-center mx-auto mb-6">
+            <CheckCircle className="h-8 w-8 text-accent-foreground" />
+          </div>
+          <h3 className="text-2xl font-semibold text-foreground mb-4">Message Sent Successfully!</h3>
+          <p className="text-foreground/70 mb-6">
+            Thank you for reaching out. We'll get back to you within 24-48 hours.
+          </p>
+          <Button 
+            onClick={() => setIsSubmitted(false)}
+            variant="outline"
+          >
+            Send Another Message
+          </Button>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  return (
+    <Card className={className}>
+      <CardHeader className="text-center">
+        <div className="w-12 h-12 bg-primary rounded-lg flex items-center justify-center mx-auto mb-4">
+          <Mail className="h-6 w-6 text-primary-foreground" />
+        </div>
+        <CardTitle className="text-2xl font-bold text-foreground">
+          {getFormTitle()}
+        </CardTitle>
+        <p className="text-foreground/70">
+          {getFormDescription()}
+        </p>
+      </CardHeader>
+      <CardContent>
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <div className="grid md:grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="name">Full Name *</Label>
+              <Input
+                id="name"
+                name="name"
+                type="text"
+                value={formData.name}
+                onChange={handleInputChange}
+                placeholder="Your full name"
+                required
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="email">Email Address *</Label>
+              <Input
+                id="email"
+                name="email"
+                type="email"
+                value={formData.email}
+                onChange={handleInputChange}
+                placeholder="your.email@example.com"
+                required
+              />
+            </div>
+          </div>
+          
+          <div className="space-y-2">
+            <Label htmlFor="subject">Subject</Label>
+            <Input
+              id="subject"
+              name="subject"
+              type="text"
+              value={formData.subject}
+              onChange={handleInputChange}
+              placeholder={getDefaultSubject()}
+            />
+          </div>
+          
+          <div className="space-y-2">
+            <Label htmlFor="message">Message *</Label>
+            <Textarea
+              id="message"
+              name="message"
+              value={formData.message}
+              onChange={handleInputChange}
+              placeholder={type === 'coaching' 
+                ? "Tell Coach Kay about your current situation, goals, and how she can best support you..." 
+                : type === 'booking'
+                ? "Let us know your preferred dates and times, and what you'd like to discuss during your consultation..."
+                : "How can we help you? Share your questions, concerns, or feedback..."
+              }
+              className="min-h-32"
+              required
+            />
+          </div>
+          
+          <Button 
+            type="submit" 
+            className="w-full bg-primary hover:bg-primary/90 text-primary-foreground" 
+            size="lg"
+            disabled={isSubmitting}
+          >
+            {isSubmitting ? (
+              <>
+                <AlertCircle className="h-4 w-4 mr-2 animate-spin" />
+                Sending...
+              </>
+            ) : (
+              <>
+                <Send className="h-4 w-4 mr-2" />
+                {type === 'booking' ? 'Request Consultation' : 'Send Message'}
+              </>
+            )}
+          </Button>
+          
+          <p className="text-sm text-foreground/60 text-center">
+            We typically respond within 24-48 hours. 
+            {type === 'coaching' && ' Coach Kay personally reviews all coaching inquiries.'}
+          </p>
+        </form>
+      </CardContent>
+    </Card>
+  );
+}

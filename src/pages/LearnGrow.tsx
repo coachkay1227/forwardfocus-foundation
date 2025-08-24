@@ -8,9 +8,8 @@ import { Button } from "@/components/ui/button";
 import { CommunityApplication } from "@/components/learn/CommunityApplication";
 import AICompanion from "@/components/learn/AICompanion";
 
-// Import community images
-import diverseFathersLearning from "@/assets/diverse-fathers-learning.jpg";
-// Using uploaded CoachKay portrait
+// Import community images  
+import learningCommunityDiverse from "@/assets/learning-community-diverse.jpg";
 import peerSupportCircle from "@/assets/peer-support-circle.jpg";
 
 export default function CommunityLearning() {
@@ -18,7 +17,7 @@ export default function CommunityLearning() {
   const [showApplication, setShowApplication] = useState(false);
 
   useEffect(() => {
-    document.title = "Learning & Growth Community | Forward Focus Collective";
+    document.title = "Learning & Growth Community | Forward Focus Elevation";
     const desc = "Free education and peer support for justice-impacted individuals and families. Self-paced learning modules, trauma-informed community, progress tracking.";
     
     let meta = document.querySelector('meta[name="description"]') as HTMLMetaElement | null;
@@ -37,14 +36,6 @@ export default function CommunityLearning() {
     }
     link.setAttribute("href", `${window.location.origin}/learn`);
   }, []);
-
-  const navigationSections = [
-    { id: "overview", label: "Community Overview", icon: Users, color: "bg-secondary" },
-    { id: "learning", label: "Learning Modules", icon: BookOpen, color: "bg-accent" },
-    { id: "support", label: "Peer Support", icon: Heart, color: "bg-primary" },
-    { id: "features", label: "Features & Benefits", icon: Star, color: "bg-secondary" },
-    { id: "apply", label: "Join Today", icon: ArrowRight, color: "bg-accent" }
-  ];
 
   const scrollToSection = (sectionId: string) => {
     setActiveSection(sectionId);
@@ -109,8 +100,8 @@ export default function CommunityLearning() {
         <div className="container">
           <div className="relative rounded-lg overflow-hidden">
             <img 
-              src={diverseFathersLearning} 
-              alt="Diverse fathers and families engaged in learning activities together"
+              src={learningCommunityDiverse} 
+              alt="Diverse community members engaged in collaborative learning activities"
               className="w-full h-64 md:h-80 object-cover"
             />
             <div className="absolute inset-0 bg-gradient-to-r from-primary/90 to-secondary/80 flex items-center justify-center">
@@ -123,33 +114,37 @@ export default function CommunityLearning() {
         </div>
       </section>
 
-      {/* Smart Navigation Hub */}
-      <nav className="bg-card border-b sticky top-0 z-40 shadow-sm">
-        <div className="container py-4">
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
-            {navigationSections.map((section) => {
-              const Icon = section.icon;
-              return (
-                <button
-                  key={section.id}
-                  onClick={() => scrollToSection(section.id)}
-                  className={`flex items-center gap-2 p-4 rounded-lg border-2 transition-all shadow-md hover:shadow-lg ${
-                    activeSection === section.id 
-                      ? 'border-primary bg-gradient-to-r from-primary/20 to-secondary/20 text-primary font-semibold shadow-lg' 
-                      : 'border-border bg-gradient-to-r from-background to-muted/30 hover:border-primary/50 hover:from-primary/5 hover:to-secondary/5 hover:text-primary'
-                  }`}
-                >
-                  <div className={`p-1 rounded-md ${activeSection === section.id ? 'bg-primary/20' : 'bg-muted/50'}`}>
-                    <Icon className="h-4 w-4" />
-                  </div>
-                  <span className="text-sm font-medium hidden sm:block">{section.label}</span>
-                  <ChevronRight className="h-3 w-3 ml-auto" />
-                </button>
-              );
-            })}
+        {/* Smart Navigation Hub */}
+        <nav className="bg-card border-b sticky top-0 z-40 shadow-sm">
+          <div className="container py-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+              {[
+                { id: "overview", label: "Community Overview", icon: Users },
+                { id: "learning", label: "Learning Modules", icon: BookOpen },
+                { id: "apply", label: "Join Today", icon: ArrowRight }
+              ].map((section) => {
+                const Icon = section.icon;
+                return (
+                  <button
+                    key={section.id}
+                    onClick={() => scrollToSection(section.id)}
+                    className={`flex items-center gap-2 p-4 rounded-lg border-2 transition-all shadow-md hover:shadow-lg ${
+                      activeSection === section.id 
+                        ? 'border-primary bg-gradient-to-r from-primary/20 to-secondary/20 text-primary font-semibold shadow-lg' 
+                        : 'border-border bg-gradient-to-r from-background to-muted/30 hover:border-primary/50 hover:from-primary/5 hover:to-secondary/5 hover:text-primary'
+                    }`}
+                  >
+                    <div className={`p-1 rounded-md ${activeSection === section.id ? 'bg-primary/20' : 'bg-muted/50'}`}>
+                      <Icon className="h-4 w-4" />
+                    </div>
+                    <span className="text-sm font-medium">{section.label}</span>
+                    <ChevronRight className="h-3 w-3 ml-auto" />
+                  </button>
+                );
+              })}
+            </div>
           </div>
-        </div>
-      </nav>
+        </nav>
 
       <main className="bg-muted/30">
         {/* Community Overview */}
@@ -349,21 +344,6 @@ export default function CommunityLearning() {
                 </div>
               </div>
 
-              {/* Peer Support Visual */}
-              <div className="mb-8 relative rounded-lg overflow-hidden">
-                <img 
-                  src={peerSupportCircle} 
-                  alt="Diverse group of people in a supportive discussion circle"
-                  className="w-full h-48 md:h-64 object-cover"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-primary/80 to-transparent flex items-end">
-                  <div className="p-6 text-white">
-                    <h3 className="text-xl font-semibold mb-2">Real Stories. Real Support. Real Results.</h3>
-                    <p className="text-white/90">Join conversations that matter with people who understand.</p>
-                  </div>
-                </div>
-              </div>
-
               <div className="grid md:grid-cols-2 gap-6">
                 <div className="bg-primary/10 border border-primary/20 rounded-lg p-6">
                   <h3 className="font-semibold text-foreground mb-4">Discussion Groups</h3>
@@ -380,10 +360,6 @@ export default function CommunityLearning() {
                       <Heart className="h-4 w-4 mt-0.5 text-primary" />
                       Success story sharing
                     </li>
-                    <li className="flex items-start gap-2">
-                      <Shield className="h-4 w-4 mt-0.5 text-primary" />
-                      Safe, moderated environment
-                    </li>
                   </ul>
                 </div>
 
@@ -396,142 +372,13 @@ export default function CommunityLearning() {
                     </li>
                     <li className="flex items-start gap-2">
                       <CheckCircle className="h-4 w-4 text-primary mt-0.5" />
-                      Confidentiality of shared information
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <CheckCircle className="h-4 w-4 text-primary mt-0.5" />
                       Trauma-informed communication
                     </li>
                     <li className="flex items-start gap-2">
                       <CheckCircle className="h-4 w-4 text-primary mt-0.5" />
                       Supportive, judgment-free zone
                     </li>
-                    <li className="flex items-start gap-2">
-                      <CheckCircle className="h-4 w-4 text-primary mt-0.5" />
-                      Encouragement over criticism
-                    </li>
                   </ul>
-                </div>
-              </div>
-
-              <div className="mt-8 bg-accent/10 border border-accent/20 rounded-lg p-6">
-                <h3 className="font-semibold text-foreground mb-3">Success Stories From Our Community</h3>
-                <div className="grid md:grid-cols-3 gap-4">
-                  <blockquote className="bg-card p-4 rounded border text-sm">
-                    <p className="text-foreground/80 mb-2">"The credit module helped me go from a 480 to 650 credit score in 8 months."</p>
-                    <cite className="text-accent font-medium">— Maria, Community Member</cite>
-                  </blockquote>
-                  <blockquote className="bg-card p-4 rounded border text-sm">
-                    <p className="text-foreground/80 mb-2">"I found my people here. Finally, a community that gets it."</p>
-                    <cite className="text-accent font-medium">— James, Community Member</cite>
-                  </blockquote>
-                  <blockquote className="bg-card p-4 rounded border text-sm">
-                    <p className="text-foreground/80 mb-2">"The peer support helped me stay motivated when things got tough."</p>
-                    <cite className="text-accent font-medium">— Sarah, Community Member</cite>
-                  </blockquote>
-                </div>
-
-                <div className="mt-6 text-center">
-                  <Button 
-                    onClick={() => setShowApplication(true)}
-                    className="bg-primary hover:bg-primary/90 text-primary-foreground"
-                  >
-                    <Heart className="h-4 w-4 mr-2" />
-                    Join Peer Support
-                  </Button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Features & Benefits */}
-        <section id="features" className="py-12">
-          <div className="container">
-            <div className="max-w-4xl mx-auto">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="w-12 h-12 bg-secondary rounded-lg flex items-center justify-center">
-                  <Star className="h-6 w-6 text-secondary-foreground" />
-                </div>
-                <div>
-                  <h2 className="text-2xl font-bold text-foreground">Features & Benefits</h2>
-                  <p className="text-foreground/80">Everything you need for successful learning and growth</p>
-                </div>
-              </div>
-
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {[
-                  { icon: GraduationCap, title: "Progress Tracking", desc: "Monitor your learning journey and celebrate milestones", color: "accent" },
-                  { icon: Users, title: "Peer Connections", desc: "Connect with others on similar journeys for mutual support", color: "primary" },
-                  { icon: Clock, title: "Flexible Scheduling", desc: "Learn at your own pace, on your own timeline", color: "secondary" },
-                  { icon: Shield, title: "Safe Environment", desc: "Trauma-informed, judgment-free space for healing", color: "primary" },
-                  { icon: Award, title: "Completely Free", desc: "All education funded by grants - never pay for content", color: "accent" },
-                  { icon: MessageSquare, title: "Community Support", desc: "24/7 access to peer discussions and encouragement", color: "secondary" }
-                ].map((feature, index) => {
-                  const Icon = feature.icon;
-                  const colorClasses = {
-                    primary: "bg-primary/10 text-primary",
-                    secondary: "bg-secondary/10 text-secondary", 
-                    accent: "bg-accent/10 text-accent"
-                  };
-                  return (
-                    <div key={index} className="bg-card border border-border rounded-lg p-6 text-center">
-                      <div className={`w-12 h-12 rounded-lg flex items-center justify-center mx-auto mb-4 ${colorClasses[feature.color as keyof typeof colorClasses]}`}>
-                        <Icon className="h-6 w-6" />
-                      </div>
-                      <h3 className="font-semibold text-foreground mb-2">{feature.title}</h3>
-                      <p className="text-sm text-foreground/80">{feature.desc}</p>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Coach & Community Section */}
-        <section className="py-12 bg-card">
-          <div className="container">
-            <div className="max-w-4xl mx-auto">
-              <div className="grid md:grid-cols-2 gap-8 items-center">
-                <div className="relative">
-                  <img 
-                    src="/lovable-uploads/b15cb09e-4953-4418-a57d-138bbe12c175.png" 
-                    alt="Coach Kay - Professional community coach and mentor"
-                    className="w-full max-w-sm mx-auto rounded-lg shadow-lg"
-                  />
-                  <div className="absolute -bottom-4 -right-4 bg-secondary text-secondary-foreground px-4 py-2 rounded-lg shadow-lg">
-                    <span className="text-sm font-medium">Coach Kay</span>
-                  </div>
-                </div>
-                <div>
-                  <h2 className="text-2xl font-bold text-foreground mb-4">Meet CoachKay</h2>
-                  <p className="text-foreground/80 mb-4">
-                    I understand the challenges of reentry because I've walked this path. As someone who has navigated 
-                    the system and emerged stronger, I'm here to guide you through your learning journey with compassion, 
-                    understanding, and practical wisdom.
-                  </p>
-                  <div className="space-y-3 mb-6">
-                    <div className="flex items-center gap-3">
-                      <div className="w-2 h-2 bg-secondary rounded-full"></div>
-                      <span className="text-foreground/80">Lived experience with reentry challenges</span>
-                    </div>
-                    <div className="flex items-center gap-3">
-                      <div className="w-2 h-2 bg-secondary rounded-full"></div>
-                      <span className="text-foreground/80">Trauma-informed coaching approach</span>
-                    </div>
-                    <div className="flex items-center gap-3">
-                      <div className="w-2 h-2 bg-secondary rounded-full"></div>
-                      <span className="text-foreground/80">Dedicated to community empowerment</span>
-                    </div>
-                  </div>
-                  <Button 
-                    onClick={() => setShowApplication(true)}
-                    className="bg-secondary hover:bg-secondary/90 text-secondary-foreground"
-                  >
-                    <UserCheck className="h-4 w-4 mr-2" />
-                    Connect with Our Community
-                  </Button>
                 </div>
               </div>
             </div>

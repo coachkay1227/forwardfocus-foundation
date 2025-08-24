@@ -2,13 +2,16 @@ import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { 
   Heart, Users, Shield, CheckCircle, Target, Brain,
-  MessageSquare, BookOpen, Home, Phone, ArrowRight, Star 
+  MessageSquare, BookOpen, Home, Phone, ArrowRight, Star, 
+  Calendar, Award, Linkedin, Mail
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import ContactForm from "@/components/forms/ContactForm";
 
-// Import hero image
-import aboutUsTeamDiverse from "@/assets/about-us-team-diverse.jpg";
+// Import images
+import coachKayProfessional from "@/assets/coach-kay-professional.jpg";
+import diverseCommunityMeeting from "@/assets/diverse-community-meeting.jpg";
 
 export default function AboutUs() {
   useEffect(() => {
@@ -126,8 +129,8 @@ export default function AboutUs() {
               </div>
               <div className="relative rounded-2xl overflow-hidden shadow-xl">
                 <img 
-                  src={aboutUsTeamDiverse} 
-                  alt="Diverse team of community leaders, counselors, and advocates"
+                  src={diverseCommunityMeeting} 
+                  alt="Diverse community members in supportive meeting environment"
                   className="w-full h-80 object-cover"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-accent/90 to-transparent flex items-end">
@@ -295,28 +298,166 @@ export default function AboutUs() {
           </div>
         </section>
 
+        {/* Meet Coach Kay Section */}
+        <section aria-labelledby="coach-kay" className="scroll-mt-16 bg-gradient-to-br from-secondary/10 to-accent/10 py-24 -mx-4 px-4 rounded-2xl">
+          <div className="max-w-6xl mx-auto">
+            <div className="grid lg:grid-cols-2 gap-16 items-center">
+              <div className="order-2 lg:order-1">
+                <h2 id="coach-kay" className="font-heading text-4xl md:text-5xl font-bold text-foreground mb-8">
+                  Meet Coach Kay
+                </h2>
+                <div className="space-y-6 text-foreground">
+                  <p className="text-xl leading-relaxed">
+                    Behind Forward Focus Elevation is Coach Kay, a passionate advocate with lived experience in 
+                    the justice system. After navigating her own reentry journey, she discovered the power of 
+                    trauma-informed support and community connection.
+                  </p>
+                  <p className="text-lg leading-relaxed">
+                    Today, Coach Kay combines her personal experience with professional training in trauma recovery, 
+                    life coaching, and community building to create resources that truly meet people where they are. 
+                    She believes every person deserves dignity, hope, and a pathway forward.
+                  </p>
+                  <div className="bg-background/60 border border-accent/20 rounded-lg p-6">
+                    <h3 className="font-semibold text-foreground mb-4 flex items-center gap-2">
+                      <Award className="h-5 w-5 text-accent" />
+                      Credentials & Experience
+                    </h3>
+                    <ul className="space-y-2 text-sm text-foreground/80">
+                      <li>• Certified Trauma-Informed Life Coach</li>
+                      <li>• 10+ Years Supporting Justice-Impacted Families</li>
+                      <li>• Community Program Development Specialist</li>
+                      <li>• Lived Experience in Reentry & Recovery</li>
+                    </ul>
+                  </div>
+                </div>
+                
+                <div className="flex flex-col sm:flex-row gap-4 mt-8">
+                  <Button asChild size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground">
+                    <a href="#contact-coach-kay">
+                      <Mail className="h-5 w-5 mr-2" />
+                      Connect with Coach Kay
+                    </a>
+                  </Button>
+                  <Button asChild size="lg" variant="outline">
+                    <a href="#book-consultation">
+                      <Calendar className="h-5 w-5 mr-2" />
+                      Book Consultation
+                    </a>
+                  </Button>
+                </div>
+              </div>
+              
+              <div className="order-1 lg:order-2 relative">
+                <div className="relative rounded-2xl overflow-hidden shadow-2xl">
+                  <img 
+                    src={coachKayProfessional} 
+                    alt="Coach Kay working at her desk, creating digital content for the community"
+                    className="w-full h-96 lg:h-[500px] object-cover"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-primary/80 to-transparent flex items-end">
+                    <div className="p-8 text-white">
+                      <p className="text-xl font-semibold mb-2">
+                        "Every person deserves a chance to rewrite their story."
+                      </p>
+                      <p className="text-white/90">— Coach Kay, Founder</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Contact Coach Kay */}
+        <section id="contact-coach-kay" aria-labelledby="contact-coach" className="scroll-mt-16">
+          <div className="max-w-4xl mx-auto">
+            <div className="text-center mb-12">
+              <h2 id="contact-coach" className="font-heading text-3xl md:text-4xl font-bold text-foreground mb-6">
+                Connect with Coach Kay
+              </h2>
+              <p className="text-xl text-foreground/70 leading-relaxed">
+                Ready to take the next step in your journey? Coach Kay is here to provide personalized guidance, 
+                support, and resources tailored to your unique needs and goals.
+              </p>
+            </div>
+            
+            <ContactForm 
+              type="coaching"
+              className="shadow-xl border-accent/20 bg-gradient-to-br from-background to-accent/5"
+            />
+          </div>
+        </section>
+
+        {/* Book Consultation */}
+        <section id="book-consultation" aria-labelledby="book-consult" className="scroll-mt-16 bg-primary/5 py-24 -mx-4 px-4 rounded-2xl">
+          <div className="max-w-4xl mx-auto">
+            <div className="text-center mb-12">
+              <h2 id="book-consult" className="font-heading text-3xl md:text-4xl font-bold text-foreground mb-6">
+                Book Your Consultation
+              </h2>
+              <p className="text-xl text-foreground/70 leading-relaxed">
+                Schedule a one-on-one session with Coach Kay to discuss your goals, challenges, and create 
+                a personalized action plan for your journey forward.
+              </p>
+              <div className="grid md:grid-cols-3 gap-6 mt-8 text-left">
+                <div className="bg-background rounded-lg p-6 shadow-lg">
+                  <h3 className="font-semibold text-foreground mb-3 flex items-center gap-2">
+                    <CheckCircle className="h-5 w-5 text-accent" />
+                    Initial Assessment
+                  </h3>
+                  <p className="text-sm text-foreground/70">
+                    Understand your current situation, goals, and identify the best resources for your journey.
+                  </p>
+                </div>
+                <div className="bg-background rounded-lg p-6 shadow-lg">
+                  <h3 className="font-semibold text-foreground mb-3 flex items-center gap-2">
+                    <CheckCircle className="h-5 w-5 text-accent" />
+                    Personalized Plan
+                  </h3>
+                  <p className="text-sm text-foreground/70">
+                    Receive a customized roadmap with actionable steps, resources, and timelines.
+                  </p>
+                </div>
+                <div className="bg-background rounded-lg p-6 shadow-lg">
+                  <h3 className="font-semibold text-foreground mb-3 flex items-center gap-2">
+                    <CheckCircle className="h-5 w-5 text-accent" />
+                    Ongoing Support
+                  </h3>
+                  <p className="text-sm text-foreground/70">
+                    Get connected to the right community resources and follow-up support systems.
+                  </p>
+                </div>
+              </div>
+            </div>
+            
+            <ContactForm 
+              type="booking"
+              className="shadow-xl bg-background"
+            />
+          </div>
+        </section>
+
         {/* Call to Belong */}
         <section aria-labelledby="belong" className="scroll-mt-16">
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-16">
               <h2 id="belong" className="font-heading text-4xl md:text-6xl font-bold text-foreground mb-8">
-                Join Us. This Is Your Community Too.
+                Join Our Movement
               </h2>
               <p className="text-xl text-foreground/70 max-w-4xl mx-auto leading-relaxed">
                 Your voice, your journey, and your future matter here. Forward Focus Elevation is a place to 
-                learn, heal, grow, and connect — together. Whether you're starting fresh, supporting a loved one, 
-                or simply seeking guidance, you belong here.
+                learn, heal, grow, and connect — together.
               </p>
             </div>
             
-            <div className="grid md:grid-cols-3 gap-8 mb-16">
+            <div className="grid md:grid-cols-3 gap-8">
               <div className="text-center bg-primary/5 rounded-2xl p-10 shadow-lg hover:shadow-xl transition-all group">
                 <div className="w-24 h-24 bg-primary rounded-full flex items-center justify-center mx-auto mb-8 shadow-md group-hover:scale-110 transition-transform">
                   <Shield className="h-12 w-12 text-primary-foreground" />
                 </div>
                 <h3 className="text-2xl font-semibold text-foreground mb-6">Healing & Safety Hub</h3>
                 <p className="text-foreground/70 mb-8 text-lg leading-relaxed">
-                  Trauma recovery resources, victim services, and personalized support for your healing journey
+                  Trauma recovery resources and victim services for your healing journey
                 </p>
                 <Button asChild size="lg" variant="default" className="w-full">
                   <Link to="/victim-services">
@@ -329,9 +470,9 @@ export default function AboutUs() {
                 <div className="w-24 h-24 bg-accent rounded-full flex items-center justify-center mx-auto mb-8 shadow-md group-hover:scale-110 transition-transform">
                   <Users className="h-12 w-12 text-accent-foreground" />
                 </div>
-                <h3 className="text-2xl font-semibold text-foreground mb-6">Reentry Community</h3>
+                <h3 className="text-2xl font-semibold text-foreground mb-6">Learning Community</h3>
                 <p className="text-foreground/70 mb-8 text-lg leading-relaxed">
-                  Learning modules, peer support, and guided pathways designed specifically for justice-impacted families
+                  Peer support and guided learning designed for justice-impacted families
                 </p>
                 <Button asChild size="lg" className="bg-accent hover:bg-accent/90 text-accent-foreground w-full">
                   <Link to="/learn">
@@ -346,26 +487,14 @@ export default function AboutUs() {
                 </div>
                 <h3 className="text-2xl font-semibold text-foreground mb-6">AI Assistant</h3>
                 <p className="text-foreground/70 mb-8 text-lg leading-relaxed">
-                  24/7 guidance to help you navigate resources, find support, and take the next step forward
+                  24/7 guidance to help you navigate resources and take the next step
                 </p>
                 <Button asChild size="lg" variant="secondary" className="w-full">
                   <Link to="/help">
-                    Open the AI Assistant
+                    Get AI Support
                   </Link>
                 </Button>
               </div>
-            </div>
-
-            <div className="text-center bg-background rounded-2xl p-12 shadow-lg border">
-              <p className="text-xl text-foreground/70 mb-8">
-                Have questions about our services or want to learn more about how we can support you?
-              </p>
-              <Button asChild size="lg" variant="premium" className="text-lg px-12">
-                <Link to="/support">
-                  <MessageSquare className="h-5 w-5 mr-3" />
-                  Contact Us
-                </Link>
-              </Button>
             </div>
           </div>
         </section>
