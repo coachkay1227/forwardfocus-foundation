@@ -14,6 +14,7 @@ import coachKayProfessional from "@/assets/coach-kay-professional.jpg";
 import diverseCommunityMeeting from "@/assets/diverse-community-meeting.jpg";
 
 export default function AboutUs() {
+  // Force cache refresh - all image imports are correctly updated
   useEffect(() => {
     document.title = "About Forward Focus Elevation | Empowering Justice-Impacted Families";
     const desc = "We exist to empower justice-impacted individuals and families to rebuild, thrive, and rise — with dignity, hope, and community. AI-powered platform with human support.";
