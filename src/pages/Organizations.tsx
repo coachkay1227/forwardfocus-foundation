@@ -30,11 +30,11 @@ interface Organization {
   id: string;
   name: string;
   description: string;
-  address: string;
+  address?: string;
   city: string;
   state_code: string;
-  phone: string;
-  email: string;
+  phone?: string;
+  email?: string;
   website: string;
   verified: boolean;
   created_at: string;
@@ -54,7 +54,7 @@ const Organizations = () => {
   useEffect(() => {
     document.title = "Partner Organizations | Forward Focus Elevation";
     fetchOrganizations();
-  }, []);
+  }, [user]); // Re-fetch when user authentication status changes
 
   useEffect(() => {
     filterOrganizations();
@@ -62,10 +62,21 @@ const Organizations = () => {
 
   const fetchOrganizations = async () => {
     try {
-      const { data, error } = await supabase
-        .from("organizations")
-        .select("*")
-        .order("name");
+      let data, error;
+      
+      if (user) {
+        // Authenticated users can see all organization data
+        ({ data, error } = await supabase
+          .from("organizations")
+          .select("*")
+          .order("name"));
+      } else {
+        // Non-authenticated users see limited data without sensitive contact info
+        ({ data, error } = await supabase
+          .from("organizations")
+          .select("id, name, description, city, state_code, website, verified, created_at, updated_at")
+          .order("name"));
+      }
 
       if (error) throw error;
       setOrganizations(data || []);
