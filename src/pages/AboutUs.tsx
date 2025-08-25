@@ -1,10 +1,6 @@
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
-import { 
-  Heart, Users, Shield, CheckCircle, Target, Brain,
-  MessageSquare, BookOpen, Home, Phone, ArrowRight, Star, 
-  Calendar, Award, Linkedin, Mail
-} from "lucide-react";
+import { Heart, Users, Shield, CheckCircle, Target, Brain, MessageSquare, BookOpen, Home, Phone, ArrowRight, Star, Calendar, Award, Linkedin, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import ContactForm from "@/components/forms/ContactForm";
@@ -12,13 +8,11 @@ import ContactForm from "@/components/forms/ContactForm";
 // Import images
 import coachKayProfessional from "@/assets/coach-kay-professional.jpg";
 import diverseCommunityMeeting from "@/assets/diverse-community-meeting.jpg";
-
 export default function AboutUs() {
   // Force cache refresh - all image imports are correctly updated
   useEffect(() => {
     document.title = "About Forward Focus Elevation | Empowering Justice-Impacted Families";
     const desc = "We exist to empower justice-impacted individuals and families to rebuild, thrive, and rise — with dignity, hope, and community. AI-powered platform with human support.";
-    
     let meta = document.querySelector('meta[name="description"]') as HTMLMetaElement | null;
     if (!meta) {
       meta = document.createElement("meta");
@@ -26,7 +20,6 @@ export default function AboutUs() {
       document.head.appendChild(meta);
     }
     meta.setAttribute("content", desc);
-
     let link = document.querySelector('link[rel="canonical"]') as HTMLLinkElement | null;
     if (!link) {
       link = document.createElement("link");
@@ -45,24 +38,16 @@ export default function AboutUs() {
       url: window.location.origin,
       description: 'Empowering justice-impacted individuals and families to rebuild, thrive, and rise with dignity, hope, and community.',
       areaServed: 'Ohio',
-      serviceType: [
-        'Healing & Safety Hub',
-        'Reentry Community',
-        'AI-Powered Guidance',
-        'Trauma Recovery Support'
-      ]
+      serviceType: ['Healing & Safety Hub', 'Reentry Community', 'AI-Powered Guidance', 'Trauma Recovery Support']
     });
     document.head.appendChild(ld);
-
     return () => {
       if (document.head.contains(ld)) {
         document.head.removeChild(ld);
       }
     };
   }, []);
-
-  return (
-    <main id="main">
+  return <main id="main">
       {/* Hero Section */}
       <header className="relative bg-primary text-primary-foreground overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-primary/90 to-secondary/70"></div>
@@ -129,11 +114,7 @@ export default function AboutUs() {
                 </div>
               </div>
               <div className="relative rounded-2xl overflow-hidden shadow-xl">
-                <img 
-                  src={diverseCommunityMeeting} 
-                  alt="Diverse community members in supportive meeting environment"
-                  className="w-full h-80 object-cover"
-                />
+                <img src={diverseCommunityMeeting} alt="Diverse community members in supportive meeting environment" className="w-full h-80 object-cover" />
                 <div className="absolute inset-0 bg-gradient-to-t from-accent/90 to-transparent flex items-end">
                   <div className="p-8 text-accent-foreground w-full text-center">
                     <p className="text-2xl font-semibold">
@@ -317,18 +298,7 @@ export default function AboutUs() {
                   <p className="text-lg leading-relaxed">
                     Through Forward Focus Elevation and the Collective, a free community peer supported community she now designs AI-powered resources, healing programs, and safe spaces that center justice-impacted individuals and their families. Her belief is simple: everyone deserves dignity, access, and a real chance to rebuild.
                   </p>
-                  <div className="bg-background/60 border border-accent/20 rounded-lg p-6">
-                    <h3 className="font-semibold text-foreground mb-4 flex items-center gap-2">
-                      <Award className="h-5 w-5 text-accent" />
-                      Credentials & Experience
-                    </h3>
-                    <ul className="space-y-2 text-sm text-foreground/80">
-                      <li>• Certified Trauma-Informed Life Coach</li>
-                      <li>• 10+ Years Supporting Justice-Impacted Families</li>
-                      <li>• Community Program Development Specialist</li>
-                      <li>• Lived Experience in Reentry & Recovery</li>
-                    </ul>
-                  </div>
+                  
                 </div>
                 
                 <div className="flex flex-col sm:flex-row gap-4 mt-8">
@@ -349,11 +319,7 @@ export default function AboutUs() {
               
               <div className="order-1 lg:order-2 relative">
                 <div className="relative rounded-2xl overflow-hidden shadow-2xl">
-                  <img 
-                    src="/lovable-uploads/fad5cdf5-77d8-4054-93a4-6e6af3cf8099.png" 
-                    alt="Coach Kay, founder of Forward Focus Elevation, sitting professionally in a modern office setting"
-                    className="w-full h-96 lg:h-[500px] object-cover"
-                  />
+                  <img src="/lovable-uploads/fad5cdf5-77d8-4054-93a4-6e6af3cf8099.png" alt="Coach Kay, founder of Forward Focus Elevation, sitting professionally in a modern office setting" className="w-full h-96 lg:h-[500px] object-cover" />
                   <div className="absolute inset-0 bg-gradient-to-t from-primary/80 to-transparent flex items-end">
                     <div className="p-8 text-white">
                       <p className="text-xl font-semibold mb-2">
@@ -381,10 +347,7 @@ export default function AboutUs() {
               </p>
             </div>
             
-            <ContactForm 
-              type="coaching"
-              className="shadow-xl border-accent/20 bg-gradient-to-br from-background to-accent/5"
-            />
+            <ContactForm type="coaching" className="shadow-xl border-accent/20 bg-gradient-to-br from-background to-accent/5" />
           </div>
         </section>
 
@@ -430,10 +393,7 @@ export default function AboutUs() {
               </div>
             </div>
             
-            <ContactForm 
-              type="booking"
-              className="shadow-xl bg-background"
-            />
+            <ContactForm type="booking" className="shadow-xl bg-background" />
           </div>
         </section>
 
@@ -499,6 +459,5 @@ export default function AboutUs() {
           </div>
         </section>
       </div>
-    </main>
-  );
+    </main>;
 }
