@@ -56,12 +56,12 @@ export default function AboutUs() {
             <h1 className="font-heading text-5xl md:text-7xl font-bold mb-8 leading-tight">
               About Forward Focus Elevation
             </h1>
-            <p className="text-xl md:text-2xl mb-12 text-primary-foreground/90 leading-relaxed max-w-3xl">Real Healing. Smart Tools. Second Chances for Every Story
+            <p className="text-lg md:text-xl mb-12 text-primary-foreground/90 leading-relaxed max-w-3xl">Real Healing. Smart Tools. Second Chances for Every Story
 
 
 Forward Focus Elevation: AI-powered transformation for justice-impacted individuals and families—because your next chapter deserves more than survival.
 
- </p>
+ </p>
             <div className="flex items-center gap-6 text-sm mb-12 flex-wrap">
               <span className="flex items-center gap-2 bg-accent/20 px-6 py-3 rounded-full backdrop-blur-sm">
                 <Shield className="h-5 w-5" />
