@@ -383,7 +383,42 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      organizations_public: {
+        Row: {
+          city: string | null
+          created_at: string | null
+          description: string | null
+          id: string | null
+          name: string | null
+          state_code: string | null
+          updated_at: string | null
+          verified: boolean | null
+          website: string | null
+        }
+        Insert: {
+          city?: string | null
+          created_at?: string | null
+          description?: string | null
+          id?: string | null
+          name?: string | null
+          state_code?: string | null
+          updated_at?: string | null
+          verified?: boolean | null
+          website?: string | null
+        }
+        Update: {
+          city?: string | null
+          created_at?: string | null
+          description?: string | null
+          id?: string | null
+          name?: string | null
+          state_code?: string | null
+          updated_at?: string | null
+          verified?: boolean | null
+          website?: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       can_view_org_contacts: {

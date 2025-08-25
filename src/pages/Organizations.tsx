@@ -91,17 +91,11 @@ const Organizations = () => {
           .from("organizations")
           .select("*")
           .order("name"));
-      } else if (user) {
-        // Authenticated non-admin users see basic data without sensitive contact info
-        ({ data, error } = await supabase
-          .from("organizations")
-          .select("id, name, description, city, state_code, website, verified, created_at, updated_at")
-          .order("name"));
       } else {
-        // Non-authenticated users see limited data without sensitive contact info
+        // Non-admin users (authenticated or not) see only public data through the view
         ({ data, error } = await supabase
-          .from("organizations")
-          .select("id, name, description, city, state_code, website, verified, created_at, updated_at")
+          .from("organizations_public")
+          .select("*")
           .order("name"));
       }
 
