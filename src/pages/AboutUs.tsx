@@ -100,11 +100,7 @@ export default function AboutUs() {
                   Our Story
                 </h2>
                 <div className="space-y-8 text-foreground">
-                  <p className="text-xl leading-relaxed">
-                    Forward Focus Elevation was born from lived experience. We saw firsthand how hard it is for 
-                    justice-impacted individuals and their families to access real support. Traditional systems 
-                    were fragmented, outdated, and often left people behind.
-                  </p>
+                  <p className="text-xl leading-relaxed">Forward Focus Elevation was born from lived experiences. We saw firsthand how hard it is for justice-impacted individuals and their families to access real support. Traditional systems were fragmented, outdated, and often left people behind.</p>
                   <p className="text-xl leading-relaxed">
                     So, we built something different — a trauma-informed, AI-powered platform that's available 
                     anytime, anywhere. A community designed not just to provide resources, but to empower transformation.
@@ -147,10 +143,7 @@ export default function AboutUs() {
                     24/7 AI + Human-Powered Guidance
                   </h3>
                 </div>
-                <p className="text-foreground/70 text-lg leading-relaxed">
-                  Trauma recovery, reentry support, and growth resources available whenever you need them. 
-                  Technology enhances support—it never replaces human connection.
-                </p>
+                <p className="text-foreground/70 text-lg leading-relaxed">Trauma recovery, reentry support, and growth resources available whenever you need them. Technology enhances support, it never replaces human connection.</p>
               </div>
 
               <div className="bg-background rounded-xl p-10 border shadow-lg hover:shadow-xl transition-all">
@@ -265,10 +258,7 @@ export default function AboutUs() {
                 Forward is the Only Direction
               </h2>
               <div className="space-y-8 text-lg md:text-xl leading-relaxed">
-                <p className="text-primary-foreground/95">
-                  We see a future where every justice-impacted person and family has access to the tools, 
-                  people, and opportunities needed to thrive — no matter where they are or what challenges they face.
-                </p>
+                <p className="text-primary-foreground/95">We see a future where every justice-impacted person and family has access to the tools, people, and opportunities needed to thrive no matter where they are or what challenges they face.</p>
                 <p className="font-semibold text-xl md:text-2xl">
                   Forward Focus Elevation is more than an organization. It's a digital space, a community, 
                   and a movement of people who believe in second chances and lasting change.
