@@ -319,7 +319,7 @@ export default function AboutUs() {
               
               <div className="order-1 lg:order-2 relative">
                 <div className="relative rounded-2xl overflow-hidden shadow-2xl">
-                  <img src="/lovable-uploads/fad5cdf5-77d8-4054-93a4-6e6af3cf8099.png" alt="Coach Kay, founder of Forward Focus Elevation, sitting professionally in a modern office setting" className="w-full h-96 lg:h-[500px] object-contain bg-gradient-to-br from-secondary/10 to-accent/10" />
+                  <img src="/lovable-uploads/fad5cdf5-77d8-4054-93a4-6e6af3cf8099.png" alt="Coach Kay, founder of Forward Focus Elevation, sitting professionally in a modern office setting" className="w-full h-96 lg:h-[500px] object-contain" />
                   <div className="absolute inset-0 bg-gradient-to-t from-primary/80 to-transparent flex items-end">
                     <div className="p-8 text-white">
                       <p className="text-xl font-semibold mb-2">
