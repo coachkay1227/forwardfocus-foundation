@@ -48,13 +48,34 @@ const Organizations = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [cityFilter, setCityFilter] = useState("");
   const [verifiedFilter, setVerifiedFilter] = useState("");
+  const [isAdmin, setIsAdmin] = useState(false);
   const { user } = useAuth();
   const { toast } = useToast();
 
   useEffect(() => {
     document.title = "Partner Organizations | Forward Focus Elevation";
-    fetchOrganizations();
+    checkAdminStatus();
   }, [user]); // Re-fetch when user authentication status changes
+
+  useEffect(() => {
+    fetchOrganizations();
+  }, [user, isAdmin]); // Re-fetch when admin status changes
+
+  const checkAdminStatus = async () => {
+    if (user) {
+      try {
+        const { data, error } = await supabase.rpc('is_user_admin');
+        if (!error) {
+          setIsAdmin(data || false);
+        }
+      } catch (error) {
+        console.error('Error checking admin status:', error);
+        setIsAdmin(false);
+      }
+    } else {
+      setIsAdmin(false);
+    }
+  };
 
   useEffect(() => {
     filterOrganizations();
@@ -64,11 +85,17 @@ const Organizations = () => {
     try {
       let data, error;
       
-      if (user) {
-        // Authenticated users can see all organization data
+      if (isAdmin) {
+        // Admin users can see all organization data including contact information
         ({ data, error } = await supabase
           .from("organizations")
           .select("*")
+          .order("name"));
+      } else if (user) {
+        // Authenticated non-admin users see basic data without sensitive contact info
+        ({ data, error } = await supabase
+          .from("organizations")
+          .select("id, name, description, city, state_code, website, verified, created_at, updated_at")
           .order("name"));
       } else {
         // Non-authenticated users see limited data without sensitive contact info
@@ -329,14 +356,14 @@ const Organizations = () => {
                   <div className="flex items-center gap-2 text-sm text-muted-foreground">
                     <MapPin className="h-4 w-4" />
                     <span>{org.city}, {org.state_code}</span>
-                    {org.address && user && (
+                    {org.address && isAdmin && (
                       <span>• {org.address}</span>
                     )}
                   </div>
 
-                  {/* Contact Info - Protected for non-authenticated users */}
+                  {/* Contact Info - Protected for non-admin users */}
                   <div className="space-y-2">
-                    {org.phone && user && (
+                    {org.phone && isAdmin && (
                       <div className="flex items-center gap-2 text-sm">
                         <Phone className="h-4 w-4 text-muted-foreground" />
                         <a 
@@ -348,7 +375,7 @@ const Organizations = () => {
                       </div>
                     )}
                     
-                    {org.email && user && (
+                    {org.email && isAdmin && (
                       <div className="flex items-center gap-2 text-sm">
                         <Mail className="h-4 w-4 text-muted-foreground" />
                         <a 
@@ -375,10 +402,18 @@ const Organizations = () => {
                       </div>
                     )}
 
-                    {!user && (org.phone || org.email) && (
+                    {user && !isAdmin && (org.phone || org.email) && (
                       <div className="bg-muted/50 p-3 rounded-lg text-sm text-center">
                         <p className="text-muted-foreground">
-                          <a href="/auth" className="text-primary hover:underline">Sign in</a> to view contact information
+                          Contact information is available to verified partners only.
+                        </p>
+                      </div>
+                    )}
+
+                    {!user && (
+                      <div className="bg-muted/50 p-3 rounded-lg text-sm text-center">
+                        <p className="text-muted-foreground">
+                          <a href="/auth" className="text-primary hover:underline">Sign in</a> to access additional features
                         </p>
                       </div>
                     )}
