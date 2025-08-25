@@ -309,14 +309,13 @@ export default function AboutUs() {
                 </h2>
                 <div className="space-y-6 text-foreground">
                   <p className="text-xl leading-relaxed">
-                    Behind Forward Focus Elevation is Coach Kay, a passionate advocate with lived experience in 
-                    the justice system. After navigating her own reentry journey, she discovered the power of 
-                    trauma-informed support and community connection.
+                    Behind Forward Focus Elevation is Coach Kay, a passionate advocate with lived proximity to the justice system. As someone who has supported family, friends, and community members through incarceration, reentry, and systemic trauma, she's seen firsthand how generational harm, lack of resources, and broken systems impact entire families not just individuals.
                   </p>
                   <p className="text-lg leading-relaxed">
-                    Today, Coach Kay combines her personal experience with professional training in trauma recovery, 
-                    life coaching, and community building to create resources that truly meet people where they are. 
-                    She believes every person deserves dignity, hope, and a pathway forward.
+                    What began as personal support for loved ones evolved into a mission. Coach Kay combined her spiritual practice, trauma-informed education, and deep commitment to equity to create tools that meet people where they are with compassion, clarity, and modern solutions.
+                  </p>
+                  <p className="text-lg leading-relaxed">
+                    Through Forward Focus Elevation and the Collective, a free community peer supported community she now designs AI-powered resources, healing programs, and safe spaces that center justice-impacted individuals and their families. Her belief is simple: everyone deserves dignity, access, and a real chance to rebuild.
                   </p>
                   <div className="bg-background/60 border border-accent/20 rounded-lg p-6">
                     <h3 className="font-semibold text-foreground mb-4 flex items-center gap-2">
@@ -351,8 +350,8 @@ export default function AboutUs() {
               <div className="order-1 lg:order-2 relative">
                 <div className="relative rounded-2xl overflow-hidden shadow-2xl">
                   <img 
-                    src={coachKayProfessional} 
-                    alt="Coach Kay working at her desk, creating digital content for the community"
+                    src="/lovable-uploads/fad5cdf5-77d8-4054-93a4-6e6af3cf8099.png" 
+                    alt="Coach Kay, founder of Forward Focus Elevation, sitting professionally in a modern office setting"
                     className="w-full h-96 lg:h-[500px] object-cover"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-primary/80 to-transparent flex items-end">
