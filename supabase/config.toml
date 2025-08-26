@@ -28,3 +28,15 @@ port = 54326
 
 [functions.send-contact-email]
 verify_jwt = false
+
+[functions.crisis-support-ai]
+verify_jwt = false
+
+[functions.victim-support-ai]
+verify_jwt = false
+
+[functions.reentry-navigator-ai]
+verify_jwt = false
+
+[functions.ai-resource-discovery]
+verify_jwt = false
