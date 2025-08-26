@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Heart, Users, Shield, CheckCircle, Target, Brain, MessageSquare, BookOpen, Home, Phone, ArrowRight, Star, Calendar, Award, Linkedin, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -9,6 +9,8 @@ import ContactForm from "@/components/forms/ContactForm";
 import coachKayProfessional from "@/assets/coach-kay-professional.jpg";
 import diverseCommunityMeeting from "@/assets/diverse-community-meeting.jpg";
 export default function AboutUs() {
+  const [showContactForm, setShowContactForm] = useState(false);
+  const [showConsultation, setShowConsultation] = useState(false);
   // Force cache refresh - all image imports are correctly updated
   useEffect(() => {
     document.title = "About Forward Focus Elevation | Empowering Justice-Impacted Families";
@@ -290,17 +292,13 @@ export default function AboutUs() {
                 </div>
                 
                 <div className="flex flex-col sm:flex-row gap-4 mt-8">
-                  <Button asChild size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground">
-                    <a href="#contact-coach-kay">
-                      <Mail className="h-5 w-5 mr-2" />
-                      Connect with Coach Kay
-                    </a>
+                  <Button size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground" onClick={() => setShowContactForm(!showContactForm)}>
+                    <Mail className="h-5 w-5 mr-2" />
+                    {showContactForm ? "Hide Contact Form" : "Connect with Coach Kay"}
                   </Button>
-                  <Button asChild size="lg" variant="outline">
-                    <a href="#book-consultation">
-                      <Calendar className="h-5 w-5 mr-2" />
-                      Book Consultation
-                    </a>
+                  <Button size="lg" variant="outline" onClick={() => setShowConsultation(!showConsultation)}>
+                    <Calendar className="h-5 w-5 mr-2" />
+                    {showConsultation ? "Hide Consultation" : "Book Consultation"}
                   </Button>
                 </div>
               </div>
@@ -323,67 +321,71 @@ export default function AboutUs() {
         </section>
 
         {/* Contact Coach Kay */}
-        <section id="contact-coach-kay" aria-labelledby="contact-coach" className="scroll-mt-16">
-          <div className="max-w-4xl mx-auto">
-            <div className="text-center mb-12">
-              <h2 id="contact-coach" className="font-heading text-3xl md:text-4xl font-bold text-foreground mb-6">
-                Connect with Coach Kay
-              </h2>
-              <p className="text-xl text-foreground/70 leading-relaxed">
-                Ready to take the next step in your journey? Coach Kay is here to provide personalized guidance, 
-                support, and resources tailored to your unique needs and goals.
-              </p>
+        {showContactForm && (
+          <section id="contact-coach-kay" aria-labelledby="contact-coach" className="scroll-mt-16">
+            <div className="max-w-4xl mx-auto">
+              <div className="text-center mb-12">
+                <h2 id="contact-coach" className="font-heading text-3xl md:text-4xl font-bold text-foreground mb-6">
+                  Connect with Coach Kay
+                </h2>
+                <p className="text-xl text-foreground/70 leading-relaxed">
+                  Ready to take the next step in your journey? Coach Kay is here to provide personalized guidance, 
+                  support, and resources tailored to your unique needs and goals.
+                </p>
+              </div>
+              
+              <ContactForm type="coaching" className="shadow-xl border-accent/20 bg-gradient-to-br from-background to-accent/5" />
             </div>
-            
-            <ContactForm type="coaching" className="shadow-xl border-accent/20 bg-gradient-to-br from-background to-accent/5" />
-          </div>
-        </section>
+          </section>
+        )}
 
         {/* Book Consultation */}
-        <section id="book-consultation" aria-labelledby="book-consult" className="scroll-mt-16 bg-primary/5 py-24 -mx-4 px-4 rounded-2xl">
-          <div className="max-w-4xl mx-auto">
-            <div className="text-center mb-12">
-              <h2 id="book-consult" className="font-heading text-3xl md:text-4xl font-bold text-foreground mb-6">
-                Book Your Consultation
-              </h2>
-              <p className="text-xl text-foreground/70 leading-relaxed">
-                Schedule a one-on-one session with Coach Kay to discuss your goals, challenges, and create 
-                a personalized action plan for your journey forward.
-              </p>
-              <div className="grid md:grid-cols-3 gap-6 mt-8 text-left">
-                <div className="bg-background rounded-lg p-6 shadow-lg">
-                  <h3 className="font-semibold text-foreground mb-3 flex items-center gap-2">
-                    <CheckCircle className="h-5 w-5 text-accent" />
-                    Initial Assessment
-                  </h3>
-                  <p className="text-sm text-foreground/70">
-                    Understand your current situation, goals, and identify the best resources for your journey.
-                  </p>
-                </div>
-                <div className="bg-background rounded-lg p-6 shadow-lg">
-                  <h3 className="font-semibold text-foreground mb-3 flex items-center gap-2">
-                    <CheckCircle className="h-5 w-5 text-accent" />
-                    Personalized Plan
-                  </h3>
-                  <p className="text-sm text-foreground/70">
-                    Receive a customized roadmap with actionable steps, resources, and timelines.
-                  </p>
-                </div>
-                <div className="bg-background rounded-lg p-6 shadow-lg">
-                  <h3 className="font-semibold text-foreground mb-3 flex items-center gap-2">
-                    <CheckCircle className="h-5 w-5 text-accent" />
-                    Ongoing Support
-                  </h3>
-                  <p className="text-sm text-foreground/70">
-                    Get connected to the right community resources and follow-up support systems.
-                  </p>
+        {showConsultation && (
+          <section id="book-consultation" aria-labelledby="book-consult" className="scroll-mt-16 bg-primary/5 py-24 -mx-4 px-4 rounded-2xl">
+            <div className="max-w-4xl mx-auto">
+              <div className="text-center mb-12">
+                <h2 id="book-consult" className="font-heading text-3xl md:text-4xl font-bold text-foreground mb-6">
+                  Book Your Consultation
+                </h2>
+                <p className="text-xl text-foreground/70 leading-relaxed">
+                  Schedule a one-on-one session with Coach Kay to discuss your goals, challenges, and create 
+                  a personalized action plan for your journey forward.
+                </p>
+                <div className="grid md:grid-cols-3 gap-6 mt-8 text-left">
+                  <div className="bg-background rounded-lg p-6 shadow-lg">
+                    <h3 className="font-semibold text-foreground mb-3 flex items-center gap-2">
+                      <CheckCircle className="h-5 w-5 text-accent" />
+                      Initial Assessment
+                    </h3>
+                    <p className="text-sm text-foreground/70">
+                      Understand your current situation, goals, and identify the best resources for your journey.
+                    </p>
+                  </div>
+                  <div className="bg-background rounded-lg p-6 shadow-lg">
+                    <h3 className="font-semibold text-foreground mb-3 flex items-center gap-2">
+                      <CheckCircle className="h-5 w-5 text-accent" />
+                      Personalized Plan
+                    </h3>
+                    <p className="text-sm text-foreground/70">
+                      Receive a customized roadmap with actionable steps, resources, and timelines.
+                    </p>
+                  </div>
+                  <div className="bg-background rounded-lg p-6 shadow-lg">
+                    <h3 className="font-semibold text-foreground mb-3 flex items-center gap-2">
+                      <CheckCircle className="h-5 w-5 text-accent" />
+                      Ongoing Support
+                    </h3>
+                    <p className="text-sm text-foreground/70">
+                      Get connected to the right community resources and follow-up support systems.
+                    </p>
+                  </div>
                 </div>
               </div>
+              
+              <ContactForm type="booking" className="shadow-xl bg-background" />
             </div>
-            
-            <ContactForm type="booking" className="shadow-xl bg-background" />
-          </div>
-        </section>
+          </section>
+        )}
 
         {/* Call to Belong */}
         <section aria-labelledby="belong" className="scroll-mt-16">
