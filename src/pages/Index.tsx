@@ -5,8 +5,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { toast } from "@/components/ui/sonner";
 import { useStateContext } from "@/contexts/StateContext";
+import AIResourceDiscovery from "@/components/ai/AIResourceDiscovery";
 
 const Index = () => {
+  const [showAIDiscovery, setShowAIDiscovery] = useState(false);
   const { selectedState } = useStateContext();
   const [email, setEmail] = useState("");
 
@@ -71,6 +73,15 @@ const Index = () => {
                   <Phone className="mr-2 h-5 w-5" />
                   Get Immediate Help
                 </a>
+              </Button>
+              <Button 
+                size="lg" 
+                variant="hero" 
+                className="h-14 px-8 text-lg bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70" 
+                onClick={() => setShowAIDiscovery(true)}
+              >
+                <Bot className="mr-2 h-5 w-5" />
+                Ask AI Navigator
               </Button>
               <Button size="lg" variant="hero" className="h-14 px-8 text-lg" asChild>
                 <a href="/learn">
@@ -280,6 +291,13 @@ const Index = () => {
           </Button>
         </div>
       </section>
+
+      <AIResourceDiscovery
+        isOpen={showAIDiscovery}
+        onClose={() => setShowAIDiscovery(false)}
+        initialQuery=""
+        location="Ohio"
+      />
     </main>
   );
 };
