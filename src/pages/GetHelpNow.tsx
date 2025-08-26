@@ -1,207 +1,17 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { 
-  Phone, Bot, X, Send, AlertTriangle, CheckCircle, ArrowRight, 
+  Phone, Bot, AlertTriangle, CheckCircle, ArrowRight, 
   Shield, Heart, BookOpen, Users, GraduationCap
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { toast } from "@/components/ui/use-toast";
+import CrisisSupportAI from "@/components/ai/CrisisSupportAI";
 
-// AI Assistant Component
-const AIAssistant = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
-  const [messages, setMessages] = useState<Array<{
-    id: number;
-    type: "ai" | "user";
-    content: string;
-    timestamp: Date;
-    resources?: Array<{ title: string; phone?: string; url?: string; action?: string; available?: string }>;
-  }>>([
-    {
-      id: 1,
-      type: "ai",
-      content: "Welcome! I'm your AI Resource Navigator with access to comprehensive support services across all 88 Ohio counties. I specialize in crisis intervention, reentry support, mental health resources, educational opportunities, employment assistance, and victim services. I provide intelligent, personalized guidance to connect you with exactly what you need. What type of support would be most helpful for you today?",
-      timestamp: new Date(),
-    },
-  ]);
-  const [input, setInput] = useState("");
-  const [isTyping, setIsTyping] = useState(false);
-
-  const getSuggestedResources = (q: string) => {
-    const lower = q.toLowerCase();
-    if (lower.includes("crisis") || lower.includes("emergency") || lower.includes("suicide")) {
-      return [
-        { title: "National Suicide & Crisis Lifeline", phone: "988", available: "24/7" },
-        { title: "Crisis Text Line", action: "Text HOME to 741741", available: "24/7" },
-        { title: "211 Ohio Crisis Support", phone: "211", available: "24/7" },
-      ];
-    }
-    if (lower.includes("reentry") || lower.includes("prison") || lower.includes("jail") || lower.includes("formerly incarcerated")) {
-      return [
-        { title: "Ohio Reentry Resources", action: "State-coordinated reentry support programs" },
-        { title: "Comprehensive Reentry Support", action: "Housing, employment, and education assistance" },
-        { title: "Second Chance Programs", action: "Career training and placement services" },
-      ];
-    }
-    if (lower.includes("mental health") || lower.includes("counseling") || lower.includes("therapy")) {
-      return [
-        { title: "Ohio Mental Health Services", action: "Statewide mental health resources and support" },
-        { title: "Trauma-Informed Care", action: "Specialized counseling for justice-impacted individuals" },
-        { title: "SAMHSA Helpline", phone: "1-800-662-4357", available: "24/7" },
-      ];
-    }
-    if (lower.includes("education") || lower.includes("scholarship") || lower.includes("college")) {
-      return [
-        { title: "Justice-Impacted Scholarships", action: "Educational funding for individuals and families" },
-        { title: "Second Chance Education Programs", action: "Certificate and degree programs" },
-        { title: "Career Development Pathways", action: "Skills training and professional development" },
-      ];
-    }
-    if (lower.includes("job") || lower.includes("employment") || lower.includes("work")) {
-      return [
-        { title: "Ohio Career Services", action: "Employment assistance and job training" },
-        { title: "Second Chance Employment", action: "Fair-chance hiring partnerships" },
-        { title: "Entrepreneurship Support", action: "Business development and mentorship" },
-      ];
-    }
-    if (lower.includes("victim") || lower.includes("crime") || lower.includes("assault")) {
-      return [
-        { title: "Healing & Safety Hub", url: "/victim-services", action: "Specialized trauma-informed support" },
-        { title: "National Domestic Violence Hotline", phone: "1-800-799-7233", available: "24/7" },
-        { title: "Sexual Assault Hotline", phone: "1-800-656-4673", available: "24/7" },
-      ];
-    }
-    return [
-      { title: "211 Ohio", phone: "211", action: "Comprehensive resource navigation" },
-      { title: "Forward Focus Community", url: "/learn", action: "Join our supportive learning community" },
-    ];
-  };
-
-  const generateAIResponse = (q: string) => {
-    const lower = q.toLowerCase();
-    if (lower.includes("crisis") || lower.includes("emergency") || lower.includes("suicide")) {
-      return "I understand you may be in crisis right now. Your safety is the top priority. If you're in immediate danger, please call 911. For 24/7 crisis support, call 988 or text HOME to 741741. I can help you find additional crisis resources in your area - what location would be most helpful?";
-    }
-    if (lower.includes("victim") || lower.includes("crime") || lower.includes("assault")) {
-      return "I hear that you may be seeking support as a crime victim. We have a dedicated Healing & Safety Hub with specialized trauma-informed resources, compensation programs, and personal support services. Would you like me to direct you there, or are there specific services you're looking for right now?";
-    }
-    if (lower.includes("reentry") || lower.includes("prison") || lower.includes("jail") || lower.includes("formerly incarcerated")) {
-      return "I can connect you with comprehensive reentry support! Our resources include housing assistance, employment programs, mental health services, and educational opportunities. Are you looking for immediate needs like housing and employment, or longer-term support like education and career development? What location in Ohio would be most helpful?";
-    }
-    if (lower.includes("mental health") || lower.includes("counseling") || lower.includes("therapy")) {
-      return "Mental health support is incredibly important. I can help you find trauma-informed counseling, support groups, and crisis resources throughout Ohio. Are you looking for individual therapy, group support, or crisis intervention? I can also connect you with specialized programs designed for justice-impacted individuals and families.";
-    }
-    if (lower.includes("education") || lower.includes("scholarship") || lower.includes("college")) {
-      return "There are excellent educational opportunities available! I can help you find scholarships specifically designed for justice-impacted individuals and families, career training programs, and educational pathways. Are you looking for yourself or a family member? What type of education or training interests you most?";
-    }
-    if (lower.includes("job") || lower.includes("employment") || lower.includes("work")) {
-      return "Employment support is available throughout Ohio! I can help you find job training programs, career coaching, fair-chance employers, and professional development opportunities. Are you looking for immediate employment, skills training, or career advancement? What's your location and what type of work interests you?";
-    }
-    return "Welcome! I'm your Ohio Community Resource Navigator. I can help you access crisis support, reentry services, mental health resources, educational opportunities, employment assistance, victim services, and more. I have comprehensive knowledge of resources across all 88 Ohio counties. What type of support would be most helpful for you today?";
-  };
-
-  const handleSend = () => {
-    if (!input.trim()) return;
-    const userMessage = { id: Date.now(), type: "user" as const, content: input, timestamp: new Date() };
-    setMessages((prev) => [...prev, userMessage]);
-    setInput("");
-    setIsTyping(true);
-    setTimeout(() => {
-      const reply = generateAIResponse(userMessage.content);
-      const resources = getSuggestedResources(userMessage.content);
-      const aiMessage = { id: Date.now() + 1, type: "ai" as const, content: reply, timestamp: new Date(), resources };
-      setMessages((prev) => [...prev, aiMessage]);
-      setIsTyping(false);
-    }, 1000);
-  };
-
-  if (!isOpen) return null;
-
-  return (
-    <div className="fixed inset-0 z-50 flex items-end justify-end bg-black/50 p-4">
-      <div className="flex h-[600px] w-full max-w-md flex-col rounded-lg bg-card shadow-xl">
-        <div className="flex items-center justify-between rounded-t-lg border-b bg-primary p-4 text-primary-foreground">
-          <div className="flex items-center gap-2">
-            <Bot className="h-5 w-5" />
-            <div>
-              <h3 className="font-semibold">AI Resource Navigator</h3>
-              <p className="text-xs opacity-90">Intelligent guidance for Ohio resources</p>
-            </div>
-          </div>
-          <button onClick={onClose} className="rounded p-1 hover:bg-primary/80">
-            <X className="h-4 w-4" />
-          </button>
-        </div>
-
-        <div className="flex-1 space-y-4 overflow-y-auto p-4">
-          {messages.map((m) => (
-            <div key={m.id} className={`flex ${m.type === "user" ? "justify-end" : "justify-start"}`}>
-              <div className={`max-w-[80%] rounded-lg p-3 ${m.type === "user" ? "bg-primary text-primary-foreground" : "bg-muted text-foreground"}`}>
-                <p className="text-sm">{m.content}</p>
-                {m.type === "ai" && m.resources && m.resources.length > 0 && (
-                  <div className="mt-3 space-y-2">
-                    <p className="text-xs font-medium text-foreground/70">Suggested Resources:</p>
-                    {m.resources.map((r, idx) => (
-                      <div key={idx} className="rounded border bg-card p-2 text-xs">
-                        <div className="font-medium text-foreground">{r.title}</div>
-                        {r.phone && (
-                          <a href={`tel:${r.phone}`} className="text-primary hover:underline">
-                            Call: {r.phone}
-                          </a>
-                        )}
-                        {r.action && <div className="text-muted-foreground">{r.action}</div>}
-                        {r.url && (
-                          <Link to={r.url} className="text-primary hover:underline">
-                            Learn more →
-                          </Link>
-                        )}
-                        {r.available && <div className="font-medium text-secondary">{r.available}</div>}
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-            </div>
-          ))}
-
-          {isTyping && (
-            <div className="flex justify-start">
-              <div className="rounded-lg bg-muted p-3">
-                <div className="flex space-x-1">
-                  <div className="h-2 w-2 animate-bounce rounded-full bg-muted-foreground" />
-                  <div className="h-2 w-2 animate-bounce rounded-full bg-muted-foreground" style={{ animationDelay: "0.1s" }} />
-                  <div className="h-2 w-2 animate-bounce rounded-full bg-muted-foreground" style={{ animationDelay: "0.2s" }} />
-                </div>
-              </div>
-            </div>
-          )}
-        </div>
-
-        <div className="border-t p-4">
-          <div className="flex gap-2">
-            <Input
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              placeholder="What type of help do you need?"
-              onKeyDown={(e) => e.key === "Enter" && handleSend()}
-              className="flex-1"
-            />
-            <Button onClick={handleSend} size="sm">
-              <Send className="mr-2 h-4 w-4" />
-              Send
-            </Button>
-          </div>
-          <p className="mt-2 text-xs text-muted-foreground">Free guidance • Confidential • No judgment</p>
-        </div>
-      </div>
-    </div>
-  );
-};
 
 export default function GetHelpNow() {
   const [activeSection, setActiveSection] = useState<string>("crisis");
-  const [showAIAssistant, setShowAIAssistant] = useState(false);
+  const [showCrisisAI, setShowCrisisAI] = useState(false);
 
   useEffect(() => {
     document.title = "Get Personalized Support & Resources | Forward Focus";
@@ -276,13 +86,13 @@ export default function GetHelpNow() {
             
             <div className="flex justify-center">
               <Button 
-                onClick={() => setShowAIAssistant(true)}
+                onClick={() => setShowCrisisAI(true)}
                 size="lg"
                 variant="premium"
                 className="h-16 px-12 text-xl"
               >
                 <Bot className="h-6 w-6 mr-3" />
-                Get Personalized Guidance
+                Get Crisis Support Now
               </Button>
             </div>
           </div>
@@ -448,7 +258,7 @@ export default function GetHelpNow() {
               </div>
 
               <Button 
-                onClick={() => setShowAIAssistant(true)}
+                onClick={() => setShowCrisisAI(true)}
                 size="lg"
                 variant="premium"
                 className="h-14 px-8 text-lg"
@@ -555,7 +365,7 @@ export default function GetHelpNow() {
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Button 
-                  onClick={() => setShowAIAssistant(true)}
+                  onClick={() => setShowCrisisAI(true)}
                   size="lg"
                   variant="premium"
                   className="h-14 px-8 text-lg"
@@ -578,10 +388,10 @@ export default function GetHelpNow() {
         </section>
       </main>
 
-      {/* AI Assistant Modal */}
-      <AIAssistant 
-        isOpen={showAIAssistant} 
-        onClose={() => setShowAIAssistant(false)} 
+      {/* Crisis Support AI */}
+      <CrisisSupportAI 
+        isOpen={showCrisisAI} 
+        onClose={() => setShowCrisisAI(false)} 
       />
     </>
   );

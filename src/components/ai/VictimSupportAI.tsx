@@ -1,0 +1,279 @@
+import React, { useState, useRef, useEffect } from 'react';
+import { X, Send, Bot, Heart, Shield, Scale, DollarSign } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Dialog, DialogContent } from '@/components/ui/dialog';
+import { Badge } from '@/components/ui/badge';
+import { supabase } from '@/integrations/supabase/client';
+
+interface Message {
+  id: string;
+  type: 'user' | 'ai';
+  content: string;
+  timestamp: Date;
+  resources?: Array<{
+    id: string;
+    name: string;
+    organization: string;
+    phone?: string;
+    website?: string;
+    type: string;
+    description?: string;
+    city?: string;
+    county?: string;
+  }>;
+  victimType?: string;
+}
+
+interface VictimSupportAIProps {
+  isOpen: boolean;
+  onClose: () => void;
+  initialQuery?: string;
+}
+
+const VictimSupportAI: React.FC<VictimSupportAIProps> = ({ isOpen, onClose, initialQuery }) => {
+  const [messages, setMessages] = useState<Message[]>([
+    {
+      id: '1',
+      type: 'ai',
+      content: "I'm here to support you on your healing journey. What happened to you was not your fault, and seeking help shows tremendous strength. I'm trained to understand the unique challenges faced by crime victims and can help you find trauma-informed resources, legal advocacy, compensation programs, and emotional support. How can I help you today?",
+      timestamp: new Date(),
+    }
+  ]);
+  const [input, setInput] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [conversationContext, setConversationContext] = useState<Array<{role: string, content: string}>>([]);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
+
+  useEffect(() => {
+    if (initialQuery && isOpen) {
+      setInput(initialQuery);
+    }
+  }, [initialQuery, isOpen]);
+
+  const handleSend = async () => {
+    if (!input.trim() || isLoading) return;
+
+    const userMessage: Message = {
+      id: Date.now().toString(),
+      type: 'user',
+      content: input,
+      timestamp: new Date(),
+    };
+
+    setMessages(prev => [...prev, userMessage]);
+    setInput('');
+    setIsLoading(true);
+
+    try {
+      // Update conversation context
+      const newContext = [...conversationContext, { role: 'user', content: input }];
+      
+      const { data, error } = await supabase.functions.invoke('victim-support-ai', {
+        body: {
+          query: input,
+          previousContext: newContext,
+          traumaLevel: 'ongoing'
+        }
+      });
+
+      if (error) throw error;
+
+      const aiMessage: Message = {
+        id: (Date.now() + 1).toString(),
+        type: 'ai',
+        content: data.response,
+        timestamp: new Date(),
+        resources: data.resources,
+        victimType: data.victimType,
+      };
+
+      setMessages(prev => [...prev, aiMessage]);
+      setConversationContext([...newContext, { role: 'assistant', content: data.response }]);
+
+    } catch (error) {
+      console.error('Victim Support AI error:', error);
+      const errorMessage: Message = {
+        id: (Date.now() + 1).toString(),
+        type: 'ai',
+        content: "I apologize for the technical difficulty. Your healing journey is still important to me. For immediate support: National Domestic Violence Hotline 1-800-799-7233, RAINN Sexual Assault Hotline 1-800-656-4673, or Crisis Support 988.",
+        timestamp: new Date(),
+      };
+      setMessages(prev => [...prev, errorMessage]);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const quickActions = [
+    "Help me understand my legal rights",
+    "I need financial assistance for medical bills", 
+    "Find me trauma-informed counseling",
+    "I need help with victim compensation",
+    "Connect me to support groups",
+    "I don't know where to start"
+  ];
+
+  const supportCategories = [
+    { icon: Shield, label: "Safety & Crisis", color: "text-destructive" },
+    { icon: Scale, label: "Legal Rights", color: "text-primary" },
+    { icon: DollarSign, label: "Compensation", color: "text-secondary" },
+    { icon: Heart, label: "Healing Support", color: "text-accent" }
+  ];
+
+  if (!isOpen) return null;
+
+  return (
+    <Dialog open={isOpen} onOpenChange={onClose}>
+      <DialogContent className="max-w-2xl h-[700px] p-0 overflow-hidden">
+        {/* Header */}
+        <div className="flex items-center justify-between bg-primary p-4 text-primary-foreground">
+          <div className="flex items-center gap-3">
+            <div className="p-2 bg-primary-foreground/20 rounded-lg">
+              <Heart className="h-5 w-5" />
+            </div>
+            <div>
+              <h3 className="font-bold text-lg">Healing & Support Navigator</h3>
+              <p className="text-sm opacity-90">Trauma-informed victim services</p>
+            </div>
+          </div>
+          <Button
+            variant="ghost" 
+            size="sm"
+            onClick={onClose}
+            className="text-primary-foreground hover:bg-primary-foreground/20"
+          >
+            <X className="h-4 w-4" />
+          </Button>
+        </div>
+
+        {/* Support Categories */}
+        <div className="bg-muted/50 border-b p-3">
+          <div className="flex items-center justify-around text-xs">
+            {supportCategories.map((category, index) => {
+              const Icon = category.icon;
+              return (
+                <div key={index} className="flex items-center gap-1">
+                  <Icon className={`h-3 w-3 ${category.color}`} />
+                  <span className="font-medium">{category.label}</span>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Messages */}
+        <div className="flex-1 overflow-y-auto p-4 space-y-4">
+          {messages.map((message) => (
+            <div key={message.id} className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}>
+              <div className={`max-w-[80%] rounded-lg p-3 ${
+                message.type === 'user' 
+                  ? 'bg-primary text-primary-foreground' 
+                  : 'bg-muted text-foreground border'
+              }`}>
+                <p className="text-sm leading-relaxed">{message.content}</p>
+
+                {message.resources && message.resources.length > 0 && (
+                  <div className="mt-3 space-y-2">
+                    <p className="text-xs font-semibold text-foreground/80">Recommended Resources:</p>
+                    {message.resources.map((resource) => (
+                      <div key={resource.id} className="bg-card border rounded-lg p-3 text-xs">
+                        <div className="font-semibold text-foreground">{resource.name}</div>
+                        <div className="text-muted-foreground">{resource.organization}</div>
+                        {resource.description && (
+                          <p className="text-muted-foreground mt-1">{resource.description}</p>
+                        )}
+                        <Badge variant="outline" className="mt-1 text-xs">
+                          {resource.type}
+                        </Badge>
+                        <div className="flex gap-2 mt-2">
+                          {resource.phone && (
+                            <Button asChild size="sm" variant="default">
+                              <a href={`tel:${resource.phone}`}>
+                                Call: {resource.phone}
+                              </a>
+                            </Button>
+                          )}
+                          {resource.website && (
+                            <Button asChild size="sm" variant="outline">
+                              <a href={resource.website} target="_blank" rel="noopener noreferrer">
+                                Visit Website
+                              </a>
+                            </Button>
+                          )}
+                        </div>
+                        {resource.city && resource.county && (
+                          <div className="text-xs text-muted-foreground mt-1">
+                            {resource.city}, {resource.county} County
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+          ))}
+
+          {isLoading && (
+            <div className="flex justify-start">
+              <div className="bg-muted rounded-lg p-3 border">
+                <div className="flex space-x-1">
+                  <div className="h-2 w-2 bg-primary rounded-full animate-bounce" />
+                  <div className="h-2 w-2 bg-primary rounded-full animate-bounce" style={{ animationDelay: '0.1s' }} />
+                  <div className="h-2 w-2 bg-primary rounded-full animate-bounce" style={{ animationDelay: '0.2s' }} />
+                </div>
+              </div>
+            </div>
+          )}
+          <div ref={messagesEndRef} />
+        </div>
+
+        {/* Quick Actions */}
+        <div className="border-t p-4">
+          <p className="text-sm font-medium mb-3">Common support areas:</p>
+          <div className="grid grid-cols-2 gap-2 mb-4">
+            {quickActions.map((action, index) => (
+              <Button
+                key={index}
+                variant="outline"
+                size="sm"
+                className="text-xs p-2 h-auto text-left justify-start"
+                onClick={() => setInput(action)}
+              >
+                {action}
+              </Button>
+            ))}
+          </div>
+          
+          {/* Input */}
+          <div className="flex gap-2">
+            <Input
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              placeholder="Share what support you need..."
+              onKeyDown={(e) => e.key === 'Enter' && handleSend()}
+              disabled={isLoading}
+            />
+            <Button onClick={handleSend} disabled={isLoading || !input.trim()}>
+              <Send className="h-4 w-4" />
+            </Button>
+          </div>
+          <p className="text-xs text-muted-foreground mt-2">
+            This conversation is private and confidential • Trauma-informed support
+          </p>
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
+};
+
+export default VictimSupportAI;

@@ -1,7 +1,12 @@
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import ReentryNavigatorAI from "@/components/ai/ReentryNavigatorAI";
 
 const AICompanion = () => {
+  const [showReentryAI, setShowReentryAI] = useState(false);
+
   return (
+    <>
     <section aria-labelledby="ai-companion" className="scroll-mt-16">
       <h2 id="ai-companion" className="font-heading text-2xl md:text-3xl font-semibold text-foreground">Your Reentry Success Navigator</h2>
       <p className="mt-3 text-foreground/80 max-w-3xl">AI-powered guidance specifically designed for reentry challenges. Get personalized support for housing, employment, legal matters, and family reconnection - available 24/7.</p>
@@ -57,13 +62,23 @@ const AICompanion = () => {
       </div>
       
       <div className="mt-6">
-        <Button asChild className="bg-secondary hover:bg-secondary/90 text-secondary-foreground">
-          <a href="/help#learn-assistant">Access Your Reentry Navigator</a>
+        <Button 
+          onClick={() => setShowReentryAI(true)}
+          className="bg-secondary hover:bg-secondary/90 text-secondary-foreground"
+        >
+          Access Your Reentry Navigator
         </Button>
       </div>
+
+      {/* Reentry Navigator AI */}
+      <ReentryNavigatorAI 
+        isOpen={showReentryAI} 
+        onClose={() => setShowReentryAI(false)} 
+      />
       
       <p className="mt-3 text-xs text-foreground/60">Completely free for all community members — because reentry support should be accessible to everyone.</p>
     </section>
+    </>
   );
 };
 

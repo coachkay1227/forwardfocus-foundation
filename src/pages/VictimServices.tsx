@@ -9,8 +9,6 @@ import {
   Scale,
   DollarSign,
   Users,
-  X,
-  Send,
   Bot,
   Calendar,
   CheckCircle,
@@ -31,6 +29,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
 import SignupModal from "@/components/healing/SignupModal";
+import VictimSupportAI from "@/components/ai/VictimSupportAI";
 import diverseFamiliesImage from "@/assets/diverse-families-healing.jpg";
 import healingCommunityImage from "@/assets/healing-community.jpg";
 
@@ -55,207 +54,6 @@ const ensureCanonical = () => {
   link.setAttribute("href", window.location.href);
 };
 
-// AI Assistant (client-only, simulated)
-const AIAssistant = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
-  const [messages, setMessages] = useState<Array<{
-    id: number;
-    type: "ai" | "user";
-    content: string;
-    timestamp: Date;
-    resources?: Array<{ title: string; phone?: string; url?: string; action?: string; available?: string }>;
-  }>>([
-    {
-      id: 1,
-      type: "ai",
-      content:
-        "Hi, I'm here to help you navigate resources and support. I'm trained to understand the unique challenges faced by crime victims. What can I help you find today?",
-      timestamp: new Date(),
-    },
-  ]);
-  const [input, setInput] = useState("");
-  const [isTyping, setIsTyping] = useState(false);
-
-  const getSuggestedResources = (q: string) => {
-    const lower = q.toLowerCase();
-    if (lower.includes("crisis") || lower.includes("emergency") || lower.includes("danger")) {
-      return [
-        { title: "National Domestic Violence Hotline", phone: "1-800-799-7233", available: "24/7" },
-        { title: "Crisis Text Line", action: "Text HOME to 741741", available: "24/7" },
-        { title: "National Suicide & Crisis Lifeline", phone: "988", available: "24/7" },
-      ];
-    }
-    if (lower.includes("compensation") || lower.includes("financial") || lower.includes("money")) {
-      return [
-        {
-          title: "Ohio Victim Compensation",
-          url: "https://www.ohioattorneygeneral.gov/Individuals-and-Families/Victims/Victims-Compensation-Application",
-        },
-        { title: "Federal Victim Compensation Info", url: "https://ovc.ojp.gov/topics/victim-compensation" },
-      ];
-    }
-    return [];
-  };
-
-  const generateAIResponse = (q: string) => {
-    const lower = q.toLowerCase();
-    if (lower.includes("crisis") || lower.includes("emergency") || lower.includes("danger")) {
-      return "I understand you may be in a crisis situation. Your safety is the top priority. If you're in immediate danger, please call 911. For domestic violence support, call 1-800-799-7233. For crisis text support, text HOME to 741741. Would you like me to help you find additional crisis resources?";
-    }
-    if (lower.includes("compensation") || lower.includes("money") || lower.includes("financial")) {
-      return "There are compensation programs to help with medical bills, lost wages, counseling, and more. I can help you find your state's program and guide you through the application. What expenses do you need help with?";
-    }
-    if (lower.includes("legal") || lower.includes("rights") || lower.includes("lawyer")) {
-      return "You have important legal rights as a crime victim, including the right to be informed and participate in proceedings. I can help you understand your rights and find free legal aid in your area. What specific legal questions do you have?";
-    }
-    if (lower.includes("counseling") || lower.includes("therapy") || lower.includes("trauma")) {
-      return "Healing from trauma takes time, and professional support can help. I can help you find trauma-informed therapists and support groups in your area. Are you looking for individual therapy, group support, or something specific?";
-    }
-    return "I hear you, and I want to help you find the right resources. Can you share a bit more? For example: crisis support, legal help, counseling, compensation, or safety planning?";
-  };
-
-  const handleSend = () => {
-    if (!input.trim()) return;
-    const userMessage = { id: Date.now(), type: "user" as const, content: input, timestamp: new Date() };
-    setMessages((prev) => [...prev, userMessage]);
-    setInput("");
-    setIsTyping(true);
-    setTimeout(() => {
-      const reply = generateAIResponse(userMessage.content);
-      const resources = getSuggestedResources(userMessage.content);
-      const aiMessage = { id: Date.now() + 1, type: "ai" as const, content: reply, timestamp: new Date(), resources };
-      setMessages((prev) => [...prev, aiMessage]);
-      setIsTyping(false);
-    }, 900);
-  };
-
-  if (!isOpen) return null;
-
-  return (
-    <div className="fixed inset-0 z-50 flex items-end justify-end bg-black/50 p-4">
-      <div className="flex h-[600px] w-full max-w-md flex-col rounded-xl bg-white shadow-2xl border-0">
-        {/* Header */}
-        <div className="flex items-center justify-between rounded-t-xl border-b bg-primary p-6 text-primary-foreground">
-          <div className="flex items-center gap-3">
-            <Bot className="h-6 w-6" />
-            <div>
-              <h3 className="font-bold text-lg">Hi, I'm here to help you find resources and next steps that fit your unique journey. Let's do this together.</h3>
-              <p className="text-sm opacity-90">Trauma-informed healing companion</p>
-            </div>
-          </div>
-          <button 
-            onClick={onClose} 
-            className="rounded-lg p-2 hover:bg-primary/80 transition-colors focus:outline-none focus:ring-2 focus:ring-primary/20"
-            aria-label="Close assistant"
-          >
-            <X className="h-5 w-5" />
-          </button>
-        </div>
-
-        {/* Messages */}
-        <div className="flex-1 space-y-4 overflow-y-auto p-6">
-          {messages.map((m) => (
-            <div key={m.id} className={`flex ${m.type === "user" ? "justify-end" : "justify-start"}`}>
-              <div className={`max-w-[80%] rounded-xl p-4 ${
-                m.type === "user" 
-                  ? "bg-primary text-primary-foreground shadow-md" 
-                  : "bg-card text-foreground shadow-sm border"
-              }`}>
-                <p className="text-sm leading-relaxed">{m.content}</p>
-                {m.type === "ai" && m.resources && m.resources.length > 0 && (
-                  <div className="mt-4 space-y-3">
-                    <p className="text-xs font-semibold text-foreground/80">Suggested Resources:</p>
-                    {m.resources.map((r, idx) => (
-                      <div key={idx} className="rounded-lg border bg-background p-3 text-xs">
-                        <div className="font-semibold text-foreground">{r.title}</div>
-                        {r.phone && (
-                          <a 
-                            href={`tel:${r.phone}`} 
-                            className="text-primary hover:underline focus:outline-none focus:ring-2 focus:ring-primary/20 rounded"
-                          >
-                            {r.phone}
-                          </a>
-                        )}
-                        {r.action && <div className="text-foreground/70">{r.action}</div>}
-                        {r.url && (
-                          <a 
-                            href={r.url} 
-                            target="_blank" 
-                            rel="noopener" 
-                            className="text-primary hover:underline focus:outline-none focus:ring-2 focus:ring-primary/20 rounded"
-                          >
-                            Learn more →
-                          </a>
-                        )}
-                        {r.available && <div className="font-semibold text-green-600">Available {r.available}</div>}
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-            </div>
-          ))}
-
-          {isTyping && (
-            <div className="flex justify-start">
-              <div className="rounded-xl bg-card p-4 shadow-sm border">
-                <div className="flex space-x-1">
-                  <div className="h-2 w-2 animate-bounce rounded-full bg-primary" />
-                  <div className="h-2 w-2 animate-bounce rounded-full bg-primary" style={{ animationDelay: "0.1s" }} />
-                  <div className="h-2 w-2 animate-bounce rounded-full bg-primary" style={{ animationDelay: "0.2s" }} />
-                </div>
-              </div>
-            </div>
-          )}
-        </div>
-
-        {/* Quick Actions */}
-        <div className="border-t bg-muted/50 p-6">
-          <p className="mb-4 text-sm font-semibold text-foreground">Quick options to get started:</p>
-          <div className="mb-6 grid gap-2">
-            <button
-              onClick={() => setInput("Help me find financial aid")}
-              className="rounded-lg bg-secondary p-3 text-left text-sm text-secondary-foreground hover:bg-secondary/90 transition-colors focus:outline-none focus:ring-2 focus:ring-secondary/20"
-            >
-              "Help me find financial aid"
-            </button>
-            <button
-              onClick={() => setInput("I need a recovery plan")}
-              className="rounded-lg bg-secondary p-3 text-left text-sm text-secondary-foreground hover:bg-secondary/90 transition-colors focus:outline-none focus:ring-2 focus:ring-secondary/20"
-            >
-              "I need a recovery plan"
-            </button>
-            <button
-              onClick={() => setInput("I don't know where to start")}
-              className="rounded-lg bg-secondary p-3 text-left text-sm text-secondary-foreground hover:bg-secondary/90 transition-colors focus:outline-none focus:ring-2 focus:ring-secondary/20"
-            >
-              "I don't know where to start"
-            </button>
-            <button
-              onClick={() => setInput("Connect me to emotional support")}
-              className="rounded-lg bg-secondary p-3 text-left text-sm text-secondary-foreground hover:bg-secondary/90 transition-colors focus:outline-none focus:ring-2 focus:ring-secondary/20"
-            >
-              "Connect me to emotional support"
-            </button>
-          </div>
-          <div className="flex gap-3">
-            <Input
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              placeholder="Or type your own question..."
-              onKeyDown={(e) => e.key === "Enter" && handleSend()}
-              className="flex-1"
-            />
-            <Button onClick={handleSend} size="sm" className="shadow-md">
-              <Send className="mr-2 h-4 w-4" />
-              Send
-            </Button>
-          </div>
-          <p className="mt-3 text-xs text-foreground/60">This conversation is private and confidential</p>
-        </div>
-      </div>
-    </div>
-  );
-};
 
 // Resource Card Component  
 const ResourceCard = ({ resource, isPreview = false }: { resource: any; isPreview?: boolean }) => (
@@ -306,7 +104,7 @@ const ResourceCard = ({ resource, isPreview = false }: { resource: any; isPrevie
 );
 
 export default function VictimServices() {
-  const [showAIAssistant, setShowAIAssistant] = useState(false);
+  const [showVictimAI, setShowVictimAI] = useState(false);
   const [showSignupModal, setShowSignupModal] = useState(false);
   const [isSignedUp, setIsSignedUp] = useState(false);
 
@@ -415,7 +213,7 @@ export default function VictimServices() {
                 <Button 
                   size="lg" 
                   className="text-lg px-10 py-6 shadow-lg hover:shadow-xl transition-all duration-300"
-                  onClick={() => setShowAIAssistant(true)}
+                  onClick={() => setShowVictimAI(true)}
                 >
                   <Bot className="mr-3 h-6 w-6" />
                   Get Personalized Help
@@ -526,7 +324,7 @@ export default function VictimServices() {
                   size="lg" 
                   variant="hero"
                   className="text-lg px-10 py-6 shadow-lg hover:shadow-xl transition-all duration-300"
-                  onClick={() => setShowAIAssistant(true)}
+                  onClick={() => setShowVictimAI(true)}
                 >
                   <Bot className="mr-3 h-6 w-6" />
                   Open AI Assistant
@@ -547,7 +345,7 @@ export default function VictimServices() {
       </main>
 
       {/* Modals */}
-      <AIAssistant isOpen={showAIAssistant} onClose={() => setShowAIAssistant(false)} />
+      <VictimSupportAI isOpen={showVictimAI} onClose={() => setShowVictimAI(false)} />
       <SignupModal
         isOpen={showSignupModal}
         onClose={() => setShowSignupModal(false)}
