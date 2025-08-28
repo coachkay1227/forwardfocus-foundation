@@ -1,37 +1,16 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Heart, Mail, Phone, MapPin, Clock, Users, BookOpen, HandHeart, DollarSign } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
+import ContactForm from "@/components/forms/ContactForm";
 
 const Support = () => {
-  const [contactForm, setContactForm] = useState({
-    name: "",
-    email: "",
-    subject: "",
-    message: "",
-  });
-  const { toast } = useToast();
-
   useEffect(() => {
     document.title = "Support Forward Focus Elevation | Make an Impact";
   }, []);
-
-  const handleContactSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // Here you would typically send the contact form to your backend
-    toast({
-      title: "Message sent!",
-      description: "We'll get back to you within 24 hours.",
-    });
-    setContactForm({ name: "", email: "", subject: "", message: "" });
-  };
 
   const supportMethods = [
     {
@@ -176,77 +155,31 @@ const Support = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           {/* Contact Form */}
           <section>
-            <h2 className="font-heading text-2xl font-semibold mb-6">Get In Touch</h2>
-            <Card>
+            <ContactForm 
+              type="contact"
+              title="Get In Touch"
+              description="Have questions about supporting our community? We're here to help connect you with the right opportunities."
+            />
+            
+            <Card className="mt-6">
               <CardContent className="p-6">
-                <form onSubmit={handleContactSubmit} className="space-y-4">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                      <Label htmlFor="name">Name</Label>
-                      <Input
-                        id="name"
-                        value={contactForm.name}
-                        onChange={(e) => setContactForm(prev => ({ ...prev, name: e.target.value }))}
-                        required
-                      />
-                    </div>
-                    <div>
-                      <Label htmlFor="email">Email</Label>
-                      <Input
-                        id="email"
-                        type="email"
-                        value={contactForm.email}
-                        onChange={(e) => setContactForm(prev => ({ ...prev, email: e.target.value }))}
-                        required
-                      />
-                    </div>
+                <h3 className="font-semibold">Other Ways to Reach Us</h3>
+                <div className="space-y-3">
+                  <div className="flex items-center gap-3 text-sm">
+                    <Mail className="h-4 w-4 text-muted-foreground" />
+                    <span>support@forwardfocuselevation.org</span>
                   </div>
-                  <div>
-                    <Label htmlFor="subject">Subject</Label>
-                    <Input
-                      id="subject"
-                      value={contactForm.subject}
-                      onChange={(e) => setContactForm(prev => ({ ...prev, subject: e.target.value }))}
-                      required
-                    />
+                  <div className="flex items-center gap-3 text-sm">
+                    <Phone className="h-4 w-4 text-muted-foreground" />
+                    <span>(614) 555-0123</span>
                   </div>
-                  <div>
-                    <Label htmlFor="message">Message</Label>
-                    <Textarea
-                      id="message"
-                      rows={4}
-                      value={contactForm.message}
-                      onChange={(e) => setContactForm(prev => ({ ...prev, message: e.target.value }))}
-                      required
-                    />
+                  <div className="flex items-center gap-3 text-sm">
+                    <MapPin className="h-4 w-4 text-muted-foreground" />
+                    <span>Columbus, Ohio</span>
                   </div>
-                  <Button type="submit" className="w-full">
-                    Send Message
-                  </Button>
-                </form>
-
-                <Separator className="my-6" />
-
-                {/* Direct Contact */}
-                <div className="space-y-4">
-                  <h3 className="font-semibold">Other Ways to Reach Us</h3>
-                  <div className="space-y-3">
-                    <div className="flex items-center gap-3 text-sm">
-                      <Mail className="h-4 w-4 text-muted-foreground" />
-                      <span>support@forwardfocuselevation.org</span>
-                    </div>
-                    <div className="flex items-center gap-3 text-sm">
-                      <Phone className="h-4 w-4 text-muted-foreground" />
-                      <span>(614) 555-0123</span>
-                    </div>
-                    <div className="flex items-center gap-3 text-sm">
-                      <MapPin className="h-4 w-4 text-muted-foreground" />
-                      <span>Columbus, Ohio</span>
-                    </div>
-                    <div className="flex items-center gap-3 text-sm">
-                      <Clock className="h-4 w-4 text-muted-foreground" />
-                      <span>Mon-Fri, 9AM-5PM EST</span>
-                    </div>
+                  <div className="flex items-center gap-3 text-sm">
+                    <Clock className="h-4 w-4 text-muted-foreground" />
+                    <span>Mon-Fri, 9AM-5PM EST</span>
                   </div>
                 </div>
               </CardContent>
