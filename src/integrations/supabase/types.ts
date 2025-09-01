@@ -14,6 +14,42 @@ export type Database = {
   }
   public: {
     Tables: {
+      audit_log: {
+        Row: {
+          action: string
+          created_at: string | null
+          id: string
+          ip_address: unknown | null
+          record_id: string | null
+          sensitive_data_accessed: boolean | null
+          table_name: string
+          user_agent: string | null
+          user_id: string | null
+        }
+        Insert: {
+          action: string
+          created_at?: string | null
+          id?: string
+          ip_address?: unknown | null
+          record_id?: string | null
+          sensitive_data_accessed?: boolean | null
+          table_name: string
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          action?: string
+          created_at?: string | null
+          id?: string
+          ip_address?: unknown | null
+          record_id?: string | null
+          sensitive_data_accessed?: boolean | null
+          table_name?: string
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       learning_modules: {
         Row: {
           compliance_note: string | null
@@ -425,6 +461,14 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: boolean
       }
+      check_rate_limit: {
+        Args: {
+          p_limit_per_hour?: number
+          p_table_name?: string
+          p_user_id?: string
+        }
+        Returns: boolean
+      }
       create_user_profile: {
         Args: { p_email: string; p_user_id: string }
         Returns: undefined
@@ -446,6 +490,19 @@ export type Database = {
       is_user_admin: {
         Args: { user_id?: string }
         Returns: boolean
+      }
+      log_sensitive_access: {
+        Args: {
+          p_action: string
+          p_record_id?: string
+          p_sensitive_data?: boolean
+          p_table_name: string
+        }
+        Returns: undefined
+      }
+      mask_contact_info: {
+        Args: { contact_text: string }
+        Returns: string
       }
     }
     Enums: {
