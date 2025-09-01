@@ -429,6 +429,20 @@ export type Database = {
         Args: { p_email: string; p_user_id: string }
         Returns: undefined
       }
+      get_verified_organizations: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          city: string
+          created_at: string
+          description: string
+          id: string
+          name: string
+          state_code: string
+          updated_at: string
+          verified: boolean
+          website: string
+        }[]
+      }
       is_user_admin: {
         Args: { user_id?: string }
         Returns: boolean
