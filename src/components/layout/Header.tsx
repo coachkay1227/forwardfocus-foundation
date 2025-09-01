@@ -45,7 +45,7 @@ const Header = () => {
       <div className="container h-16 flex items-center justify-between">
         <a href="/" className="font-heading font-semibold text-lg">Forward Focus Elevation</a>
 
-        <nav className="hidden md:flex items-center gap-8">
+        <nav className="hidden md:flex items-center gap-12">
           <NavLink to="/help" className={linkCls}>Get Help Now</NavLink>
           
           <NavLink to="/victim-services" className={linkCls}>Healing & Safety Hub</NavLink>
