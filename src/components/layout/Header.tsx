@@ -47,43 +47,41 @@ const Header = () => {
           </a>
 
           {/* Center: Nav — grows and keeps one line */}
-          <nav className="ml-4 hidden min-w-0 flex-1 items-center md:flex">
+          <nav className="ml-4 hidden min-w-0 flex-1 items-center gap-6 md:flex">
             <ul className="flex items-center gap-8 whitespace-nowrap text-sm">
               <li><NavLink to="/help" className={linkCls}>Get Help Now</NavLink></li>
               <li><NavLink to="/victim-services" className={linkCls}>Healing &amp; Safety Hub</NavLink></li>
               <li><NavLink to="/learn" className={linkCls}>Reentry Community</NavLink></li>
-              
-              {/* State selector positioned before About Us */}
-              <li>
-                <Select
-                  value={selectedState.code}
-                  onValueChange={(v) => {
-                    const found = STATES.find((s) => s.code === v);
-                    if (found?.active) setSelectedState(found);
-                  }}
-                >
-                  <SelectTrigger className="w-[140px]">
-                    <SelectValue placeholder="Select state" />
-                  </SelectTrigger>
-                  <SelectContent className="z-[60] bg-background/95 backdrop-blur-sm border shadow-lg">
-                    <SelectGroup>
-                      <SelectLabel>Active</SelectLabel>
-                      {STATES.filter((s) => s.active).map((s) => (
-                        <SelectItem key={s.code} value={s.code}>{s.name}</SelectItem>
-                      ))}
-                    </SelectGroup>
-                    <SelectGroup>
-                      <SelectLabel>Coming soon</SelectLabel>
-                      {STATES.filter((s) => s.comingSoon).map((s) => (
-                        <SelectItem key={s.code} value={s.code} disabled>{s.name}</SelectItem>
-                      ))}
-                    </SelectGroup>
-                  </SelectContent>
-                </Select>
-              </li>
-              
-              <li><NavLink to="/about" className={linkCls}>About Us</NavLink></li>
             </ul>
+            
+            {/* State selector positioned between nav and About Us */}
+            <Select
+              value={selectedState.code}
+              onValueChange={(v) => {
+                const found = STATES.find((s) => s.code === v);
+                if (found?.active) setSelectedState(found);
+              }}
+            >
+              <SelectTrigger className="w-[130px]">
+                <SelectValue placeholder="Select state" />
+              </SelectTrigger>
+              <SelectContent className="z-[60] bg-background/95 backdrop-blur-sm border shadow-lg">
+                <SelectGroup>
+                  <SelectLabel>Active</SelectLabel>
+                  {STATES.filter((s) => s.active).map((s) => (
+                    <SelectItem key={s.code} value={s.code}>{s.name}</SelectItem>
+                  ))}
+                </SelectGroup>
+                <SelectGroup>
+                  <SelectLabel>Coming soon</SelectLabel>
+                  {STATES.filter((s) => s.comingSoon).map((s) => (
+                    <SelectItem key={s.code} value={s.code} disabled>{s.name}</SelectItem>
+                  ))}
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+            
+            <NavLink to="/about" className={linkCls}>About Us</NavLink>
           </nav>
 
           {/* Right: Actions */}
