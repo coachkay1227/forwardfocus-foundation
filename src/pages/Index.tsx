@@ -1,249 +1,376 @@
-import { useEffect, useState } from "react";
-import { NavLink } from "react-router-dom";
-import { Menu, User, LogOut, MapPin } from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
+import { ArrowRight, MapPin, Users, Phone, Shield, Bot, Heart, HeartHandshake } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { toast } from "@/components/ui/sonner";
 import { useStateContext } from "@/contexts/StateContext";
-import { useAuth } from "@/contexts/AuthContext";
-import { supabase } from "@/integrations/supabase/client";
-import { STATES } from "@/data/states";
+import AIResourceDiscovery from "@/components/ai/AIResourceDiscovery";
 
-const linkCls = ({ isActive }: { isActive?: boolean } | any) =>
-  isActive ? "text-primary font-semibold" : "text-foreground/80 hover:text-foreground";
+const Index = () => {
+  const [showAIDiscovery, setShowAIDiscovery] = useState(false);
+  const { selectedState } = useStateContext();
+  const [email, setEmail] = useState("");
 
-const Header = () => {
-  const { selectedState, setSelectedState } = useStateContext();
-  const { user, signOut } = useAuth();
-  const [open, setOpen] = useState(false);
-  const [isAdmin, setIsAdmin] = useState(false);
-
+  // ---- SEO/meta setup ----
   useEffect(() => {
-    const checkAdminStatus = async () => {
-      if (!user) return setIsAdmin(false);
-      try {
-        const { data } = await supabase.rpc("is_user_admin", { user_id: user.id });
-        setIsAdmin(Boolean(data));
-      } catch (e) {
-        console.error(e);
-        setIsAdmin(false);
-      }
-    };
-    checkAdminStatus();
-  }, [user]);
+    document.title = "Forward Focus Elevation | Empowering Justice-Impacted Families";
+
+    const desc =
+      "Empowering justice-impacted families with the tools to rebuild and thrive. AI-enhanced guidance and comprehensive resources for justice-impacted individuals, families, and crime victims.";
+
+    let meta = document.querySelector('meta[name="description"]');
+    if (!meta) {
+      meta = document.createElement("meta");
+      meta.setAttribute("name", "description");
+      document.head.appendChild(meta);
+    }
+    meta.setAttribute("content", desc);
+
+    let canonical = document.querySelector('link[rel="canonical"]') as HTMLLinkElement | null;
+    if (!canonical) {
+      canonical = document.createElement("link");
+      canonical.setAttribute("rel", "canonical");
+      canonical.href = window.location.href;
+      document.head.appendChild(canonical);
+    }
+  }, []);
+
+  // ---- Content data ----
+  const comingSoon = useMemo(
+    () => ["Texas", "California", "Florida", "Pennsylvania", "Illinois"],
+    []
+  );
+
+  const onSignup = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email) return;
+    toast("Thanks! We'll let you know when we launch in your state with the same comprehensive support.");
+    setEmail("");
+  };
+
+  const servingLabel = selectedState?.name ? `Now serving ${selectedState.name}` : "Now serving Ohio";
+  const stateForAI = selectedState?.name ?? "Ohio";
 
   return (
-    <header className="sticky top-0 z-50 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/90">
-      {/* Unified emergency bar */}
-      <div className="bg-red-500 text-white py-2 px-4 text-center text-sm">
-        Need help now? Call 211 for local services, dial 988 for the Suicide &amp; Crisis Lifeline, or text HOME to 741741.
+    <main id="main" className="min-h-screen">
+      {/* Emergency Banner */}
+      <div className="bg-destructive text-destructive-foreground py-3 text-center font-medium shadow-sm">
+        <div className="container flex items-center justify-center gap-2">
+          <Shield className="h-4 w-4" aria-hidden />
+          <span>
+            CRISIS? Call 911 • Crisis Support: 988 • Text HOME to 741741
+          </span>
+        </div>
       </div>
 
-      <div className="mx-auto flex h-16 max-w-7xl items-center gap-4 px-4">
-        {/* Logo */}
-        <a href="/" className="font-heading text-base font-semibold tracking-tight whitespace-nowrap">
-          Forward Focus Elevation
-        </a>
+      {/* Hero */}
+      <section className="relative isolate bg-black">
+        {/* Background image */}
+        <div
+          aria-hidden
+          className="absolute inset-0 -z-10 bg-[url('/images/diverse-families-community.jpg')] bg-cover bg-center"
+        />
+        {/* Overlay */}
+        <div aria-hidden className="absolute inset-0 -z-10 bg-black/40" />
 
-        {/* Desktop navigation */}
-        <nav className="hidden md:flex flex-1 items-center justify-center gap-8 text-sm">
-          <NavLink to="/" className={linkCls}>Home</NavLink>
-          <NavLink to="/help" className={linkCls}>Get Help</NavLink>
-          <NavLink to="/victim-services" className={linkCls}>Healing Hub</NavLink>
-          <NavLink to="/learn" className={linkCls}>Reentry</NavLink>
-          <DropdownMenu>
-            <DropdownMenuTrigger className="text-foreground/80 hover:text-foreground">About</DropdownMenuTrigger>
-            <DropdownMenuContent align="start" sideOffset={6} className="z-[80] w-56">
-              <DropdownMenuItem asChild>
-                <NavLink to="/about">About Forward Focus Elevation</NavLink>
-              </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <NavLink to="/team">Our Team</NavLink>
-              </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <NavLink to="/partners">Partners</NavLink>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </nav>
+        <div className="container py-16 md:py-24">
+          <div className="max-w-3xl">
+            <p className="text-sm text-white/85 tracking-wide uppercase font-medium">
+              {servingLabel}
+            </p>
+            <h1 className="mt-3 font-heading text-5xl md:text-6xl font-bold text-white leading-tight">
+              Forward Focus Elevation
+            </h1>
+            <p className="mt-6 text-xl md:text-2xl text-white/90 font-medium leading-relaxed">
+              Empowering justice-impacted families with the tools to rebuild and thrive.
+            </p>
 
-        {/* Desktop utilities */}
-        <div className="hidden md:flex items-center gap-3 whitespace-nowrap">
-          {/* State picker */}
-          <Select
-            value={selectedState.code}
-            onValueChange={(code) => {
-              const next = STATES.find((s) => s.code === code);
-              if (next?.active) setSelectedState(next);
-            }}
-          >
-            <SelectTrigger className="w-[160px] relative z-10">
-              <SelectValue placeholder="Select state" />
-            </SelectTrigger>
-            <SelectContent className="z-50 bg-popover">
-              <SelectGroup>
-                <SelectLabel>Active</SelectLabel>
-                {STATES.filter((s) => s.active).map((s) => (
-                  <SelectItem key={s.code} value={s.code}>
-                    {s.name}
-                  </SelectItem>
-                ))}
-              </SelectGroup>
-              <SelectGroup>
-                <SelectLabel>Coming soon</SelectLabel>
-                {STATES.filter((s) => s.comingSoon).map((s) => (
-                  <SelectItem key={s.code} value={s.code} disabled>
-                    {s.name}
-                  </SelectItem>
-                ))}
-              </SelectGroup>
-            </SelectContent>
-          </Select>
-
-          {/* Sign in / user menu */}
-          {user ? (
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="sm">
-                  <User className="mr-2 h-4 w-4" />
-                  <span className="max-w-[160px] truncate">{user.email}</span>
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="z-[80]">
-                {isAdmin && (
-                  <DropdownMenuItem asChild>
-                    <NavLink to="/admin">Admin Dashboard</NavLink>
-                  </DropdownMenuItem>
-                )}
-                <DropdownMenuItem onClick={signOut}>
-                  <LogOut className="mr-2 h-4 w-4" />
-                  Sign Out
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          ) : (
-            <NavLink to="/auth" className="text-sm text-foreground/80 hover:text-foreground">
-              Sign In
-            </NavLink>
-          )}
-
-          {/* CTA buttons */}
-          <Button asChild size="sm" variant="secondary">
-            <NavLink to="/partners/submit-referral">Submit Referral</NavLink>
-          </Button>
-          <Button asChild size="sm">
-            <NavLink to="/support">Support</NavLink>
-          </Button>
-        </div>
-
-        {/* Mobile hamburger */}
-        <div className="ml-auto md:hidden">
-          <Sheet open={open} onOpenChange={setOpen}>
-            <SheetTrigger asChild>
-              <Button variant="ghost" size="icon" aria-label="Open menu">
-                <Menu />
+            <div className="mt-10 flex flex-col sm:flex-row gap-4">
+              <Button size="lg" variant="premium" className="h-14 px-8 text-lg shadow-lg" asChild>
+                <a href="/help" aria-label="Get immediate help">
+                  <Phone className="mr-2 h-5 w-5" aria-hidden />
+                  Get Immediate Help
+                </a>
               </Button>
-            </SheetTrigger>
-            <SheetContent side="right" className="w-[280px]">
-              <SheetTitle className="font-heading">Menu</SheetTitle>
-              <div className="mt-4 flex flex-col gap-3">
-                <Select
-                  value={selectedState.code}
-                  onValueChange={(code) => {
-                    const next = STATES.find((s) => s.code === code);
-                    if (next?.active) setSelectedState(next);
-                  }}
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select state" />
-                  </SelectTrigger>
-                  <SelectContent className="z-50 bg-popover">
-                    <SelectGroup>
-                      <SelectLabel>Active</SelectLabel>
-                      {STATES.filter((s) => s.active).map((s) => (
-                        <SelectItem key={s.code} value={s.code}>
-                          {s.name}
-                        </SelectItem>
-                      ))}
-                    </SelectGroup>
-                    <SelectGroup>
-                      <SelectLabel>Coming soon</SelectLabel>
-                      {STATES.filter((s) => s.comingSoon).map((s) => (
-                        <SelectItem key={s.code} value={s.code} disabled>
-                          {s.name}
-                        </SelectItem>
-                      ))}
-                    </SelectGroup>
-                  </SelectContent>
-                </Select>
 
-                {/* Mobile nav links */}
-                <NavLink to="/" onClick={() => setOpen(false)} className="py-2">
-                  Home
-                </NavLink>
-                <NavLink to="/help" onClick={() => setOpen(false)} className="py-2">
-                  Get Help
-                </NavLink>
-                <NavLink to="/victim-services" onClick={() => setOpen(false)} className="py-2">
-                  Healing Hub
-                </NavLink>
-                <NavLink to="/learn" onClick={() => setOpen(false)} className="py-2">
-                  Reentry
-                </NavLink>
-                <NavLink to="/about" onClick={() => setOpen(false)} className="py-2">
-                  About
-                </NavLink>
+              <Button
+                size="lg"
+                variant="hero"
+                className="h-14 px-8 text-lg bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70"
+                onClick={() => setShowAIDiscovery(true)}
+                aria-label="Ask AI Navigator"
+              >
+                <Bot className="mr-2 h-5 w-5" aria-hidden />
+                Ask AI Navigator
+              </Button>
 
-                {/* Mobile user controls */}
-                {user ? (
-                  <>
-                    <div className="flex items-center gap-2 py-2 text-sm text-muted-foreground">
-                      <User className="h-4 w-4" />
-                      <span className="truncate">{user.email}</span>
-                    </div>
-                    {isAdmin && (
-                      <NavLink to="/admin" onClick={() => setOpen(false)} className="py-2">
-                        Admin Dashboard
-                      </NavLink>
-                    )}
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => {
-                        signOut();
-                        setOpen(false);
-                      }}
-                      className="justify-start px-0"
-                    >
-                      <LogOut className="mr-2 h-4 w-4" />
-                      Sign Out
-                    </Button>
-                  </>
-                ) : (
-                  <NavLink to="/auth" onClick={() => setOpen(false)} className="py-2">
-                    Sign In
-                  </NavLink>
-                )}
+              <Button size="lg" variant="hero" className="h-14 px-8 text-lg" asChild>
+                <a href="/learn" aria-label="Join learning community">
+                  <Users className="mr-2 h-5 w-5" aria-hidden />
+                  Join Learning Community
+                </a>
+              </Button>
 
-                {/* Mobile CTAs */}
-                <Button asChild className="mt-2" variant="secondary">
-                  <NavLink to="/partners/submit-referral" onClick={() => setOpen(false)}>
-                    Submit Referral
-                  </NavLink>
-                </Button>
-                <Button asChild className="mt-2">
-                  <NavLink to="/support" onClick={() => setOpen(false)}>
-                    Support
-                  </NavLink>
-                </Button>
-              </div>
-            </SheetContent>
-          </Sheet>
+              <Button size="lg" variant="hero" className="h-14 px-8 text-lg" asChild>
+                <a href="/victim-services" aria-label="Go to Healing and Safety Hub">
+                  <Shield className="mr-2 h-5 w-5" aria-hidden />
+                  Healing &amp; Safety Hub
+                </a>
+              </Button>
+            </div>
+
+            <div className="mt-6 flex items-center gap-2 text-sm text-white/85">
+              <MapPin className="h-4 w-4" aria-hidden />
+              <span>AI-enhanced • Trauma-informed • Income-based support</span>
+            </div>
+          </div>
         </div>
-      </div>
-    </header>
+      </section>
+
+      {/* How it works */}
+      <section className="container py-16 md:py-20">
+        <h2 className="font-heading text-3xl md:text-4xl font-bold text-center mb-4">
+          How We Support Your Journey
+        </h2>
+        <p className="text-xl text-muted-foreground text-center mb-12 max-w-3xl mx-auto">
+          Comprehensive support designed for your unique path forward
+        </p>
+
+        <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {[
+            {
+              icon: Phone,
+              title: "Get Immediate Help",
+              desc: "24/7 support, AI-powered guidance, and live human assistance.",
+            },
+            {
+              icon: Bot,
+              title: "AI-Enhanced Navigation",
+              desc: "Smart tech to guide justice-impacted individuals to the right tools.",
+            },
+            {
+              icon: Users,
+              title: "Supportive Community",
+              desc: "Peer support, mentorship, and life coaching designed for your journey.",
+            },
+          ].map((item) => {
+            const Icon = item.icon;
+            return (
+              <Card
+                key={item.title}
+                className="bg-card hover:shadow-lg transition-all duration-300 hover:scale-[1.015] border-0 shadow-md"
+              >
+                <CardHeader className="pb-4">
+                  <div className="flex items-center gap-4">
+                    <div className="p-3 bg-primary/10 rounded-lg">
+                      <Icon className="h-6 w-6 text-primary" aria-hidden />
+                    </div>
+                    <CardTitle className="text-xl font-bold">{item.title}</CardTitle>
+                  </div>
+                </CardHeader>
+                <CardContent className="text-muted-foreground leading-relaxed">
+                  {item.desc}
+                </CardContent>
+              </Card>
+            );
+          })}
+        </div>
+      </section>
+
+      {/* Success stories */}
+      <section className="bg-muted/30">
+        <div className="container py-16 md:py-20">
+          <h2 className="font-heading text-3xl md:text-4xl font-bold text-center mb-4">
+            Real Stories, Real Progress
+          </h2>
+          <p className="text-xl text-muted-foreground text-center mb-12 max-w-3xl mx-auto">
+            Hear from community members about their transformative experiences
+          </p>
+
+          <div className="mt-8 grid gap-6 md:grid-cols-3">
+            {[
+              "The trauma-informed approach made all the difference in my healing.",
+              "Finally found a community that understands what I'm going through.",
+              "The AI assistant helped me find resources I didn't know existed.",
+            ].map((quote, i) => (
+              <Card
+                key={i}
+                className="bg-card shadow-lg hover:shadow-xl transition-shadow duration-300 border-0"
+              >
+                <CardContent className="pt-8 pb-6">
+                  <div className="text-primary/20 text-6xl mb-4" aria-hidden>
+                    &quot;
+                  </div>
+                  <p className="text-lg text-foreground leading-relaxed mb-4">{quote}</p>
+                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                    <Heart className="h-4 w-4 text-secondary" aria-hidden />
+                    <span>Community Member</span>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Expanding Nationwide */}
+      <section className="container py-12 md:py-16">
+        <div className="grid gap-8 md:grid-cols-2 md:items-center">
+          <div>
+            <h2 className="font-heading text-2xl md:text-3xl font-semibold">
+              Expanding nationwide
+            </h2>
+            <p className="mt-3 text-muted-foreground">
+              Currently serving: {selectedState?.name ?? "Ohio"}. Coming soon to these states:
+            </p>
+            <ul className="mt-4 grid grid-cols-2 gap-2 text-sm text-foreground/80">
+              {comingSoon.map((s) => (
+                <li key={s} className="flex items-center gap-2">
+                  <ArrowRight className="h-4 w-4 text-primary" aria-hidden />
+                  {s}
+                </li>
+              ))}
+            </ul>
+
+            <form onSubmit={onSignup} className="mt-6 flex flex-col sm:flex-row gap-2" aria-label="Notify me form">
+              <Input
+                type="email"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Get notified when we launch in your state"
+                className="h-11"
+                aria-label="Email address"
+              />
+              <Button type="submit" className="h-11">
+                Notify me
+              </Button>
+            </form>
+          </div>
+
+          <figure className="rounded-lg border bg-card">
+            <div className="aspect-[4/3] w-full grid place-content-center text-muted-foreground">
+              <span className="text-sm">
+                Map placeholder — highlighting {selectedState?.name ?? "Ohio"}
+              </span>
+            </div>
+          </figure>
+        </div>
+      </section>
+
+      {/* Choose Your Path */}
+      <section className="bg-gradient-to-r from-burned-orange/10 via-cream/50 to-warm-blue/10">
+        <div className="container py-12 md:py-16">
+          <h2 className="font-heading text-2xl md:text-3xl font-semibold">
+            Choose Your Path Forward
+          </h2>
+
+        <div className="mt-6 grid gap-6 md:grid-cols-2">
+          <Card className="border-2 border-burned-orange/30 bg-white shadow-md border-l-8 border-l-burned-orange">
+            <CardHeader>
+              <div className="flex items-center gap-3">
+                <Users className="h-6 w-6 text-burned-orange" aria-hidden />
+                <div>
+                  <CardTitle className="text-xl font-bold">Justice-Impacted Families</CardTitle>
+                  <p className="text-sm text-muted-foreground">
+                    Free learning community, peer support, and life coaching.
+                  </p>
+                </div>
+              </div>
+            </CardHeader>
+            <CardContent>
+              <p className="text-muted-foreground mb-4">
+                Free learning community, peer support, and income-based life coaching designed
+                specifically for justice-impacted individuals and families.
+              </p>
+              <Button asChild className="w-full bg-burned-orange hover:bg-burned-orange/90" aria-label="Join learning community">
+                <a href="/learn">Join Learning Community →</a>
+              </Button>
+            </CardContent>
+          </Card>
+
+          <Card className="border-2 border-warm-blue/30 bg-white shadow-md border-l-8 border-l-warm-blue">
+            <CardHeader>
+              <div className="flex items-center gap-3">
+                <Shield className="h-6 w-6 text-warm-blue" aria-hidden />
+                <div>
+                  <CardTitle className="text-xl font-bold">Crime Victims &amp; Survivors</CardTitle>
+                  <p className="text-sm text-muted-foreground">
+                    Specialized trauma-informed support and crisis tools.
+                  </p>
+                </div>
+              </div>
+            </CardHeader>
+            <CardContent>
+              <p className="text-muted-foreground mb-4">
+                Comprehensive healing &amp; safety hub with crisis support, compensation guidance,
+                and specialized trauma-informed coaching.
+              </p>
+              <Button asChild className="w-full bg-warm-blue hover:bg-warm-blue/90" aria-label="Access Healing and Safety Hub">
+                <a href="/victim-services">Access Healing &amp; Safety Hub →</a>
+              </Button>
+            </CardContent>
+          </Card>
+        </div>
+        </div>
+      </section>
+
+      {/* Our Impact */}
+      <section className="container py-12 md:py-16">
+        <h2 className="font-heading text-2xl md:text-3xl font-semibold">What Makes Us Different</h2>
+        <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-6">
+          <Card className="bg-cream/50">
+            <CardContent className="pt-6 text-center">
+              <Bot className="h-12 w-12 text-warm-blue mx-auto mb-3" aria-hidden />
+              <div className="font-semibold text-gray-900 mb-2">AI-Enhanced Guidance</div>
+              <div className="text-sm text-muted-foreground">
+                Smart technology that understands justice-impacted experiences
+              </div>
+            </CardContent>
+          </Card>
+          <Card className="bg-cream/50">
+            <CardContent className="pt-6 text-center">
+              <HeartHandshake className="h-12 w-12 text-burned-orange mx-auto mb-3" aria-hidden />
+              <div className="font-semibold text-gray-900 mb-2">Trauma-Informed Care</div>
+              <div className="text-sm text-muted-foreground">
+                Every interaction designed with safety, trust, and empowerment
+              </div>
+            </CardContent>
+          </Card>
+          <Card className="bg-cream/50">
+            <CardContent className="pt-6 text-center">
+              <Users className="h-12 w-12 text-warm-blue mx-auto mb-3" aria-hidden />
+              <div className="font-semibold text-gray-900 mb-2">Income-Based Support</div>
+              <div className="text-sm text-muted-foreground">
+                Accessible life coaching and support regardless of financial situation
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </section>
+
+      {/* Footer Teaser */}
+      <section className="bg-navy-900 text-white py-12 text-center">
+        <div className="container">
+          <h3 className="text-lg font-semibold">Want to Get Involved?</h3>
+          <p className="text-sm mb-6 text-white/80">
+            Whether you're a family, nonprofit, or mentor — there's a place for you here.
+          </p>
+          <Button size="lg" className="bg-burned-orange hover:bg-burned-orange/90 shadow-md" asChild>
+            <a href="/partners">Join the Movement</a>
+          </Button>
+        </div>
+      </section>
+
+      <AIResourceDiscovery
+        isOpen={showAIDiscovery}
+        onClose={() => setShowAIDiscovery(false)}
+        initialQuery=""
+        location={stateForAI}
+      />
+    </main>
   );
 };
 
-export default Header;
+export default Index;
