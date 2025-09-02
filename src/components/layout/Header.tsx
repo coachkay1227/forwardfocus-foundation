@@ -52,38 +52,42 @@ const Header = () => {
               <li><NavLink to="/help" className={linkCls}>Get Help Now</NavLink></li>
               <li><NavLink to="/victim-services" className={linkCls}>Healing &amp; Safety Hub</NavLink></li>
               <li><NavLink to="/learn" className={linkCls}>Reentry Community</NavLink></li>
+              
+              {/* State selector positioned before About Us */}
+              <li>
+                <Select
+                  value={selectedState.code}
+                  onValueChange={(v) => {
+                    const found = STATES.find((s) => s.code === v);
+                    if (found?.active) setSelectedState(found);
+                  }}
+                >
+                  <SelectTrigger className="w-[140px]">
+                    <SelectValue placeholder="Select state" />
+                  </SelectTrigger>
+                  <SelectContent className="z-[60] bg-background/95 backdrop-blur-sm border shadow-lg">
+                    <SelectGroup>
+                      <SelectLabel>Active</SelectLabel>
+                      {STATES.filter((s) => s.active).map((s) => (
+                        <SelectItem key={s.code} value={s.code}>{s.name}</SelectItem>
+                      ))}
+                    </SelectGroup>
+                    <SelectGroup>
+                      <SelectLabel>Coming soon</SelectLabel>
+                      {STATES.filter((s) => s.comingSoon).map((s) => (
+                        <SelectItem key={s.code} value={s.code} disabled>{s.name}</SelectItem>
+                      ))}
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+              </li>
+              
               <li><NavLink to="/about" className={linkCls}>About Us</NavLink></li>
             </ul>
           </nav>
 
           {/* Right: Actions */}
           <div className="ml-auto hidden items-center whitespace-nowrap md:flex">
-            {/* State selector */}
-            <Select
-              value={selectedState.code}
-              onValueChange={(v) => {
-                const found = STATES.find((s) => s.code === v);
-                if (found?.active) setSelectedState(found);
-              }}
-            >
-              <SelectTrigger className="w-[160px]">
-                <SelectValue placeholder="Select state" />
-              </SelectTrigger>
-              <SelectContent className="z-[60] bg-background/95 backdrop-blur-sm border shadow-lg">
-                <SelectGroup>
-                  <SelectLabel>Active</SelectLabel>
-                  {STATES.filter((s) => s.active).map((s) => (
-                    <SelectItem key={s.code} value={s.code}>{s.name}</SelectItem>
-                  ))}
-                </SelectGroup>
-                <SelectGroup>
-                  <SelectLabel>Coming soon</SelectLabel>
-                  {STATES.filter((s) => s.comingSoon).map((s) => (
-                    <SelectItem key={s.code} value={s.code} disabled>{s.name}</SelectItem>
-                  ))}
-                </SelectGroup>
-              </SelectContent>
-            </Select>
 
             {/* User / Auth */}
             {user ? (
