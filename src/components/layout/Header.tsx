@@ -69,7 +69,7 @@ const Header = () => {
               <SelectTrigger className="w-[160px]">
                 <SelectValue placeholder="Select state" />
               </SelectTrigger>
-              <SelectContent className="z-50 bg-popover">
+              <SelectContent className="z-[60] bg-popover">
                 <SelectGroup>
                   <SelectLabel>Active</SelectLabel>
                   {STATES.filter((s) => s.active).map((s) => (
