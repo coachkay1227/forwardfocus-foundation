@@ -43,7 +43,7 @@ const Header = () => {
         <div className="flex h-16 items-center gap-3">
           {/* Left: Logo */}
           <a href="/" className="min-w-0 shrink-0 font-heading text-base font-semibold tracking-tight whitespace-nowrap">
-            Forward Focus Elevation
+            Home
           </a>
 
           {/* Center: Nav — grows and keeps one line */}
