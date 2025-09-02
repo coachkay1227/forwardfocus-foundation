@@ -458,6 +458,42 @@ export type Database = {
         }
         Relationships: []
       }
+      organizations_public_secure: {
+        Row: {
+          city: string | null
+          created_at: string | null
+          description: string | null
+          id: string | null
+          name: string | null
+          state_code: string | null
+          updated_at: string | null
+          verified: boolean | null
+          website: string | null
+        }
+        Insert: {
+          city?: string | null
+          created_at?: string | null
+          description?: string | null
+          id?: string | null
+          name?: string | null
+          state_code?: string | null
+          updated_at?: string | null
+          verified?: boolean | null
+          website?: string | null
+        }
+        Update: {
+          city?: string | null
+          created_at?: string | null
+          description?: string | null
+          id?: string | null
+          name?: string | null
+          state_code?: string | null
+          updated_at?: string | null
+          verified?: boolean | null
+          website?: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       can_view_org_contacts: {
@@ -465,7 +501,7 @@ export type Database = {
         Returns: boolean
       }
       check_admin_rate_limit: {
-        Args: { p_user_id?: string }
+        Args: Record<PropertyKey, never>
         Returns: boolean
       }
       check_rate_limit: {
@@ -504,15 +540,15 @@ export type Database = {
       }
       log_sensitive_access: {
         Args: {
-          p_action: string
-          p_record_id?: string
-          p_sensitive_data?: boolean
-          p_table_name: string
+          is_sensitive?: boolean
+          operation: string
+          record_id: string
+          table_name: string
         }
         Returns: undefined
       }
       mask_contact_info: {
-        Args: { contact_text: string }
+        Args: { contact_data: string }
         Returns: string
       }
     }
