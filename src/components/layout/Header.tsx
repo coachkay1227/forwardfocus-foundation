@@ -51,7 +51,7 @@ const Header = () => {
             <ul className="flex items-center gap-8 whitespace-nowrap text-sm">
               <li><NavLink to="/help" className={linkCls}>Get Help Now</NavLink></li>
               <li><NavLink to="/victim-services" className={linkCls}>Healing &amp; Safety Hub</NavLink></li>
-              <li><NavLink to="/learn" className={linkCls}>reentry</NavLink></li>
+              <li><NavLink to="/learn" className={linkCls}>Reentry</NavLink></li>
             </ul>
             
             {/* State selector positioned between nav and About Us */}
@@ -168,7 +168,7 @@ const Header = () => {
                   {/* Mobile nav */}
                   <NavLink to="/help" onClick={() => setOpen(false)} className="py-2">Get Help Now</NavLink>
                   <NavLink to="/victim-services" onClick={() => setOpen(false)} className="py-2">Healing &amp; Safety Hub</NavLink>
-                  <NavLink to="/learn" onClick={() => setOpen(false)} className="py-2">reentry</NavLink>
+                  <NavLink to="/learn" onClick={() => setOpen(false)} className="py-2">Reentry</NavLink>
                   <NavLink to="/about" onClick={() => setOpen(false)} className="py-2">About Us</NavLink>
 
                   {/* Mobile auth */}
