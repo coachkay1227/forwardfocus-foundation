@@ -148,6 +148,7 @@ export type Database = {
           email: string | null
           id: string
           name: string
+          owner_id: string | null
           phone: string | null
           state_code: string | null
           updated_at: string
@@ -162,6 +163,7 @@ export type Database = {
           email?: string | null
           id?: string
           name: string
+          owner_id?: string | null
           phone?: string | null
           state_code?: string | null
           updated_at?: string
@@ -176,6 +178,7 @@ export type Database = {
           email?: string | null
           id?: string
           name?: string
+          owner_id?: string | null
           phone?: string | null
           state_code?: string | null
           updated_at?: string
@@ -461,6 +464,10 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: boolean
       }
+      check_admin_rate_limit: {
+        Args: { p_user_id?: string }
+        Returns: boolean
+      }
       check_rate_limit: {
         Args: {
           p_limit_per_hour?: number
@@ -472,6 +479,10 @@ export type Database = {
       create_user_profile: {
         Args: { p_email: string; p_user_id: string }
         Returns: undefined
+      }
+      get_masked_contact_info: {
+        Args: { contact_text: string; user_id?: string }
+        Returns: string
       }
       get_verified_organizations: {
         Args: Record<PropertyKey, never>
