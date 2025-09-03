@@ -1,12 +1,12 @@
 import { useEffect, useMemo, useState } from "react";
 import { ArrowRight, MapPin, Users, Phone, Shield, Bot, Heart, HeartHandshake } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { toast } from "@/components/ui/sonner";
 import { useStateContext } from "@/contexts/StateContext";
 import AIResourceDiscovery from "@/components/ai/AIResourceDiscovery";
-import USMap from "@/components/ui/USMap";
 import StateModal from "@/components/ui/StateModal";
 import { STATES } from "@/data/states";
 
@@ -248,34 +248,42 @@ const Index = () => {
       </section>
 
       {/* Expanding Nationwide */}
-      <section className="container py-12 md:py-16">
-        <h2 className="font-heading text-3xl md:text-4xl font-semibold text-center mb-12">
-          Expanding Nationwide
-        </h2>
-        
-        <div className="grid gap-12 lg:grid-cols-2 lg:items-start">
-          <div className="order-2 lg:order-1">
-            <div className="text-center lg:text-left">
-              <div className="inline-flex items-center gap-2 bg-primary/10 px-4 py-2 rounded-full mb-6">
-                <MapPin className="h-4 w-4 text-primary" aria-hidden />
-                <span className="font-bold text-primary text-lg">
-                  Currently serving: {selectedState?.name ?? "Ohio"}
-                </span>
-              </div>
-              <p className="text-muted-foreground mb-8">
-                All other states coming soon:
-              </p>
-              
-              <ul className="grid grid-cols-2 md:grid-cols-3 gap-2 text-sm mb-8">
-                {allStates.filter(state => state !== (selectedState?.name ?? "Ohio")).slice(0, 30).map((s) => (
-                  <li key={s} className="flex items-center gap-2 py-1">
-                    <ArrowRight className="h-3 w-3 text-primary flex-shrink-0" aria-hidden />
-                    <span className="text-foreground/80 text-sm">{s}</span>
-                  </li>
-                ))}
-              </ul>
+      <section className="py-12 md:py-16">
+        <div className="max-w-screen-xl mx-auto px-6">
+          <h2 className="font-heading text-3xl md:text-4xl font-semibold text-center mb-12">
+            Expanding Nationwide
+          </h2>
+          
+          {/* Status pill */}
+          <div className="flex justify-center mb-12">
+            <div className="inline-flex items-center gap-2 bg-muted/50 px-4 py-2 rounded-full">
+              <span>📍</span>
+              <span className="font-medium">Currently serving: Ohio</span>
+            </div>
+          </div>
 
-              <div className="bg-white rounded-lg shadow-lg p-6 border">
+          {/* All 50 states in 3 columns */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-12">
+            {allStates.sort().map((state) => {
+              const isOhio = state === "Ohio";
+              return (
+                <div key={state} className="flex items-center justify-between py-2 px-3 rounded-md hover:bg-muted/30 transition-colors">
+                  <span className="text-foreground font-medium">{state}</span>
+                  <Badge 
+                    variant={isOhio ? "default" : "secondary"}
+                    className={isOhio ? "bg-green-600 text-white" : "bg-muted text-muted-foreground"}
+                  >
+                    {isOhio ? "Available" : "Coming Soon"}
+                  </Badge>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Centered notification form */}
+          <div className="max-w-md mx-auto">
+            <Card className="bg-white shadow-lg border">
+              <CardContent className="p-6">
                 <form onSubmit={onSignup} className="space-y-4" aria-label="Notify me form">
                   <Input
                     type="email"
@@ -289,20 +297,13 @@ const Index = () => {
                   <Button 
                     type="submit" 
                     size="lg"
-                    className="w-full h-12 text-base font-semibold bg-primary hover:bg-primary/90 text-primary-foreground shadow-md"
+                    className="w-full h-12 text-base font-bold bg-primary hover:bg-primary/90 text-primary-foreground shadow-md"
                   >
                     Notify Me When Available
                   </Button>
                 </form>
-              </div>
-            </div>
-          </div>
-
-          <div className="order-1 lg:order-2">
-            <USMap 
-              currentState={selectedState?.name ?? "Ohio"}
-              className="w-full"
-            />
+              </CardContent>
+            </Card>
           </div>
         </div>
       </section>
