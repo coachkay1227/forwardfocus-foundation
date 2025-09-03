@@ -81,7 +81,7 @@ const Footer = () => {
         </div>
       </div>
       <div className="border-t">
-        <div className="container py-6 text-sm text-foreground/60">
+        <div className="container py-6 text-sm text-foreground/60 text-center">
           © {new Date().getFullYear()} Forward Focus Elevation. All rights reserved.
         </div>
       </div>
