@@ -16,8 +16,8 @@ export default function StateMap({
 
   return (
     <div className={`overflow-hidden rounded-lg border ${className}`}>
-      <div className="relative w-full" style={{ paddingTop: "75%" }}>
-        {/* 4:3 ratio wrapper */}
+      <div className="relative w-full" style={{ paddingTop: "100%" }}>
+        {/* 1:1 ratio wrapper (square) */}
         <iframe
           title={`Map of ${stateName}`}
           src={src}
