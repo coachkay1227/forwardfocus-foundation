@@ -231,32 +231,47 @@ const Index = () => {
               <h2 className="font-heading text-2xl md:text-3xl font-semibold text-center">
                 Expanding nationwide
               </h2>
-              <p className="mt-10 text-muted-foreground text-center">
-                Currently serving: {selectedState?.name ?? "Ohio"}. All other states coming soon:
-              </p>
-              <ul className="mt-8 grid grid-cols-3 gap-1 text-sm text-foreground/80">
-                {allStates.filter(state => state !== (selectedState?.name ?? "Ohio")).map((s) => (
-                  <li key={s} className="flex items-center gap-1 py-0.5">
+              <div className="mt-10 text-center">
+                <div className="inline-flex items-center gap-2 bg-primary/10 px-4 py-2 rounded-full mb-4">
+                  <MapPin className="h-4 w-4 text-primary" aria-hidden />
+                  <span className="font-bold text-primary text-lg">
+                    Currently serving: {selectedState?.name ?? "Ohio"}
+                  </span>
+                </div>
+                <p className="text-muted-foreground">
+                  All other states coming soon:
+                </p>
+              </div>
+              
+              <ul className="mt-8 grid grid-cols-3 gap-2 text-sm">
+                {allStates.filter(state => state !== (selectedState?.name ?? "Ohio")).slice(0, 30).map((s) => (
+                  <li key={s} className="flex items-center gap-2 py-1">
                     <ArrowRight className="h-3 w-3 text-primary flex-shrink-0" aria-hidden />
-                    <span className="truncate text-xs">{s}</span>
+                    <span className="text-foreground/80 text-sm">{s}</span>
                   </li>
                 ))}
               </ul>
 
-              <form onSubmit={onSignup} className="mt-6 flex flex-col sm:flex-row gap-2" aria-label="Notify me form">
-                <Input
-                  type="email"
-                  required
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="Get notified when we launch in your state"
-                  className="h-11"
-                  aria-label="Email address"
-                />
-                <Button type="submit" className="h-11">
-                  Notify me
-                </Button>
-              </form>
+              <div className="mt-8 bg-white rounded-lg shadow-lg p-6 border">
+                <form onSubmit={onSignup} className="space-y-4" aria-label="Notify me form">
+                  <Input
+                    type="email"
+                    required
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="Enter your email to get notified when we launch in your state"
+                    className="h-12 text-base bg-white border-2 focus:border-primary"
+                    aria-label="Email address"
+                  />
+                  <Button 
+                    type="submit" 
+                    size="lg"
+                    className="w-full h-12 text-base font-semibold bg-primary hover:bg-primary/90 text-primary-foreground shadow-md"
+                  >
+                    Notify Me When Available
+                  </Button>
+                </form>
+              </div>
             </div>
           </div>
 
