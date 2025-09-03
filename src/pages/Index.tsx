@@ -231,7 +231,7 @@ const Index = () => {
         <div className="grid gap-8 md:grid-cols-2 md:items-start">
           <div className="flex flex-col justify-between h-full">
             <div>
-              <h2 className="font-heading text-2xl md:text-3xl font-semibold">
+              <h2 className="font-heading text-2xl md:text-3xl font-semibold text-center">
                 Expanding nationwide
               </h2>
               <p className="mt-3 text-muted-foreground">
