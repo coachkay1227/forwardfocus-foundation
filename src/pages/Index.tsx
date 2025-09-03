@@ -263,11 +263,13 @@ const Index = () => {
             </form>
           </div>
 
-          <StateMap 
-            stateName={selectedState?.name ?? "Ohio"}
-            zoom={6}
-            className="aspect-[4/3]"
-          />
+          <div className="flex flex-col justify-between h-full">
+            <StateMap 
+              stateName={selectedState?.name ?? "Ohio"}
+              zoom={6}
+              className="w-full h-full min-h-[400px]"
+            />
+          </div>
         </div>
       </section>
 
