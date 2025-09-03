@@ -229,7 +229,7 @@ const Index = () => {
       {/* Expanding Nationwide */}
       <section className="container py-12 md:py-16">
         <div className="grid gap-8 md:grid-cols-2 md:items-center">
-          <div className="flex flex-col justify-between h-full">
+          <div className="flex flex-col justify-between h-full pt-20">
             <div>
               <h2 className="font-heading text-2xl md:text-3xl font-semibold text-center">
                 Expanding nationwide
