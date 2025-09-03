@@ -1,7 +1,7 @@
 const Footer = () => {
   return (
     <footer className="border-t bg-background">
-      <div className="container py-16 grid gap-12 md:grid-cols-4">
+      <div className="container py-16 grid gap-12 md:grid-cols-3">
         <div>
           <div className="font-heading font-bold text-lg">Forward Focus Elevation</div>
           <p className="mt-4 text-base text-foreground/80 leading-relaxed">
@@ -58,31 +58,26 @@ const Footer = () => {
             </li>
           </ul>
         </div>
-        <div>
-          <div className="font-bold text-lg mb-4">Legal</div>
-          <ul className="space-y-3 text-base">
-            <li>
-              <a 
-                href="#" 
-                className="text-foreground/80 hover:text-primary transition-colors duration-200 focus:text-primary focus:outline-none focus:ring-2 focus:ring-primary/20 rounded px-1"
-              >
-                Privacy Policy
-              </a>
-            </li>
-            <li>
-              <a 
-                href="#" 
-                className="text-foreground/80 hover:text-primary transition-colors duration-200 focus:text-primary focus:outline-none focus:ring-2 focus:ring-primary/20 rounded px-1"
-              >
-                Terms of Service
-              </a>
-            </li>
-          </ul>
-        </div>
       </div>
       <div className="border-t">
-        <div className="container py-6 text-sm text-foreground/60 text-center">
-          © {new Date().getFullYear()} Forward Focus Elevation. All rights reserved.
+        <div className="container py-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-foreground/60">
+          <div className="text-center sm:text-left">
+            © {new Date().getFullYear()} Forward Focus Elevation. All rights reserved.
+          </div>
+          <div className="flex gap-6">
+            <a 
+              href="#" 
+              className="text-foreground/80 hover:text-primary transition-colors duration-200 focus:text-primary focus:outline-none focus:ring-2 focus:ring-primary/20 rounded px-1"
+            >
+              Privacy Policy
+            </a>
+            <a 
+              href="#" 
+              className="text-foreground/80 hover:text-primary transition-colors duration-200 focus:text-primary focus:outline-none focus:ring-2 focus:ring-primary/20 rounded px-1"
+            >
+              Terms of Service
+            </a>
+          </div>
         </div>
       </div>
     </footer>
