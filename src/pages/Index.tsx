@@ -257,7 +257,7 @@ const Index = () => {
               const stateData = STATES.find(s => s.name === state);
               const isActive = stateData?.active || false;
               return (
-                <div key={state} className="flex items-center justify-between py-2 px-3 rounded-md hover:bg-muted/30 transition-colors">
+                <div key={state} className="flex items-center justify-between py-1 px-2 rounded-md hover:bg-muted/30 transition-colors">
                   <span className="text-foreground font-medium">{state}</span>
                   <Badge 
                     variant={isActive ? "default" : "secondary"}
