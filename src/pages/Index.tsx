@@ -87,7 +87,7 @@ const Index = () => {
         <div aria-hidden className="absolute inset-0 -z-10 bg-black/40" />
 
         <div className="container py-16 md:py-24">
-          <div className="max-w-3xl">
+          <div className="max-w-3xl mx-auto">
             <h1 className="mt-3 font-heading text-5xl md:text-6xl font-bold text-white leading-tight">
               Forward Focus Elevation
             </h1>
