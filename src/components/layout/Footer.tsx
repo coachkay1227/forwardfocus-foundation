@@ -1,7 +1,7 @@
 const Footer = () => {
   return (
     <footer className="border-t bg-background">
-      <div className="container py-16 grid gap-12 md:grid-cols-3">
+      <div className="container py-16 grid gap-16 md:grid-cols-3 md:gap-12">
         <div>
           <div className="font-heading font-bold text-lg">Forward Focus Elevation</div>
           <p className="mt-4 text-base text-foreground/80 leading-relaxed">
