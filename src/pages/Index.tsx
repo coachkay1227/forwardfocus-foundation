@@ -88,7 +88,7 @@ const Index = () => {
 
         <div className="container py-16 md:py-24">
           <div className="max-w-3xl">
-            <h1 className="mt-3 font-heading text-5xl md:text-6xl font-bold text-white leading-tight text-center">
+            <h1 className="mt-3 font-heading text-5xl md:text-6xl font-bold text-white leading-tight">
               Forward Focus Elevation
             </h1>
             <p className="mt-6 text-xl md:text-2xl text-white/90 font-medium leading-relaxed">
