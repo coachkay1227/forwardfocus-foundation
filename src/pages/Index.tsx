@@ -7,10 +7,13 @@ import { toast } from "@/components/ui/sonner";
 import { useStateContext } from "@/contexts/StateContext";
 import AIResourceDiscovery from "@/components/ai/AIResourceDiscovery";
 import USMap from "@/components/ui/USMap";
+import StateModal from "@/components/ui/StateModal";
+import { STATES } from "@/data/states";
 
 const Index = () => {
   const [showAIDiscovery, setShowAIDiscovery] = useState(false);
-  const { selectedState } = useStateContext();
+  const [showStateModal, setShowStateModal] = useState(false);
+  const { selectedState, setSelectedState } = useStateContext();
   const [email, setEmail] = useState("");
 
   // ---- SEO/meta setup ----
@@ -91,6 +94,20 @@ const Index = () => {
             <h1 className="font-heading text-5xl md:text-6xl font-bold text-white leading-tight">
               Forward Focus Elevation
             </h1>
+            
+            {/* State pill */}
+            <div className="mt-4 flex justify-center">
+              <button
+                onClick={() => setShowStateModal(true)}
+                className="inline-flex items-center gap-2 rounded-full bg-white/70 backdrop-blur px-3 py-1.5 text-sm shadow-sm hover:bg-white/80 transition-colors"
+                aria-label="Change your state"
+              >
+                <span>📍</span>
+                <span className="text-gray-800">Your state: <strong>{selectedState?.name ?? "Ohio"}</strong></span>
+                <span className="text-gray-600">• Change</span>
+              </button>
+            </div>
+            
             <p className="mt-6 text-xl md:text-2xl text-white/90 font-medium leading-relaxed">
               Empowering justice-impacted families with the tools to rebuild and thrive.
             </p>
@@ -363,6 +380,27 @@ const Index = () => {
         onClose={() => setShowAIDiscovery(false)}
         initialQuery=""
         location={stateForAI}
+      />
+      
+      <StateModal
+        isOpen={showStateModal}
+        onClose={() => setShowStateModal(false)}
+        currentState={selectedState?.name ?? "Ohio"}
+        onStateChange={(stateName) => {
+          // Find the state object from the limited STATES array, or create a temporary one
+          const foundState = STATES.find(s => s.name === stateName);
+          if (foundState) {
+            setSelectedState(foundState);
+          } else {
+            // For states not in our STATES array, create a temporary state object
+            setSelectedState({
+              code: stateName.substring(0, 2).toUpperCase(),
+              name: stateName,
+              active: false,
+              comingSoon: true
+            });
+          }
+        }}
       />
     </main>
   );
