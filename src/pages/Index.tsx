@@ -316,39 +316,6 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Our Impact */}
-      <section className="container py-12 md:py-16">
-        <h2 className="font-heading text-2xl md:text-3xl font-semibold">What Makes Us Different</h2>
-        <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-6">
-          <Card className="bg-cream/50">
-            <CardContent className="pt-6 text-center">
-              <Bot className="h-12 w-12 text-warm-blue mx-auto mb-3" aria-hidden />
-              <div className="font-semibold text-gray-900 mb-2">AI-Enhanced Guidance</div>
-              <div className="text-sm text-muted-foreground">
-                Smart technology that understands justice-impacted experiences
-              </div>
-            </CardContent>
-          </Card>
-          <Card className="bg-cream/50">
-            <CardContent className="pt-6 text-center">
-              <HeartHandshake className="h-12 w-12 text-burned-orange mx-auto mb-3" aria-hidden />
-              <div className="font-semibold text-gray-900 mb-2">Trauma-Informed Care</div>
-              <div className="text-sm text-muted-foreground">
-                Every interaction designed with safety, trust, and empowerment
-              </div>
-            </CardContent>
-          </Card>
-          <Card className="bg-cream/50">
-            <CardContent className="pt-6 text-center">
-              <Users className="h-12 w-12 text-warm-blue mx-auto mb-3" aria-hidden />
-              <div className="font-semibold text-gray-900 mb-2">Income-Based Support</div>
-              <div className="text-sm text-muted-foreground">
-                Accessible life coaching and support regardless of financial situation
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-      </section>
 
       {/* Footer Teaser */}
       <section className="bg-navy-900 text-white py-12 text-center">

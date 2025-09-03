@@ -1,6 +1,7 @@
 import EmergencyBar from "./EmergencyBar";
 import Header from "./Header";
 import Footer from "./Footer";
+import ChatBot from "@/components/ui/chatbot";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
@@ -10,6 +11,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
       <Header />
       <div className="flex-1">{children}</div>
       <Footer />
+      <ChatBot />
     </div>
   );
 };
