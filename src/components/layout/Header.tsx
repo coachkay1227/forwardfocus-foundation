@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { Menu, User, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -13,9 +13,15 @@ const linkCls = ({ isActive }: { isActive?: boolean } | any) =>
 
 const Header = () => {
   const { user, signOut } = useAuth();
+  const location = useLocation();
   const [open, setOpen] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
   const [hasScrolled, setHasScrolled] = useState(false);
+
+  // Hide header on auth pages
+  if (location.pathname === '/auth') {
+    return null;
+  }
 
   useEffect(() => {
     const checkAdminStatus = async () => {
