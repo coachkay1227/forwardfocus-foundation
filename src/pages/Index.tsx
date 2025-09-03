@@ -6,17 +6,20 @@ import { Input } from "@/components/ui/input";
 import { toast } from "@/components/ui/sonner";
 import { useStateContext } from "@/contexts/StateContext";
 import AIResourceDiscovery from "@/components/ai/AIResourceDiscovery";
+import StateMap from "@/components/ui/StateMap";
+
 const Index = () => {
   const [showAIDiscovery, setShowAIDiscovery] = useState(false);
-  const {
-    selectedState
-  } = useStateContext();
+  const { selectedState } = useStateContext();
   const [email, setEmail] = useState("");
 
   // ---- SEO/meta setup ----
   useEffect(() => {
     document.title = "Forward Focus Elevation | Empowering Justice-Impacted Families";
-    const desc = "Empowering justice-impacted families with the tools to rebuild and thrive. AI-enhanced guidance and comprehensive resources for justice-impacted individuals, families, and crime victims.";
+
+    const desc =
+      "Empowering justice-impacted families with the tools to rebuild and thrive. AI-enhanced guidance and comprehensive resources for justice-impacted individuals, families, and crime victims.";
+
     let meta = document.querySelector('meta[name="description"]');
     if (!meta) {
       meta = document.createElement("meta");
@@ -24,6 +27,7 @@ const Index = () => {
       document.head.appendChild(meta);
     }
     meta.setAttribute("content", desc);
+
     let canonical = document.querySelector('link[rel="canonical"]') as HTMLLinkElement | null;
     if (!canonical) {
       canonical = document.createElement("link");
@@ -34,16 +38,34 @@ const Index = () => {
   }, []);
 
   // ---- Content data ----
-  const comingSoon = useMemo(() => ["Texas", "California", "Florida", "Pennsylvania", "Illinois"], []);
+  const allStates = useMemo(
+    () => [
+      "Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", 
+      "Connecticut", "Delaware", "Florida", "Georgia", "Hawaii", "Idaho", 
+      "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiana", 
+      "Maine", "Maryland", "Massachusetts", "Michigan", "Minnesota", 
+      "Mississippi", "Missouri", "Montana", "Nebraska", "Nevada", 
+      "New Hampshire", "New Jersey", "New Mexico", "New York", 
+      "North Carolina", "North Dakota", "Ohio", "Oklahoma", "Oregon", 
+      "Pennsylvania", "Rhode Island", "South Carolina", "South Dakota", 
+      "Tennessee", "Texas", "Utah", "Vermont", "Virginia", "Washington", 
+      "West Virginia", "Wisconsin", "Wyoming"
+    ],
+    []
+  );
+
   const onSignup = (e: React.FormEvent) => {
     e.preventDefault();
     if (!email) return;
     toast("Thanks! We'll let you know when we launch in your state with the same comprehensive support.");
     setEmail("");
   };
+
   const servingLabel = selectedState?.name ? `Now serving ${selectedState.name}` : "Now serving Ohio";
   const stateForAI = selectedState?.name ?? "Ohio";
-  return <main id="main" className="min-h-screen">
+
+  return (
+    <main id="main" className="min-h-screen">
       {/* Emergency Banner */}
       <div className="bg-destructive text-destructive-foreground py-3 text-center font-medium shadow-sm">
         <div className="container flex items-center justify-center gap-2">
@@ -57,28 +79,37 @@ const Index = () => {
       {/* Hero */}
       <section className="relative isolate bg-black">
         {/* Background image */}
-        <div aria-hidden className="absolute inset-x-0 top-0 h-[70vh] -z-10 bg-[url('/images/diverse-families-community.jpg')] bg-cover bg-center" />
+        <div
+          aria-hidden
+          className="absolute inset-0 -z-10 bg-[url('/images/diverse-families-community.jpg')] bg-cover bg-center"
+        />
         {/* Overlay */}
-        <div aria-hidden className="absolute inset-x-0 top-0 h-[70vh] -z-10 bg-black/40" />
+        <div aria-hidden className="absolute inset-0 -z-10 bg-black/40" />
 
-        <div className="container min-h-screen flex items-center justify-center py-16 md:py-24">
-          <div className="max-w-3xl text-center">
-            <h1 className="font-heading text-5xl md:text-6xl font-bold text-white leading-tight">
+        <div className="container py-16 md:py-24">
+          <div className="max-w-3xl">
+            <h1 className="mt-3 font-heading text-5xl md:text-6xl font-bold text-white leading-tight">
               Forward Focus Elevation
             </h1>
             <p className="mt-6 text-xl md:text-2xl text-white/90 font-medium leading-relaxed">
               Empowering justice-impacted families with the tools to rebuild and thrive.
             </p>
 
-            <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
+            <div className="mt-10 flex flex-col sm:flex-row gap-4">
               <Button size="lg" variant="premium" className="h-14 px-8 text-lg shadow-lg" asChild>
-                <a href="/help" aria-label="Get immediate help" className="my-0 py-0 text-right mx-0">
+                <a href="/help" aria-label="Get immediate help">
                   <Phone className="mr-2 h-5 w-5" aria-hidden />
                   Get Immediate Help
                 </a>
               </Button>
 
-              <Button size="lg" variant="hero" className="h-14 px-8 text-lg bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70" onClick={() => setShowAIDiscovery(true)} aria-label="Ask AI Navigator">
+              <Button
+                size="lg"
+                variant="hero"
+                className="h-14 px-8 text-lg bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70"
+                onClick={() => setShowAIDiscovery(true)}
+                aria-label="Ask AI Navigator"
+              >
                 <Bot className="mr-2 h-5 w-5" aria-hidden />
                 Ask AI Navigator
               </Button>
@@ -98,7 +129,7 @@ const Index = () => {
               </Button>
             </div>
 
-            <div className="mt-6 flex items-center justify-center gap-2 text-sm text-white/85">
+            <div className="mt-6 flex items-center gap-2 text-sm text-white/85">
               <MapPin className="h-4 w-4" aria-hidden />
               <span>AI-enhanced • Trauma-informed • Income-based support</span>
             </div>
@@ -116,21 +147,29 @@ const Index = () => {
         </p>
 
         <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {[{
-          icon: Phone,
-          title: "Get Immediate Help",
-          desc: "24/7 support, AI-powered guidance, and live human assistance."
-        }, {
-          icon: Bot,
-          title: "AI-Enhanced Navigation",
-          desc: "Smart tech to guide justice-impacted individuals to the right tools."
-        }, {
-          icon: Users,
-          title: "Supportive Community",
-          desc: "Peer support, mentorship, and life coaching designed for your journey."
-        }].map(item => {
-          const Icon = item.icon;
-          return <Card key={item.title} className="bg-card hover:shadow-lg transition-all duration-300 hover:scale-[1.015] border-0 shadow-md">
+          {[
+            {
+              icon: Phone,
+              title: "Get Immediate Help",
+              desc: "24/7 support, AI-powered guidance, and live human assistance.",
+            },
+            {
+              icon: Bot,
+              title: "AI-Enhanced Navigation",
+              desc: "Smart tech to guide justice-impacted individuals to the right tools.",
+            },
+            {
+              icon: Users,
+              title: "Supportive Community",
+              desc: "Peer support, mentorship, and life coaching designed for your journey.",
+            },
+          ].map((item) => {
+            const Icon = item.icon;
+            return (
+              <Card
+                key={item.title}
+                className="bg-card hover:shadow-lg transition-all duration-300 hover:scale-[1.015] border-0 shadow-md"
+              >
                 <CardHeader className="pb-4">
                   <div className="flex items-center gap-4">
                     <div className="p-3 bg-primary/10 rounded-lg">
@@ -142,8 +181,9 @@ const Index = () => {
                 <CardContent className="text-muted-foreground leading-relaxed">
                   {item.desc}
                 </CardContent>
-              </Card>;
-        })}
+              </Card>
+            );
+          })}
         </div>
       </section>
 
@@ -158,7 +198,15 @@ const Index = () => {
           </p>
 
           <div className="mt-8 grid gap-6 md:grid-cols-3">
-            {["The trauma-informed approach made all the difference in my healing.", "Finally found a community that understands what I'm going through.", "The AI assistant helped me find resources I didn't know existed."].map((quote, i) => <Card key={i} className="bg-card shadow-lg hover:shadow-xl transition-shadow duration-300 border-0">
+            {[
+              "The trauma-informed approach made all the difference in my healing.",
+              "Finally found a community that understands what I'm going through.",
+              "The AI assistant helped me find resources I didn't know existed.",
+            ].map((quote, i) => (
+              <Card
+                key={i}
+                className="bg-card shadow-lg hover:shadow-xl transition-shadow duration-300 border-0"
+              >
                 <CardContent className="pt-8 pb-6">
                   <div className="text-primary/20 text-6xl mb-4" aria-hidden>
                     &quot;
@@ -169,7 +217,8 @@ const Index = () => {
                     <span>Community Member</span>
                   </div>
                 </CardContent>
-              </Card>)}
+              </Card>
+            ))}
           </div>
         </div>
       </section>
@@ -177,35 +226,48 @@ const Index = () => {
       {/* Expanding Nationwide */}
       <section className="container py-12 md:py-16">
         <div className="grid gap-8 md:grid-cols-2 md:items-center">
-          <div>
-            <h2 className="font-heading text-2xl md:text-3xl font-semibold">
-              Expanding nationwide
-            </h2>
-            <p className="mt-3 text-muted-foreground">
-              Currently serving: {selectedState?.name ?? "Ohio"}. Coming soon to these states:
-            </p>
-            <ul className="mt-4 grid grid-cols-2 gap-2 text-sm text-foreground/80">
-              {comingSoon.map(s => <li key={s} className="flex items-center gap-2">
-                  <ArrowRight className="h-4 w-4 text-primary" aria-hidden />
-                  {s}
-                </li>)}
-            </ul>
+          <div className="flex flex-col h-full pt-20">
+            <div>
+              <h2 className="font-heading text-2xl md:text-3xl font-semibold text-center">
+                Expanding nationwide
+              </h2>
+              <p className="mt-10 text-muted-foreground text-center">
+                Currently serving: {selectedState?.name ?? "Ohio"}. All other states coming soon:
+              </p>
+              <ul className="mt-8 grid grid-cols-3 gap-1 text-sm text-foreground/80">
+                {allStates.filter(state => state !== (selectedState?.name ?? "Ohio")).map((s) => (
+                  <li key={s} className="flex items-center gap-1 py-0.5">
+                    <ArrowRight className="h-3 w-3 text-primary flex-shrink-0" aria-hidden />
+                    <span className="truncate text-xs">{s}</span>
+                  </li>
+                ))}
+              </ul>
 
-            <form onSubmit={onSignup} className="mt-6 flex flex-col sm:flex-row gap-2" aria-label="Notify me form">
-              <Input type="email" required value={email} onChange={e => setEmail(e.target.value)} placeholder="Get notified when we launch in your state" className="h-11" aria-label="Email address" />
-              <Button type="submit" className="h-11">
-                Notify me
-              </Button>
-            </form>
+              <form onSubmit={onSignup} className="mt-6 flex flex-col sm:flex-row gap-2" aria-label="Notify me form">
+                <Input
+                  type="email"
+                  required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="Get notified when we launch in your state"
+                  className="h-11"
+                  aria-label="Email address"
+                />
+                <Button type="submit" className="h-11">
+                  Notify me
+                </Button>
+              </form>
+            </div>
           </div>
 
-          <figure className="rounded-lg border bg-card">
-            <div className="aspect-[4/3] w-full grid place-content-center text-muted-foreground">
-              <span className="text-sm">
-                Map placeholder — highlighting {selectedState?.name ?? "Ohio"}
-              </span>
-            </div>
-          </figure>
+          <div className="flex flex-col justify-between h-full pt-20">
+            <div></div>
+            <StateMap 
+              stateName={selectedState?.name ?? "Ohio"}
+              zoom={6}
+              className="w-full h-full min-h-[400px]"
+            />
+          </div>
         </div>
       </section>
 
@@ -266,39 +328,6 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Our Impact */}
-      <section className="container py-12 md:py-16">
-        <h2 className="font-heading text-2xl md:text-3xl font-semibold">What Makes Us Different</h2>
-        <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-6">
-          <Card className="bg-cream/50">
-            <CardContent className="pt-6 text-center">
-              <Bot className="h-12 w-12 text-warm-blue mx-auto mb-3" aria-hidden />
-              <div className="font-semibold text-gray-900 mb-2">AI-Enhanced Guidance</div>
-              <div className="text-sm text-muted-foreground">
-                Smart technology that understands justice-impacted experiences
-              </div>
-            </CardContent>
-          </Card>
-          <Card className="bg-cream/50">
-            <CardContent className="pt-6 text-center">
-              <HeartHandshake className="h-12 w-12 text-burned-orange mx-auto mb-3" aria-hidden />
-              <div className="font-semibold text-gray-900 mb-2">Trauma-Informed Care</div>
-              <div className="text-sm text-muted-foreground">
-                Every interaction designed with safety, trust, and empowerment
-              </div>
-            </CardContent>
-          </Card>
-          <Card className="bg-cream/50">
-            <CardContent className="pt-6 text-center">
-              <Users className="h-12 w-12 text-warm-blue mx-auto mb-3" aria-hidden />
-              <div className="font-semibold text-gray-900 mb-2">Income-Based Support</div>
-              <div className="text-sm text-muted-foreground">
-                Accessible life coaching and support regardless of financial situation
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-      </section>
 
       {/* Footer Teaser */}
       <section className="bg-navy-900 text-white py-12 text-center">
@@ -313,7 +342,14 @@ const Index = () => {
         </div>
       </section>
 
-      <AIResourceDiscovery isOpen={showAIDiscovery} onClose={() => setShowAIDiscovery(false)} initialQuery="" location={stateForAI} />
-    </main>;
+      <AIResourceDiscovery
+        isOpen={showAIDiscovery}
+        onClose={() => setShowAIDiscovery(false)}
+        initialQuery=""
+        location={stateForAI}
+      />
+    </main>
+  );
 };
+
 export default Index;
