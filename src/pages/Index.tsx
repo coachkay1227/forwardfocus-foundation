@@ -57,9 +57,9 @@ const Index = () => {
       {/* Hero */}
       <section className="relative isolate bg-black">
         {/* Background image */}
-        <div aria-hidden className="absolute inset-0 -z-10 bg-[url('/images/diverse-families-community.jpg')] bg-cover bg-center" />
+        <div aria-hidden className="absolute inset-x-0 top-0 h-[70vh] -z-10 bg-[url('/images/diverse-families-community.jpg')] bg-cover bg-center" />
         {/* Overlay */}
-        <div aria-hidden className="absolute inset-0 -z-10 bg-black/40" />
+        <div aria-hidden className="absolute inset-x-0 top-0 h-[70vh] -z-10 bg-black/40" />
 
         <div className="container min-h-screen flex items-center justify-center py-16 md:py-24">
           <div className="max-w-3xl text-center">
