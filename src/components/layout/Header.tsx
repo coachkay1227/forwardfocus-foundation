@@ -52,6 +52,8 @@ const Header = () => {
               <li><NavLink to="/help" className={linkCls}>Get Help Now</NavLink></li>
               <li><NavLink to="/victim-services" className={linkCls}>Healing Hub</NavLink></li>
               <li><NavLink to="/learn" className={linkCls}>Reentry</NavLink></li>
+              <li><NavLink to="/partners/submit-referral" className={linkCls}>Submit Referral</NavLink></li>
+              <li><NavLink to="/partners/add-resource" className={linkCls}>Add Resource</NavLink></li>
             </ul>
             
             {/* State selector positioned between nav and About Us */}
@@ -109,17 +111,15 @@ const Header = () => {
                 </DropdownMenuContent>
               </DropdownMenu>
             ) : (
-              <NavLink to="/auth" className="mx-2 text-sm text-foreground/80 hover:text-foreground">Sign In</NavLink>
+              <div className="flex items-center gap-1 text-sm">
+                <NavLink to="/auth?mode=register" className="text-foreground/80 hover:text-foreground">Register</NavLink>
+                <span className="text-foreground/60">|</span>
+                <NavLink to="/auth" className="text-foreground/80 hover:text-foreground">Login</NavLink>
+              </div>
             )}
 
             {/* CTA Group */}
             <div className="ml-2 flex items-center gap-2">
-              <Button asChild size="sm" variant="secondary">
-                <NavLink to="/partners/submit-referral">Submit Referral</NavLink>
-              </Button>
-              <Button asChild size="sm" variant="outline">
-                <NavLink to="/partners/add-resource">Add Resource</NavLink>
-              </Button>
               <Button asChild size="sm">
                 <NavLink to="/support">Support</NavLink>
               </Button>
@@ -169,6 +169,8 @@ const Header = () => {
                   <NavLink to="/help" onClick={() => setOpen(false)} className="py-2">Get Help Now</NavLink>
                   <NavLink to="/victim-services" onClick={() => setOpen(false)} className="py-2">Healing Hub</NavLink>
                   <NavLink to="/learn" onClick={() => setOpen(false)} className="py-2">Reentry</NavLink>
+                  <NavLink to="/partners/submit-referral" onClick={() => setOpen(false)} className="py-2">Submit Referral</NavLink>
+                  <NavLink to="/partners/add-resource" onClick={() => setOpen(false)} className="py-2">Add Resource</NavLink>
                   <NavLink to="/about" onClick={() => setOpen(false)} className="py-2">About Us</NavLink>
 
                   {/* Mobile auth */}
@@ -195,16 +197,14 @@ const Header = () => {
                       </Button>
                     </>
                   ) : (
-                    <NavLink to="/auth" onClick={() => setOpen(false)} className="py-2">Sign In</NavLink>
+                    <div className="flex items-center gap-1 py-2">
+                      <NavLink to="/auth?mode=register" onClick={() => setOpen(false)} className="text-foreground/80 hover:text-foreground">Register</NavLink>
+                      <span className="text-foreground/60">|</span>
+                      <NavLink to="/auth" onClick={() => setOpen(false)} className="text-foreground/80 hover:text-foreground">Login</NavLink>
+                    </div>
                   )}
 
                   {/* Mobile CTAs */}
-                  <Button asChild className="mt-2" variant="secondary">
-                    <NavLink to="/partners/submit-referral" onClick={() => setOpen(false)}>Submit Referral</NavLink>
-                  </Button>
-                  <Button asChild className="mt-2" variant="outline">
-                    <NavLink to="/partners/add-resource" onClick={() => setOpen(false)}>Add Resource</NavLink>
-                  </Button>
                   <Button asChild className="mt-2">
                     <NavLink to="/support" onClick={() => setOpen(false)}>Support</NavLink>
                   </Button>
