@@ -54,9 +54,10 @@ const Header = () => {
               <li><NavLink to="/learn" className={linkCls}>Reentry</NavLink></li>
               <li><NavLink to="/partners/submit-referral" className={linkCls}>Submit Referral</NavLink></li>
               <li><NavLink to="/partners/add-resource" className={linkCls}>Add Resource</NavLink></li>
+              <li><NavLink to="/about" className={linkCls}>About Us</NavLink></li>
             </ul>
             
-            {/* State selector positioned between nav and About Us */}
+            {/* State selector moved to the right */}
             <Select
               value={selectedState.code}
               onValueChange={(v) => {
@@ -82,8 +83,6 @@ const Header = () => {
                 </SelectGroup>
               </SelectContent>
             </Select>
-            
-            <NavLink to="/about" className={linkCls}>About Us</NavLink>
           </nav>
 
           {/* Right: Actions */}
