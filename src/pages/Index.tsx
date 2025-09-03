@@ -263,7 +263,7 @@ const Index = () => {
             </form>
           </div>
 
-          <div className="flex flex-col justify-between h-full">
+          <div className="flex flex-col justify-start h-full pt-20">
             <StateMap 
               stateName={selectedState?.name ?? "Ohio"}
               zoom={6}
