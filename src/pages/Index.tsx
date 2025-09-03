@@ -9,6 +9,9 @@ import { useStateContext } from "@/contexts/StateContext";
 import AIResourceDiscovery from "@/components/ai/AIResourceDiscovery";
 import StateModal from "@/components/ui/StateModal";
 import { STATES } from "@/data/states";
+import testimonialSarah from "@/assets/testimonial-sarah.jpg";
+import testimonialMichael from "@/assets/testimonial-michael.jpg";
+import testimonialJessica from "@/assets/testimonial-jessica.jpg";
 
 const Index = () => {
   const [showAIDiscovery, setShowAIDiscovery] = useState(false);
@@ -217,9 +220,9 @@ const Index = () => {
               "The AI assistant helped me find resources I didn't know existed.",
             ].map((quote, i) => {
               const reviewData = [
-                { name: "Sarah M.", location: "Columbus, OH", avatar: "👩🏽‍💼", stars: 5 },
-                { name: "Michael R.", location: "Cleveland, OH", avatar: "👨🏻‍🦲", stars: 5 },
-                { name: "Jessica T.", location: "Cincinnati, OH", avatar: "👩🏻‍🦱", stars: 5 },
+                { name: "Sarah M.", location: "Columbus, OH", avatar: testimonialSarah, stars: 5 },
+                { name: "Michael R.", location: "Cleveland, OH", avatar: testimonialMichael, stars: 5 },
+                { name: "Jessica T.", location: "Cincinnati, OH", avatar: testimonialJessica, stars: 5 },
               ];
               const review = reviewData[i];
               
@@ -230,7 +233,11 @@ const Index = () => {
                 >
                   <CardContent className="pt-8 pb-6">
                     <div className="flex items-center gap-3 mb-4">
-                      <div className="text-3xl">{review.avatar}</div>
+                      <img 
+                        src={review.avatar} 
+                        alt={`${review.name} testimonial photo`}
+                        className="w-12 h-12 rounded-full object-cover"
+                      />
                       <div>
                         <div className="font-semibold text-foreground">{review.name}</div>
                         <div className="text-sm text-muted-foreground">{review.location}</div>
