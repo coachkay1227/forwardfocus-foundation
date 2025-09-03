@@ -229,7 +229,7 @@ const Index = () => {
       {/* Expanding Nationwide */}
       <section className="container py-12 md:py-16">
         <div className="grid gap-8 md:grid-cols-2 md:items-center">
-          <div className="flex flex-col justify-between h-full pt-20">
+          <div className="flex flex-col h-full pt-20">
             <div>
               <h2 className="font-heading text-2xl md:text-3xl font-semibold text-center">
                 Expanding nationwide
@@ -245,22 +245,22 @@ const Index = () => {
                   </li>
                 ))}
               </ul>
-            </div>
 
-            <form onSubmit={onSignup} className="mt-6 flex flex-col sm:flex-row gap-2" aria-label="Notify me form">
-              <Input
-                type="email"
-                required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="Get notified when we launch in your state"
-                className="h-11"
-                aria-label="Email address"
-              />
-              <Button type="submit" className="h-11">
-                Notify me
-              </Button>
-            </form>
+              <form onSubmit={onSignup} className="mt-6 flex flex-col sm:flex-row gap-2" aria-label="Notify me form">
+                <Input
+                  type="email"
+                  required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="Get notified when we launch in your state"
+                  className="h-11"
+                  aria-label="Email address"
+                />
+                <Button type="submit" className="h-11">
+                  Notify me
+                </Button>
+              </form>
+            </div>
           </div>
 
           <div className="flex flex-col justify-start h-full pt-20">
