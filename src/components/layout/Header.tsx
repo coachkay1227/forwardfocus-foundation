@@ -83,7 +83,7 @@ const Header = () => {
               </SelectContent>
             </Select>
             
-            <NavLink to="/about" className={linkCls}>About Us</NavLink>
+            <span className="text-sm text-muted-foreground">Choose State</span>
           </nav>
 
           {/* Right: Actions */}
