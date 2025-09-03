@@ -42,18 +42,7 @@ const Index = () => {
 
   // ---- Content data ----
   const allStates = useMemo(
-    () => [
-      "Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", 
-      "Connecticut", "Delaware", "Florida", "Georgia", "Hawaii", "Idaho", 
-      "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiana", 
-      "Maine", "Maryland", "Massachusetts", "Michigan", "Minnesota", 
-      "Mississippi", "Missouri", "Montana", "Nebraska", "Nevada", 
-      "New Hampshire", "New Jersey", "New Mexico", "New York", 
-      "North Carolina", "North Dakota", "Ohio", "Oklahoma", "Oregon", 
-      "Pennsylvania", "Rhode Island", "South Carolina", "South Dakota", 
-      "Tennessee", "Texas", "Utah", "Vermont", "Virginia", "Washington", 
-      "West Virginia", "Wisconsin", "Wyoming"
-    ],
+    () => STATES.map(state => state.name),
     []
   );
 
@@ -265,15 +254,16 @@ const Index = () => {
           {/* All 50 states in 3 columns */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-12">
             {allStates.sort().map((state) => {
-              const isOhio = state === "Ohio";
+              const stateData = STATES.find(s => s.name === state);
+              const isActive = stateData?.active || false;
               return (
                 <div key={state} className="flex items-center justify-between py-2 px-3 rounded-md hover:bg-muted/30 transition-colors">
                   <span className="text-foreground font-medium">{state}</span>
                   <Badge 
-                    variant={isOhio ? "default" : "secondary"}
-                    className={isOhio ? "bg-green-600 text-white" : "bg-muted text-muted-foreground"}
+                    variant={isActive ? "default" : "secondary"}
+                    className={isActive ? "bg-green-600 text-white" : "bg-muted text-muted-foreground"}
                   >
-                    {isOhio ? "Available" : "Coming Soon"}
+                    {isActive ? "Available" : "Coming Soon"}
                   </Badge>
                 </div>
               );
