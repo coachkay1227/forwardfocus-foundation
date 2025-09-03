@@ -18,11 +18,6 @@ const Header = () => {
   const [isAdmin, setIsAdmin] = useState(false);
   const [hasScrolled, setHasScrolled] = useState(false);
 
-  // Hide header on auth pages
-  if (location.pathname === '/auth') {
-    return null;
-  }
-
   useEffect(() => {
     const checkAdminStatus = async () => {
       if (!user) return setIsAdmin(false);
@@ -42,6 +37,11 @@ const Header = () => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, [user]);
+
+  // Hide header on auth pages
+  if (location.pathname === '/auth') {
+    return null;
+  }
 
   return (
     <header className={`sticky top-0 z-50 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/90 transition-shadow duration-300 ${hasScrolled ? 'shadow-sm' : ''}`}>
