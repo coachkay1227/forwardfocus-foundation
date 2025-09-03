@@ -234,7 +234,7 @@ const Index = () => {
               <h2 className="font-heading text-2xl md:text-3xl font-semibold text-center">
                 Expanding nationwide
               </h2>
-              <p className="mt-3 text-muted-foreground">
+              <p className="mt-3 text-muted-foreground text-center">
                 Currently serving: {selectedState?.name ?? "Ohio"}. All other states coming soon:
               </p>
               <ul className="mt-4 grid grid-cols-3 gap-1 text-sm text-foreground/80 max-h-48 overflow-y-auto">
