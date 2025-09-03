@@ -120,6 +120,13 @@ const Index = () => {
                 </a>
               </Button>
 
+              <Button size="lg" variant="default" className="h-14 px-8 text-lg bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg" asChild>
+                <a href="/partners/submit-referral" aria-label="Submit referral">
+                  <HeartHandshake className="mr-2 h-5 w-5" aria-hidden />
+                  Submit Referral
+                </a>
+              </Button>
+
               <Button
                 size="lg"
                 variant="hero"

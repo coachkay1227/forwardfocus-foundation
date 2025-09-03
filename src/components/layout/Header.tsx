@@ -40,23 +40,23 @@ const Header = () => {
   return (
     <header className={`sticky top-0 z-50 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/90 transition-shadow duration-300 ${hasScrolled ? 'shadow-sm' : ''}`}>
       <div className="mx-auto w-full max-w-screen-xl px-6">
-        <div className="flex h-[64px] items-center gap-x-6">
+        <div className="flex h-[56px] items-center gap-x-8">
           {/* Left: Logo */}
           <NavLink to="/" className="min-w-0 shrink-0 font-heading text-base font-semibold tracking-tight whitespace-nowrap">
             Home
           </NavLink>
 
           {/* Center: Nav */}
-          <nav className="hidden md:flex items-center gap-x-6">
+          <nav className="hidden md:flex items-center gap-x-8">
             <NavLink to="/help" className={linkCls}>Get Help Now</NavLink>
             <NavLink to="/victim-services" className={linkCls}>Healing Hub</NavLink>
             <NavLink to="/learn" className={linkCls}>Reentry</NavLink>
             <NavLink to="/about" className={linkCls}>About Us</NavLink>
           </nav>
 
-          {/* Right: Actions */}
+          {/* Right: Auth & Support */}
           <div className="ml-auto hidden items-center gap-x-6 md:flex">
-            {/* User / Auth */}
+            {/* Auth */}
             {user ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
@@ -78,17 +78,14 @@ const Header = () => {
                 </DropdownMenuContent>
               </DropdownMenu>
             ) : (
-              <NavLink to="/auth" className="text-sm text-foreground/80 hover:text-foreground">Sign In</NavLink>
+              <div className="flex items-center gap-x-4">
+                <NavLink to="/auth?mode=register" className="text-sm text-foreground/80 hover:text-foreground">Register</NavLink>
+                <NavLink to="/auth" className="text-sm text-foreground/80 hover:text-foreground">Sign In</NavLink>
+              </div>
             )}
 
-            {/* CTA Group */}
-            <Button asChild size="sm" variant="default" className="bg-primary hover:bg-primary/90">
-              <NavLink to="/partners/submit-referral">Submit Referral</NavLink>
-            </Button>
-            <Button asChild size="sm" variant="outline">
-              <NavLink to="/partners/add-resource">Add Resource</NavLink>
-            </Button>
-            <Button asChild size="sm" variant="secondary" className="bg-secondary hover:bg-secondary/90">
+            {/* Support */}
+            <Button asChild size="sm" variant="outline" className="rounded-full px-4">
               <NavLink to="/support">Support</NavLink>
             </Button>
           </div>
@@ -135,17 +132,14 @@ const Header = () => {
                       </Button>
                     </>
                   ) : (
-                    <NavLink to="/auth" onClick={() => setOpen(false)} className="py-2">Sign In</NavLink>
+                    <div className="flex flex-col gap-2">
+                      <NavLink to="/auth?mode=register" onClick={() => setOpen(false)} className="py-2">Register</NavLink>
+                      <NavLink to="/auth" onClick={() => setOpen(false)} className="py-2">Sign In</NavLink>
+                    </div>
                   )}
 
-                  {/* Mobile CTAs */}
-                  <Button asChild className="mt-2" variant="default">
-                    <NavLink to="/partners/submit-referral" onClick={() => setOpen(false)}>Submit Referral</NavLink>
-                  </Button>
+                  {/* Mobile Support */}
                   <Button asChild className="mt-2" variant="outline">
-                    <NavLink to="/partners/add-resource" onClick={() => setOpen(false)}>Add Resource</NavLink>
-                  </Button>
-                  <Button asChild className="mt-2" variant="secondary">
                     <NavLink to="/support" onClick={() => setOpen(false)}>Support</NavLink>
                   </Button>
                 </div>
