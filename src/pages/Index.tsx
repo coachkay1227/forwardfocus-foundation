@@ -1,139 +1,249 @@
-import { useEffect, useMemo, useState } from "react";
-import { ArrowRight, MapPin, Users, Phone, Shield, Bot, Heart, HeartHandshake } from "lucide-react";
+import { useEffect, useState } from "react";
+import { NavLink } from "react-router-dom";
+import { Menu, User, LogOut, MapPin } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { toast } from "@/components/ui/sonner";
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { useStateContext } from "@/contexts/StateContext";
-import AIResourceDiscovery from "@/components/ai/AIResourceDiscovery";
-import Header from "@/components/layout/Header";
+import { useAuth } from "@/contexts/AuthContext";
+import { supabase } from "@/integrations/supabase/client";
+import { STATES } from "@/data/states";
 
-const Index = () => {
-  const [showAIDiscovery, setShowAIDiscovery] = useState(false);
-  const { selectedState } = useStateContext();
-  const [email, setEmail] = useState("");
+const linkCls = ({ isActive }: { isActive?: boolean } | any) =>
+  isActive ? "text-primary font-semibold" : "text-foreground/80 hover:text-foreground";
+
+const Header = () => {
+  const { selectedState, setSelectedState } = useStateContext();
+  const { user, signOut } = useAuth();
+  const [open, setOpen] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
-    document.title = "Forward Focus Elevation | Empowering Justice-Impacted Families";
-
-    const desc =
-      "Empowering justice-impacted families with the tools to rebuild and thrive. AI-enhanced guidance and comprehensive resources for justice-impacted individuals, families, and crime victims.";
-
-    let meta = document.querySelector('meta[name="description"]');
-    if (!meta) {
-      meta = document.createElement("meta");
-      meta.setAttribute("name", "description");
-      document.head.appendChild(meta);
-    }
-    meta.setAttribute("content", desc);
-
-    let canonical = document.querySelector('link[rel="canonical"]') as HTMLLinkElement | null;
-    if (!canonical) {
-      canonical = document.createElement("link");
-      canonical.setAttribute("rel", "canonical");
-      canonical.href = window.location.href;
-      document.head.appendChild(canonical);
-    }
-  }, []);
-
-  const comingSoon = useMemo(
-    () => ["Texas", "California", "Florida", "Pennsylvania", "Illinois"],
-    []
-  );
-
-  const onSignup = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!email) return;
-    toast("🎉 Thanks! We'll let you know when we launch in your state.");
-    setEmail("");
-  };
-
-  const servingLabel = selectedState?.name ? `Now serving ${selectedState.name}` : "Now serving Ohio";
-  const stateForAI = selectedState?.name ?? "Ohio";
+    const checkAdminStatus = async () => {
+      if (!user) return setIsAdmin(false);
+      try {
+        const { data } = await supabase.rpc("is_user_admin", { user_id: user.id });
+        setIsAdmin(Boolean(data));
+      } catch (e) {
+        console.error(e);
+        setIsAdmin(false);
+      }
+    };
+    checkAdminStatus();
+  }, [user]);
 
   return (
-    <main id="main" className="min-h-screen">
-      {/* ✅ Header now contains the crisis bar */}
-      <Header />
+    <header className="sticky top-0 z-50 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/90">
+      {/* Unified emergency bar */}
+      <div className="bg-red-500 text-white py-2 px-4 text-center text-sm">
+        Need help now? Call 211 for local services, dial 988 for the Suicide &amp; Crisis Lifeline, or text HOME to 741741.
+      </div>
 
-      {/* Hero */}
-      <section className="relative isolate bg-black">
-        <div
-          aria-hidden
-          className="absolute inset-0 -z-10 bg-[url('/images/diverse-families-community.jpg')] bg-cover bg-center"
-        />
-        <div aria-hidden className="absolute inset-0 -z-10 bg-black/40" />
+      <div className="mx-auto flex h-16 max-w-7xl items-center gap-4 px-4">
+        {/* Logo */}
+        <a href="/" className="font-heading text-base font-semibold tracking-tight whitespace-nowrap">
+          Forward Focus Elevation
+        </a>
 
-        <div className="container py-16 md:py-24">
-          <div className="max-w-3xl">
-            <p className="text-sm text-white/85 tracking-wide uppercase font-medium">
-              {servingLabel}
-            </p>
-            <h1 className="mt-3 font-heading text-5xl md:text-6xl font-bold text-white leading-tight">
-              Forward Focus Elevation
-            </h1>
-            <p className="mt-6 text-xl md:text-2xl text-white/90 font-medium leading-relaxed">
-              Empowering justice-impacted families with the tools to rebuild and thrive.
-            </p>
+        {/* Desktop navigation */}
+        <nav className="hidden md:flex flex-1 items-center justify-center gap-8 text-sm">
+          <NavLink to="/" className={linkCls}>Home</NavLink>
+          <NavLink to="/help" className={linkCls}>Get Help</NavLink>
+          <NavLink to="/victim-services" className={linkCls}>Healing Hub</NavLink>
+          <NavLink to="/learn" className={linkCls}>Reentry</NavLink>
+          <DropdownMenu>
+            <DropdownMenuTrigger className="text-foreground/80 hover:text-foreground">About</DropdownMenuTrigger>
+            <DropdownMenuContent align="start" sideOffset={6} className="z-[80] w-56">
+              <DropdownMenuItem asChild>
+                <NavLink to="/about">About Forward Focus Elevation</NavLink>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <NavLink to="/team">Our Team</NavLink>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <NavLink to="/partners">Partners</NavLink>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </nav>
 
-            <div className="mt-10 flex flex-col sm:flex-row gap-4">
-              <Button size="lg" variant="premium" className="h-14 px-8 text-lg shadow-lg" asChild>
-                <a href="/help" aria-label="Get immediate help">
-                  <Phone className="mr-2 h-5 w-5" aria-hidden />
-                  Get Immediate Help
-                </a>
-              </Button>
+        {/* Desktop utilities */}
+        <div className="hidden md:flex items-center gap-3 whitespace-nowrap">
+          {/* State picker */}
+          <Select
+            value={selectedState.code}
+            onValueChange={(code) => {
+              const next = STATES.find((s) => s.code === code);
+              if (next?.active) setSelectedState(next);
+            }}
+          >
+            <SelectTrigger className="w-[160px] relative z-10">
+              <SelectValue placeholder="Select state" />
+            </SelectTrigger>
+            <SelectContent className="z-50 bg-popover">
+              <SelectGroup>
+                <SelectLabel>Active</SelectLabel>
+                {STATES.filter((s) => s.active).map((s) => (
+                  <SelectItem key={s.code} value={s.code}>
+                    {s.name}
+                  </SelectItem>
+                ))}
+              </SelectGroup>
+              <SelectGroup>
+                <SelectLabel>Coming soon</SelectLabel>
+                {STATES.filter((s) => s.comingSoon).map((s) => (
+                  <SelectItem key={s.code} value={s.code} disabled>
+                    {s.name}
+                  </SelectItem>
+                ))}
+              </SelectGroup>
+            </SelectContent>
+          </Select>
 
-              <Button
-                size="lg"
-                variant="hero"
-                className="h-14 px-8 text-lg bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70"
-                onClick={() => setShowAIDiscovery(true)}
-                aria-label="Ask AI Navigator"
-              >
-                <Bot className="mr-2 h-5 w-5" aria-hidden />
-                Ask AI Navigator
-              </Button>
+          {/* Sign in / user menu */}
+          {user ? (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size="sm">
+                  <User className="mr-2 h-4 w-4" />
+                  <span className="max-w-[160px] truncate">{user.email}</span>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="z-[80]">
+                {isAdmin && (
+                  <DropdownMenuItem asChild>
+                    <NavLink to="/admin">Admin Dashboard</NavLink>
+                  </DropdownMenuItem>
+                )}
+                <DropdownMenuItem onClick={signOut}>
+                  <LogOut className="mr-2 h-4 w-4" />
+                  Sign Out
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          ) : (
+            <NavLink to="/auth" className="text-sm text-foreground/80 hover:text-foreground">
+              Sign In
+            </NavLink>
+          )}
 
-              <Button size="lg" variant="hero" className="h-14 px-8 text-lg" asChild>
-                <a href="/learn" aria-label="Join learning community">
-                  <Users className="mr-2 h-5 w-5" aria-hidden />
-                  Join Learning Community
-                </a>
-              </Button>
-
-              <Button size="lg" variant="hero" className="h-14 px-8 text-lg" asChild>
-                <a href="/victim-services" aria-label="Go to Healing and Safety Hub">
-                  <Shield className="mr-2 h-5 w-5" aria-hidden />
-                  Healing &amp; Safety Hub
-                </a>
-              </Button>
-            </div>
-
-            <div className="mt-6 flex items-center gap-2 text-sm text-white/85">
-              <MapPin className="h-4 w-4" aria-hidden />
-              <span>AI-enhanced • Trauma-informed • Income-based support</span>
-            </div>
-          </div>
+          {/* CTA buttons */}
+          <Button asChild size="sm" variant="secondary">
+            <NavLink to="/partners/submit-referral">Submit Referral</NavLink>
+          </Button>
+          <Button asChild size="sm">
+            <NavLink to="/support">Support</NavLink>
+          </Button>
         </div>
-      </section>
 
-      {/* Rest of your sections… (unchanged) */}
-      {/* How it works */}
-      {/* Success stories */}
-      {/* Expanding Nationwide */}
-      {/* Choose Your Path */}
-      {/* Our Impact */}
-      {/* Footer Teaser */}
+        {/* Mobile hamburger */}
+        <div className="ml-auto md:hidden">
+          <Sheet open={open} onOpenChange={setOpen}>
+            <SheetTrigger asChild>
+              <Button variant="ghost" size="icon" aria-label="Open menu">
+                <Menu />
+              </Button>
+            </SheetTrigger>
+            <SheetContent side="right" className="w-[280px]">
+              <SheetTitle className="font-heading">Menu</SheetTitle>
+              <div className="mt-4 flex flex-col gap-3">
+                <Select
+                  value={selectedState.code}
+                  onValueChange={(code) => {
+                    const next = STATES.find((s) => s.code === code);
+                    if (next?.active) setSelectedState(next);
+                  }}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select state" />
+                  </SelectTrigger>
+                  <SelectContent className="z-50 bg-popover">
+                    <SelectGroup>
+                      <SelectLabel>Active</SelectLabel>
+                      {STATES.filter((s) => s.active).map((s) => (
+                        <SelectItem key={s.code} value={s.code}>
+                          {s.name}
+                        </SelectItem>
+                      ))}
+                    </SelectGroup>
+                    <SelectGroup>
+                      <SelectLabel>Coming soon</SelectLabel>
+                      {STATES.filter((s) => s.comingSoon).map((s) => (
+                        <SelectItem key={s.code} value={s.code} disabled>
+                          {s.name}
+                        </SelectItem>
+                      ))}
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
 
-      <AIResourceDiscovery
-        isOpen={showAIDiscovery}
-        onClose={() => setShowAIDiscovery(false)}
-        initialQuery=""
-        location={stateForAI}
-      />
-    </main>
+                {/* Mobile nav links */}
+                <NavLink to="/" onClick={() => setOpen(false)} className="py-2">
+                  Home
+                </NavLink>
+                <NavLink to="/help" onClick={() => setOpen(false)} className="py-2">
+                  Get Help
+                </NavLink>
+                <NavLink to="/victim-services" onClick={() => setOpen(false)} className="py-2">
+                  Healing Hub
+                </NavLink>
+                <NavLink to="/learn" onClick={() => setOpen(false)} className="py-2">
+                  Reentry
+                </NavLink>
+                <NavLink to="/about" onClick={() => setOpen(false)} className="py-2">
+                  About
+                </NavLink>
+
+                {/* Mobile user controls */}
+                {user ? (
+                  <>
+                    <div className="flex items-center gap-2 py-2 text-sm text-muted-foreground">
+                      <User className="h-4 w-4" />
+                      <span className="truncate">{user.email}</span>
+                    </div>
+                    {isAdmin && (
+                      <NavLink to="/admin" onClick={() => setOpen(false)} className="py-2">
+                        Admin Dashboard
+                      </NavLink>
+                    )}
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => {
+                        signOut();
+                        setOpen(false);
+                      }}
+                      className="justify-start px-0"
+                    >
+                      <LogOut className="mr-2 h-4 w-4" />
+                      Sign Out
+                    </Button>
+                  </>
+                ) : (
+                  <NavLink to="/auth" onClick={() => setOpen(false)} className="py-2">
+                    Sign In
+                  </NavLink>
+                )}
+
+                {/* Mobile CTAs */}
+                <Button asChild className="mt-2" variant="secondary">
+                  <NavLink to="/partners/submit-referral" onClick={() => setOpen(false)}>
+                    Submit Referral
+                  </NavLink>
+                </Button>
+                <Button asChild className="mt-2">
+                  <NavLink to="/support" onClick={() => setOpen(false)}>
+                    Support
+                  </NavLink>
+                </Button>
+              </div>
+            </SheetContent>
+          </Sheet>
+        </div>
+      </div>
+    </header>
   );
 };
 
-export default Index;
+export default Header;
