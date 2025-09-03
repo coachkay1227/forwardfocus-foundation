@@ -38,8 +38,19 @@ const Index = () => {
   }, []);
 
   // ---- Content data ----
-  const comingSoon = useMemo(
-    () => ["Texas", "California", "Florida", "Pennsylvania", "Illinois"],
+  const allStates = useMemo(
+    () => [
+      "Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", 
+      "Connecticut", "Delaware", "Florida", "Georgia", "Hawaii", "Idaho", 
+      "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiana", 
+      "Maine", "Maryland", "Massachusetts", "Michigan", "Minnesota", 
+      "Mississippi", "Missouri", "Montana", "Nebraska", "Nevada", 
+      "New Hampshire", "New Jersey", "New Mexico", "New York", 
+      "North Carolina", "North Dakota", "Ohio", "Oklahoma", "Oregon", 
+      "Pennsylvania", "Rhode Island", "South Carolina", "South Dakota", 
+      "Tennessee", "Texas", "Utah", "Vermont", "Virginia", "Washington", 
+      "West Virginia", "Wisconsin", "Wyoming"
+    ],
     []
   );
 
@@ -224,13 +235,13 @@ const Index = () => {
                 Expanding nationwide
               </h2>
               <p className="mt-3 text-muted-foreground">
-                Currently serving: {selectedState?.name ?? "Ohio"}. Coming soon to these states:
+                Currently serving: {selectedState?.name ?? "Ohio"}. All other states coming soon:
               </p>
-              <ul className="mt-4 grid grid-cols-2 gap-2 text-sm text-foreground/80">
-                {comingSoon.map((s) => (
-                  <li key={s} className="flex items-center gap-2">
-                    <ArrowRight className="h-4 w-4 text-primary" aria-hidden />
-                    {s}
+              <ul className="mt-4 grid grid-cols-3 gap-1 text-xs text-foreground/80 max-h-48 overflow-y-auto">
+                {allStates.filter(state => state !== (selectedState?.name ?? "Ohio")).map((s) => (
+                  <li key={s} className="flex items-center gap-1">
+                    <ArrowRight className="h-3 w-3 text-primary flex-shrink-0" aria-hidden />
+                    <span className="truncate">{s}</span>
                   </li>
                 ))}
               </ul>
