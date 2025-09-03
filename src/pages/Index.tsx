@@ -213,25 +213,49 @@ const Index = () => {
           <div className="mt-8 grid gap-6 md:grid-cols-3">
             {[
               "The trauma-informed approach made all the difference in my healing.",
-              "Finally found a community that understands what I'm going through.",
+              "Finally found a community that understands what I'm going through.", 
               "The AI assistant helped me find resources I didn't know existed.",
-            ].map((quote, i) => (
-              <Card
-                key={i}
-                className="bg-card shadow-lg hover:shadow-xl transition-shadow duration-300 border-0"
-              >
-                <CardContent className="pt-8 pb-6">
-                  <div className="text-primary/20 text-6xl mb-4" aria-hidden>
-                    &quot;
-                  </div>
-                  <p className="text-lg text-foreground leading-relaxed mb-4">{quote}</p>
-                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                    <Heart className="h-4 w-4 text-secondary" aria-hidden />
-                    <span>Community Member</span>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
+            ].map((quote, i) => {
+              const reviewData = [
+                { name: "Sarah M.", location: "Columbus, OH", avatar: "👩🏽‍💼", stars: 5 },
+                { name: "Michael R.", location: "Cleveland, OH", avatar: "👨🏻‍🦲", stars: 5 },
+                { name: "Jessica T.", location: "Cincinnati, OH", avatar: "👩🏻‍🦱", stars: 5 },
+              ];
+              const review = reviewData[i];
+              
+              return (
+                <Card
+                  key={i}
+                  className="bg-card shadow-lg hover:shadow-xl transition-shadow duration-300 border-0"
+                >
+                  <CardContent className="pt-8 pb-6">
+                    <div className="flex items-center gap-3 mb-4">
+                      <div className="text-3xl">{review.avatar}</div>
+                      <div>
+                        <div className="font-semibold text-foreground">{review.name}</div>
+                        <div className="text-sm text-muted-foreground">{review.location}</div>
+                      </div>
+                    </div>
+                    
+                    <div className="flex mb-4">
+                      {Array.from({ length: review.stars }).map((_, starIndex) => (
+                        <span key={starIndex} className="text-yellow-400 text-lg">★</span>
+                      ))}
+                    </div>
+                    
+                    <div className="text-primary/20 text-6xl mb-4" aria-hidden>
+                      &quot;
+                    </div>
+                    <p className="text-lg text-foreground leading-relaxed mb-4">{quote}</p>
+                    
+                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                      <Heart className="h-4 w-4 text-secondary" aria-hidden />
+                      <span>Verified Community Member</span>
+                    </div>
+                  </CardContent>
+                </Card>
+              );
+            })}
           </div>
         </div>
       </section>
