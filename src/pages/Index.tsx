@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { toast } from "@/components/ui/sonner";
 import { useStateContext } from "@/contexts/StateContext";
 import AIResourceDiscovery from "@/components/ai/AIResourceDiscovery";
-import StateMap from "@/components/ui/StateMap";
+import USMap from "@/components/ui/USMap";
 
 const Index = () => {
   const [showAIDiscovery, setShowAIDiscovery] = useState(false);
@@ -225,25 +225,24 @@ const Index = () => {
 
       {/* Expanding Nationwide */}
       <section className="container py-12 md:py-16">
-        <div className="grid gap-8 md:grid-cols-2 md:items-center">
-          <div className="flex flex-col h-full pt-20">
-            <div>
-              <h2 className="font-heading text-2xl md:text-3xl font-semibold text-center">
-                Expanding nationwide
-              </h2>
-              <div className="mt-10 text-center">
-                <div className="inline-flex items-center gap-2 bg-primary/10 px-4 py-2 rounded-full mb-4">
-                  <MapPin className="h-4 w-4 text-primary" aria-hidden />
-                  <span className="font-bold text-primary text-lg">
-                    Currently serving: {selectedState?.name ?? "Ohio"}
-                  </span>
-                </div>
-                <p className="text-muted-foreground">
-                  All other states coming soon:
-                </p>
+        <h2 className="font-heading text-3xl md:text-4xl font-semibold text-center mb-12">
+          Expanding Nationwide
+        </h2>
+        
+        <div className="grid gap-12 lg:grid-cols-2 lg:items-start">
+          <div className="order-2 lg:order-1">
+            <div className="text-center lg:text-left">
+              <div className="inline-flex items-center gap-2 bg-primary/10 px-4 py-2 rounded-full mb-6">
+                <MapPin className="h-4 w-4 text-primary" aria-hidden />
+                <span className="font-bold text-primary text-lg">
+                  Currently serving: {selectedState?.name ?? "Ohio"}
+                </span>
               </div>
+              <p className="text-muted-foreground mb-8">
+                All other states coming soon:
+              </p>
               
-              <ul className="mt-8 grid grid-cols-3 gap-2 text-sm">
+              <ul className="grid grid-cols-2 md:grid-cols-3 gap-2 text-sm mb-8">
                 {allStates.filter(state => state !== (selectedState?.name ?? "Ohio")).slice(0, 30).map((s) => (
                   <li key={s} className="flex items-center gap-2 py-1">
                     <ArrowRight className="h-3 w-3 text-primary flex-shrink-0" aria-hidden />
@@ -252,7 +251,7 @@ const Index = () => {
                 ))}
               </ul>
 
-              <div className="mt-8 bg-white rounded-lg shadow-lg p-6 border">
+              <div className="bg-white rounded-lg shadow-lg p-6 border">
                 <form onSubmit={onSignup} className="space-y-4" aria-label="Notify me form">
                   <Input
                     type="email"
@@ -275,12 +274,10 @@ const Index = () => {
             </div>
           </div>
 
-          <div className="flex flex-col justify-between h-full pt-20">
-            <div></div>
-            <StateMap 
-              stateName={selectedState?.name ?? "Ohio"}
-              zoom={6}
-              className="w-full h-full min-h-[400px]"
+          <div className="order-1 lg:order-2">
+            <USMap 
+              currentState={selectedState?.name ?? "Ohio"}
+              className="w-full"
             />
           </div>
         </div>
