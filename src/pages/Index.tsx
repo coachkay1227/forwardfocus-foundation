@@ -287,54 +287,58 @@ const Index = () => {
       </section>
 
       {/* Choose Your Path */}
-      <section className="bg-gradient-to-r from-burned-orange/10 via-cream/50 to-warm-blue/10">
-        <div className="container py-12 md:py-16">
-          <h2 className="font-heading text-2xl md:text-3xl font-semibold">
+      <section className="bg-gradient-to-r from-primary/5 via-secondary/10 to-accent/5">
+        <div className="container py-16 md:py-20">
+          <h2 className="font-heading text-3xl md:text-4xl font-semibold text-center mb-12">
             Choose Your Path Forward
           </h2>
 
-        <div className="mt-6 grid gap-6 md:grid-cols-2">
-          <Card className="border-2 border-burned-orange/30 bg-white shadow-md border-l-8 border-l-burned-orange">
-            <CardHeader>
-              <div className="flex items-center gap-3">
-                <Users className="h-6 w-6 text-burned-orange" aria-hidden />
-                <div>
-                  <CardTitle className="text-xl font-bold">Justice-Impacted Families</CardTitle>
-                  <p className="text-sm text-muted-foreground">
+        <div className="grid gap-8 md:grid-cols-2 max-w-5xl mx-auto">
+          <Card className="border-2 border-primary/20 bg-white shadow-lg hover:shadow-xl transition-all duration-300 h-full">
+            <CardHeader className="pb-6">
+              <div className="flex items-start gap-4">
+                <div className="p-3 bg-primary/10 rounded-lg">
+                  <Users className="h-7 w-7 text-primary" aria-hidden />
+                </div>
+                <div className="flex-1">
+                  <CardTitle className="text-xl font-bold mb-2">Justice-Impacted Families</CardTitle>
+                  <p className="text-sm text-muted-foreground leading-relaxed">
                     Free learning community, peer support, and life coaching.
                   </p>
                 </div>
               </div>
             </CardHeader>
-            <CardContent>
-              <p className="text-muted-foreground mb-4">
+            <CardContent className="pt-0">
+              <p className="text-muted-foreground mb-6 leading-relaxed">
                 Free learning community, peer support, and income-based life coaching designed
                 specifically for justice-impacted individuals and families.
               </p>
-              <Button asChild className="w-full bg-burned-orange hover:bg-burned-orange/90" aria-label="Join learning community">
+              <Button asChild size="lg" className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold h-12" aria-label="Join learning community">
                 <a href="/learn">Join Learning Community →</a>
               </Button>
             </CardContent>
           </Card>
 
-          <Card className="border-2 border-warm-blue/30 bg-white shadow-md border-l-8 border-l-warm-blue">
-            <CardHeader>
-              <div className="flex items-center gap-3">
-                <Shield className="h-6 w-6 text-warm-blue" aria-hidden />
-                <div>
-                  <CardTitle className="text-xl font-bold">Crime Victims &amp; Survivors</CardTitle>
-                  <p className="text-sm text-muted-foreground">
+          <Card className="border-2 border-primary/20 bg-white shadow-lg hover:shadow-xl transition-all duration-300 h-full">
+            <CardHeader className="pb-6">
+              <div className="flex items-start gap-4">
+                <div className="p-3 bg-primary/10 rounded-lg">
+                  <Shield className="h-7 w-7 text-primary" aria-hidden />
+                </div>
+                <div className="flex-1">
+                  <CardTitle className="text-xl font-bold mb-2">Crime Victims &amp; Survivors</CardTitle>
+                  <p className="text-sm text-muted-foreground leading-relaxed">
                     Specialized trauma-informed support and crisis tools.
                   </p>
                 </div>
               </div>
             </CardHeader>
-            <CardContent>
-              <p className="text-muted-foreground mb-4">
+            <CardContent className="pt-0">
+              <p className="text-muted-foreground mb-6 leading-relaxed">
                 Comprehensive healing &amp; safety hub with crisis support, compensation guidance,
                 and specialized trauma-informed coaching.
               </p>
-              <Button asChild className="w-full bg-warm-blue hover:bg-warm-blue/90" aria-label="Access Healing and Safety Hub">
+              <Button asChild size="lg" className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold h-12" aria-label="Access Healing and Safety Hub">
                 <a href="/victim-services">Access Healing &amp; Safety Hub →</a>
               </Button>
             </CardContent>
@@ -345,13 +349,13 @@ const Index = () => {
 
 
       {/* Footer Teaser */}
-      <section className="bg-navy-900 text-white py-12 text-center">
+      <section className="bg-gradient-to-r from-secondary/20 to-accent/20 py-16 text-center">
         <div className="container">
-          <h3 className="text-lg font-semibold">Want to Get Involved?</h3>
-          <p className="text-sm mb-6 text-white/80">
+          <h3 className="text-2xl font-bold text-foreground mb-4">Want to Get Involved?</h3>
+          <p className="text-lg mb-8 text-muted-foreground max-w-2xl mx-auto">
             Whether you're a family, nonprofit, or mentor — there's a place for you here.
           </p>
-          <Button size="lg" className="bg-burned-orange hover:bg-burned-orange/90 shadow-md" asChild>
+          <Button size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg h-12 px-8 text-base font-semibold" asChild>
             <a href="/partners">Join the Movement</a>
           </Button>
         </div>

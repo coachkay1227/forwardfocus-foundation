@@ -30,12 +30,12 @@ const Footer = () => {
           </ul>
         </nav>
         <div>
-          <div className="font-bold text-lg mb-4">Emergency</div>
+          <div className="font-bold text-lg mb-4 text-destructive">Crisis Support (24/7)</div>
           <ul className="space-y-3 text-base">
             <li>
               <a 
                 href="tel:988" 
-                className="text-foreground hover:text-primary transition-colors duration-200 focus:text-primary focus:outline-none focus:ring-2 focus:ring-primary/20 rounded px-1 font-medium"
+                className="text-foreground hover:text-primary transition-colors duration-200 focus:text-primary focus:outline-none focus:ring-2 focus:ring-primary/20 rounded px-1 font-bold text-base"
               >
                 988 Suicide & Crisis Lifeline
               </a>
@@ -43,7 +43,7 @@ const Footer = () => {
             <li>
               <a 
                 href="tel:18007997233" 
-                className="text-foreground hover:text-primary transition-colors duration-200 focus:text-primary focus:outline-none focus:ring-2 focus:ring-primary/20 rounded px-1 font-medium"
+                className="text-foreground hover:text-primary transition-colors duration-200 focus:text-primary focus:outline-none focus:ring-2 focus:ring-primary/20 rounded px-1 font-bold text-base"
               >
                 National DV Hotline: 1-800-799-7233
               </a>
@@ -51,7 +51,7 @@ const Footer = () => {
             <li>
               <a 
                 href="tel:211" 
-                className="text-foreground hover:text-primary transition-colors duration-200 focus:text-primary focus:outline-none focus:ring-2 focus:ring-primary/20 rounded px-1 font-medium"
+                className="text-foreground hover:text-primary transition-colors duration-200 focus:text-primary focus:outline-none focus:ring-2 focus:ring-primary/20 rounded px-1 font-bold text-base"
               >
                 Call 211 for local services
               </a>
