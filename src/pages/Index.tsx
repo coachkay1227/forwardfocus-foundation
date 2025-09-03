@@ -218,21 +218,23 @@ const Index = () => {
       {/* Expanding Nationwide */}
       <section className="container py-12 md:py-16">
         <div className="grid gap-8 md:grid-cols-2 md:items-start">
-          <div>
-            <h2 className="font-heading text-2xl md:text-3xl font-semibold">
-              Expanding nationwide
-            </h2>
-            <p className="mt-3 text-muted-foreground">
-              Currently serving: {selectedState?.name ?? "Ohio"}. Coming soon to these states:
-            </p>
-            <ul className="mt-4 grid grid-cols-2 gap-2 text-sm text-foreground/80">
-              {comingSoon.map((s) => (
-                <li key={s} className="flex items-center gap-2">
-                  <ArrowRight className="h-4 w-4 text-primary" aria-hidden />
-                  {s}
-                </li>
-              ))}
-            </ul>
+          <div className="flex flex-col justify-between h-full">
+            <div>
+              <h2 className="font-heading text-2xl md:text-3xl font-semibold">
+                Expanding nationwide
+              </h2>
+              <p className="mt-3 text-muted-foreground">
+                Currently serving: {selectedState?.name ?? "Ohio"}. Coming soon to these states:
+              </p>
+              <ul className="mt-4 grid grid-cols-2 gap-2 text-sm text-foreground/80">
+                {comingSoon.map((s) => (
+                  <li key={s} className="flex items-center gap-2">
+                    <ArrowRight className="h-4 w-4 text-primary" aria-hidden />
+                    {s}
+                  </li>
+                ))}
+              </ul>
+            </div>
 
             <form onSubmit={onSignup} className="mt-6 flex flex-col sm:flex-row gap-2" aria-label="Notify me form">
               <Input
