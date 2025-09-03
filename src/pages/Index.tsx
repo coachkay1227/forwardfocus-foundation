@@ -249,12 +249,17 @@ const Index = () => {
             </form>
           </div>
 
-          <figure className="rounded-lg border bg-card">
-            <div className="aspect-[4/3] w-full grid place-content-center text-muted-foreground">
-              <span className="text-sm">
-                Map placeholder — highlighting {selectedState?.name ?? "Ohio"}
-              </span>
-            </div>
+          <figure className="rounded-lg border bg-card overflow-hidden">
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1542823.7909007644!2d-84.32073589999999!3d40.2732!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8836e8ab87d3ca01%3A0xd0e8cdc71c5c8e3d!2sOhio%2C%20USA!5e0!3m2!1sen!2sus!4v1672845167891!5m2!1sen!2sus"
+              width="100%"
+              height="100%"
+              className="aspect-[4/3] w-full border-0"
+              allowFullScreen
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              title={`Map of ${selectedState?.name ?? "Ohio"}`}
+            />
           </figure>
         </div>
       </section>
