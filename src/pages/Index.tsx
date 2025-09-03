@@ -237,7 +237,7 @@ const Index = () => {
               <p className="mt-3 text-muted-foreground text-center">
                 Currently serving: {selectedState?.name ?? "Ohio"}. All other states coming soon:
               </p>
-              <ul className="mt-2 grid grid-cols-3 gap-1 text-sm text-foreground/80">
+              <ul className="mt-2 grid grid-cols-3 gap-1 text-sm text-foreground/80 max-h-48 overflow-y-auto">
                 {allStates.filter(state => state !== (selectedState?.name ?? "Ohio")).map((s) => (
                   <li key={s} className="flex items-center gap-1 py-0.5">
                     <ArrowRight className="h-3 w-3 text-primary flex-shrink-0" aria-hidden />
