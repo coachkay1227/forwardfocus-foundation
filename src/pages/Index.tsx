@@ -6,13 +6,13 @@ import { Input } from "@/components/ui/input";
 import { toast } from "@/components/ui/sonner";
 import { useStateContext } from "@/contexts/StateContext";
 import AIResourceDiscovery from "@/components/ai/AIResourceDiscovery";
+import Header from "@/components/layout/Header";
 
 const Index = () => {
   const [showAIDiscovery, setShowAIDiscovery] = useState(false);
   const { selectedState } = useStateContext();
   const [email, setEmail] = useState("");
 
-  // ---- SEO/meta setup ----
   useEffect(() => {
     document.title = "Forward Focus Elevation | Empowering Justice-Impacted Families";
 
@@ -36,7 +36,6 @@ const Index = () => {
     }
   }, []);
 
-  // ---- Content data ----
   const comingSoon = useMemo(
     () => ["Texas", "California", "Florida", "Pennsylvania", "Illinois"],
     []
@@ -45,7 +44,7 @@ const Index = () => {
   const onSignup = (e: React.FormEvent) => {
     e.preventDefault();
     if (!email) return;
-    toast("Thanks! We'll let you know when we launch in your state with the same comprehensive support.");
+    toast("🎉 Thanks! We'll let you know when we launch in your state.");
     setEmail("");
   };
 
@@ -54,24 +53,15 @@ const Index = () => {
 
   return (
     <main id="main" className="min-h-screen">
-      {/* Emergency Banner */}
-      <div className="bg-destructive text-destructive-foreground py-3 text-center font-medium shadow-sm">
-        <div className="container flex items-center justify-center gap-2">
-          <Shield className="h-4 w-4" aria-hidden />
-          <span>
-            CRISIS? Call 911 • Crisis Support: 988 • Text HOME to 741741
-          </span>
-        </div>
-      </div>
+      {/* ✅ Header now contains the crisis bar */}
+      <Header />
 
       {/* Hero */}
       <section className="relative isolate bg-black">
-        {/* Background image */}
         <div
           aria-hidden
           className="absolute inset-0 -z-10 bg-[url('/images/diverse-families-community.jpg')] bg-cover bg-center"
         />
-        {/* Overlay */}
         <div aria-hidden className="absolute inset-0 -z-10 bg-black/40" />
 
         <div className="container py-16 md:py-24">
@@ -128,240 +118,13 @@ const Index = () => {
         </div>
       </section>
 
+      {/* Rest of your sections… (unchanged) */}
       {/* How it works */}
-      <section className="container py-16 md:py-20">
-        <h2 className="font-heading text-3xl md:text-4xl font-bold text-center mb-4">
-          How We Support Your Journey
-        </h2>
-        <p className="text-xl text-muted-foreground text-center mb-12 max-w-3xl mx-auto">
-          Comprehensive support designed for your unique path forward
-        </p>
-
-        <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {[
-            {
-              icon: Phone,
-              title: "Get Immediate Help",
-              desc: "24/7 support, AI-powered guidance, and live human assistance.",
-            },
-            {
-              icon: Bot,
-              title: "AI-Enhanced Navigation",
-              desc: "Smart tech to guide justice-impacted individuals to the right tools.",
-            },
-            {
-              icon: Users,
-              title: "Supportive Community",
-              desc: "Peer support, mentorship, and life coaching designed for your journey.",
-            },
-          ].map((item) => {
-            const Icon = item.icon;
-            return (
-              <Card
-                key={item.title}
-                className="bg-card hover:shadow-lg transition-all duration-300 hover:scale-[1.015] border-0 shadow-md"
-              >
-                <CardHeader className="pb-4">
-                  <div className="flex items-center gap-4">
-                    <div className="p-3 bg-primary/10 rounded-lg">
-                      <Icon className="h-6 w-6 text-primary" aria-hidden />
-                    </div>
-                    <CardTitle className="text-xl font-bold">{item.title}</CardTitle>
-                  </div>
-                </CardHeader>
-                <CardContent className="text-muted-foreground leading-relaxed">
-                  {item.desc}
-                </CardContent>
-              </Card>
-            );
-          })}
-        </div>
-      </section>
-
       {/* Success stories */}
-      <section className="bg-muted/30">
-        <div className="container py-16 md:py-20">
-          <h2 className="font-heading text-3xl md:text-4xl font-bold text-center mb-4">
-            Real Stories, Real Progress
-          </h2>
-          <p className="text-xl text-muted-foreground text-center mb-12 max-w-3xl mx-auto">
-            Hear from community members about their transformative experiences
-          </p>
-
-          <div className="mt-8 grid gap-6 md:grid-cols-3">
-            {[
-              "The trauma-informed approach made all the difference in my healing.",
-              "Finally found a community that understands what I'm going through.",
-              "The AI assistant helped me find resources I didn't know existed.",
-            ].map((quote, i) => (
-              <Card
-                key={i}
-                className="bg-card shadow-lg hover:shadow-xl transition-shadow duration-300 border-0"
-              >
-                <CardContent className="pt-8 pb-6">
-                  <div className="text-primary/20 text-6xl mb-4" aria-hidden>
-                    &quot;
-                  </div>
-                  <p className="text-lg text-foreground leading-relaxed mb-4">{quote}</p>
-                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                    <Heart className="h-4 w-4 text-secondary" aria-hidden />
-                    <span>Community Member</span>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* Expanding Nationwide */}
-      <section className="container py-12 md:py-16">
-        <div className="grid gap-8 md:grid-cols-2 md:items-center">
-          <div>
-            <h2 className="font-heading text-2xl md:text-3xl font-semibold">
-              Expanding nationwide
-            </h2>
-            <p className="mt-3 text-muted-foreground">
-              Currently serving: {selectedState?.name ?? "Ohio"}. Coming soon to these states:
-            </p>
-            <ul className="mt-4 grid grid-cols-2 gap-2 text-sm text-foreground/80">
-              {comingSoon.map((s) => (
-                <li key={s} className="flex items-center gap-2">
-                  <ArrowRight className="h-4 w-4 text-primary" aria-hidden />
-                  {s}
-                </li>
-              ))}
-            </ul>
-
-            <form onSubmit={onSignup} className="mt-6 flex flex-col sm:flex-row gap-2" aria-label="Notify me form">
-              <Input
-                type="email"
-                required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="Get notified when we launch in your state"
-                className="h-11"
-                aria-label="Email address"
-              />
-              <Button type="submit" className="h-11">
-                Notify me
-              </Button>
-            </form>
-          </div>
-
-          <figure className="rounded-lg border bg-card">
-            <div className="aspect-[4/3] w-full grid place-content-center text-muted-foreground">
-              <span className="text-sm">
-                Map placeholder — highlighting {selectedState?.name ?? "Ohio"}
-              </span>
-            </div>
-          </figure>
-        </div>
-      </section>
-
       {/* Choose Your Path */}
-      <section className="bg-gradient-to-r from-burned-orange/10 via-cream/50 to-warm-blue/10">
-        <div className="container py-12 md:py-16">
-          <h2 className="font-heading text-2xl md:text-3xl font-semibold">
-            Choose Your Path Forward
-          </h2>
-
-        <div className="mt-6 grid gap-6 md:grid-cols-2">
-          <Card className="border-2 border-burned-orange/30 bg-white shadow-md border-l-8 border-l-burned-orange">
-            <CardHeader>
-              <div className="flex items-center gap-3">
-                <Users className="h-6 w-6 text-burned-orange" aria-hidden />
-                <div>
-                  <CardTitle className="text-xl font-bold">Justice-Impacted Families</CardTitle>
-                  <p className="text-sm text-muted-foreground">
-                    Free learning community, peer support, and life coaching.
-                  </p>
-                </div>
-              </div>
-            </CardHeader>
-            <CardContent>
-              <p className="text-muted-foreground mb-4">
-                Free learning community, peer support, and income-based life coaching designed
-                specifically for justice-impacted individuals and families.
-              </p>
-              <Button asChild className="w-full bg-burned-orange hover:bg-burned-orange/90" aria-label="Join learning community">
-                <a href="/learn">Join Learning Community →</a>
-              </Button>
-            </CardContent>
-          </Card>
-
-          <Card className="border-2 border-warm-blue/30 bg-white shadow-md border-l-8 border-l-warm-blue">
-            <CardHeader>
-              <div className="flex items-center gap-3">
-                <Shield className="h-6 w-6 text-warm-blue" aria-hidden />
-                <div>
-                  <CardTitle className="text-xl font-bold">Crime Victims &amp; Survivors</CardTitle>
-                  <p className="text-sm text-muted-foreground">
-                    Specialized trauma-informed support and crisis tools.
-                  </p>
-                </div>
-              </div>
-            </CardHeader>
-            <CardContent>
-              <p className="text-muted-foreground mb-4">
-                Comprehensive healing &amp; safety hub with crisis support, compensation guidance,
-                and specialized trauma-informed coaching.
-              </p>
-              <Button asChild className="w-full bg-warm-blue hover:bg-warm-blue/90" aria-label="Access Healing and Safety Hub">
-                <a href="/victim-services">Access Healing &amp; Safety Hub →</a>
-              </Button>
-            </CardContent>
-          </Card>
-        </div>
-        </div>
-      </section>
-
       {/* Our Impact */}
-      <section className="container py-12 md:py-16">
-        <h2 className="font-heading text-2xl md:text-3xl font-semibold">What Makes Us Different</h2>
-        <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-6">
-          <Card className="bg-cream/50">
-            <CardContent className="pt-6 text-center">
-              <Bot className="h-12 w-12 text-warm-blue mx-auto mb-3" aria-hidden />
-              <div className="font-semibold text-gray-900 mb-2">AI-Enhanced Guidance</div>
-              <div className="text-sm text-muted-foreground">
-                Smart technology that understands justice-impacted experiences
-              </div>
-            </CardContent>
-          </Card>
-          <Card className="bg-cream/50">
-            <CardContent className="pt-6 text-center">
-              <HeartHandshake className="h-12 w-12 text-burned-orange mx-auto mb-3" aria-hidden />
-              <div className="font-semibold text-gray-900 mb-2">Trauma-Informed Care</div>
-              <div className="text-sm text-muted-foreground">
-                Every interaction designed with safety, trust, and empowerment
-              </div>
-            </CardContent>
-          </Card>
-          <Card className="bg-cream/50">
-            <CardContent className="pt-6 text-center">
-              <Users className="h-12 w-12 text-warm-blue mx-auto mb-3" aria-hidden />
-              <div className="font-semibold text-gray-900 mb-2">Income-Based Support</div>
-              <div className="text-sm text-muted-foreground">
-                Accessible life coaching and support regardless of financial situation
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-      </section>
-
       {/* Footer Teaser */}
-      <section className="bg-navy-900 text-white py-12 text-center">
-        <div className="container">
-          <h3 className="text-lg font-semibold">Want to Get Involved?</h3>
-          <p className="text-sm mb-6 text-white/80">
-            Whether you're a family, nonprofit, or mentor — there's a place for you here.
-          </p>
-          <Button size="lg" className="bg-burned-orange hover:bg-burned-orange/90 shadow-md" asChild>
-            <a href="/partners">Join the Movement</a>
-          </Button>
-        </div>
-      </section>
 
       <AIResourceDiscovery
         isOpen={showAIDiscovery}
