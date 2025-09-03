@@ -263,7 +263,8 @@ const Index = () => {
             </div>
           </div>
 
-          <div className="flex flex-col justify-end h-full pt-20">
+          <div className="flex flex-col justify-between h-full pt-20">
+            <div></div>
             <StateMap 
               stateName={selectedState?.name ?? "Ohio"}
               zoom={6}
