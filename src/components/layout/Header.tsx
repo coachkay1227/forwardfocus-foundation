@@ -118,70 +118,71 @@ const Header = ({ showUtility = true, showCrisis = true }: HeaderProps) => {
       {/* Main Navigation */}
       <div className={`transition-shadow duration-300 ${hasScrolled ? 'shadow-sm' : ''}`}>
         <div className="mx-auto w-full max-w-screen-xl px-6">
-          <div className="flex h-16 items-center justify-between">
-            {/* Left: Mobile Menu */}
-            <div className="md:hidden">
-              <Sheet open={open} onOpenChange={setOpen}>
-                <SheetTrigger asChild>
-                  <Button variant="ghost" size="icon" aria-label="Open menu">
-                    <Menu />
-                  </Button>
-                </SheetTrigger>
-                <SheetContent side="left" className="w-[300px]">
-                  <SheetTitle className="font-heading">Menu</SheetTitle>
-                  <div className="mt-4 flex flex-col gap-3">
-                    <NavLink to="/help" onClick={() => setOpen(false)} className="py-2">Get Help Now</NavLink>
-                    <NavLink to="/victim-services" onClick={() => setOpen(false)} className="py-2">Healing Hub</NavLink>
-                    <NavLink to="/learn" onClick={() => setOpen(false)} className="py-2">Reentry</NavLink>
-                    <NavLink to="/about" onClick={() => setOpen(false)} className="py-2">About Us</NavLink>
-                    
-                    {user ? (
-                      <>
-                        <div className="flex items-center gap-2 py-2 text-sm text-muted-foreground border-t mt-4 pt-4">
-                          <User className="h-4 w-4" />
-                          <span className="truncate">{user.email}</span>
-                        </div>
-                        {isAdmin && (
-                          <NavLink to="/admin" onClick={() => setOpen(false)} className="py-2">Admin Dashboard</NavLink>
-                        )}
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={() => {
-                            signOut();
-                            setOpen(false);
-                          }}
-                          className="justify-start px-0"
-                        >
-                          <LogOut className="mr-2 h-4 w-4" />
-                          Sign Out
-                        </Button>
-                      </>
-                    ) : (
-                      <div className="flex flex-col gap-2 border-t mt-4 pt-4">
-                        <NavLink to="/auth?mode=register" onClick={() => setOpen(false)} className="py-2">Register</NavLink>
-                        <NavLink to="/auth" onClick={() => setOpen(false)} className="py-2">Sign In</NavLink>
-                      </div>
-                    )}
-                    
-                    <Button asChild className="mt-2" variant="default">
-                      <NavLink to="/support" onClick={() => setOpen(false)}>Support</NavLink>
+          <div className="flex h-16 items-center">
+            {/* Left: Mobile Menu + Brand */}
+            <div className="flex items-center gap-4 flex-1">
+              {/* Mobile Menu Trigger */}
+              <div className="md:hidden">
+                <Sheet open={open} onOpenChange={setOpen}>
+                  <SheetTrigger asChild>
+                    <Button variant="ghost" size="icon" aria-label="Open menu">
+                      <Menu />
                     </Button>
-                  </div>
-                </SheetContent>
-              </Sheet>
-            </div>
+                  </SheetTrigger>
+                  <SheetContent side="left" className="w-[300px]">
+                    <SheetTitle className="font-heading">Menu</SheetTitle>
+                    <div className="mt-4 flex flex-col gap-3">
+                      <NavLink to="/help" onClick={() => setOpen(false)} className="py-2">Get Help Now</NavLink>
+                      <NavLink to="/victim-services" onClick={() => setOpen(false)} className="py-2">Healing Hub</NavLink>
+                      <NavLink to="/learn" onClick={() => setOpen(false)} className="py-2">Reentry</NavLink>
+                      <NavLink to="/about" onClick={() => setOpen(false)} className="py-2">About Us</NavLink>
+                      
+                      {user ? (
+                        <>
+                          <div className="flex items-center gap-2 py-2 text-sm text-muted-foreground border-t mt-4 pt-4">
+                            <User className="h-4 w-4" />
+                            <span className="truncate">{user.email}</span>
+                          </div>
+                          {isAdmin && (
+                            <NavLink to="/admin" onClick={() => setOpen(false)} className="py-2">Admin Dashboard</NavLink>
+                          )}
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => {
+                              signOut();
+                              setOpen(false);
+                            }}
+                            className="justify-start px-0"
+                          >
+                            <LogOut className="mr-2 h-4 w-4" />
+                            Sign Out
+                          </Button>
+                        </>
+                      ) : (
+                        <div className="flex flex-col gap-2 border-t mt-4 pt-4">
+                          <NavLink to="/auth?mode=register" onClick={() => setOpen(false)} className="py-2">Register</NavLink>
+                          <NavLink to="/auth" onClick={() => setOpen(false)} className="py-2">Sign In</NavLink>
+                        </div>
+                      )}
+                      
+                      <Button asChild className="mt-2" variant="default">
+                        <NavLink to="/support" onClick={() => setOpen(false)}>Support</NavLink>
+                      </Button>
+                    </div>
+                  </SheetContent>
+                </Sheet>
+              </div>
 
-            {/* Center: Brand */}
-            <div className="flex items-center justify-center flex-1 md:flex-none">
+              {/* Brand Logo */}
               <NavLink to="/" className="flex items-center gap-3">
                 <img src="/logo.png" alt="Forward Focus Elevation logo" className="h-9 w-auto" />
                 <span className="font-heading text-lg font-bold">Forward Focus Elevation</span>
               </NavLink>
             </div>
 
-            {/* Desktop Navigation */}
-            <nav className="hidden md:flex items-center gap-8 absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2">
+            {/* Center: Desktop Navigation */}
+            <nav className="hidden md:flex items-center gap-8">
               <NavLink to="/help" className={linkCls}>Get Help Now</NavLink>
               <NavLink to="/victim-services" className={linkCls}>Healing Hub</NavLink>
               <NavLink to="/learn" className={linkCls}>Reentry</NavLink>
@@ -189,7 +190,7 @@ const Header = ({ showUtility = true, showCrisis = true }: HeaderProps) => {
             </nav>
 
             {/* Right: Auth & Actions */}
-            <div className="hidden md:flex items-center gap-4">
+            <div className="hidden md:flex items-center gap-4 ml-auto">
               {user ? (
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
