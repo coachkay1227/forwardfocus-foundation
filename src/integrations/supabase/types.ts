@@ -504,6 +504,14 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: boolean
       }
+      check_enhanced_rate_limit: {
+        Args: {
+          p_limit_per_hour?: number
+          p_operation?: string
+          p_user_id?: string
+        }
+        Returns: boolean
+      }
       check_rate_limit: {
         Args: {
           p_limit_per_hour?: number
@@ -550,6 +558,10 @@ export type Database = {
       mask_contact_info: {
         Args: { contact_data: string }
         Returns: string
+      }
+      validate_contact_input: {
+        Args: { p_email?: string; p_name: string; p_phone?: string }
+        Returns: boolean
       }
     }
     Enums: {
