@@ -34,9 +34,9 @@ const EmergencyBar = () => {
 
   return (
     <div className="sticky top-0 z-[70] w-full bg-[#FDECEC] text-[#7A1D1D] h-10">
-      <div className="container flex items-center justify-between h-full px-6 text-xs">
+    <div className="container flex items-center justify-center h-full px-6 text-xs relative">
         <p className="font-medium">Need help now? Call 211 for local services or dial 988 for the Suicide & Crisis Lifeline.</p>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 absolute right-6">
           <div className="hidden sm:flex gap-2">
             <Button asChild size="sm" variant="outline" className="bg-transparent border-[#7A1D1D] text-[#7A1D1D] hover:bg-[#7A1D1D] hover:text-white h-7 px-3 text-xs">
               <a href="tel:211" aria-label="Call 211 now">Call 211</a>
