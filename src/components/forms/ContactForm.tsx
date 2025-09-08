@@ -7,6 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Mail, Send, CheckCircle, AlertCircle } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { sanitizeFormData, isValidEmail, RateLimiter, generateCSRFToken } from "@/lib/security";
 
 interface ContactFormProps {
   type?: 'contact' | 'coaching' | 'booking';
@@ -29,6 +30,8 @@ export default function ContactForm({
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [csrfToken] = useState(generateCSRFToken());
+  const rateLimiter = new RateLimiter();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData(prev => ({
@@ -40,8 +43,34 @@ export default function ContactForm({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!formData.name || !formData.email || !formData.message) {
+    // Rate limiting check
+    const clientId = `${formData.email || 'anonymous'}_contact`;
+    if (rateLimiter.isRateLimited(clientId, 3, 300000)) { // 3 attempts per 5 minutes
+      toast.error("Too many attempts. Please wait 5 minutes before trying again.");
+      return;
+    }
+    
+    // Sanitize input data
+    const sanitizedData = sanitizeFormData(formData);
+    
+    // Validation
+    if (!sanitizedData.name || !sanitizedData.email || !sanitizedData.message) {
       toast.error("Please fill in all required fields");
+      return;
+    }
+
+    if (!isValidEmail(sanitizedData.email)) {
+      toast.error("Please enter a valid email address");
+      return;
+    }
+
+    if (sanitizedData.name.length < 2 || sanitizedData.name.length > 100) {
+      toast.error("Name must be between 2 and 100 characters");
+      return;
+    }
+
+    if (sanitizedData.message.length < 10 || sanitizedData.message.length > 1000) {
+      toast.error("Message must be between 10 and 1000 characters");
       return;
     }
 
@@ -50,9 +79,10 @@ export default function ContactForm({
     try {
       const { error } = await supabase.functions.invoke('send-contact-email', {
         body: {
-          ...formData,
+          ...sanitizedData,
           type,
-          subject: formData.subject || getDefaultSubject()
+          subject: sanitizedData.subject || getDefaultSubject(),
+          csrfToken
         }
       });
 

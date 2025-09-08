@@ -6,6 +6,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/components/ui/use-toast";
+import { maskContactInfo } from "@/lib/security";
+import { Eye, EyeOff } from "lucide-react";
 
 interface PartnerReferral {
   id: string;
@@ -32,6 +34,7 @@ const Admin = () => {
   const [referrals, setReferrals] = useState<PartnerReferral[]>([]);
   const [partnershipRequests, setPartnershipRequests] = useState<PartnershipRequest[]>([]);
   const [loadingData, setLoadingData] = useState(true);
+  const [revealedContacts, setRevealedContacts] = useState<Set<string>>(new Set());
 
   useEffect(() => {
     document.title = "Admin Dashboard | Forward Focus Elevation";
@@ -98,6 +101,28 @@ const Admin = () => {
       fetchData();
     }
   }, [isAdmin]);
+
+  const toggleContactVisibility = async (id: string, contactInfo: string) => {
+    const newRevealed = new Set(revealedContacts);
+    if (newRevealed.has(id)) {
+      newRevealed.delete(id);
+    } else {
+      newRevealed.add(id);
+      
+      // Log access to sensitive contact information
+      try {
+        await supabase.rpc('log_sensitive_access', {
+          table_name: 'contact_access',
+          operation: 'VIEW_CONTACT',
+          record_id: id,
+          is_sensitive: true
+        });
+      } catch (error) {
+        console.error('Error logging contact access:', error);
+      }
+    }
+    setRevealedContacts(newRevealed);
+  };
 
   const updateStatus = async (table: 'partner_referrals' | 'partnership_requests', id: string, newStatus: string) => {
     try {
@@ -185,7 +210,27 @@ const Admin = () => {
                       </Badge>
                     </div>
                     <CardDescription>
-                      Contact: {referral.contact_info}
+                      <div className="flex items-center gap-2">
+                        <span>Contact: </span>
+                        <span className="font-mono">
+                          {revealedContacts.has(referral.id) 
+                            ? referral.contact_info 
+                            : maskContactInfo(referral.contact_info)
+                          }
+                        </span>
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          onClick={() => toggleContactVisibility(referral.id, referral.contact_info)}
+                          className="h-6 w-6 p-0"
+                        >
+                          {revealedContacts.has(referral.id) ? (
+                            <EyeOff className="h-3 w-3" />
+                          ) : (
+                            <Eye className="h-3 w-3" />
+                          )}
+                        </Button>
+                      </div>
                     </CardDescription>
                   </CardHeader>
                   <CardContent>
@@ -241,7 +286,27 @@ const Admin = () => {
                       </Badge>
                     </div>
                     <CardDescription>
-                      Email: {request.contact_email}
+                      <div className="flex items-center gap-2">
+                        <span>Email: </span>
+                        <span className="font-mono">
+                          {revealedContacts.has(request.id) 
+                            ? request.contact_email 
+                            : maskContactInfo(request.contact_email)
+                          }
+                        </span>
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          onClick={() => toggleContactVisibility(request.id, request.contact_email)}
+                          className="h-6 w-6 p-0"
+                        >
+                          {revealedContacts.has(request.id) ? (
+                            <EyeOff className="h-3 w-3" />
+                          ) : (
+                            <Eye className="h-3 w-3" />
+                          )}
+                        </Button>
+                      </div>
                     </CardDescription>
                   </CardHeader>
                   <CardContent>

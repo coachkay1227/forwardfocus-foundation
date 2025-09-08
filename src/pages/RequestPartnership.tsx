@@ -5,21 +5,69 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent } from "@/components/ui/card";
 import { toast } from "@/components/ui/use-toast";
 import { supabase } from "@/integrations/supabase/client";
+import { sanitizeInput, isValidEmail, RateLimiter, generateCSRFToken } from "@/lib/security";
 
 const RequestPartnership = () => {
   const [loading, setLoading] = useState(false);
   const [organizationName, setOrganizationName] = useState("");
   const [contactEmail, setContactEmail] = useState("");
   const [description, setDescription] = useState("");
+  const [csrfToken] = useState(generateCSRFToken());
+  const rateLimiter = new RateLimiter();
 
   useEffect(()=>{ document.title = "Request Partnership | Partner Portal"; },[]);
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!organizationName || !contactEmail || !description) {
+    
+    // Rate limiting check
+    const clientId = `${contactEmail || 'anonymous'}_partnership`;
+    if (rateLimiter.isRateLimited(clientId, 2, 600000)) { // 2 attempts per 10 minutes
+      toast({ 
+        title: "Error", 
+        description: "Too many attempts. Please wait 10 minutes before trying again.",
+        variant: "destructive" 
+      });
+      return;
+    }
+    
+    // Sanitize inputs
+    const sanitizedOrgName = sanitizeInput(organizationName);
+    const sanitizedEmail = sanitizeInput(contactEmail);
+    const sanitizedDescription = sanitizeInput(description);
+    
+    // Validation
+    if (!sanitizedOrgName || !sanitizedEmail || !sanitizedDescription) {
       toast({ 
         title: "Error", 
         description: "Please fill in all fields",
+        variant: "destructive" 
+      });
+      return;
+    }
+
+    if (sanitizedOrgName.length < 2 || sanitizedOrgName.length > 100) {
+      toast({ 
+        title: "Error", 
+        description: "Organization name must be between 2 and 100 characters",
+        variant: "destructive" 
+      });
+      return;
+    }
+
+    if (!isValidEmail(sanitizedEmail)) {
+      toast({ 
+        title: "Error", 
+        description: "Please enter a valid email address",
+        variant: "destructive" 
+      });
+      return;
+    }
+
+    if (sanitizedDescription.length < 10 || sanitizedDescription.length > 1000) {
+      toast({ 
+        title: "Error", 
+        description: "Description must be between 10 and 1000 characters",
         variant: "destructive" 
       });
       return;
@@ -31,9 +79,9 @@ const RequestPartnership = () => {
       const { error } = await supabase
         .from('partnership_requests')
         .insert({
-          organization_name: organizationName.trim(),
-          contact_email: contactEmail.trim(),
-          description: description.trim()
+          organization_name: sanitizedOrgName,
+          contact_email: sanitizedEmail,
+          description: sanitizedDescription
         });
 
       if (error) {

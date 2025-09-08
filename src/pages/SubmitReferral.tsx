@@ -4,21 +4,82 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "@/components/ui/use-toast";
 import { supabase } from "@/integrations/supabase/client";
+import { sanitizeInput, isValidEmail, isValidPhone, RateLimiter, generateCSRFToken } from "@/lib/security";
 
 const SubmitReferral = () => {
   const [loading, setLoading] = useState(false);
   const [name, setName] = useState("");
   const [contactInfo, setContactInfo] = useState("");
   const [notes, setNotes] = useState("");
+  const [csrfToken] = useState(generateCSRFToken());
+  const rateLimiter = new RateLimiter();
 
   useEffect(()=>{ document.title = "Submit Referral | Partner Portal"; },[]);
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!name || !contactInfo || !notes) {
+    
+    // Rate limiting check
+    const clientId = `${contactInfo || 'anonymous'}_referral`;
+    if (rateLimiter.isRateLimited(clientId, 2, 600000)) { // 2 attempts per 10 minutes
+      toast({ 
+        title: "Error", 
+        description: "Too many attempts. Please wait 10 minutes before trying again.",
+        variant: "destructive" 
+      });
+      return;
+    }
+    
+    // Sanitize inputs
+    const sanitizedName = sanitizeInput(name);
+    const sanitizedContactInfo = sanitizeInput(contactInfo);
+    const sanitizedNotes = sanitizeInput(notes);
+    
+    // Validation
+    if (!sanitizedName || !sanitizedContactInfo || !sanitizedNotes) {
       toast({ 
         title: "Error", 
         description: "Please fill in all fields",
+        variant: "destructive" 
+      });
+      return;
+    }
+
+    if (sanitizedName.length < 2 || sanitizedName.length > 100) {
+      toast({ 
+        title: "Error", 
+        description: "Name must be between 2 and 100 characters",
+        variant: "destructive" 
+      });
+      return;
+    }
+
+    // Validate contact info (email or phone)
+    const isEmail = sanitizedContactInfo.includes('@');
+    const isPhone = /^\+?[\d\s\-\(\)\.]{10,}$/.test(sanitizedContactInfo);
+    
+    if (!isEmail && !isPhone) {
+      toast({ 
+        title: "Error", 
+        description: "Please provide a valid email address or phone number",
+        variant: "destructive" 
+      });
+      return;
+    }
+
+    if (isEmail && !isValidEmail(sanitizedContactInfo)) {
+      toast({ 
+        title: "Error", 
+        description: "Please provide a valid email address",
+        variant: "destructive" 
+      });
+      return;
+    }
+
+    if (sanitizedNotes.length < 10 || sanitizedNotes.length > 500) {
+      toast({ 
+        title: "Error", 
+        description: "Notes must be between 10 and 500 characters",
         variant: "destructive" 
       });
       return;
@@ -30,9 +91,9 @@ const SubmitReferral = () => {
       const { error } = await supabase
         .from('partner_referrals')
         .insert({
-          name: name.trim(),
-          contact_info: contactInfo.trim(),
-          notes: notes.trim()
+          name: sanitizedName,
+          contact_info: sanitizedContactInfo,
+          notes: sanitizedNotes
         });
 
       if (error) {
