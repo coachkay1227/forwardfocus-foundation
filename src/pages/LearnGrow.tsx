@@ -240,9 +240,8 @@ export default function CommunityLearning() {
 
         {/* Learning Topic Previews */}
         <section id="learning" className="py-12">
-          <div className="container">
-            <div className="max-w-6xl mx-auto">
-              <div className="flex items-center gap-3 mb-6">
+          <div className="max-w-5xl mx-auto px-4">
+            <div className="flex items-center gap-3 mb-6">
                 <div className="w-12 h-12 bg-secondary rounded-lg flex items-center justify-center">
                   <BookOpen className="h-6 w-6 text-secondary-foreground" />
                 </div>
@@ -327,7 +326,6 @@ export default function CommunityLearning() {
                 </p>
               </div>
             </div>
-          </div>
         </section>
 
         {/* Peer Support with Visual Enhancement */}
