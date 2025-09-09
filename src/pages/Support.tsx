@@ -71,11 +71,11 @@ const Support = () => {
       <div className="max-w-6xl mx-auto">
         {/* Hero Section */}
         <div className="text-center mb-16">
-          <div className="inline-flex items-center gap-3 mb-6">
-            <div className="p-3 bg-primary/10 rounded-xl">
-              <Heart className="h-8 w-8 text-primary" />
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4 mb-8">
+            <div className="p-2 sm:p-3 bg-primary/10 rounded-lg sm:rounded-xl">
+              <Heart className="h-6 w-6 sm:h-8 sm:w-8 text-primary" />
             </div>
-            <Badge variant="secondary" className="text-lg px-4 py-2">
+            <Badge variant="secondary" className="text-sm sm:text-lg px-3 py-1 sm:px-4 sm:py-2">
               Community-Powered Impact
             </Badge>
           </div>
