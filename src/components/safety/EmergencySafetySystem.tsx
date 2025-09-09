@@ -156,10 +156,10 @@ export const EmergencySafetySystem = () => {
           onTouchCancel={stopLongPress}
           onClick={(e) => {
             e.stopPropagation();
-            handleTripleTap();
-            setIsSheetOpen(!isSheetOpen);
+            // Open chat directly instead of action sheet
+            setShowAIDiscovery(true);
           }}
-          aria-label="Emergency menu"
+          aria-label="Emergency chat"
         >
           <div className="relative w-11 h-11 rounded-full bg-white/10 flex items-center justify-center">
             <Phone className="h-5 w-5" />
@@ -190,9 +190,23 @@ export const EmergencySafetySystem = () => {
             </svg>
           </div>
           {isLabelVisible && (
-            <span className="font-semibold text-sm">Emergency</span>
+            <span className="font-semibold text-sm">Emergency • Chat</span>
           )}
         </Button>
+
+        {/* Small menu fab for action sheet */}
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            handleTripleTap();
+            setIsSheetOpen(!isSheetOpen);
+          }}
+          className="absolute -top-12 right-0 w-7 h-7 rounded-full bg-slate-900 text-white border border-white/20 shadow-lg flex items-center justify-center text-sm font-bold hover:bg-slate-800 transition-colors"
+          style={{ zIndex: 10002 }}
+          aria-label="Open emergency actions"
+        >
+          ⋮
+        </button>
       </div>
 
       {/* Backdrop and Sheet */}
