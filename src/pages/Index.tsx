@@ -13,20 +13,19 @@ import { STATES } from "@/data/states";
 import testimonialSarah from "@/assets/testimonial-sarah.jpg";
 import testimonialMichael from "@/assets/testimonial-michael.jpg";
 import testimonialJessica from "@/assets/testimonial-jessica.jpg";
-
 const Index = () => {
   const [showAIDiscovery, setShowAIDiscovery] = useState(false);
   const [showStateModal, setShowStateModal] = useState(false);
-  const { selectedState, setSelectedState } = useStateContext();
+  const {
+    selectedState,
+    setSelectedState
+  } = useStateContext();
   const [email, setEmail] = useState("");
 
   // ---- SEO/meta setup ----
   useEffect(() => {
     document.title = "Forward Focus Elevation | Empowering Justice-Impacted Families";
-
-    const desc =
-      "Empowering justice-impacted families with the tools to rebuild and thrive. AI-enhanced guidance and comprehensive resources for justice-impacted individuals, families, and crime victims.";
-
+    const desc = "Empowering justice-impacted families with the tools to rebuild and thrive. AI-enhanced guidance and comprehensive resources for justice-impacted individuals, families, and crime victims.";
     let meta = document.querySelector('meta[name="description"]');
     if (!meta) {
       meta = document.createElement("meta");
@@ -34,7 +33,6 @@ const Index = () => {
       document.head.appendChild(meta);
     }
     meta.setAttribute("content", desc);
-
     let canonical = document.querySelector('link[rel="canonical"]') as HTMLLinkElement | null;
     if (!canonical) {
       canonical = document.createElement("link");
@@ -45,33 +43,23 @@ const Index = () => {
   }, []);
 
   // ---- Content data ----
-  const allStates = useMemo(
-    () => STATES.map(state => state.name),
-    []
-  );
-
+  const allStates = useMemo(() => STATES.map(state => state.name), []);
   const onSignup = (e: React.FormEvent) => {
     e.preventDefault();
     if (!email) return;
     toast("Thanks! We'll let you know when we launch in your state with the same comprehensive support.");
     setEmail("");
   };
-
   const servingLabel = selectedState?.name ? `Now serving ${selectedState.name}` : "Now serving Ohio";
   const stateForAI = selectedState?.name ?? "Ohio";
-
-  return (
-    <main id="main" className="min-h-screen">
+  return <main id="main" className="min-h-screen">
       {/* Emergency Safety System */}
       <EmergencySafetySystem />
 
       {/* Hero */}
       <section className="relative isolate min-h-[70vh] md:min-h-[60vh] grid place-items-center">
         {/* Background image */}
-        <div
-          aria-hidden
-          className="absolute inset-0 -z-10 bg-[url('/images/diverse-families-community.jpg')] bg-cover bg-center"
-        />
+        <div aria-hidden className="absolute inset-0 -z-10 bg-[url('/images/diverse-families-community.jpg')] bg-cover bg-center" />
         {/* Overlay */}
         <div aria-hidden className="absolute inset-0 -z-10 bg-black/40" />
 
@@ -83,11 +71,7 @@ const Index = () => {
             
             {/* State pill */}
             <div className="mt-4 flex justify-center">
-              <button
-                onClick={() => setShowStateModal(true)}
-                className="inline-flex items-center gap-2 rounded-full bg-white/70 backdrop-blur px-3 py-1.5 text-sm shadow-sm hover:bg-white/80 transition-colors"
-                aria-label="Change your state"
-              >
+              <button onClick={() => setShowStateModal(true)} className="inline-flex items-center gap-2 rounded-full bg-white/70 backdrop-blur px-3 py-1.5 text-sm shadow-sm hover:bg-white/80 transition-colors" aria-label="Change your state">
                 <span>📍</span>
                 <span className="text-gray-800">Your state: <strong>{selectedState?.name ?? "Ohio"}</strong></span>
                 <span className="text-gray-600">• Change</span>
@@ -100,42 +84,21 @@ const Index = () => {
 
             <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
               <Button size="lg" variant="premium" className="h-14 px-8 text-lg shadow-lg" asChild>
-                <a href="/help" aria-label="Get immediate help">
-                  <Phone className="mr-2 h-5 w-5" aria-hidden />
-                  Get Immediate Help
-                </a>
+                
               </Button>
 
               <Button size="lg" variant="default" className="h-14 px-8 text-lg bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg" asChild>
-                <a href="/partners/submit-referral" aria-label="Submit referral">
-                  <HeartHandshake className="mr-2 h-5 w-5" aria-hidden />
-                  Submit Referral
-                </a>
+                
               </Button>
 
-              <Button
-                size="lg"
-                variant="hero"
-                className="h-14 px-8 text-lg bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70"
-                onClick={() => setShowAIDiscovery(true)}
-                aria-label="Ask AI Navigator"
-              >
-                <Bot className="mr-2 h-5 w-5" aria-hidden />
-                Ask AI Navigator
+              
+
+              <Button size="lg" variant="hero" className="h-14 px-8 text-lg" asChild>
+                
               </Button>
 
               <Button size="lg" variant="hero" className="h-14 px-8 text-lg" asChild>
-                <a href="/learn" aria-label="Join learning community">
-                  <Users className="mr-2 h-5 w-5" aria-hidden />
-                  Join Learning Community
-                </a>
-              </Button>
-
-              <Button size="lg" variant="hero" className="h-14 px-8 text-lg" asChild>
-                <a href="/victim-services" aria-label="Go to Healing and Safety Hub">
-                  <Shield className="mr-2 h-5 w-5" aria-hidden />
-                  Healing &amp; Safety Hub
-                </a>
+                
               </Button>
             </div>
 
@@ -157,29 +120,21 @@ const Index = () => {
         </p>
 
         <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {[
-            {
-              icon: Phone,
-              title: "Get Immediate Help",
-              desc: "24/7 support, AI-powered guidance, and live human assistance.",
-            },
-            {
-              icon: Bot,
-              title: "AI-Enhanced Navigation",
-              desc: "Smart tech to guide justice-impacted individuals to the right tools.",
-            },
-            {
-              icon: Users,
-              title: "Supportive Community",
-              desc: "Peer support, mentorship, and life coaching designed for your journey.",
-            },
-          ].map((item) => {
-            const Icon = item.icon;
-            return (
-              <Card
-                key={item.title}
-                className="bg-card hover:shadow-lg transition-all duration-300 hover:scale-[1.015] border-0 shadow-md"
-              >
+          {[{
+          icon: Phone,
+          title: "Get Immediate Help",
+          desc: "24/7 support, AI-powered guidance, and live human assistance."
+        }, {
+          icon: Bot,
+          title: "AI-Enhanced Navigation",
+          desc: "Smart tech to guide justice-impacted individuals to the right tools."
+        }, {
+          icon: Users,
+          title: "Supportive Community",
+          desc: "Peer support, mentorship, and life coaching designed for your journey."
+        }].map(item => {
+          const Icon = item.icon;
+          return <Card key={item.title} className="bg-card hover:shadow-lg transition-all duration-300 hover:scale-[1.015] border-0 shadow-md">
                 <CardHeader className="pb-4">
                   <div className="flex items-center gap-4">
                     <div className="p-3 bg-primary/10 rounded-lg">
@@ -191,9 +146,8 @@ const Index = () => {
                 <CardContent className="text-muted-foreground leading-relaxed">
                   {item.desc}
                 </CardContent>
-              </Card>
-            );
-          })}
+              </Card>;
+        })}
         </div>
       </section>
 
@@ -208,30 +162,28 @@ const Index = () => {
           </p>
 
           <div className="mt-8 grid gap-6 md:grid-cols-3">
-            {[
-              "The trauma-informed approach made all the difference in my healing.",
-              "Finally found a community that understands what I'm going through.", 
-              "The AI assistant helped me find resources I didn't know existed.",
-            ].map((quote, i) => {
-              const reviewData = [
-                { name: "Sarah M.", location: "Columbus, OH", avatar: testimonialSarah, stars: 5 },
-                { name: "Michael R.", location: "Cleveland, OH", avatar: testimonialMichael, stars: 5 },
-                { name: "Jessica T.", location: "Cincinnati, OH", avatar: testimonialJessica, stars: 5 },
-              ];
-              const review = reviewData[i];
-              
-              return (
-                <Card
-                  key={i}
-                  className="bg-card shadow-lg hover:shadow-xl transition-shadow duration-300 border-0"
-                >
+            {["The trauma-informed approach made all the difference in my healing.", "Finally found a community that understands what I'm going through.", "The AI assistant helped me find resources I didn't know existed."].map((quote, i) => {
+            const reviewData = [{
+              name: "Sarah M.",
+              location: "Columbus, OH",
+              avatar: testimonialSarah,
+              stars: 5
+            }, {
+              name: "Michael R.",
+              location: "Cleveland, OH",
+              avatar: testimonialMichael,
+              stars: 5
+            }, {
+              name: "Jessica T.",
+              location: "Cincinnati, OH",
+              avatar: testimonialJessica,
+              stars: 5
+            }];
+            const review = reviewData[i];
+            return <Card key={i} className="bg-card shadow-lg hover:shadow-xl transition-shadow duration-300 border-0">
                   <CardContent className="pt-8 pb-6">
                     <div className="flex items-center gap-3 mb-4">
-                      <img 
-                        src={review.avatar} 
-                        alt={`${review.name} testimonial photo`}
-                        className="w-12 h-12 rounded-full object-cover"
-                      />
+                      <img src={review.avatar} alt={`${review.name} testimonial photo`} className="w-12 h-12 rounded-full object-cover" />
                       <div>
                         <div className="font-semibold text-foreground">{review.name}</div>
                         <div className="text-sm text-muted-foreground">{review.location}</div>
@@ -239,9 +191,9 @@ const Index = () => {
                     </div>
                     
                     <div className="flex mb-4">
-                      {Array.from({ length: review.stars }).map((_, starIndex) => (
-                        <span key={starIndex} className="text-yellow-400 text-lg">★</span>
-                      ))}
+                      {Array.from({
+                    length: review.stars
+                  }).map((_, starIndex) => <span key={starIndex} className="text-yellow-400 text-lg">★</span>)}
                     </div>
                     
                     <div className="text-primary/20 text-6xl mb-4" aria-hidden>
@@ -254,9 +206,8 @@ const Index = () => {
                       <span>Verified Community Member</span>
                     </div>
                   </CardContent>
-                </Card>
-              );
-            })}
+                </Card>;
+          })}
           </div>
         </div>
       </section>
@@ -278,21 +229,16 @@ const Index = () => {
 
           {/* All 50 states in 3 columns */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-2 mb-12">
-            {allStates.sort().map((state) => {
-              const stateData = STATES.find(s => s.name === state);
-              const isActive = stateData?.active || false;
-              return (
-                <div key={state} className="flex items-center justify-between py-1 px-2 rounded-md hover:bg-muted/30 transition-colors">
+            {allStates.sort().map(state => {
+            const stateData = STATES.find(s => s.name === state);
+            const isActive = stateData?.active || false;
+            return <div key={state} className="flex items-center justify-between py-1 px-2 rounded-md hover:bg-muted/30 transition-colors">
                   <span className="text-foreground font-medium">{state}</span>
-                  <Badge 
-                    variant={isActive ? "default" : "secondary"}
-                    className={isActive ? "bg-green-600 text-white" : "bg-muted text-muted-foreground"}
-                  >
+                  <Badge variant={isActive ? "default" : "secondary"} className={isActive ? "bg-green-600 text-white" : "bg-muted text-muted-foreground"}>
                     {isActive ? "Available" : "Coming Soon"}
                   </Badge>
-                </div>
-              );
-            })}
+                </div>;
+          })}
           </div>
 
           {/* Centered notification form */}
@@ -300,20 +246,8 @@ const Index = () => {
             <Card className="bg-white shadow-lg border">
               <CardContent className="p-6">
                 <form onSubmit={onSignup} className="space-y-4" aria-label="Notify me form">
-                  <Input
-                    type="email"
-                    required
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="Enter your email to get notified when we launch in your state"
-                    className="h-12 text-base bg-white border-2 focus:border-primary"
-                    aria-label="Email address"
-                  />
-                  <Button 
-                    type="submit" 
-                    size="lg"
-                    className="w-full h-12 text-base font-bold bg-primary hover:bg-primary/90 text-primary-foreground shadow-md"
-                  >
+                  <Input type="email" required value={email} onChange={e => setEmail(e.target.value)} placeholder="Enter your email to get notified when we launch in your state" className="h-12 text-base bg-white border-2 focus:border-primary" aria-label="Email address" />
+                  <Button type="submit" size="lg" className="w-full h-12 text-base font-bold bg-primary hover:bg-primary/90 text-primary-foreground shadow-md">
                     Notify Me When Available
                   </Button>
                 </form>
@@ -398,35 +332,23 @@ const Index = () => {
         </div>
       </section>
 
-      <AIResourceDiscovery
-        isOpen={showAIDiscovery}
-        onClose={() => setShowAIDiscovery(false)}
-        initialQuery=""
-        location={stateForAI}
-      />
+      <AIResourceDiscovery isOpen={showAIDiscovery} onClose={() => setShowAIDiscovery(false)} initialQuery="" location={stateForAI} />
       
-      <StateModal
-        isOpen={showStateModal}
-        onClose={() => setShowStateModal(false)}
-        currentState={selectedState?.name ?? "Ohio"}
-        onStateChange={(stateName) => {
-          // Find the state object from the limited STATES array, or create a temporary one
-          const foundState = STATES.find(s => s.name === stateName);
-          if (foundState) {
-            setSelectedState(foundState);
-          } else {
-            // For states not in our STATES array, create a temporary state object
-            setSelectedState({
-              code: stateName.substring(0, 2).toUpperCase(),
-              name: stateName,
-              active: false,
-              comingSoon: true
-            });
-          }
-        }}
-      />
-    </main>
-  );
+      <StateModal isOpen={showStateModal} onClose={() => setShowStateModal(false)} currentState={selectedState?.name ?? "Ohio"} onStateChange={stateName => {
+      // Find the state object from the limited STATES array, or create a temporary one
+      const foundState = STATES.find(s => s.name === stateName);
+      if (foundState) {
+        setSelectedState(foundState);
+      } else {
+        // For states not in our STATES array, create a temporary state object
+        setSelectedState({
+          code: stateName.substring(0, 2).toUpperCase(),
+          name: stateName,
+          active: false,
+          comingSoon: true
+        });
+      }
+    }} />
+    </main>;
 };
-
 export default Index;
