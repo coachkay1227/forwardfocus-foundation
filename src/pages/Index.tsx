@@ -309,7 +309,7 @@ const Index = () => {
                 Comprehensive healing &amp; safety hub with crisis support, compensation guidance,
                 and specialized trauma-informed coaching.
               </p>
-              <Button asChild size="lg" className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold h-12 mt-8" aria-label="Access Healing and Safety Hub">
+              <Button asChild size="lg" className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold h-12 mt-4" aria-label="Access Healing and Safety Hub">
                 <a href="/victim-services">Access Healing &amp; Safety Hub →</a>
               </Button>
             </CardContent>
