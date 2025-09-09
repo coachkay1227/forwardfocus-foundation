@@ -62,13 +62,15 @@ export default {
 						border: 'hsl(var(--sidebar-border))',
 						ring: 'hsl(var(--sidebar-ring))'
 					},
-					'burned-orange': {
-						DEFAULT: 'hsl(var(--burned-orange))',
-						foreground: 'hsl(var(--burned-orange-foreground))'
+					'osu-scarlet': {
+						DEFAULT: 'hsl(var(--osu-scarlet))',
+						dark: 'hsl(var(--osu-scarlet-dark))',
+						foreground: 'hsl(var(--osu-scarlet-foreground))'
 					},
-					'warm-blue': {
-						DEFAULT: 'hsl(var(--warm-blue))',
-						foreground: 'hsl(var(--warm-blue-foreground))'
+					'osu-gray': {
+						DEFAULT: 'hsl(var(--osu-gray))',
+						light: 'hsl(var(--osu-gray-light))',
+						foreground: 'hsl(var(--osu-gray-foreground))'
 					},
 					cream: {
 						DEFAULT: 'hsl(var(--cream))',

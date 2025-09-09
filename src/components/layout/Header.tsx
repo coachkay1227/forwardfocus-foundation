@@ -13,7 +13,7 @@ const linkCls = ({
   isActive
 }: {
   isActive?: boolean;
-} | any) => isActive ? "text-black font-medium" : "text-black hover:text-black/80";
+} | any) => isActive ? "text-foreground font-medium" : "text-foreground hover:text-foreground/80";
 interface HeaderProps {
   showUtility?: boolean;
   showCrisis?: boolean;
@@ -79,11 +79,11 @@ const Header = ({
               <Sheet open={open} onOpenChange={setOpen}>
                 <SheetTrigger asChild>
                   <Button variant="ghost" size="sm" className="p-2">
-                    <Menu className="h-5 w-5 text-black" />
+                    <Menu className="h-5 w-5 text-foreground" />
                   </Button>
                 </SheetTrigger>
                 <SheetContent side="left" className="w-[300px]">
-                  <SheetTitle className="font-heading text-black">Menu</SheetTitle>
+                  <SheetTitle className="font-heading text-foreground">Menu</SheetTitle>
                   <div className="py-4 space-y-3">
                     {/* Mobile Navigation */}
                     <nav className="space-y-2">
@@ -93,7 +93,7 @@ const Header = ({
                       <Button variant="ghost" size="sm" asChild className="justify-start w-full">
                         <NavLink to="/learn" onClick={() => setOpen(false)}>Join Learning Community</NavLink>
                       </Button>
-                        <NavLink to="/victim-services" className="justify-start w-full text-left px-2 py-2 text-sm font-medium text-black hover:bg-muted rounded-md" onClick={() => setOpen(false)}>
+                        <NavLink to="/victim-services" className="justify-start w-full text-left px-2 py-2 text-sm font-medium text-foreground hover:bg-muted rounded-md" onClick={() => setOpen(false)}>
                           Healing & Safety
                         </NavLink>
                       <Button variant="ghost" size="sm" asChild className="justify-start w-full">
@@ -106,7 +106,7 @@ const Header = ({
 
                     {/* Mobile Auth */}
                     {user ? <>
-                        <div className="flex items-center gap-2 py-2 text-sm text-black border-b border-border pb-3">
+                        <div className="flex items-center gap-2 py-2 text-sm text-foreground border-b border-border pb-3">
                           <User className="h-4 w-4" />
                           <span className="truncate">{user.email}</span>
                         </div>
@@ -155,7 +155,7 @@ const Header = ({
             <div className="auth-links flex items-center space-x-2">
               {user ? <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" size="sm" className="text-black">
+                    <Button variant="ghost" size="sm" className="text-foreground">
                       <User className="mr-2 h-4 w-4" />
                       <span className="max-w-[120px] truncate">{user.email}</span>
                     </Button>
@@ -170,10 +170,10 @@ const Header = ({
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu> : <div className="hidden md:flex items-center space-x-2">
-                  <Button variant="ghost" size="sm" asChild className="text-black">
+                  <Button variant="ghost" size="sm" asChild className="text-foreground">
                     <NavLink to="/auth">Sign In</NavLink>
                   </Button>
-                  <Button variant="outline" size="sm" asChild className="text-black border-black">
+                  <Button variant="outline" size="sm" asChild>
                     <NavLink to="/auth?mode=register">Register</NavLink>
                   </Button>
                 </div>}

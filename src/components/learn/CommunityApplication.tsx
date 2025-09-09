@@ -83,30 +83,30 @@ export const CommunityApplication = ({ isOpen, onClose }: CommunityApplicationPr
           </div>
 
           <div className="bg-white border border-gray-200 rounded-lg p-4 mb-6">
-            <h4 className="font-semibold text-black mb-2">✨ What's Included (Always Free):</h4>
-            <div className="grid md:grid-cols-2 gap-2 text-sm text-black">
+            <h4 className="font-semibold text-foreground mb-2">✨ What's Included (Always Free):</h4>
+            <div className="grid md:grid-cols-2 gap-2 text-sm text-foreground">
               <div className="flex items-center gap-2">
-                <CheckCircle className="h-3 w-3 text-black" />
+                <CheckCircle className="h-3 w-3 text-primary" />
                 8+ self-paced learning modules
               </div>
               <div className="flex items-center gap-2">
-                <CheckCircle className="h-3 w-3 text-black" />
+                <CheckCircle className="h-3 w-3 text-primary" />
                 Peer support groups
               </div>
               <div className="flex items-center gap-2">
-                <CheckCircle className="h-3 w-3 text-black" />
+                <CheckCircle className="h-3 w-3 text-primary" />
                 AI learning assistance
               </div>
               <div className="flex items-center gap-2">
-                <CheckCircle className="h-3 w-3 text-black" />
+                <CheckCircle className="h-3 w-3 text-primary" />
                 Progress tracking
               </div>
               <div className="flex items-center gap-2">
-                <CheckCircle className="h-3 w-3 text-black" />
+                <CheckCircle className="h-3 w-3 text-primary" />
                 24/7 community access
               </div>
               <div className="flex items-center gap-2">
-                <CheckCircle className="h-3 w-3 text-black" />
+                <CheckCircle className="h-3 w-3 text-primary" />
                 Mobile learning platform
               </div>
             </div>
