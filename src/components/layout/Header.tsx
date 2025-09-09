@@ -9,6 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { CrisisEmergencyBot } from "@/components/ai/CrisisEmergencyBot";
+import { FloatingEmergencyPhone } from "@/components/ui/FloatingEmergencyPhone";
 
 const linkCls = ({ isActive }: { isActive?: boolean } | any) =>
   isActive ? "text-primary font-medium" : "text-foreground/80 hover:text-foreground";
@@ -162,15 +163,7 @@ const Header = ({ showUtility = true, showCrisis = true }: HeaderProps) => {
 
             {/* Right Actions */}
             <div className="flex items-center space-x-2">
-              {/* Crisis Emergency Button */}
-              <CrisisEmergencyBot 
-                trigger={
-                  <Button variant="destructive" size="sm" className="bg-red-600 hover:bg-red-700">
-                    <Phone className="h-4 w-4 mr-2" />
-                    Need Help Now?
-                  </Button>
-                }
-              />
+              {/* Crisis Emergency Button - moved to floating position */}
 
               {/* Auth Buttons */}
               {user ? (
@@ -212,6 +205,9 @@ const Header = ({ showUtility = true, showCrisis = true }: HeaderProps) => {
           </div>
         </div>
       </div>
+
+      {/* Floating Emergency Phone Chatbot */}
+      <FloatingEmergencyPhone />
     </header>
   );
 };
