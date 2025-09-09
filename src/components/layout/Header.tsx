@@ -13,7 +13,7 @@ const linkCls = ({
   isActive
 }: {
   isActive?: boolean;
-} | any) => isActive ? "text-primary font-medium" : "text-foreground/80 hover:text-foreground";
+} | any) => isActive ? "text-black font-medium" : "text-black hover:text-black/80";
 interface HeaderProps {
   showUtility?: boolean;
   showCrisis?: boolean;
@@ -83,7 +83,7 @@ const Header = ({
                   </Button>
                 </SheetTrigger>
                 <SheetContent side="left" className="w-[300px]">
-                  <SheetTitle className="font-heading">Menu</SheetTitle>
+                  <SheetTitle className="font-heading text-black">Menu</SheetTitle>
                   <div className="py-4 space-y-3">
                     {/* Mobile Navigation */}
                     <nav className="space-y-2">
@@ -106,7 +106,7 @@ const Header = ({
 
                     {/* Mobile Auth */}
                     {user ? <>
-                        <div className="flex items-center gap-2 py-2 text-sm text-muted-foreground border-b border-border pb-3">
+                        <div className="flex items-center gap-2 py-2 text-sm text-black border-b border-border pb-3">
                           <User className="h-4 w-4" />
                           <span className="truncate">{user.email}</span>
                         </div>
