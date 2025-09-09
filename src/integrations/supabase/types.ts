@@ -10,7 +10,7 @@ export type Database = {
   // Allows to automatically instantiate createClient with right options
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
-    PostgrestVersion: "13.0.4"
+    PostgrestVersion: "13.0.5"
   }
   public: {
     Tables: {
@@ -139,6 +139,33 @@ export type Database = {
         }
         Relationships: []
       }
+      members: {
+        Row: {
+          created_at: string | null
+          id: number
+          role: string | null
+          team_id: string
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: never
+          role?: string | null
+          team_id: string
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: never
+          role?: string | null
+          team_id?: string
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       organizations: {
         Row: {
           address: string | null
@@ -225,6 +252,7 @@ export type Database = {
           id: string
           organization_name: string
           status: string
+          team_id: string | null
           updated_at: string
         }
         Insert: {
@@ -234,6 +262,7 @@ export type Database = {
           id?: string
           organization_name: string
           status?: string
+          team_id?: string | null
           updated_at?: string
         }
         Update: {
@@ -243,9 +272,42 @@ export type Database = {
           id?: string
           organization_name?: string
           status?: string
+          team_id?: string | null
           updated_at?: string
         }
         Relationships: []
+      }
+      payments: {
+        Row: {
+          amount: number
+          created_at: string | null
+          id: string
+          status: string | null
+          user_id: string
+        }
+        Insert: {
+          amount: number
+          created_at?: string | null
+          id?: string
+          status?: string | null
+          user_id: string
+        }
+        Update: {
+          amount?: number
+          created_at?: string | null
+          id?: string
+          status?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fk_payments_user"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       profiles: {
         Row: {
@@ -420,6 +482,27 @@ export type Database = {
         }
         Relationships: []
       }
+      users: {
+        Row: {
+          created_at: string | null
+          email: string
+          id: string
+          password: string
+        }
+        Insert: {
+          created_at?: string | null
+          email: string
+          id?: string
+          password: string
+        }
+        Update: {
+          created_at?: string | null
+          email?: string
+          id?: string
+          password?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       organizations_public: {
@@ -558,6 +641,19 @@ export type Database = {
       mask_contact_info: {
         Args: { contact_data: string }
         Returns: string
+      }
+      update_partnership_request: {
+        Args: { _id: string; _notes?: string; _status?: string }
+        Returns: {
+          contact_email: string
+          created_at: string
+          description: string
+          id: string
+          organization_name: string
+          status: string
+          team_id: string | null
+          updated_at: string
+        }
       }
       validate_contact_input: {
         Args: { p_email?: string; p_name: string; p_phone?: string }
