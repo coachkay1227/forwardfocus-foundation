@@ -99,6 +99,9 @@ const Header = ({
                       <Button variant="ghost" size="sm" asChild className="justify-start w-full">
                         <NavLink to="/submit-referral" onClick={() => setOpen(false)}>Submit Referral</NavLink>
                       </Button>
+                      <Button variant="ghost" size="sm" asChild className="justify-start w-full">
+                        <NavLink to="/partners" onClick={() => setOpen(false)}>Partner Portal</NavLink>
+                      </Button>
                     </nav>
 
                     {/* Mobile Auth */}
@@ -147,6 +150,7 @@ const Header = ({
               <NavLink to="/learn-grow" className={linkCls}>Join Learning Community</NavLink>
               <NavLink to="/get-help-now" className={linkCls}>Healing & Safety Hub</NavLink>
               <NavLink to="/submit-referral" className={linkCls}>Submit Referral</NavLink>
+              <NavLink to="/partners" className={linkCls}>Partner Portal</NavLink>
             </nav>
 
             {/* Auth Links */}
