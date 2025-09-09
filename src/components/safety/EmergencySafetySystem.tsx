@@ -147,7 +147,7 @@ export const EmergencySafetySystem = () => {
       {/* Safety Dock */}
       <div className="fixed right-4 bottom-4 z-[10001]">
         <Button
-          className="bg-destructive hover:bg-destructive/90 text-destructive-foreground rounded-full px-4 py-2 shadow-2xl flex items-center gap-2 h-auto"
+          className="bg-destructive hover:bg-destructive/90 text-destructive-foreground rounded-full px-4 py-2 pr-12 shadow-2xl flex items-center gap-2 h-auto relative"
           onMouseDown={startLongPress}
           onMouseUp={stopLongPress}
           onMouseLeave={stopLongPress}
@@ -190,23 +190,22 @@ export const EmergencySafetySystem = () => {
             </svg>
           </div>
           {isLabelVisible && (
-            <span className="font-semibold text-sm">Emergency • Chat</span>
+            <span className="font-semibold text-sm">Chat</span>
           )}
+          
+          {/* Embedded kebab menu inside the pill */}
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              handleTripleTap();
+              setIsSheetOpen(!isSheetOpen);
+            }}
+            className="absolute right-2 top-1/2 -translate-y-1/2 w-7 h-7 rounded-full bg-slate-900 text-white border border-white/20 shadow-lg flex items-center justify-center text-sm font-bold hover:bg-slate-800 hover:saturate-110 focus:outline-2 focus:outline-white/45 focus:outline-offset-2 transition-all"
+            aria-label="Open emergency actions"
+          >
+            ⋮
+          </button>
         </Button>
-
-        {/* Small menu fab for action sheet */}
-        <button
-          onClick={(e) => {
-            e.stopPropagation();
-            handleTripleTap();
-            setIsSheetOpen(!isSheetOpen);
-          }}
-          className="absolute -top-12 right-0 w-7 h-7 rounded-full bg-slate-900 text-white border border-white/20 shadow-lg flex items-center justify-center text-sm font-bold hover:bg-slate-800 transition-colors"
-          style={{ zIndex: 10002 }}
-          aria-label="Open emergency actions"
-        >
-          ⋮
-        </button>
       </div>
 
       {/* Backdrop and Sheet */}
