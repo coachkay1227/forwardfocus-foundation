@@ -82,31 +82,31 @@ export const CommunityApplication = ({ isOpen, onClose }: CommunityApplicationPr
             </button>
           </div>
 
-          <div className="bg-accent/10 border border-accent/20 rounded-lg p-4 mb-6">
-            <h4 className="font-semibold text-accent-foreground mb-2">✨ What's Included (Always Free):</h4>
-            <div className="grid md:grid-cols-2 gap-2 text-sm text-accent-foreground">
+          <div className="bg-white border border-gray-200 rounded-lg p-4 mb-6">
+            <h4 className="font-semibold text-black mb-2">✨ What's Included (Always Free):</h4>
+            <div className="grid md:grid-cols-2 gap-2 text-sm text-black">
               <div className="flex items-center gap-2">
-                <CheckCircle className="h-3 w-3 text-accent" />
+                <CheckCircle className="h-3 w-3 text-black" />
                 8+ self-paced learning modules
               </div>
               <div className="flex items-center gap-2">
-                <CheckCircle className="h-3 w-3 text-accent" />
+                <CheckCircle className="h-3 w-3 text-black" />
                 Peer support groups
               </div>
               <div className="flex items-center gap-2">
-                <CheckCircle className="h-3 w-3 text-accent" />
+                <CheckCircle className="h-3 w-3 text-black" />
                 AI learning assistance
               </div>
               <div className="flex items-center gap-2">
-                <CheckCircle className="h-3 w-3 text-accent" />
+                <CheckCircle className="h-3 w-3 text-black" />
                 Progress tracking
               </div>
               <div className="flex items-center gap-2">
-                <CheckCircle className="h-3 w-3 text-accent" />
+                <CheckCircle className="h-3 w-3 text-black" />
                 24/7 community access
               </div>
               <div className="flex items-center gap-2">
-                <CheckCircle className="h-3 w-3 text-accent" />
+                <CheckCircle className="h-3 w-3 text-black" />
                 Mobile learning platform
               </div>
             </div>
