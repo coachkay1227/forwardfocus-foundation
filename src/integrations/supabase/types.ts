@@ -510,10 +510,8 @@ export type Database = {
           city: string | null
           created_at: string | null
           description: string | null
-          email: string | null
           id: string | null
           name: string | null
-          phone: string | null
           state_code: string | null
           updated_at: string | null
           verified: boolean | null
@@ -523,10 +521,8 @@ export type Database = {
           city?: string | null
           created_at?: string | null
           description?: string | null
-          email?: never
           id?: string | null
           name?: string | null
-          phone?: never
           state_code?: string | null
           updated_at?: string | null
           verified?: boolean | null
@@ -536,10 +532,8 @@ export type Database = {
           city?: string | null
           created_at?: string | null
           description?: string | null
-          email?: never
           id?: string | null
           name?: string | null
-          phone?: never
           state_code?: string | null
           updated_at?: string | null
           verified?: boolean | null
