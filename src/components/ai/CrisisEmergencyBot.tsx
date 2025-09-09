@@ -136,6 +136,10 @@ export const CrisisEmergencyBot = ({ trigger }: CrisisEmergencyBotProps) => {
               <a href="tel:988" className="hover:underline font-medium">Call 988</a>
             </div>
             <div className="flex items-center gap-2">
+              <Badge variant="outline" className="text-xs">Help</Badge>
+              <a href="tel:211" className="hover:underline font-medium">Call 211</a>
+            </div>
+            <div className="flex items-center gap-2">
               <Badge variant="outline" className="text-xs">Text</Badge>
               <a href="sms:741741?body=HOME" className="hover:underline font-medium">Text HOME to 741741</a>
             </div>
