@@ -60,13 +60,13 @@ const Header = ({ showUtility = true, showCrisis = true }: HeaderProps) => {
   };
 
   return (
-    <header className="sticky top-0 z-50 bg-background border-b">
+    <header className="sticky top-0 z-50 bg-white border-b">
       {/* Crisis Ribbon - removed */}
 
       {/* Top Utility Bar - removed, replaced with crisis popup */}
 
       {/* Main Navigation */}
-      <div className="bg-background border-b border-border">
+      <div className="bg-white border-b border-border">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-16">
             {/* Mobile menu button */}
@@ -147,7 +147,7 @@ const Header = ({ showUtility = true, showCrisis = true }: HeaderProps) => {
                 <img 
                   src="/lovable-uploads/cced7c01-8b9d-4258-96e7-c91a46a807a4.png" 
                   alt="Forward Focus Elevation" 
-                  className="h-10 w-auto"
+                  className="h-16 w-auto"
                 />
               </NavLink>
             </div>
