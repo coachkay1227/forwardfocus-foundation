@@ -603,6 +603,10 @@ export type Database = {
         }
         Returns: boolean
       }
+      create_admin_user: {
+        Args: { admin_email: string }
+        Returns: undefined
+      }
       create_user_profile: {
         Args: { p_email: string; p_user_id: string }
         Returns: undefined
@@ -654,6 +658,10 @@ export type Database = {
           team_id: string | null
           updated_at: string
         }
+      }
+      validate_admin_access_pattern: {
+        Args: Record<PropertyKey, never>
+        Returns: boolean
       }
       validate_contact_input: {
         Args: { p_email?: string; p_name: string; p_phone?: string }
