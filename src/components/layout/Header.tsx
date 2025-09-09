@@ -9,28 +9,37 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { CrisisEmergencyBot } from "@/components/ai/CrisisEmergencyBot";
-
-const linkCls = ({ isActive }: { isActive?: boolean } | any) =>
-  isActive ? "text-primary font-medium" : "text-foreground/80 hover:text-foreground";
-
+const linkCls = ({
+  isActive
+}: {
+  isActive?: boolean;
+} | any) => isActive ? "text-primary font-medium" : "text-foreground/80 hover:text-foreground";
 interface HeaderProps {
   showUtility?: boolean;
   showCrisis?: boolean;
 }
-
-const Header = ({ showUtility = true, showCrisis = true }: HeaderProps) => {
-  const { user, signOut } = useAuth();
+const Header = ({
+  showUtility = true,
+  showCrisis = true
+}: HeaderProps) => {
+  const {
+    user,
+    signOut
+  } = useAuth();
   const location = useLocation();
   const [open, setOpen] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
   const [hasScrolled, setHasScrolled] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-
   useEffect(() => {
     const checkAdminStatus = async () => {
       if (!user) return setIsAdmin(false);
       try {
-        const { data } = await supabase.rpc("is_user_admin", { user_id: user.id });
+        const {
+          data
+        } = await supabase.rpc("is_user_admin", {
+          user_id: user.id
+        });
         setIsAdmin(Boolean(data));
       } catch (e) {
         console.error("Error checking admin status:", e);
@@ -38,7 +47,6 @@ const Header = ({ showUtility = true, showCrisis = true }: HeaderProps) => {
       }
     };
     checkAdminStatus();
-
     const handleScroll = () => {
       setHasScrolled(window.scrollY > 0);
     };
@@ -50,7 +58,6 @@ const Header = ({ showUtility = true, showCrisis = true }: HeaderProps) => {
   if (location.pathname === '/auth') {
     return null;
   }
-
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchQuery.trim()) {
@@ -58,9 +65,7 @@ const Header = ({ showUtility = true, showCrisis = true }: HeaderProps) => {
       window.location.href = `/search?q=${encodeURIComponent(searchQuery)}`;
     }
   };
-
-  return (
-    <header className="sticky top-0 z-50 bg-white border-b">
+  return <header className="sticky top-0 z-50 bg-white border-b">
       {/* Crisis Ribbon - removed */}
 
       {/* Top Utility Bar - removed, replaced with crisis popup */}
@@ -73,11 +78,7 @@ const Header = ({ showUtility = true, showCrisis = true }: HeaderProps) => {
             <div className="md:hidden">
               <Sheet open={open} onOpenChange={setOpen}>
                 <SheetTrigger asChild>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="p-2"
-                  >
+                  <Button variant="ghost" size="sm" className="p-2">
                     <Menu className="h-5 w-5" />
                   </Button>
                 </SheetTrigger>
@@ -85,8 +86,7 @@ const Header = ({ showUtility = true, showCrisis = true }: HeaderProps) => {
                   <SheetTitle className="font-heading">Menu</SheetTitle>
                   <div className="py-4 space-y-3">
                     {/* Mobile Help Text */}
-                    {showUtility && (
-                      <div className="px-4 text-sm text-muted-foreground border-b border-border pb-3">
+                    {showUtility && <div className="px-4 text-sm text-muted-foreground border-b border-border pb-3">
                         <Phone className="h-4 w-4 inline mr-2" />
                         Need help? Call{" "}
                         <a href="tel:211" className="text-primary hover:underline font-medium">
@@ -96,44 +96,32 @@ const Header = ({ showUtility = true, showCrisis = true }: HeaderProps) => {
                         <a href="tel:988" className="text-primary hover:underline font-medium">
                           988
                         </a>
-                      </div>
-                    )}
+                      </div>}
 
                     {/* Mobile Auth */}
-                    {user ? (
-                      <>
+                    {user ? <>
                         <div className="flex items-center gap-2 py-2 text-sm text-muted-foreground border-b border-border pb-3">
                           <User className="h-4 w-4" />
                           <span className="truncate">{user.email}</span>
                         </div>
-                        {isAdmin && (
-                          <Button variant="ghost" size="sm" asChild className="justify-start w-full">
+                        {isAdmin && <Button variant="ghost" size="sm" asChild className="justify-start w-full">
                             <NavLink to="/admin" onClick={() => setOpen(false)}>Admin Dashboard</NavLink>
-                          </Button>
-                        )}
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={() => {
-                            signOut();
-                            setOpen(false);
-                          }}
-                          className="justify-start w-full"
-                        >
+                          </Button>}
+                        <Button variant="ghost" size="sm" onClick={() => {
+                      signOut();
+                      setOpen(false);
+                    }} className="justify-start w-full">
                           <LogOut className="mr-2 h-4 w-4" />
                           Sign Out
                         </Button>
-                      </>
-                    ) : (
-                      <div className="flex flex-col space-y-2 px-4">
+                      </> : <div className="flex flex-col space-y-2 px-4">
                         <Button variant="ghost" size="sm" asChild className="justify-start">
                           <NavLink to="/auth" onClick={() => setOpen(false)}>Sign In</NavLink>
                         </Button>
                         <Button variant="outline" size="sm" asChild className="justify-start">
                           <NavLink to="/auth?mode=register" onClick={() => setOpen(false)}>Register</NavLink>
                         </Button>
-                      </div>
-                    )}
+                      </div>}
 
                     {/* Mobile Language - removed */}
                   </div>
@@ -144,11 +132,7 @@ const Header = ({ showUtility = true, showCrisis = true }: HeaderProps) => {
             {/* Left Brand */}
             <div className="flex items-center md:flex-1">
               <NavLink to="/" className="flex items-center">
-                <img 
-                  src="/lovable-uploads/cced7c01-8b9d-4258-96e7-c91a46a807a4.png" 
-                  alt="Forward Focus Elevation" 
-                  className="h-16 w-auto"
-                />
+                
               </NavLink>
             </div>
 
@@ -160,8 +144,7 @@ const Header = ({ showUtility = true, showCrisis = true }: HeaderProps) => {
               {/* Crisis Emergency Button - moved to floating position */}
 
               {/* Auth Buttons */}
-              {user ? (
-                <DropdownMenu>
+              {user ? <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <Button variant="ghost" size="sm">
                       <User className="mr-2 h-4 w-4" />
@@ -169,27 +152,22 @@ const Header = ({ showUtility = true, showCrisis = true }: HeaderProps) => {
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end" className="z-[60]">
-                    {isAdmin && (
-                      <DropdownMenuItem asChild>
+                    {isAdmin && <DropdownMenuItem asChild>
                         <NavLink to="/admin">Admin Dashboard</NavLink>
-                      </DropdownMenuItem>
-                    )}
+                      </DropdownMenuItem>}
                     <DropdownMenuItem onClick={signOut}>
                       <LogOut className="mr-2 h-4 w-4" />
                       Sign Out
                     </DropdownMenuItem>
                   </DropdownMenuContent>
-                </DropdownMenu>
-              ) : (
-                <div className="hidden md:flex items-center space-x-2">
+                </DropdownMenu> : <div className="hidden md:flex items-center space-x-2">
                   <Button variant="ghost" size="sm" asChild>
                     <NavLink to="/auth">Sign In</NavLink>
                   </Button>
                   <Button variant="outline" size="sm" asChild>
                     <NavLink to="/auth?mode=register">Register</NavLink>
                   </Button>
-                </div>
-              )}
+                </div>}
 
               {/* Support CTA */}
               <Button size="sm" asChild className="bg-primary hover:bg-primary/90">
@@ -200,8 +178,6 @@ const Header = ({ showUtility = true, showCrisis = true }: HeaderProps) => {
         </div>
       </div>
 
-    </header>
-  );
+    </header>;
 };
-
 export default Header;
