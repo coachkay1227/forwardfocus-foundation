@@ -8,6 +8,7 @@ import { toast } from "@/components/ui/sonner";
 import { useStateContext } from "@/contexts/StateContext";
 import AIResourceDiscovery from "@/components/ai/AIResourceDiscovery";
 import StateModal from "@/components/ui/StateModal";
+import { EmergencySafetySystem } from "@/components/safety/EmergencySafetySystem";
 import { STATES } from "@/data/states";
 import testimonialSarah from "@/assets/testimonial-sarah.jpg";
 import testimonialMichael from "@/assets/testimonial-michael.jpg";
@@ -61,15 +62,8 @@ const Index = () => {
 
   return (
     <main id="main" className="min-h-screen">
-      {/* Emergency Banner */}
-      <div className="bg-destructive text-destructive-foreground py-3 text-center font-medium shadow-sm">
-        <div className="container flex items-center justify-center gap-2">
-          <Shield className="h-4 w-4" aria-hidden />
-          <span>
-            CRISIS? Call 911 • Crisis Support: 988 • Text HOME to 741741
-          </span>
-        </div>
-      </div>
+      {/* Emergency Safety System */}
+      <EmergencySafetySystem />
 
       {/* Hero */}
       <section className="relative isolate min-h-[70vh] md:min-h-[60vh] grid place-items-center">
