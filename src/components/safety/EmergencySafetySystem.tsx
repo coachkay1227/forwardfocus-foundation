@@ -194,17 +194,26 @@ export const EmergencySafetySystem = () => {
           )}
           
           {/* Embedded kebab menu inside the pill */}
-          <button
+          <div
             onClick={(e) => {
               e.stopPropagation();
               handleTripleTap();
               setIsSheetOpen(!isSheetOpen);
             }}
-            className="absolute right-2 top-1/2 -translate-y-1/2 w-7 h-7 rounded-full bg-slate-900 text-white border border-white/20 shadow-lg flex items-center justify-center text-sm font-bold hover:bg-slate-800 hover:saturate-110 focus:outline-2 focus:outline-white/45 focus:outline-offset-2 transition-all"
+            className="absolute right-2 top-1/2 -translate-y-1/2 w-7 h-7 rounded-full bg-slate-900 text-white border border-white/20 shadow-lg flex items-center justify-center text-sm font-bold hover:bg-slate-800 hover:saturate-110 focus:outline-2 focus:outline-white/45 focus:outline-offset-2 transition-all cursor-pointer"
+            role="button"
+            tabIndex={0}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                handleTripleTap();
+                setIsSheetOpen(!isSheetOpen);
+              }
+            }}
             aria-label="Open emergency actions"
           >
             ⋮
-          </button>
+          </div>
         </Button>
       </div>
 

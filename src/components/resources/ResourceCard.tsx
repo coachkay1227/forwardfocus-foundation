@@ -1,7 +1,7 @@
 import { Phone, MapPin, Bookmark, Flag, ShieldCheck, Users, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { toast } from "@/components/ui/use-toast";
+import { toast } from "@/hooks/use-toast";
 import type { Resource } from "@/data/resources-ohio";
 
 const ResourceCard = ({ resource }: { resource: Resource }) => {
