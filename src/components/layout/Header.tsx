@@ -95,8 +95,6 @@ const Header = ({
                       </Button>
                         <a 
                           href="https://b16be8db-8545-4fed-8383-ee8bee4588c1.sandbox.lovable.dev/victim-services" 
-                          target="_blank" 
-                          rel="noopener noreferrer"
                           className="justify-start w-full text-left px-2 py-2 text-sm font-medium text-black hover:bg-muted rounded-md"
                           onClick={() => setOpen(false)}
                         >
@@ -156,8 +154,6 @@ const Header = ({
               <NavLink to="/learn-grow" className={linkCls}>Join Learning Community</NavLink>
               <a 
                 href="https://b16be8db-8545-4fed-8383-ee8bee4588c1.sandbox.lovable.dev/victim-services" 
-                target="_blank" 
-                rel="noopener noreferrer"
                 className="text-black hover:text-black/80"
               >
                 Healing & Safety
