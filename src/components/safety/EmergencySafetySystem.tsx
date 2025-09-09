@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { X, Phone, MessageCircle, MapPin, MessageSquare, ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import AIResourceDiscovery from "@/components/ai/AIResourceDiscovery";
 
 const EMERGENCY = "911";
 const MENTAL = "988";
@@ -10,6 +11,7 @@ export const EmergencySafetySystem = () => {
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const [isLabelVisible, setIsLabelVisible] = useState(true);
   const [ringProgress, setRingProgress] = useState(0);
+  const [showAIDiscovery, setShowAIDiscovery] = useState(false);
   
   const longPressRef = useRef<number | null>(null);
   const startTimeRef = useRef<number>(0);
@@ -102,13 +104,8 @@ export const EmergencySafetySystem = () => {
         }
         break;
       case "chat":
-        // Try to find existing chat button or redirect to contact
-        const chatButton = document.querySelector("[data-chat-launch]") || document.querySelector("#lovable-chat-launch");
-        if (chatButton && 'click' in chatButton) {
-          (chatButton as HTMLElement).click();
-        } else {
-          window.location.assign("/contact");
-        }
+        // Open AI Navigator instead of trying to find chat button
+        setShowAIDiscovery(true);
         break;
       case "exit":
         window.location.assign("https://www.google.com");
@@ -379,7 +376,15 @@ export const EmergencySafetySystem = () => {
               }
             }
           `}
-        </style>
+      </style>
+      )}
+
+      {/* AI Resource Discovery Modal */}
+      {showAIDiscovery && (
+        <AIResourceDiscovery 
+          isOpen={showAIDiscovery} 
+          onClose={() => setShowAIDiscovery(false)} 
+        />
       )}
     </>
   );
