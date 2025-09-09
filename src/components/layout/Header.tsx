@@ -9,7 +9,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { CrisisEmergencyBot } from "@/components/ai/CrisisEmergencyBot";
-import { FloatingEmergencyPhone } from "@/components/ui/FloatingEmergencyPhone";
 
 const linkCls = ({ isActive }: { isActive?: boolean } | any) =>
   isActive ? "text-primary font-medium" : "text-foreground/80 hover:text-foreground";
@@ -206,8 +205,6 @@ const Header = ({ showUtility = true, showCrisis = true }: HeaderProps) => {
         </div>
       </div>
 
-      {/* Floating Emergency Phone Chatbot */}
-      <FloatingEmergencyPhone />
     </header>
   );
 };
