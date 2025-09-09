@@ -91,7 +91,7 @@ const Header = ({
                         <NavLink to="/" onClick={() => setOpen(false)}>Home</NavLink>
                       </Button>
                       <Button variant="ghost" size="sm" asChild className="justify-start w-full">
-                        <NavLink to="/learn-grow" onClick={() => setOpen(false)}>Join Learning Community</NavLink>
+                        <NavLink to="/learn" onClick={() => setOpen(false)}>Join Learning Community</NavLink>
                       </Button>
                         <a 
                           href="https://b16be8db-8545-4fed-8383-ee8bee4588c1.sandbox.lovable.dev/victim-services" 
@@ -151,7 +151,7 @@ const Header = ({
             {/* Main Navigation - Desktop */}
             <nav className="hidden md:flex main-nav space-x-8">
               <NavLink to="/" className={linkCls}>Home</NavLink>
-              <NavLink to="/learn-grow" className={linkCls}>Join Learning Community</NavLink>
+              <NavLink to="/learn" className={linkCls}>Join Learning Community</NavLink>
               <a 
                 href="https://b16be8db-8545-4fed-8383-ee8bee4588c1.sandbox.lovable.dev/victim-services" 
                 className="text-black hover:text-black/80"
