@@ -100,7 +100,7 @@ const Header = ({
                           className="justify-start w-full text-left px-2 py-2 text-sm font-medium text-black hover:bg-muted rounded-md"
                           onClick={() => setOpen(false)}
                         >
-                          Healing & Safety Hub
+                          Healing & Safety
                         </a>
                       <Button variant="ghost" size="sm" asChild className="justify-start w-full">
                         <NavLink to="/submit-referral" onClick={() => setOpen(false)}>Submit Referral</NavLink>
@@ -160,7 +160,7 @@ const Header = ({
                 rel="noopener noreferrer"
                 className="text-black hover:text-black/80"
               >
-                Healing & Safety Hub
+                Healing & Safety
               </a>
               <NavLink to="/submit-referral" className={linkCls}>Submit Referral</NavLink>
               <NavLink to="/partners" className={linkCls}>Partner Portal</NavLink>
