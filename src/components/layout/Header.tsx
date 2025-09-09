@@ -143,15 +143,12 @@ const Header = ({ showUtility = true, showCrisis = true }: HeaderProps) => {
 
             {/* Left Brand */}
             <div className="flex items-center md:flex-1">
-              <NavLink to="/" className="flex items-center space-x-3">
-                <div className="hidden sm:block">
-                  <h1 className="text-xl font-bold text-primary">
-                    Forward Focus Elevation
-                  </h1>
-                  <p className="text-xs text-muted-foreground -mt-1">
-                    Empowering Communities
-                  </p>
-                </div>
+              <NavLink to="/" className="flex items-center">
+                <img 
+                  src="/lovable-uploads/cced7c01-8b9d-4258-96e7-c91a46a807a4.png" 
+                  alt="Forward Focus Elevation" 
+                  className="h-10 w-auto"
+                />
               </NavLink>
             </div>
 
