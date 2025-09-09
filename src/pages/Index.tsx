@@ -264,7 +264,7 @@ const Index = () => {
             Choose Your Path Forward
           </h2>
 
-        <div className="grid gap-8 md:grid-cols-2 max-w-5xl mx-auto">
+        <div className="grid gap-8 md:grid-cols-2 max-w-5xl mx-auto items-stretch">
           <Card className="border-2 border-primary/20 bg-white shadow-lg hover:shadow-xl transition-all duration-300 h-full">
             <CardHeader className="pb-6">
               <div className="flex items-start gap-4">
