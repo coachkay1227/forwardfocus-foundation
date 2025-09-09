@@ -93,15 +93,11 @@ const Header = ({
                       <Button variant="ghost" size="sm" asChild className="justify-start w-full">
                         <NavLink to="/learn" onClick={() => setOpen(false)}>Join Learning Community</NavLink>
                       </Button>
-                        <a 
-                          href="https://b16be8db-8545-4fed-8383-ee8bee4588c1.sandbox.lovable.dev/victim-services" 
-                          className="justify-start w-full text-left px-2 py-2 text-sm font-medium text-black hover:bg-muted rounded-md"
-                          onClick={() => setOpen(false)}
-                        >
+                        <a href="https://b16be8db-8545-4fed-8383-ee8bee4588c1.sandbox.lovable.dev/victim-services" className="justify-start w-full text-left px-2 py-2 text-sm font-medium text-black hover:bg-muted rounded-md" onClick={() => setOpen(false)}>
                           Healing & Safety
                         </a>
                       <Button variant="ghost" size="sm" asChild className="justify-start w-full">
-                        <NavLink to="/partners/submit-referral" onClick={() => setOpen(false)}>Submit Referral</NavLink>
+                        <NavLink to="/submit-referral" onClick={() => setOpen(false)}>Submit Referral</NavLink>
                       </Button>
                       <Button variant="ghost" size="sm" asChild className="justify-start w-full">
                         <NavLink to="/partners" onClick={() => setOpen(false)}>Partner Portal</NavLink>
@@ -140,11 +136,7 @@ const Header = ({
             {/* Logo */}
             <div className="logo">
               <NavLink to="/" className="flex items-center">
-                <img 
-                  src="/lovable-uploads/cced7c01-8b9d-4258-96e7-c91a46a807a4.png" 
-                  alt="Forward Focus Elevation" 
-                  className="h-16 w-auto"
-                />
+                
               </NavLink>
             </div>
 
@@ -152,13 +144,10 @@ const Header = ({
             <nav className="hidden md:flex main-nav space-x-8">
               <NavLink to="/" className={linkCls}>Home</NavLink>
               <NavLink to="/learn" className={linkCls}>Join Learning Community</NavLink>
-              <a 
-                href="https://b16be8db-8545-4fed-8383-ee8bee4588c1.sandbox.lovable.dev/victim-services" 
-                className="text-black hover:text-black/80"
-              >
+              <a href="https://b16be8db-8545-4fed-8383-ee8bee4588c1.sandbox.lovable.dev/victim-services" className="text-black hover:text-black/80">
                 Healing & Safety
               </a>
-              <NavLink to="/partners/submit-referral" className={linkCls}>Submit Referral</NavLink>
+              <NavLink to="/submit-referral" className={linkCls}>Submit Referral</NavLink>
               <NavLink to="/partners" className={linkCls}>Partner Portal</NavLink>
             </nav>
 
