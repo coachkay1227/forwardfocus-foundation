@@ -201,58 +201,94 @@ export const EmergencySafetySystem = () => {
       {/* Backdrop and Sheet */}
       {isSheetOpen && (
         <div 
-          className="fixed inset-0 bg-black/45 z-[10000] transition-opacity duration-200"
+          className="fixed inset-0 bg-black/20 backdrop-blur-sm z-[10000] transition-all duration-300"
           onClick={() => setIsSheetOpen(false)}
         >
           <div 
-            className="absolute right-4 bottom-20 w-80 max-w-[calc(100vw-2rem)] bg-background rounded-2xl p-3 grid grid-cols-2 gap-2 animate-scale-in"
+            className="absolute right-4 bottom-20 w-80 max-w-[calc(100vw-2rem)] bg-background/95 backdrop-blur-md rounded-3xl p-4 grid grid-cols-2 gap-3 animate-slide-in-right shadow-2xl border border-border/20 ring-1 ring-white/10"
             onClick={(e) => e.stopPropagation()}
+            style={{ 
+              animation: 'slideInUp 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+              animationFillMode: 'both'
+            }}
           >
             <Button
               onClick={() => handleEmergencyAction("call")}
-              className="bg-destructive hover:bg-destructive/90 text-destructive-foreground flex items-center gap-2 h-auto py-3 text-sm font-semibold"
+              className="group relative overflow-hidden bg-gradient-to-br from-red-500 to-red-700 hover:from-red-600 hover:to-red-800 text-white flex items-center gap-3 h-auto py-4 px-3 text-sm font-semibold rounded-2xl transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-red-500/25"
             >
-              📞 Call {EMERGENCY}
+              <span className="text-lg">📞</span>
+              <div className="text-left leading-tight">
+                <div>Call</div>
+                <div className="text-xs opacity-90">{EMERGENCY}</div>
+              </div>
+              <div className="absolute inset-0 bg-white/20 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700 skew-x-12"></div>
             </Button>
             
             <Button
               onClick={() => handleEmergencyAction("mh")}
-              className="bg-orange-600 hover:bg-orange-700 text-white flex items-center gap-2 h-auto py-3 text-sm font-semibold"
+              className="group relative overflow-hidden bg-gradient-to-br from-orange-500 to-amber-600 hover:from-orange-600 hover:to-amber-700 text-white flex items-center gap-3 h-auto py-4 px-3 text-sm font-semibold rounded-2xl transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-orange-500/25"
             >
-              🧠 Mental Health {MENTAL}
+              <span className="text-lg">🧠</span>
+              <div className="text-left leading-tight">
+                <div>Mental</div>
+                <div className="text-xs opacity-90">{MENTAL}</div>
+              </div>
+              <div className="absolute inset-0 bg-white/20 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700 skew-x-12"></div>
             </Button>
             
             <Button
               onClick={() => handleEmergencyAction("sms")}
-              className="bg-blue-600 hover:bg-blue-700 text-white flex items-center gap-2 h-auto py-3 text-sm font-semibold"
+              className="group relative overflow-hidden bg-gradient-to-br from-blue-500 to-blue-700 hover:from-blue-600 hover:to-blue-800 text-white flex items-center gap-3 h-auto py-4 px-3 text-sm font-semibold rounded-2xl transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-blue-500/25"
             >
-              💬 SMS Help
+              <span className="text-lg">💬</span>
+              <div className="text-left leading-tight">
+                <div>SMS</div>
+                <div className="text-xs opacity-90">Help</div>
+              </div>
+              <div className="absolute inset-0 bg-white/20 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700 skew-x-12"></div>
             </Button>
             
             <Button
               onClick={() => handleEmergencyAction("loc")}
-              className="bg-emerald-600 hover:bg-emerald-700 text-white flex items-center gap-2 h-auto py-3 text-sm font-semibold"
+              className="group relative overflow-hidden bg-gradient-to-br from-emerald-500 to-green-600 hover:from-emerald-600 hover:to-green-700 text-white flex items-center gap-3 h-auto py-4 px-3 text-sm font-semibold rounded-2xl transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-emerald-500/25"
             >
-              📍 Share Location
+              <span className="text-lg">📍</span>
+              <div className="text-left leading-tight">
+                <div>Share</div>
+                <div className="text-xs opacity-90">Location</div>
+              </div>
+              <div className="absolute inset-0 bg-white/20 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700 skew-x-12"></div>
             </Button>
             
             <Button
               onClick={() => handleEmergencyAction("chat")}
-              className="bg-indigo-600 hover:bg-indigo-700 text-white flex items-center gap-2 h-auto py-3 text-sm font-semibold"
+              className="group relative overflow-hidden bg-gradient-to-br from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white flex items-center gap-3 h-auto py-4 px-3 text-sm font-semibold rounded-2xl transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-indigo-500/25"
             >
-              🛟 Emergency Chat
+              <span className="text-lg">🛟</span>
+              <div className="text-left leading-tight">
+                <div>Emergency</div>
+                <div className="text-xs opacity-90">Chat</div>
+              </div>
+              <div className="absolute inset-0 bg-white/20 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700 skew-x-12"></div>
             </Button>
             
             <Button
               onClick={() => handleEmergencyAction("exit")}
-              className="bg-gray-800 hover:bg-gray-900 text-white flex items-center gap-2 h-auto py-3 text-sm font-semibold"
+              className="group relative overflow-hidden bg-gradient-to-br from-slate-700 to-slate-900 hover:from-slate-800 hover:to-black text-white flex items-center gap-3 h-auto py-4 px-3 text-sm font-semibold rounded-2xl transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-slate-500/25"
             >
-              🚪 Quick Exit
+              <span className="text-lg">🚪</span>
+              <div className="text-left leading-tight">
+                <div>Quick</div>
+                <div className="text-xs opacity-90">Exit</div>
+              </div>
+              <div className="absolute inset-0 bg-white/20 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700 skew-x-12"></div>
             </Button>
             
-            <p className="col-span-2 text-center text-xs text-muted-foreground mt-1">
-              Long-press to auto-dial • Triple-tap to toggle label
-            </p>
+            <div className="col-span-2 text-center mt-2 pt-3 border-t border-border/30">
+              <p className="text-xs text-muted-foreground/80 leading-relaxed">
+                Long-press to auto-dial • Triple-tap to toggle label
+              </p>
+            </div>
           </div>
         </div>
       )}
@@ -264,6 +300,16 @@ export const EmergencySafetySystem = () => {
             body { padding-top: 52px !important; }
             @media (max-width: 480px) {
               body { padding-top: 64px !important; }
+            }
+            @keyframes slideInUp {
+              0% {
+                opacity: 0;
+                transform: translateY(20px) scale(0.95);
+              }
+              100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+              }
             }
           `}
         </style>
