@@ -141,14 +141,9 @@ const Header = ({ showUtility = true, showCrisis = true }: HeaderProps) => {
               </Sheet>
             </div>
 
-            {/* Centered Brand */}
-            <div className="flex-1 flex justify-center md:justify-center">
+            {/* Left Brand */}
+            <div className="flex items-center md:flex-1">
               <NavLink to="/" className="flex items-center space-x-3">
-                <img 
-                  src="/logo.png" 
-                  alt="Forward Focus Elevation logo" 
-                  className="h-9 w-auto" 
-                />
                 <div className="hidden sm:block">
                   <h1 className="text-xl font-bold text-primary">
                     Forward Focus Elevation
@@ -159,6 +154,9 @@ const Header = ({ showUtility = true, showCrisis = true }: HeaderProps) => {
                 </div>
               </NavLink>
             </div>
+
+            {/* Spacer */}
+            <div className="flex-1 md:flex-none"></div>
 
             {/* Right Actions */}
             <div className="flex items-center space-x-2">
