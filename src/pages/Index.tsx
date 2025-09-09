@@ -277,7 +277,7 @@ const Index = () => {
           </div>
 
           {/* All 50 states in 3 columns */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-12">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-2 mb-12">
             {allStates.sort().map((state) => {
               const stateData = STATES.find(s => s.name === state);
               const isActive = stateData?.active || false;
