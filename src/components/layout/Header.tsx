@@ -124,19 +124,7 @@ const Header = ({ showUtility = true, showCrisis = true }: HeaderProps) => {
                 </div>
               </form>
 
-              {/* Right side - Language selector */}
-              <div className="hidden md:block">
-                <Select defaultValue="en">
-                  <SelectTrigger className="w-auto h-8 text-sm">
-                    <Globe className="h-4 w-4 mr-2" />
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="en">English</SelectItem>
-                    <SelectItem value="es">Español</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
+              {/* Right side - removed language selector */}
             </div>
           </div>
         </div>
@@ -212,19 +200,7 @@ const Header = ({ showUtility = true, showCrisis = true }: HeaderProps) => {
                       </div>
                     )}
 
-                    {/* Mobile Language */}
-                    <div className="px-4 border-t border-border pt-3">
-                      <Select defaultValue="en">
-                        <SelectTrigger className="w-full">
-                          <Globe className="h-4 w-4 mr-2" />
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="en">English</SelectItem>
-                          <SelectItem value="es">Español</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
+                    {/* Mobile Language - removed */}
                   </div>
                 </SheetContent>
               </Sheet>
@@ -251,19 +227,7 @@ const Header = ({ showUtility = true, showCrisis = true }: HeaderProps) => {
 
             {/* Right Actions */}
             <div className="flex items-center space-x-2">
-              {/* Desktop Language Selector */}
-              <div className="hidden lg:block">
-                <Select defaultValue="en">
-                  <SelectTrigger className="w-auto h-9">
-                    <Globe className="h-4 w-4 mr-2" />
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="en">English</SelectItem>
-                    <SelectItem value="es">Español</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
+              {/* Desktop Language Selector - removed */}
 
               {/* Auth Buttons */}
               {user ? (
