@@ -152,7 +152,7 @@ const Support = () => {
         <Separator className="mb-12" />
 
         {/* Contact and FAQ Section */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start lg:items-stretch">
           {/* Contact Form */}
           <section>
             <ContactForm 
