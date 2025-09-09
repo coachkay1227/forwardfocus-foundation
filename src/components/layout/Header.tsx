@@ -60,30 +60,7 @@ const Header = ({ showUtility = true, showCrisis = true }: HeaderProps) => {
 
   return (
     <header className="sticky top-0 z-50 bg-background border-b">
-      {/* Crisis Ribbon */}
-      {showCrisis && (
-        <div className="bg-destructive text-destructive-foreground py-2">
-          <div className="container mx-auto px-4 text-center">
-            <p className="text-sm font-medium">
-              🚨 Crisis? Call{" "}
-              <a 
-                href="tel:911" 
-                className="underline hover:no-underline font-bold"
-              >
-                911
-              </a>
-              {" "}for emergencies or{" "}
-              <a 
-                href="tel:988" 
-                className="underline hover:no-underline font-bold"
-              >
-                988
-              </a>
-              {" "}for mental health support
-            </p>
-          </div>
-        </div>
-      )}
+      {/* Crisis Ribbon - removed */}
 
       {/* Top Utility Bar */}
       {showUtility && (
