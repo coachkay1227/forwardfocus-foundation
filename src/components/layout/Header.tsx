@@ -8,6 +8,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
+import { CrisisEmergencyBot } from "@/components/ai/CrisisEmergencyBot";
 
 const linkCls = ({ isActive }: { isActive?: boolean } | any) =>
   isActive ? "text-primary font-medium" : "text-foreground/80 hover:text-foreground";
@@ -62,50 +63,7 @@ const Header = ({ showUtility = true, showCrisis = true }: HeaderProps) => {
     <header className="sticky top-0 z-50 bg-background border-b">
       {/* Crisis Ribbon - removed */}
 
-      {/* Top Utility Bar */}
-      {showUtility && (
-        <div className="bg-muted/30 border-b border-border/20">
-          <div className="container mx-auto px-4">
-            <div className="flex items-center justify-between py-2">
-              {/* Left side - Help text */}
-              <div className="hidden md:flex items-center text-sm text-muted-foreground">
-                <Phone className="h-4 w-4 mr-2" />
-                Need help now? Call{" "}
-                <a 
-                  href="tel:211" 
-                  className="mx-1 text-primary hover:underline font-medium"
-                >
-                  211
-                </a>
-                {" "}or{" "}
-                <a 
-                  href="tel:988" 
-                  className="ml-1 text-primary hover:underline font-medium"
-                >
-                  988
-                </a>
-                ...
-              </div>
-
-              {/* Center - Search */}
-              <form onSubmit={handleSearch} className="flex-1 max-w-md mx-4">
-                <div className="relative">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                  <Input
-                    type="search"
-                    placeholder="Search resources"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    className="pl-10 h-8 text-sm"
-                  />
-                </div>
-              </form>
-
-              {/* Right side - removed language selector */}
-            </div>
-          </div>
-        </div>
-      )}
+      {/* Top Utility Bar - removed, replaced with crisis popup */}
 
       {/* Main Navigation */}
       <div className="bg-background border-b border-border">
@@ -204,7 +162,15 @@ const Header = ({ showUtility = true, showCrisis = true }: HeaderProps) => {
 
             {/* Right Actions */}
             <div className="flex items-center space-x-2">
-              {/* Desktop Language Selector - removed */}
+              {/* Crisis Emergency Button */}
+              <CrisisEmergencyBot 
+                trigger={
+                  <Button variant="destructive" size="sm" className="bg-red-600 hover:bg-red-700">
+                    <Phone className="h-4 w-4 mr-2" />
+                    Need Help Now?
+                  </Button>
+                }
+              />
 
               {/* Auth Buttons */}
               {user ? (
