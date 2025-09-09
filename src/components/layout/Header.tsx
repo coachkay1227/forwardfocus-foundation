@@ -1,6 +1,6 @@
 import { NavLink, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { Menu, User, LogOut, Search, Globe } from "lucide-react";
+import { Menu, User, LogOut, Search, Globe, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
@@ -62,87 +62,131 @@ const Header = ({ showUtility = true, showCrisis = true }: HeaderProps) => {
     <header className="sticky top-0 z-50 bg-background border-b">
       {/* Crisis Ribbon */}
       {showCrisis && (
-        <div className="bg-destructive text-destructive-foreground py-2 px-4 text-center text-sm">
-          <span className="font-medium">Emergency? Call </span>
-          <a href="tel:911" className="underline hover:no-underline font-semibold">911</a>
-          <span className="mx-2">•</span>
-          <span>Crisis support: </span>
-          <a href="tel:988" className="underline hover:no-underline font-semibold">988</a>
+        <div className="bg-destructive text-destructive-foreground py-2">
+          <div className="container mx-auto px-4 text-center">
+            <p className="text-sm font-medium">
+              🚨 Crisis? Call{" "}
+              <a 
+                href="tel:911" 
+                className="underline hover:no-underline font-bold"
+              >
+                911
+              </a>
+              {" "}for emergencies or{" "}
+              <a 
+                href="tel:988" 
+                className="underline hover:no-underline font-bold"
+              >
+                988
+              </a>
+              {" "}for mental health support
+            </p>
+          </div>
         </div>
       )}
 
-      {/* Utility Bar */}
+      {/* Top Utility Bar */}
       {showUtility && (
-        <div className="bg-muted/50 border-b py-3">
-          <div className="mx-auto w-full max-w-screen-xl px-6">
-            <div className="flex items-center justify-between gap-4">
-              {/* Help Text */}
-              <div className="text-sm text-muted-foreground">
+        <div className="bg-muted/30 border-b border-border/20">
+          <div className="container mx-auto px-4">
+            <div className="flex items-center justify-between py-2">
+              {/* Left side - Help text */}
+              <div className="hidden md:flex items-center text-sm text-muted-foreground">
+                <Phone className="h-4 w-4 mr-2" />
                 Need help now? Call{" "}
-                <a href="tel:211" className="text-primary hover:underline font-medium">211</a>
+                <a 
+                  href="tel:211" 
+                  className="mx-1 text-primary hover:underline font-medium"
+                >
+                  211
+                </a>
                 {" "}or{" "}
-                <a href="tel:988" className="text-primary hover:underline font-medium">988</a>
-                <span className="hidden sm:inline"> for immediate assistance</span>
+                <a 
+                  href="tel:988" 
+                  className="ml-1 text-primary hover:underline font-medium"
+                >
+                  988
+                </a>
+                ...
               </div>
 
-              {/* Search */}
+              {/* Center - Search */}
               <form onSubmit={handleSearch} className="flex-1 max-w-md mx-4">
                 <div className="relative">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                   <Input
                     type="search"
                     placeholder="Search resources"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="pl-10 h-9 bg-background"
+                    className="pl-10 h-8 text-sm"
                   />
                 </div>
               </form>
 
-              {/* Language Select */}
-              <Select defaultValue="en">
-                <SelectTrigger className="w-auto h-9 bg-background">
-                  <Globe className="h-4 w-4 mr-2" />
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="en">English</SelectItem>
-                  <SelectItem value="es">Español</SelectItem>
-                </SelectContent>
-              </Select>
+              {/* Right side - Language selector */}
+              <div className="hidden md:block">
+                <Select defaultValue="en">
+                  <SelectTrigger className="w-auto h-8 text-sm">
+                    <Globe className="h-4 w-4 mr-2" />
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="en">English</SelectItem>
+                    <SelectItem value="es">Español</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
           </div>
         </div>
       )}
 
       {/* Main Navigation */}
-      <div className={`transition-shadow duration-300 ${hasScrolled ? 'shadow-sm' : ''}`}>
-        <div className="mx-auto w-full max-w-screen-xl px-6">
-          <div className="flex h-16 items-center justify-between">
-            {/* Left: Mobile Menu */}
+      <div className="bg-background border-b border-border">
+        <div className="container mx-auto px-4">
+          <div className="flex items-center justify-between h-16">
+            {/* Mobile menu button */}
             <div className="md:hidden">
               <Sheet open={open} onOpenChange={setOpen}>
                 <SheetTrigger asChild>
-                  <Button variant="ghost" size="icon" aria-label="Open menu">
-                    <Menu />
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="p-2"
+                  >
+                    <Menu className="h-5 w-5" />
                   </Button>
                 </SheetTrigger>
                 <SheetContent side="left" className="w-[300px]">
                   <SheetTitle className="font-heading">Menu</SheetTitle>
-                  <div className="mt-4 flex flex-col gap-3">
-                    <NavLink to="/help" onClick={() => setOpen(false)} className="py-2">Get Help Now</NavLink>
-                    <NavLink to="/victim-services" onClick={() => setOpen(false)} className="py-2">Healing Hub</NavLink>
-                    <NavLink to="/learn" onClick={() => setOpen(false)} className="py-2">Reentry</NavLink>
-                    <NavLink to="/about" onClick={() => setOpen(false)} className="py-2">About Us</NavLink>
-                    
+                  <div className="py-4 space-y-3">
+                    {/* Mobile Help Text */}
+                    {showUtility && (
+                      <div className="px-4 text-sm text-muted-foreground border-b border-border pb-3">
+                        <Phone className="h-4 w-4 inline mr-2" />
+                        Need help? Call{" "}
+                        <a href="tel:211" className="text-primary hover:underline font-medium">
+                          211
+                        </a>
+                        {" "}or{" "}
+                        <a href="tel:988" className="text-primary hover:underline font-medium">
+                          988
+                        </a>
+                      </div>
+                    )}
+
+                    {/* Mobile Auth */}
                     {user ? (
                       <>
-                        <div className="flex items-center gap-2 py-2 text-sm text-muted-foreground border-t mt-4 pt-4">
+                        <div className="flex items-center gap-2 py-2 text-sm text-muted-foreground border-b border-border pb-3">
                           <User className="h-4 w-4" />
                           <span className="truncate">{user.email}</span>
                         </div>
                         {isAdmin && (
-                          <NavLink to="/admin" onClick={() => setOpen(false)} className="py-2">Admin Dashboard</NavLink>
+                          <Button variant="ghost" size="sm" asChild className="justify-start w-full">
+                            <NavLink to="/admin" onClick={() => setOpen(false)}>Admin Dashboard</NavLink>
+                          </Button>
                         )}
                         <Button
                           variant="ghost"
@@ -151,45 +195,77 @@ const Header = ({ showUtility = true, showCrisis = true }: HeaderProps) => {
                             signOut();
                             setOpen(false);
                           }}
-                          className="justify-start px-0"
+                          className="justify-start w-full"
                         >
                           <LogOut className="mr-2 h-4 w-4" />
                           Sign Out
                         </Button>
                       </>
                     ) : (
-                      <div className="flex flex-col gap-2 border-t mt-4 pt-4">
-                        <NavLink to="/auth?mode=register" onClick={() => setOpen(false)} className="py-2">Register</NavLink>
-                        <NavLink to="/auth" onClick={() => setOpen(false)} className="py-2">Sign In</NavLink>
+                      <div className="flex flex-col space-y-2 px-4">
+                        <Button variant="ghost" size="sm" asChild className="justify-start">
+                          <NavLink to="/auth" onClick={() => setOpen(false)}>Sign In</NavLink>
+                        </Button>
+                        <Button variant="outline" size="sm" asChild className="justify-start">
+                          <NavLink to="/auth?mode=register" onClick={() => setOpen(false)}>Register</NavLink>
+                        </Button>
                       </div>
                     )}
-                    
-                    <Button asChild className="mt-2" variant="default">
-                      <NavLink to="/support" onClick={() => setOpen(false)}>Support</NavLink>
-                    </Button>
+
+                    {/* Mobile Language */}
+                    <div className="px-4 border-t border-border pt-3">
+                      <Select defaultValue="en">
+                        <SelectTrigger className="w-full">
+                          <Globe className="h-4 w-4 mr-2" />
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="en">English</SelectItem>
+                          <SelectItem value="es">Español</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
                   </div>
                 </SheetContent>
               </Sheet>
             </div>
 
-            {/* Center: Brand */}
-            <div className="flex items-center justify-center flex-1 md:flex-none">
-              <NavLink to="/" className="flex items-center gap-3">
-                <img src="/logo.png" alt="Forward Focus Elevation logo" className="h-9 w-auto" />
-                <span className="font-heading text-lg font-bold">Forward Focus Elevation</span>
+            {/* Centered Brand */}
+            <div className="flex-1 flex justify-center md:justify-center">
+              <NavLink to="/" className="flex items-center space-x-3">
+                <img 
+                  src="/logo.png" 
+                  alt="Forward Focus Elevation logo" 
+                  className="h-9 w-auto" 
+                />
+                <div className="hidden sm:block">
+                  <h1 className="text-xl font-bold text-primary">
+                    Forward Focus Elevation
+                  </h1>
+                  <p className="text-xs text-muted-foreground -mt-1">
+                    Empowering Communities
+                  </p>
+                </div>
               </NavLink>
             </div>
 
-            {/* Desktop Navigation */}
-            <nav className="hidden md:flex items-center gap-8 absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2">
-              <NavLink to="/help" className={linkCls}>Get Help Now</NavLink>
-              <NavLink to="/victim-services" className={linkCls}>Healing Hub</NavLink>
-              <NavLink to="/learn" className={linkCls}>Reentry</NavLink>
-              <NavLink to="/about" className={linkCls}>About Us</NavLink>
-            </nav>
+            {/* Right Actions */}
+            <div className="flex items-center space-x-2">
+              {/* Desktop Language Selector */}
+              <div className="hidden lg:block">
+                <Select defaultValue="en">
+                  <SelectTrigger className="w-auto h-9">
+                    <Globe className="h-4 w-4 mr-2" />
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="en">English</SelectItem>
+                    <SelectItem value="es">Español</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
 
-            {/* Right: Auth & Actions */}
-            <div className="hidden md:flex items-center gap-4">
+              {/* Auth Buttons */}
               {user ? (
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
@@ -211,18 +287,19 @@ const Header = ({ showUtility = true, showCrisis = true }: HeaderProps) => {
                   </DropdownMenuContent>
                 </DropdownMenu>
               ) : (
-                <>
-                  <NavLink to="/auth" className="text-sm text-foreground/80 hover:text-foreground">
-                    Sign In
-                  </NavLink>
-                  <Button asChild size="sm" variant="outline">
+                <div className="hidden md:flex items-center space-x-2">
+                  <Button variant="ghost" size="sm" asChild>
+                    <NavLink to="/auth">Sign In</NavLink>
+                  </Button>
+                  <Button variant="outline" size="sm" asChild>
                     <NavLink to="/auth?mode=register">Register</NavLink>
                   </Button>
-                </>
+                </div>
               )}
-              
-              <Button asChild size="sm" variant="default">
-                <NavLink to="/support">Support</NavLink>
+
+              {/* Support CTA */}
+              <Button size="sm" asChild className="bg-primary hover:bg-primary/90">
+                <NavLink to="/support">Get Support</NavLink>
               </Button>
             </div>
           </div>
