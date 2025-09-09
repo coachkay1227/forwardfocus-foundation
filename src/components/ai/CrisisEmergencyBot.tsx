@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Phone, MessageSquare, X, Send, Mic, MicOff } from "lucide-react";
+import { Phone, MessageSquare, X, Send, Mic, MicOff, Bot, HeartHandshake, Users } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Badge } from "@/components/ui/badge";
@@ -50,9 +50,9 @@ export const CrisisEmergencyBot = ({ trigger }: CrisisEmergencyBotProps) => {
     try {
       setIsLoading(true);
       
-      // Initialize with crisis support greeting
+      // Initialize with crisis support greeting and features
       addMessage(
-        "🚨 Crisis Support AI Assistant\n\nI'm here to help you through this difficult time. Please remember:\n\n• For emergencies: Call 911\n• For crisis support: Call 988\n• For text support: Text HOME to 741741\n\nHow can I support you right now?",
+        "🚨 Crisis Support AI Assistant\n\nI'm here to help you through this difficult time with:\n\n🤖 AI-Enhanced Guidance - Smart technology that understands justice-impacted experiences\n\n💝 Trauma-Informed Care - Every interaction designed with safety, trust, and empowerment\n\n👥 Income-Based Support - Accessible life coaching and support regardless of financial situation\n\nIMPORTANT CRISIS NUMBERS:\n• For emergencies: Call 911\n• For crisis support: Call 988\n• For text support: Text HOME to 741741\n\nHow can I support you right now?",
         false
       );
       
