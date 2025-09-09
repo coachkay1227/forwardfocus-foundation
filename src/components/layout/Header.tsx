@@ -93,9 +93,15 @@ const Header = ({
                       <Button variant="ghost" size="sm" asChild className="justify-start w-full">
                         <NavLink to="/learn-grow" onClick={() => setOpen(false)}>Join Learning Community</NavLink>
                       </Button>
-                      <Button variant="ghost" size="sm" asChild className="justify-start w-full">
-                        <NavLink to="/get-help-now" onClick={() => setOpen(false)}>Healing & Safety Hub</NavLink>
-                      </Button>
+                        <a 
+                          href="https://lovable.dev/projects/b16be8db-8545-4fed-8383-ee8bee4588c1" 
+                          target="_blank" 
+                          rel="noopener noreferrer"
+                          className="justify-start w-full text-left px-2 py-2 text-sm font-medium text-black hover:bg-muted rounded-md"
+                          onClick={() => setOpen(false)}
+                        >
+                          Healing & Safety Hub
+                        </a>
                       <Button variant="ghost" size="sm" asChild className="justify-start w-full">
                         <NavLink to="/submit-referral" onClick={() => setOpen(false)}>Submit Referral</NavLink>
                       </Button>
@@ -148,7 +154,14 @@ const Header = ({
             <nav className="hidden md:flex main-nav space-x-8">
               <NavLink to="/" className={linkCls}>Home</NavLink>
               <NavLink to="/learn-grow" className={linkCls}>Join Learning Community</NavLink>
-              <NavLink to="/get-help-now" className={linkCls}>Healing & Safety Hub</NavLink>
+              <a 
+                href="https://lovable.dev/projects/b16be8db-8545-4fed-8383-ee8bee4588c1" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-black hover:text-black/80"
+              >
+                Healing & Safety Hub
+              </a>
               <NavLink to="/submit-referral" className={linkCls}>Submit Referral</NavLink>
               <NavLink to="/partners" className={linkCls}>Partner Portal</NavLink>
             </nav>
