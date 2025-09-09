@@ -79,24 +79,27 @@ const Header = ({
               <Sheet open={open} onOpenChange={setOpen}>
                 <SheetTrigger asChild>
                   <Button variant="ghost" size="sm" className="p-2">
-                    <Menu className="h-5 w-5" />
+                    <Menu className="h-5 w-5 text-black" />
                   </Button>
                 </SheetTrigger>
                 <SheetContent side="left" className="w-[300px]">
                   <SheetTitle className="font-heading">Menu</SheetTitle>
                   <div className="py-4 space-y-3">
-                    {/* Mobile Help Text */}
-                    {showUtility && <div className="px-4 text-sm text-muted-foreground border-b border-border pb-3">
-                        <Phone className="h-4 w-4 inline mr-2" />
-                        Need help? Call{" "}
-                        <a href="tel:211" className="text-primary hover:underline font-medium">
-                          211
-                        </a>
-                        {" "}or{" "}
-                        <a href="tel:988" className="text-primary hover:underline font-medium">
-                          988
-                        </a>
-                      </div>}
+                    {/* Mobile Navigation */}
+                    <nav className="space-y-2">
+                      <Button variant="ghost" size="sm" asChild className="justify-start w-full">
+                        <NavLink to="/" onClick={() => setOpen(false)}>Home</NavLink>
+                      </Button>
+                      <Button variant="ghost" size="sm" asChild className="justify-start w-full">
+                        <NavLink to="/learn-grow" onClick={() => setOpen(false)}>Join Learning Community</NavLink>
+                      </Button>
+                      <Button variant="ghost" size="sm" asChild className="justify-start w-full">
+                        <NavLink to="/get-help-now" onClick={() => setOpen(false)}>Healing & Safety Hub</NavLink>
+                      </Button>
+                      <Button variant="ghost" size="sm" asChild className="justify-start w-full">
+                        <NavLink to="/submit-referral" onClick={() => setOpen(false)}>Submit Referral</NavLink>
+                      </Button>
+                    </nav>
 
                     {/* Mobile Auth */}
                     {user ? <>
@@ -122,31 +125,35 @@ const Header = ({
                           <NavLink to="/auth?mode=register" onClick={() => setOpen(false)}>Register</NavLink>
                         </Button>
                       </div>}
-
-                    {/* Mobile Language - removed */}
                   </div>
                 </SheetContent>
               </Sheet>
             </div>
 
-            {/* Left Brand */}
-            <div className="flex items-center md:flex-1">
+            {/* Logo */}
+            <div className="logo">
               <NavLink to="/" className="flex items-center">
-                
+                <img 
+                  src="/lovable-uploads/cced7c01-8b9d-4258-96e7-c91a46a807a4.png" 
+                  alt="Forward Focus Elevation" 
+                  className="h-16 w-auto"
+                />
               </NavLink>
             </div>
 
-            {/* Spacer */}
-            <div className="flex-1 md:flex-none"></div>
+            {/* Main Navigation - Desktop */}
+            <nav className="hidden md:flex main-nav space-x-8">
+              <NavLink to="/" className={linkCls}>Home</NavLink>
+              <NavLink to="/learn-grow" className={linkCls}>Join Learning Community</NavLink>
+              <NavLink to="/get-help-now" className={linkCls}>Healing & Safety Hub</NavLink>
+              <NavLink to="/submit-referral" className={linkCls}>Submit Referral</NavLink>
+            </nav>
 
-            {/* Right Actions */}
-            <div className="flex items-center space-x-2">
-              {/* Crisis Emergency Button - moved to floating position */}
-
-              {/* Auth Buttons */}
+            {/* Auth Links */}
+            <div className="auth-links flex items-center space-x-2">
               {user ? <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" size="sm">
+                    <Button variant="ghost" size="sm" className="text-black">
                       <User className="mr-2 h-4 w-4" />
                       <span className="max-w-[120px] truncate">{user.email}</span>
                     </Button>
@@ -161,16 +168,16 @@ const Header = ({
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu> : <div className="hidden md:flex items-center space-x-2">
-                  <Button variant="ghost" size="sm" asChild>
+                  <Button variant="ghost" size="sm" asChild className="text-black">
                     <NavLink to="/auth">Sign In</NavLink>
                   </Button>
-                  <Button variant="outline" size="sm" asChild>
+                  <Button variant="outline" size="sm" asChild className="text-black border-black">
                     <NavLink to="/auth?mode=register">Register</NavLink>
                   </Button>
                 </div>}
 
               {/* Support CTA */}
-              <Button size="sm" asChild className="bg-primary hover:bg-primary/90">
+              <Button size="sm" asChild className="support-link bg-primary hover:bg-primary/90 text-white">
                 <NavLink to="/support">Get Support</NavLink>
               </Button>
             </div>
