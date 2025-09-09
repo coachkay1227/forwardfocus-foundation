@@ -205,88 +205,155 @@ export const EmergencySafetySystem = () => {
           onClick={() => setIsSheetOpen(false)}
         >
           <div 
-            className="absolute right-4 bottom-20 w-80 max-w-[calc(100vw-2rem)] bg-background/95 backdrop-blur-md rounded-3xl p-4 grid grid-cols-2 gap-3 animate-slide-in-right shadow-2xl border border-border/20 ring-1 ring-white/10"
+            className="absolute right-4 bottom-20 w-80 max-w-[calc(100vw-2rem)] backdrop-blur-md rounded-3xl p-4 shadow-2xl"
             onClick={(e) => e.stopPropagation()}
             style={{ 
+              background: 'linear-gradient(to bottom right, rgba(17,24,39,.72), rgba(17,24,39,.45))',
+              border: '1px solid rgba(255,255,255,.08)',
+              boxShadow: '0 12px 30px rgba(0,0,0,.25)',
+              color: '#e5e7eb',
               animation: 'slideInUp 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
               animationFillMode: 'both'
             }}
           >
-            <Button
-              onClick={() => handleEmergencyAction("call")}
-              className="group relative overflow-hidden bg-gradient-to-br from-red-500 to-red-700 hover:from-red-600 hover:to-red-800 text-white flex items-center gap-3 h-auto py-4 px-3 text-sm font-semibold rounded-2xl transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-red-500/25"
-            >
-              <span className="text-lg">📞</span>
-              <div className="text-left leading-tight">
-                <div>Call</div>
-                <div className="text-xs opacity-90">{EMERGENCY}</div>
-              </div>
-              <div className="absolute inset-0 bg-white/20 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700 skew-x-12"></div>
-            </Button>
+            <div className="grid grid-cols-3 gap-4">
+              <button
+                onClick={() => handleEmergencyAction("call")}
+                className="flex flex-col items-center gap-3 p-2 bg-transparent border-0 cursor-pointer"
+              >
+                <span 
+                  className="w-20 h-20 rounded-full flex items-center justify-center relative transition-all duration-200 hover:translate-y-[-2px] hover:scale-105"
+                  style={{
+                    background: 'radial-gradient(120% 120% at 30% 20%, #fb7185 0%, #e11d48 55%, #7f1d1d 100%)',
+                    boxShadow: 'inset 0 -10px 24px rgba(255,255,255,.08), 0 10px 22px rgba(0,0,0,.25)'
+                  }}
+                >
+                  <svg viewBox="0 0 24 24" fill="none" className="w-7 h-7 text-white opacity-95">
+                    <path d="M22 16.92v3A2 2 0 0 1 19.82 22a19.8 19.8 0 0 1-8.63-3.07A19.5 19.5 0 0 1 3.16 9.81 19.8 19.8 0 0 1 .09 1.18 2 2 0 0 1 2.05 0h3a2 2 0 0 1 2 1.72c.12.89.31 1.76.57 2.6a2 2 0 0 1-.45 2.11L6.1 7.91a16 16 0 0 0 6 6l1.48-1.07a2 2 0 0 1 2.11-.45c.84.26 1.71.45 2.6.57A2 2 0 0 1 22 16.92Z" fill="currentColor"/>
+                  </svg>
+                </span>
+                <span className="text-center leading-tight">
+                  <strong className="block font-bold text-sm text-white">Call</strong>
+                  <em className="block font-semibold text-xs text-blue-300 opacity-90 not-italic">{EMERGENCY}</em>
+                </span>
+              </button>
+              
+              <button
+                onClick={() => handleEmergencyAction("mh")}
+                className="flex flex-col items-center gap-3 p-2 bg-transparent border-0 cursor-pointer"
+              >
+                <span 
+                  className="w-20 h-20 rounded-full flex items-center justify-center relative transition-all duration-200 hover:translate-y-[-2px] hover:scale-105"
+                  style={{
+                    background: 'radial-gradient(120% 120% at 30% 20%, #fdba74 0%, #ea580c 55%, #7c2d12 100%)',
+                    boxShadow: 'inset 0 -10px 24px rgba(255,255,255,.08), 0 10px 22px rgba(0,0,0,.25)'
+                  }}
+                >
+                  <svg viewBox="0 0 24 24" fill="none" className="w-7 h-7 text-white opacity-95">
+                    <path d="M8.5 3.5a3 3 0 0 0-3 3V9a3 3 0 0 0 3 3v6a2 2 0 0 0 2 2h1V8a4.5 4.5 0 0 0-3-4.24Z" fill="currentColor"/>
+                    <path d="M15.5 3.5a3 3 0 0 1 3 3V9a3 3 0 0 1-3 3v6a2 2 0 0 1-2 2h-1V8a4.5 4.5 0 0 1 3-4.24Z" fill="currentColor"/>
+                  </svg>
+                </span>
+                <span className="text-center leading-tight">
+                  <strong className="block font-bold text-sm text-white">Mental</strong>
+                  <em className="block font-semibold text-xs text-blue-300 opacity-90 not-italic">{MENTAL}</em>
+                </span>
+              </button>
+              
+              <button
+                onClick={() => handleEmergencyAction("sms")}
+                className="flex flex-col items-center gap-3 p-2 bg-transparent border-0 cursor-pointer"
+              >
+                <span 
+                  className="w-20 h-20 rounded-full flex items-center justify-center relative transition-all duration-200 hover:translate-y-[-2px] hover:scale-105"
+                  style={{
+                    background: 'radial-gradient(120% 120% at 30% 20%, #93c5fd 0%, #2563eb 55%, #1e3a8a 100%)',
+                    boxShadow: 'inset 0 -10px 24px rgba(255,255,255,.08), 0 10px 22px rgba(0,0,0,.25)'
+                  }}
+                >
+                  <svg viewBox="0 0 24 24" fill="none" className="w-7 h-7 text-white opacity-95">
+                    <path d="M21 15a2 2 0 0 1-2 2H9l-4 4V5a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v10Z" stroke="currentColor" strokeWidth="2" fill="none"/>
+                    <circle cx="9" cy="10" r="1.5" fill="currentColor"/>
+                    <circle cx="13" cy="10" r="1.5" fill="currentColor"/>
+                    <circle cx="17" cy="10" r="1.5" fill="currentColor"/>
+                  </svg>
+                </span>
+                <span className="text-center leading-tight">
+                  <strong className="block font-bold text-sm text-white">SMS</strong>
+                  <em className="block font-semibold text-xs text-blue-300 opacity-90 not-italic">Help</em>
+                </span>
+              </button>
+              
+              <button
+                onClick={() => handleEmergencyAction("loc")}
+                className="flex flex-col items-center gap-3 p-2 bg-transparent border-0 cursor-pointer"
+              >
+                <span 
+                  className="w-20 h-20 rounded-full flex items-center justify-center relative transition-all duration-200 hover:translate-y-[-2px] hover:scale-105"
+                  style={{
+                    background: 'radial-gradient(120% 120% at 30% 20%, #6ee7b7 0%, #059669 55%, #064e3b 100%)',
+                    boxShadow: 'inset 0 -10px 24px rgba(255,255,255,.08), 0 10px 22px rgba(0,0,0,.25)'
+                  }}
+                >
+                  <svg viewBox="0 0 24 24" fill="none" className="w-7 h-7 text-white opacity-95">
+                    <path d="M12 22s7-6.27 7-12a7 7 0 1 0-14 0c0 5.73 7 12 7 12Z" stroke="currentColor" strokeWidth="2"/>
+                    <circle cx="12" cy="10" r="3" fill="currentColor"/>
+                  </svg>
+                </span>
+                <span className="text-center leading-tight">
+                  <strong className="block font-bold text-sm text-white">Share</strong>
+                  <em className="block font-semibold text-xs text-blue-300 opacity-90 not-italic">Location</em>
+                </span>
+              </button>
+              
+              <button
+                onClick={() => handleEmergencyAction("chat")}
+                className="flex flex-col items-center gap-3 p-2 bg-transparent border-0 cursor-pointer"
+              >
+                <span 
+                  className="w-20 h-20 rounded-full flex items-center justify-center relative transition-all duration-200 hover:translate-y-[-2px] hover:scale-105"
+                  style={{
+                    background: 'radial-gradient(120% 120% at 30% 20%, #a5b4fc 0%, #4f46e5 55%, #1e1b4b 100%)',
+                    boxShadow: 'inset 0 -10px 24px rgba(255,255,255,.08), 0 10px 22px rgba(0,0,0,.25)'
+                  }}
+                >
+                  <svg viewBox="0 0 24 24" fill="none" className="w-7 h-7 text-white opacity-95">
+                    <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="2"/>
+                    <circle cx="12" cy="12" r="3.5" stroke="currentColor" strokeWidth="2"/>
+                  </svg>
+                </span>
+                <span className="text-center leading-tight">
+                  <strong className="block font-bold text-sm text-white">Emergency</strong>
+                  <em className="block font-semibold text-xs text-blue-300 opacity-90 not-italic">Chat</em>
+                </span>
+              </button>
+              
+              <button
+                onClick={() => handleEmergencyAction("exit")}
+                className="flex flex-col items-center gap-3 p-2 bg-transparent border-0 cursor-pointer"
+              >
+                <span 
+                  className="w-20 h-20 rounded-full flex items-center justify-center relative transition-all duration-200 hover:translate-y-[-2px] hover:scale-105"
+                  style={{
+                    background: 'radial-gradient(120% 120% at 30% 20%, #9ca3af 0%, #111827 70%, #0b0f17 100%)',
+                    boxShadow: 'inset 0 -10px 24px rgba(255,255,255,.08), 0 10px 22px rgba(0,0,0,.25)'
+                  }}
+                >
+                  <svg viewBox="0 0 24 24" fill="none" className="w-7 h-7 text-white opacity-95">
+                    <path d="M10 3h6a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1h-6" stroke="currentColor" strokeWidth="2"/>
+                    <path d="M13 12H4m0 0 3-3M4 12l3 3" stroke="currentColor" strokeWidth="2"/>
+                  </svg>
+                </span>
+                <span className="text-center leading-tight">
+                  <strong className="block font-bold text-sm text-white">Quick</strong>
+                  <em className="block font-semibold text-xs text-blue-300 opacity-90 not-italic">Exit</em>
+                </span>
+              </button>
+            </div>
             
-            <Button
-              onClick={() => handleEmergencyAction("mh")}
-              className="group relative overflow-hidden bg-gradient-to-br from-orange-500 to-amber-600 hover:from-orange-600 hover:to-amber-700 text-white flex items-center gap-3 h-auto py-4 px-3 text-sm font-semibold rounded-2xl transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-orange-500/25"
-            >
-              <span className="text-lg">🧠</span>
-              <div className="text-left leading-tight">
-                <div>Mental</div>
-                <div className="text-xs opacity-90">{MENTAL}</div>
-              </div>
-              <div className="absolute inset-0 bg-white/20 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700 skew-x-12"></div>
-            </Button>
-            
-            <Button
-              onClick={() => handleEmergencyAction("sms")}
-              className="group relative overflow-hidden bg-gradient-to-br from-blue-500 to-blue-700 hover:from-blue-600 hover:to-blue-800 text-white flex items-center gap-3 h-auto py-4 px-3 text-sm font-semibold rounded-2xl transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-blue-500/25"
-            >
-              <span className="text-lg">💬</span>
-              <div className="text-left leading-tight">
-                <div>SMS</div>
-                <div className="text-xs opacity-90">Help</div>
-              </div>
-              <div className="absolute inset-0 bg-white/20 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700 skew-x-12"></div>
-            </Button>
-            
-            <Button
-              onClick={() => handleEmergencyAction("loc")}
-              className="group relative overflow-hidden bg-gradient-to-br from-emerald-500 to-green-600 hover:from-emerald-600 hover:to-green-700 text-white flex items-center gap-3 h-auto py-4 px-3 text-sm font-semibold rounded-2xl transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-emerald-500/25"
-            >
-              <span className="text-lg">📍</span>
-              <div className="text-left leading-tight">
-                <div>Share</div>
-                <div className="text-xs opacity-90">Location</div>
-              </div>
-              <div className="absolute inset-0 bg-white/20 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700 skew-x-12"></div>
-            </Button>
-            
-            <Button
-              onClick={() => handleEmergencyAction("chat")}
-              className="group relative overflow-hidden bg-gradient-to-br from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white flex items-center gap-3 h-auto py-4 px-3 text-sm font-semibold rounded-2xl transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-indigo-500/25"
-            >
-              <span className="text-lg">🛟</span>
-              <div className="text-left leading-tight">
-                <div>Emergency</div>
-                <div className="text-xs opacity-90">Chat</div>
-              </div>
-              <div className="absolute inset-0 bg-white/20 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700 skew-x-12"></div>
-            </Button>
-            
-            <Button
-              onClick={() => handleEmergencyAction("exit")}
-              className="group relative overflow-hidden bg-gradient-to-br from-slate-700 to-slate-900 hover:from-slate-800 hover:to-black text-white flex items-center gap-3 h-auto py-4 px-3 text-sm font-semibold rounded-2xl transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-slate-500/25"
-            >
-              <span className="text-lg">🚪</span>
-              <div className="text-left leading-tight">
-                <div>Quick</div>
-                <div className="text-xs opacity-90">Exit</div>
-              </div>
-              <div className="absolute inset-0 bg-white/20 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700 skew-x-12"></div>
-            </Button>
-            
-            <div className="col-span-2 text-center mt-2 pt-3 border-t border-border/30">
-              <p className="text-xs text-muted-foreground/80 leading-relaxed">
-                Long-press to auto-dial • Triple-tap to toggle label
+            <div className="text-center mt-4 pt-3">
+              <p className="text-xs text-gray-400 leading-relaxed">
+                Long-press the red pill to auto-dial • Triple-tap to hide the label
               </p>
             </div>
           </div>
