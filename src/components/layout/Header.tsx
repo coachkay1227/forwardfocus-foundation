@@ -125,7 +125,7 @@ const Header = ({
                           <NavLink to="/auth" onClick={() => setOpen(false)}>Sign In</NavLink>
                         </Button>
                         <Button variant="outline" size="sm" asChild className="justify-start">
-                          <NavLink to="/auth?mode=register" onClick={() => setOpen(false)}>Register</NavLink>
+                          <NavLink to="/register" onClick={() => setOpen(false)}>Register</NavLink>
                         </Button>
                       </div>}
                   </div>
@@ -174,7 +174,7 @@ const Header = ({
                     <NavLink to="/auth">Sign In</NavLink>
                   </Button>
                   <Button variant="outline" size="sm" asChild>
-                    <NavLink to="/auth?mode=register">Register</NavLink>
+                    <NavLink to="/register">Register</NavLink>
                   </Button>
                 </div>}
 

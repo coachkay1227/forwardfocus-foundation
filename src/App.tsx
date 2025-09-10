@@ -16,6 +16,7 @@ import LearnGrow from "./pages/LearnGrow";
 import AboutUs from "./pages/AboutUs";
 import Support from "./pages/Support";
 import Auth from "./pages/Auth";
+import Register from "./pages/Register";
 import Admin from "./pages/Admin";
 import Search from "./pages/Search";
 import Partners from "./pages/Partners";
@@ -48,6 +49,7 @@ const App = () => (
                   <Route path="/about" element={<AboutUs />} />
                   <Route path="/support" element={<Support />} />
                   <Route path="/auth" element={<Auth />} />
+                  <Route path="/register" element={<Register />} />
                   <Route path="/login" element={<Navigate to="/auth" replace />} />
                   <Route path="/admin" element={<Admin />} />
                   <Route path="/search" element={<Search />} />
