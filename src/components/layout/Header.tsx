@@ -13,7 +13,7 @@ const linkCls = ({
   isActive
 }: {
   isActive?: boolean;
-} | any) => isActive ? "text-foreground font-medium" : "text-foreground hover:text-foreground/80";
+} | any) => isActive ? "text-primary font-medium" : "text-foreground/80 hover:text-foreground";
 interface HeaderProps {
   showUtility?: boolean;
   showCrisis?: boolean;
@@ -65,13 +65,13 @@ const Header = ({
       window.location.href = `/search?q=${encodeURIComponent(searchQuery)}`;
     }
   };
-  return <header className="sticky top-0 z-50 bg-white border-b">
+  return <header className="sticky top-0 z-50 bg-background border-b">
       {/* Crisis Ribbon - removed */}
 
       {/* Top Utility Bar - removed, replaced with crisis popup */}
 
       {/* Main Navigation */}
-      <div className="bg-white border-b border-border">
+      <div className="bg-background border-b border-border">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-16">
             {/* Mobile menu button */}
@@ -79,34 +79,28 @@ const Header = ({
               <Sheet open={open} onOpenChange={setOpen}>
                 <SheetTrigger asChild>
                   <Button variant="ghost" size="sm" className="p-2">
-                    <Menu className="h-5 w-5 text-foreground" />
+                    <Menu className="h-5 w-5" />
                   </Button>
                 </SheetTrigger>
                 <SheetContent side="left" className="w-[300px]">
-                  <SheetTitle className="font-heading text-foreground">Menu</SheetTitle>
+                  <SheetTitle className="font-heading">Menu</SheetTitle>
                   <div className="py-4 space-y-3">
-                    {/* Mobile Navigation */}
-                    <nav className="space-y-2">
-                      <Button variant="ghost" size="sm" asChild className="justify-start w-full">
-                        <NavLink to="/" onClick={() => setOpen(false)}>Home</NavLink>
-                      </Button>
-                      <Button variant="ghost" size="sm" asChild className="justify-start w-full">
-                        <NavLink to="/learn" onClick={() => setOpen(false)}>Join Learning Community</NavLink>
-                      </Button>
-                        <NavLink to="/victim-services" className="justify-start w-full text-left px-2 py-2 text-sm font-medium text-foreground hover:bg-muted rounded-md" onClick={() => setOpen(false)}>
-                          Healing & Safety
-                        </NavLink>
-                      <Button variant="ghost" size="sm" asChild className="justify-start w-full">
-                        <NavLink to="/submit-referral" onClick={() => setOpen(false)}>Submit Referral</NavLink>
-                      </Button>
-                      <Button variant="ghost" size="sm" asChild className="justify-start w-full">
-                        <NavLink to="/partners" onClick={() => setOpen(false)}>Partner Portal</NavLink>
-                      </Button>
-                    </nav>
+                    {/* Mobile Help Text */}
+                    {showUtility && <div className="px-4 text-sm text-muted-foreground border-b border-border pb-3">
+                        <Phone className="h-4 w-4 inline mr-2" />
+                        Need help? Call{" "}
+                        <a href="tel:211" className="text-primary hover:underline font-medium">
+                          211
+                        </a>
+                        {" "}or{" "}
+                        <a href="tel:988" className="text-primary hover:underline font-medium">
+                          988
+                        </a>
+                      </div>}
 
                     {/* Mobile Auth */}
                     {user ? <>
-                        <div className="flex items-center gap-2 py-2 text-sm text-foreground border-b border-border pb-3">
+                        <div className="flex items-center gap-2 py-2 text-sm text-muted-foreground border-b border-border pb-3">
                           <User className="h-4 w-4" />
                           <span className="truncate">{user.email}</span>
                         </div>
@@ -128,34 +122,36 @@ const Header = ({
                           <NavLink to="/auth?mode=register" onClick={() => setOpen(false)}>Register</NavLink>
                         </Button>
                       </div>}
+
+                    {/* Mobile Language - removed */}
                   </div>
                 </SheetContent>
               </Sheet>
             </div>
 
-            {/* Logo */}
-            <div className="logo">
-              <NavLink to="/" className="flex items-center">
+            {/* Centered Brand */}
+            <div className="flex-1 flex justify-center md:justify-center">
+              <NavLink to="/" className="flex items-center space-x-3">
                 
+                <div className="hidden sm:block">
+                  <h1 className="text-xl font-bold text-primary">
+                    Forward Focus Elevation
+                  </h1>
+                  <p className="text-xs text-muted-foreground -mt-1">
+                    Empowering Communities
+                  </p>
+                </div>
               </NavLink>
             </div>
 
-            {/* Main Navigation - Desktop */}
-            <nav className="hidden md:flex main-nav space-x-8">
-              <NavLink to="/" className={linkCls}>Home</NavLink>
-              <NavLink to="/learn" className={linkCls}>Join Learning Community</NavLink>
-              <NavLink to="/victim-services" className={linkCls}>
-                Healing & Safety
-              </NavLink>
-              <NavLink to="/submit-referral" className={linkCls}>Submit Referral</NavLink>
-              <NavLink to="/partners" className={linkCls}>Partner Portal</NavLink>
-            </nav>
+            {/* Right Actions */}
+            <div className="flex items-center space-x-2">
+              {/* Crisis Emergency Button - moved to floating position */}
 
-            {/* Auth Links */}
-            <div className="auth-links flex items-center space-x-2">
+              {/* Auth Buttons */}
               {user ? <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" size="sm" className="text-foreground">
+                    <Button variant="ghost" size="sm">
                       <User className="mr-2 h-4 w-4" />
                       <span className="max-w-[120px] truncate">{user.email}</span>
                     </Button>
@@ -170,7 +166,7 @@ const Header = ({
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu> : <div className="hidden md:flex items-center space-x-2">
-                  <Button variant="ghost" size="sm" asChild className="text-foreground">
+                  <Button variant="ghost" size="sm" asChild>
                     <NavLink to="/auth">Sign In</NavLink>
                   </Button>
                   <Button variant="outline" size="sm" asChild>
@@ -179,7 +175,7 @@ const Header = ({
                 </div>}
 
               {/* Support CTA */}
-              <Button size="sm" asChild className="support-link bg-primary hover:bg-primary/90 text-white">
+              <Button size="sm" asChild className="bg-primary hover:bg-primary/90">
                 <NavLink to="/support">Get Support</NavLink>
               </Button>
             </div>
