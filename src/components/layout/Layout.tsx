@@ -1,6 +1,7 @@
 import EmergencyBar from "./EmergencyBar";
 import Header from "./Header";
 import Footer from "./Footer";
+import { EmergencySafetySystem } from "../safety/EmergencySafetySystem";
 
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
@@ -11,7 +12,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
       <Header />
       <div className="flex-1">{children}</div>
       <Footer />
-      
+      <EmergencySafetySystem />
     </div>
   );
 };
