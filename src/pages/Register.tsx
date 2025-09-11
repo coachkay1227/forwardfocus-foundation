@@ -7,6 +7,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
 import AuthLayout from "@/components/layout/AuthLayout";
+import learningCommunityImage from "@/assets/learning-community-diverse.jpg";
 
 const Register = () => {
   const [email, setEmail] = useState("");
@@ -69,68 +70,90 @@ const Register = () => {
 
   return (
     <AuthLayout>
-      <div className="min-h-screen flex items-center justify-center p-4 bg-background">
-        <Card className="w-full max-w-md">
-          <CardHeader className="text-center">
-            <CardTitle className="text-2xl font-bold">Create Account</CardTitle>
-            <CardDescription>
-              Sign up to join our community
-            </CardDescription>
+      {/* Image Column */}
+      <div className="flex justify-center md:justify-start order-2 md:order-1">
+        <div className="max-w-md w-full rounded-xl shadow-sm overflow-hidden">
+          <img 
+            src={learningCommunityImage} 
+            alt="Diverse families learning together in a supportive community environment"
+            className="w-full h-64 md:h-80 object-cover"
+          />
+        </div>
+      </div>
+
+      {/* Form Column */}
+      <div className="flex justify-center md:justify-end order-1 md:order-2">
+        <Card className="max-w-md w-full rounded-xl shadow-sm bg-white">
+          <CardHeader className="p-6 pb-4">
+            <div className="text-center space-y-2">
+              <CardTitle className="font-heading text-2xl md:text-3xl font-bold">
+                Create Account
+              </CardTitle>
+              <CardDescription className="text-slate-600 text-sm">
+                Join our supportive community for growth and healing
+              </CardDescription>
+            </div>
           </CardHeader>
-          <CardContent>
+          <CardContent className="p-6 pt-2 space-y-5">
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="email">Email</Label>
+                <Label htmlFor="email" className="text-sm font-medium text-foreground">Email Address</Label>
                 <Input
                   id="email"
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
-                  placeholder="Enter your email"
+                  placeholder="your@email.com"
+                  className="h-10 text-sm"
                 />
               </div>
               
               <div className="space-y-2">
-                <Label htmlFor="password">Password</Label>
+                <Label htmlFor="password" className="text-sm font-medium text-foreground">Password</Label>
                 <Input
                   id="password"
                   type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
-                  placeholder="Create a password"
+                  placeholder="••••••••"
                   minLength={6}
+                  className="h-10 text-sm"
                 />
               </div>
               
               <div className="space-y-2">
-                <Label htmlFor="confirmPassword">Confirm Password</Label>
+                <Label htmlFor="confirmPassword" className="text-sm font-medium text-foreground">Confirm Password</Label>
                 <Input
                   id="confirmPassword"
                   type="password"
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   required
-                  placeholder="Confirm your password"
+                  placeholder="••••••••"
                   minLength={6}
+                  className="h-10 text-sm"
                 />
               </div>
               
               <Button 
                 type="submit" 
-                className="w-full" 
                 disabled={loading}
+                variant="premium"
+                className="w-full h-10 text-sm font-medium"
               >
                 {loading ? "Creating Account..." : "Create Account"}
               </Button>
             </form>
             
-            <div className="mt-4 text-center text-sm">
-              Already have an account?{" "}
-              <NavLink to="/auth" className="text-primary hover:underline">
-                Sign in
-              </NavLink>
+            <div className="text-center">
+              <Button variant="link" className="text-sm text-muted-foreground hover:text-primary p-0">
+                Already have an account?{" "}
+                <NavLink to="/auth" className="text-primary hover:underline ml-1">
+                  Sign in
+                </NavLink>
+              </Button>
             </div>
           </CardContent>
         </Card>
