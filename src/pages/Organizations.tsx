@@ -123,12 +123,12 @@ const Organizations = () => {
     }
 
     // City filter
-    if (cityFilter) {
+    if (cityFilter && cityFilter !== "all") {
       filtered = filtered.filter(org => org.city === cityFilter);
     }
 
     // Verified filter
-    if (verifiedFilter) {
+    if (verifiedFilter && verifiedFilter !== "all") {
       const isVerified = verifiedFilter === "verified";
       filtered = filtered.filter(org => org.verified === isVerified);
     }
@@ -140,8 +140,8 @@ const Organizations = () => {
 
   const clearFilters = () => {
     setSearchTerm("");
-    setCityFilter("");
-    setVerifiedFilter("");
+    setCityFilter("all");
+    setVerifiedFilter("all");
   };
 
   const formatPhoneNumber = (phone: string) => {
@@ -239,7 +239,7 @@ const Organizations = () => {
                   <SelectValue placeholder="Filter by city" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">All cities</SelectItem>
+                  <SelectItem value="all">All cities</SelectItem>
                   {uniqueCities.map(city => (
                     <SelectItem key={city} value={city}>{city}</SelectItem>
                   ))}
@@ -250,7 +250,7 @@ const Organizations = () => {
                   <SelectValue placeholder="Verification status" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">All organizations</SelectItem>
+                  <SelectItem value="all">All organizations</SelectItem>
                   <SelectItem value="verified">Verified partners only</SelectItem>
                   <SelectItem value="unverified">Community submitted</SelectItem>
                 </SelectContent>
@@ -258,14 +258,14 @@ const Organizations = () => {
               <Button 
                 variant="outline" 
                 onClick={clearFilters}
-                disabled={!searchTerm && !cityFilter && !verifiedFilter}
+                disabled={!searchTerm && cityFilter === "all" && verifiedFilter === "all"}
               >
                 Clear Filters
               </Button>
             </div>
             
             {/* Active Filters */}
-            {(searchTerm || cityFilter || verifiedFilter) && (
+            {(searchTerm || (cityFilter && cityFilter !== "all") || (verifiedFilter && verifiedFilter !== "all")) && (
               <div className="mt-4 flex flex-wrap gap-2">
                 <span className="text-sm font-medium">Active filters:</span>
                 {searchTerm && (
@@ -274,13 +274,13 @@ const Organizations = () => {
                     "{searchTerm}"
                   </Badge>
                 )}
-                {cityFilter && (
+                {cityFilter && cityFilter !== "all" && (
                   <Badge variant="secondary" className="flex items-center gap-1">
                     <MapPin className="h-3 w-3" />
                     {cityFilter}
                   </Badge>
                 )}
-                {verifiedFilter && (
+                {verifiedFilter && verifiedFilter !== "all" && (
                   <Badge variant="secondary">
                     {verifiedFilter === "verified" ? "Verified Partners" : "Community Submitted"}
                   </Badge>
