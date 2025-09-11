@@ -90,9 +90,9 @@ const Header = ({
                       <Button variant="ghost" size="sm" asChild className="justify-start w-full">
                         <NavLink to="/" onClick={() => setOpen(false)}>Home</NavLink>
                       </Button>
-                       <Button variant="ghost" size="sm" asChild className="justify-start w-full">
-                         <NavLink to="/about" onClick={() => setOpen(false)}>About</NavLink>
-                       </Button>
+                      <Button variant="ghost" size="sm" asChild className="justify-start w-full">
+                        <NavLink to="/about-us" onClick={() => setOpen(false)}>About</NavLink>
+                      </Button>
                       <Button variant="ghost" size="sm" asChild className="justify-start w-full">
                         <NavLink to="/learn" onClick={() => setOpen(false)}>Join Learning Community</NavLink>
                       </Button>
@@ -146,12 +146,12 @@ const Header = ({
             {/* Main Navigation - Desktop */}
             <nav className="hidden md:flex main-nav space-x-8">
               <NavLink to="/" className={linkCls}>Home</NavLink>
-              <NavLink to="/about" className={linkCls}>About</NavLink>
+              <NavLink to="/about-us" className={linkCls}>About</NavLink>
               <NavLink to="/learn" className={linkCls}>Join Learning Community</NavLink>
               <NavLink to="/victim-services" className={linkCls}>
                 Healing Safety
               </NavLink>
-              <NavLink to="/partners/submit-referral" className={linkCls}>Healing Hub</NavLink>
+              <NavLink to="/partners/submit-referral" className={linkCls}>Submit a referral</NavLink>
               <NavLink to="/partners" className={linkCls}>Partner Portal</NavLink>
             </nav>
 
