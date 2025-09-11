@@ -137,9 +137,9 @@ const Header = ({
             </div>
 
             {/* Logo */}
-            <div className="logo">
-              <NavLink to="/" className="flex items-center">
-                
+            <div className="logo flex-1 md:flex-none">
+              <NavLink to="/" className="font-heading text-xl font-bold text-primary hover:text-primary/80 transition-colors">
+                Forward Focus Elevation
               </NavLink>
             </div>
 
