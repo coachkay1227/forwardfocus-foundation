@@ -103,29 +103,62 @@ const Admin = () => {
   }, [isAdmin]);
 
   const toggleContactVisibility = async (id: string, contactInfo: string) => {
-    const newRevealed = new Set(revealedContacts);
-    if (newRevealed.has(id)) {
-      newRevealed.delete(id);
-    } else {
-      newRevealed.add(id);
-      
-      // Log access to sensitive contact information
-      try {
+    // Check admin operation limits before proceeding
+    try {
+      const { data: canProceed, error: rateLimitError } = await supabase.rpc('check_admin_operation_limit', {
+        operation_type: 'contact_reveal'
+      });
+
+      if (rateLimitError || !canProceed) {
+        toast({
+          title: "Rate limit exceeded",
+          description: "Too many contact reveals in the last hour. Please try again later.",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      const newRevealed = new Set(revealedContacts);
+      if (newRevealed.has(id)) {
+        newRevealed.delete(id);
+      } else {
+        newRevealed.add(id);
+        
+        // Enhanced logging with rate limit check
         await supabase.rpc('log_sensitive_access', {
-          table_name: 'contact_access',
-          operation: 'VIEW_CONTACT',
+          table_name: 'partner_referrals',
+          operation: 'CONTACT_REVEAL',
           record_id: id,
           is_sensitive: true
         });
-      } catch (error) {
-        console.error('Error logging contact access:', error);
       }
+      setRevealedContacts(newRevealed);
+    } catch (error) {
+      console.error('Error in contact visibility toggle:', error);
+      toast({
+        title: "Error",
+        description: "Failed to toggle contact visibility",
+        variant: "destructive",
+      });
     }
-    setRevealedContacts(newRevealed);
   };
 
   const updateStatus = async (table: 'partner_referrals' | 'partnership_requests', id: string, newStatus: string) => {
     try {
+      // Check admin operation limits
+      const { data: canProceed, error: rateLimitError } = await supabase.rpc('check_admin_operation_limit', {
+        operation_type: 'status_update'
+      });
+
+      if (rateLimitError || !canProceed) {
+        toast({
+          title: "Rate limit exceeded",
+          description: "Too many status updates in the last hour. Please try again later.",
+          variant: "destructive",
+        });
+        return;
+      }
+
       const { error } = await supabase
         .from(table)
         .update({ status: newStatus })
@@ -142,6 +175,14 @@ const Admin = () => {
           title: "Success",
           description: "Status updated successfully",
         });
+        
+        // Enhanced audit logging
+        await supabase.rpc('log_sensitive_access', {
+          table_name: table,
+          operation: 'STATUS_UPDATE',
+          record_id: id,
+          is_sensitive: true
+        });
 
         // Refresh data
         if (table === 'partner_referrals') {
@@ -153,6 +194,7 @@ const Admin = () => {
         }
       }
     } catch (error) {
+      console.error('Error updating status:', error);
       toast({
         title: "Error",
         description: "Failed to update status",

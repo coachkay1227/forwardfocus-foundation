@@ -476,118 +476,15 @@ export type Database = {
       }
     }
     Views: {
-      organizations_public: {
-        Row: {
-          city: string | null
-          created_at: string | null
-          description: string | null
-          id: string | null
-          name: string | null
-          state_code: string | null
-          updated_at: string | null
-          verified: boolean | null
-          website: string | null
-        }
-        Insert: {
-          city?: string | null
-          created_at?: string | null
-          description?: string | null
-          id?: string | null
-          name?: string | null
-          state_code?: string | null
-          updated_at?: string | null
-          verified?: boolean | null
-          website?: string | null
-        }
-        Update: {
-          city?: string | null
-          created_at?: string | null
-          description?: string | null
-          id?: string | null
-          name?: string | null
-          state_code?: string | null
-          updated_at?: string | null
-          verified?: boolean | null
-          website?: string | null
-        }
-        Relationships: []
-      }
-      organizations_public_secure: {
-        Row: {
-          city: string | null
-          created_at: string | null
-          description: string | null
-          id: string | null
-          name: string | null
-          state_code: string | null
-          updated_at: string | null
-          verified: boolean | null
-          website: string | null
-        }
-        Insert: {
-          city?: string | null
-          created_at?: string | null
-          description?: string | null
-          id?: string | null
-          name?: string | null
-          state_code?: string | null
-          updated_at?: string | null
-          verified?: boolean | null
-          website?: string | null
-        }
-        Update: {
-          city?: string | null
-          created_at?: string | null
-          description?: string | null
-          id?: string | null
-          name?: string | null
-          state_code?: string | null
-          updated_at?: string | null
-          verified?: boolean | null
-          website?: string | null
-        }
-        Relationships: []
-      }
-      organizations_safe_public: {
-        Row: {
-          city: string | null
-          created_at: string | null
-          description: string | null
-          id: string | null
-          name: string | null
-          state_code: string | null
-          updated_at: string | null
-          verified: boolean | null
-          website: string | null
-        }
-        Insert: {
-          city?: string | null
-          created_at?: string | null
-          description?: string | null
-          id?: string | null
-          name?: string | null
-          state_code?: string | null
-          updated_at?: string | null
-          verified?: boolean | null
-          website?: string | null
-        }
-        Update: {
-          city?: string | null
-          created_at?: string | null
-          description?: string | null
-          id?: string | null
-          name?: string | null
-          state_code?: string | null
-          updated_at?: string | null
-          verified?: boolean | null
-          website?: string | null
-        }
-        Relationships: []
-      }
+      [_ in never]: never
     }
     Functions: {
       can_view_org_contacts: {
         Args: Record<PropertyKey, never>
+        Returns: boolean
+      }
+      check_admin_operation_limit: {
+        Args: { operation_type?: string }
         Returns: boolean
       }
       check_admin_rate_limit: {
@@ -630,6 +527,48 @@ export type Database = {
         Args: { contact_text: string; user_id?: string }
         Returns: string
       }
+      get_masked_organization_contact: {
+        Args: { org_id: string }
+        Returns: {
+          city: string
+          id: string
+          masked_email: string
+          masked_phone: string
+          name: string
+          state_code: string
+        }[]
+      }
+      get_organizations_public: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          city: string
+          created_at: string
+          description: string
+          id: string
+          name: string
+          state_code: string
+          updated_at: string
+          verified: boolean
+          website: string
+        }[]
+      }
+      get_organizations_with_contacts: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          address: string
+          city: string
+          created_at: string
+          description: string
+          email: string
+          id: string
+          name: string
+          phone: string
+          state_code: string
+          updated_at: string
+          verified: boolean
+          website: string
+        }[]
+      }
       get_verified_organizations: {
         Args: Record<PropertyKey, never>
         Returns: {
@@ -647,6 +586,15 @@ export type Database = {
       is_user_admin: {
         Args: { user_id?: string }
         Returns: boolean
+      }
+      log_payment_operation: {
+        Args: {
+          additional_data?: Json
+          amount_cents?: number
+          operation_type: string
+          payment_id?: string
+        }
+        Returns: undefined
       }
       log_sensitive_access: {
         Args: {

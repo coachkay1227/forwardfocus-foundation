@@ -86,17 +86,11 @@ const Organizations = () => {
       let data, error;
       
       if (isAdmin) {
-        // Admin users can see all organization data including contact information
-        ({ data, error } = await supabase
-          .from("organizations")
-          .select("*")
-          .order("name"));
+        // Admin users can see all organization data including contact information via secure function
+        ({ data, error } = await supabase.rpc('get_organizations_with_contacts'));
       } else {
-        // Non-admin users (authenticated or not) see only public data through the view
-        ({ data, error } = await supabase
-          .from("organizations_public")
-          .select("*")
-          .order("name"));
+        // Non-admin users see only public data through secure function
+        ({ data, error } = await supabase.rpc('get_organizations_public'));
       }
 
       if (error) throw error;
