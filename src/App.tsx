@@ -24,6 +24,7 @@ import SubmitReferral from "./pages/SubmitReferral";
 import AddResource from "./pages/AddResource";
 import RequestPartnership from "./pages/RequestPartnership";
 import Organizations from "./pages/Organizations";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
 
 import { StateProvider } from "./contexts/StateContext";
 
@@ -58,6 +59,7 @@ const App = () => (
                   <Route path="/partners/add-resource" element={<AddResource />} />
                   <Route path="/partners/request" element={<RequestPartnership />} />
                   <Route path="/organizations" element={<Organizations />} />
+                  <Route path="/privacy" element={<PrivacyPolicy />} />
                   <Route path="/resources/:id" element={<Navigate to="/help" replace />} />
                   {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                   <Route path="*" element={<NotFound />} />

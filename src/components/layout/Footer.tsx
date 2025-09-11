@@ -66,7 +66,7 @@ const Footer = () => {
           </div>
           <div className="flex gap-6">
             <a 
-              href="#" 
+              href="/privacy" 
               className="text-foreground/80 hover:text-primary transition-colors duration-200 focus:text-primary focus:outline-none focus:ring-2 focus:ring-primary/20 rounded px-1"
             >
               Privacy Policy
