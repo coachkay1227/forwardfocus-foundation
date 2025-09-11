@@ -153,7 +153,7 @@ const PrivacyPolicy = () => {
               <p className="text-base leading-relaxed text-foreground/90 mb-4">
                 For any questions regarding this Privacy Policy, please contact Forward Focus Elevation at:
               </p>
-              <div className="bg-muted/50 p-4 rounded-lg text-center">
+              <div className="bg-muted/50 p-4 rounded-lg text-center mx-auto max-w-md">
                 <div className="flex items-center gap-2">
                   <Mail className="h-5 w-5 text-primary" />
                   <a 
