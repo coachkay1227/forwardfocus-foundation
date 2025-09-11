@@ -85,12 +85,15 @@ const Organizations = () => {
     try {
       let data, error;
       
-      if (isAdmin) {
-        // Admin users can see all organization data including contact information via secure function
-        ({ data, error } = await supabase.rpc('get_organizations_with_contacts'));
+      if (user && isAdmin) {
+        // Admin users get full access with contact information via secure function
+        ({ data, error } = await supabase.rpc('get_organizations_with_contacts_secure'));
+      } else if (user) {
+        // Authenticated non-admin users get masked contact info via secure function
+        ({ data, error } = await supabase.rpc('get_organizations_with_contacts_secure'));
       } else {
-        // Non-admin users see only public data through secure function
-        ({ data, error } = await supabase.rpc('get_organizations_public'));
+        // Anonymous users get only public data (no contact info)
+        ({ data, error } = await supabase.rpc('get_organizations_public_safe'));
       }
 
       if (error) throw error;

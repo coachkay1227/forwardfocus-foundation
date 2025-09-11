@@ -552,7 +552,38 @@ export type Database = {
           website: string
         }[]
       }
+      get_organizations_public_safe: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          city: string
+          created_at: string
+          description: string
+          id: string
+          name: string
+          state_code: string
+          updated_at: string
+          verified: boolean
+          website: string
+        }[]
+      }
       get_organizations_with_contacts: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          address: string
+          city: string
+          created_at: string
+          description: string
+          email: string
+          id: string
+          name: string
+          phone: string
+          state_code: string
+          updated_at: string
+          verified: boolean
+          website: string
+        }[]
+      }
+      get_organizations_with_contacts_secure: {
         Args: Record<PropertyKey, never>
         Returns: {
           address: string
@@ -607,6 +638,10 @@ export type Database = {
       }
       mask_contact_info: {
         Args: { contact_data: string }
+        Returns: string
+      }
+      reveal_organization_contact: {
+        Args: { contact_type: string; org_id: string }
         Returns: string
       }
       update_partnership_request: {
