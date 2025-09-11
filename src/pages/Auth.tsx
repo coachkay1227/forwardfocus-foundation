@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "@/hooks/use-toast";
-import { Navigate } from "react-router-dom";
+import { Navigate, Link } from "react-router-dom";
 import { Eye, EyeOff } from "lucide-react";
 import communityImage from "@/assets/diverse-families-healing.jpg";
 import AuthLayout from "@/components/layout/AuthLayout";
@@ -300,8 +300,8 @@ const Auth = () => {
             </div>
 
             <div className="text-center">
-              <Button variant="link" className="text-xs text-muted-foreground hover:text-primary p-0">
-                Need help? Contact Support
+              <Button variant="link" className="text-xs text-muted-foreground hover:text-primary p-0" asChild>
+                <Link to="/support">Need help? Contact Support</Link>
               </Button>
             </div>
           </CardContent>
