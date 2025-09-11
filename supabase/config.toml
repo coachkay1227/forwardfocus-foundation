@@ -26,6 +26,7 @@ port = 54325
 enabled = true
 port = 54326
 
+# Public crisis support functions - no JWT required for emergency access
 [functions.send-contact-email]
 verify_jwt = false
 

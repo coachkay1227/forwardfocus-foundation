@@ -1,22 +1,39 @@
-// Security headers and configuration for the application
+// Enhanced security headers and configuration for the application
 export const setupSecurityHeaders = () => {
-  // Content Security Policy
+  // Enhanced Content Security Policy
   const csp = [
     "default-src 'self'",
-    "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://unpkg.com",
+    "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://unpkg.com https://js.stripe.com",
     "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
     "font-src 'self' https://fonts.gstatic.com data:",
-    "img-src 'self' data: blob: https:",
-    "connect-src 'self' https://*.supabase.co wss://*.supabase.co",
+    "img-src 'self' data: blob: https: https://*.supabase.co",
+    "connect-src 'self' https://*.supabase.co wss://*.supabase.co https://api.openai.com https://api.stripe.com",
     "frame-src 'none'",
     "object-src 'none'",
     "base-uri 'self'",
-    "form-action 'self'"
+    "form-action 'self'",
+    "frame-ancestors 'none'",
+    "upgrade-insecure-requests"
   ].join('; ');
+
+  // Enhanced security headers
+  const securityHeaders = [
+    { name: 'Content-Security-Policy', content: csp },
+    { name: 'X-Content-Type-Options', content: 'nosniff' },
+    { name: 'X-Frame-Options', content: 'DENY' },
+    { name: 'X-XSS-Protection', content: '1; mode=block' },
+    { name: 'Referrer-Policy', content: 'strict-origin-when-cross-origin' },
+    { name: 'Permissions-Policy', content: 'camera=(), microphone=(), location=(), payment=(), geolocation=()' },
+    { name: 'Strict-Transport-Security', content: 'max-age=31536000; includeSubDomains; preload' },
+    { name: 'X-Permitted-Cross-Domain-Policies', content: 'none' },
+    { name: 'Cross-Origin-Embedder-Policy', content: 'require-corp' },
+    { name: 'Cross-Origin-Opener-Policy', content: 'same-origin' },
+    { name: 'Cross-Origin-Resource-Policy', content: 'same-site' }
+  ];
 
   // Add security-related meta tags if they don't exist
   const addMetaTag = (name: string, content: string) => {
-    if (!document.querySelector(`meta[name="${name}"]`)) {
+    if (!document.querySelector(`meta[name="${name}"]`) && !document.querySelector(`meta[http-equiv="${name}"]`)) {
       const meta = document.createElement('meta');
       meta.name = name;
       meta.content = content;
@@ -24,15 +41,45 @@ export const setupSecurityHeaders = () => {
     }
   };
 
-  // Add Content Security Policy
-  addMetaTag('Content-Security-Policy', csp);
-  
-  // Add other security headers as meta tags (for client-side reference)
-  addMetaTag('X-Content-Type-Options', 'nosniff');
-  addMetaTag('X-Frame-Options', 'DENY');
-  addMetaTag('X-XSS-Protection', '1; mode=block');
-  addMetaTag('Referrer-Policy', 'strict-origin-when-cross-origin');
-  addMetaTag('Permissions-Policy', 'camera=(), microphone=(), location=(), payment=()');
+  // Apply all security headers
+  securityHeaders.forEach(header => {
+    addMetaTag(header.name, header.content);
+  });
+
+  // Additional security measures
+  setupAdditionalSecurity();
+};
+
+// Additional security setup
+const setupAdditionalSecurity = () => {
+  // Disable right-click context menu in production
+  if (import.meta.env.PROD) {
+    document.addEventListener('contextmenu', (e) => {
+      e.preventDefault();
+    });
+  }
+
+  // Disable text selection for sensitive content
+  const sensitiveSelectors = ['.contact-info', '.admin-panel', '.sensitive-data'];
+  sensitiveSelectors.forEach(selector => {
+    const elements = document.querySelectorAll(selector);
+    elements.forEach(element => {
+      (element as HTMLElement).style.userSelect = 'none';
+      (element as HTMLElement).style.webkitUserSelect = 'none';
+    });
+  });
+
+  // Clear sensitive data from memory on page unload
+  window.addEventListener('beforeunload', () => {
+    // Clear localStorage of sensitive data (keep user preferences)
+    const sensitiveKeys = ['contact-data', 'admin-cache', 'temp-data'];
+    sensitiveKeys.forEach(key => {
+      localStorage.removeItem(key);
+    });
+    
+    // Clear sessionStorage completely
+    sessionStorage.clear();
+  });
 };
 
 // Security configuration object

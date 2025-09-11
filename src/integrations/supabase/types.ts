@@ -479,6 +479,14 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      admin_reveal_full_contact: {
+        Args: { org_id: string }
+        Returns: {
+          address: string
+          email: string
+          phone: string
+        }[]
+      }
       can_view_org_contacts: {
         Args: Record<PropertyKey, never>
         Returns: boolean
@@ -643,6 +651,16 @@ export type Database = {
       reveal_organization_contact: {
         Args: { contact_type: string; org_id: string }
         Returns: string
+      }
+      secure_payment_access: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          amount: number
+          created_at: string | null
+          id: string
+          status: string | null
+          user_id: string
+        }[]
       }
       update_partnership_request: {
         Args: { _id: string; _notes?: string; _status?: string }
