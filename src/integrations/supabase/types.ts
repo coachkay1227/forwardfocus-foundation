@@ -299,15 +299,7 @@ export type Database = {
           status?: string | null
           user_id?: string
         }
-        Relationships: [
-          {
-            foreignKeyName: "fk_payments_user"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "users"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
       }
       profiles: {
         Row: {
@@ -482,27 +474,6 @@ export type Database = {
         }
         Relationships: []
       }
-      users: {
-        Row: {
-          created_at: string | null
-          email: string
-          id: string
-          password: string
-        }
-        Insert: {
-          created_at?: string | null
-          email: string
-          id?: string
-          password: string
-        }
-        Update: {
-          created_at?: string | null
-          email?: string
-          id?: string
-          password?: string
-        }
-        Relationships: []
-      }
     }
     Views: {
       organizations_public: {
@@ -639,12 +610,20 @@ export type Database = {
         }
         Returns: boolean
       }
+      cleanup_audit_logs: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
       create_admin_user: {
         Args: { admin_email: string }
         Returns: undefined
       }
       create_user_profile: {
         Args: { p_email: string; p_user_id: string }
+        Returns: undefined
+      }
+      detect_suspicious_activity: {
+        Args: Record<PropertyKey, never>
         Returns: undefined
       }
       get_masked_contact_info: {
