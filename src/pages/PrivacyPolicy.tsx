@@ -35,7 +35,7 @@ const PrivacyPolicy = () => {
         </div>
 
         <Card className="shadow-md">
-          <CardContent className="p-8 space-y-8">
+          <CardContent className="p-8 space-y-8 text-center">
             {/* 1. Introduction */}
             <section>
               <h2 className="font-heading text-2xl font-semibold mb-4 text-primary">1. Introduction</h2>
