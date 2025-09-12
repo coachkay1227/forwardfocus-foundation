@@ -56,24 +56,8 @@ const PartnerSignIn = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-osu-scarlet/5 via-background to-osu-gray/5">
-      {/* Header */}
-      <header className="h-14 bg-osu-scarlet/90 backdrop-blur-sm border-b shadow-sm">
-        <div className="max-w-5xl mx-auto px-6 h-full flex items-center justify-between">
-          <Link to="/" className="font-heading text-xl font-bold text-white">
-            Forward Focus Elevation
-          </Link>
-          <Link 
-            to="/" 
-            className="flex items-center gap-2 text-sm text-white/80 hover:text-white transition-colors"
-          >
-            <Shield className="h-4 w-4" />
-            Back to Home
-          </Link>
-        </div>
-      </header>
-
       {/* Main Content */}
-      <div className="flex flex-col items-center justify-center min-h-[calc(100vh-56px)] px-6 py-8">
+      <div className="flex flex-col items-center justify-center min-h-screen px-6 py-8">
         {/* Partner Portal Hero - Centered and Smaller */}
         <div className="flex flex-col items-center text-center space-y-4 mb-8">
           <div className="w-16 h-16 bg-gradient-to-br from-osu-scarlet to-osu-gray rounded-xl flex items-center justify-center shadow-lg">
