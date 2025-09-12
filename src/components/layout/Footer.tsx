@@ -49,10 +49,10 @@ const Footer = () => {
             © {new Date().getFullYear()} Forward Focus Elevation. All rights reserved.
           </div>
           <div className="flex gap-6">
-            <a href="#" className="text-foreground/80 hover:text-primary transition-colors duration-200 focus:text-primary focus:outline-none focus:ring-2 focus:ring-primary/20 rounded px-1">
+            <a href="/privacy" className="text-foreground/80 hover:text-primary transition-colors duration-200 focus:text-primary focus:outline-none focus:ring-2 focus:ring-primary/20 rounded px-1">
               Privacy Policy
             </a>
-            <a href="#" className="text-foreground/80 hover:text-primary transition-colors duration-200 focus:text-primary focus:outline-none focus:ring-2 focus:ring-primary/20 rounded px-1">
+            <a href="/terms" className="text-foreground/80 hover:text-primary transition-colors duration-200 focus:text-primary focus:outline-none focus:ring-2 focus:ring-primary/20 rounded px-1">
               Terms of Service
             </a>
           </div>
