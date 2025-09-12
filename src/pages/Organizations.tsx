@@ -219,7 +219,7 @@ const Organizations = () => {
               <Filter className="h-5 w-5" />
               Find Organizations
             </CardTitle>
-            <CardDescription>
+            <CardDescription className="text-center">
               Search and filter our partner directory to find the right support
             </CardDescription>
           </CardHeader>
