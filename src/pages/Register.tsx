@@ -7,6 +7,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
 import AuthLayout from "@/components/layout/AuthLayout";
+import { PasswordStrengthIndicator } from "@/components/security/PasswordStrengthIndicator";
 import learningCommunityImage from "@/assets/learning-community-diverse.jpg";
 
 const Register = () => {
@@ -41,10 +42,29 @@ const Register = () => {
       return;
     }
 
-    if (password.length < 6) {
+    // Enhanced password validation (8+ characters, uppercase, number)
+    if (password.length < 8) {
+      toast({
+        title: "Weak Password", 
+        description: "Password must be at least 8 characters long",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (!/[A-Z]/.test(password)) {
       toast({
         title: "Weak Password",
-        description: "Password must be at least 6 characters long",
+        description: "Password must contain at least one uppercase letter",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (!/[0-9]/.test(password)) {
+      toast({
+        title: "Weak Password", 
+        description: "Password must contain at least one number",
         variant: "destructive",
       });
       return;
@@ -153,6 +173,7 @@ const Register = () => {
                   minLength={6}
                   className="h-10 text-sm"
                 />
+                <PasswordStrengthIndicator password={password} className="mt-2" />
               </div>
               
               <div className="space-y-2">
