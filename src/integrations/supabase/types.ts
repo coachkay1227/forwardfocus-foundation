@@ -244,6 +244,45 @@ export type Database = {
         }
         Relationships: []
       }
+      partner_verifications: {
+        Row: {
+          created_at: string
+          id: string
+          notes: string | null
+          organization_id: string | null
+          status: string
+          updated_at: string
+          user_id: string
+          verification_type: string
+          verified_at: string | null
+          verified_by: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          notes?: string | null
+          organization_id?: string | null
+          status?: string
+          updated_at?: string
+          user_id: string
+          verification_type?: string
+          verified_at?: string | null
+          verified_by?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          notes?: string | null
+          organization_id?: string | null
+          status?: string
+          updated_at?: string
+          user_id?: string
+          verification_type?: string
+          verified_at?: string | null
+          verified_by?: string | null
+        }
+        Relationships: []
+      }
       partnership_requests: {
         Row: {
           contact_email: string
@@ -626,6 +665,14 @@ export type Database = {
         Args: { user_id?: string }
         Returns: boolean
       }
+      is_verified_partner: {
+        Args: { user_id?: string }
+        Returns: boolean
+      }
+      log_contact_access: {
+        Args: { contact_type: string; org_id: string }
+        Returns: undefined
+      }
       log_payment_operation: {
         Args: {
           additional_data?: Json
@@ -681,6 +728,10 @@ export type Database = {
       }
       validate_contact_input: {
         Args: { p_email?: string; p_name: string; p_phone?: string }
+        Returns: boolean
+      }
+      validate_password_strength: {
+        Args: { password: string }
         Returns: boolean
       }
     }
