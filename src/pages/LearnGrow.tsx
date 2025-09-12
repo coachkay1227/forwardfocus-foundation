@@ -500,10 +500,10 @@ export default function CommunityLearning() {
                   <Users className="h-4 w-4 mr-2" />
                   Join Our Community
                 </Button>
-                <Button 
+                 <Button 
                   onClick={() => scrollToSection('learning')}
                   variant="outline"
-                  className="border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10"
+                  className="border-primary-foreground/30 text-destructive hover:bg-primary-foreground/10"
                   size="lg"
                 >
                   <BookOpen className="h-4 w-4 mr-2" />
