@@ -55,7 +55,7 @@ const Header = ({
   }, [user]);
 
   // Hide header on auth pages
-  if (location.pathname === '/auth') {
+  if (location.pathname === '/auth' || location.pathname === '/register') {
     return null;
   }
   const handleSearch = (e: React.FormEvent) => {
