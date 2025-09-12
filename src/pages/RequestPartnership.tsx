@@ -2,10 +2,11 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { sanitizeInput, isValidEmail, RateLimiter, generateCSRFToken } from "@/lib/security";
+import { Building2, Mail, FileText } from "lucide-react";
 
 const RequestPartnership = () => {
   const [loading, setLoading] = useState(false);
@@ -114,31 +115,46 @@ const RequestPartnership = () => {
   };
 
   return (
-    <main id="main" className="container py-16">
-      <div className="max-w-3xl mx-auto">
-        <header className="text-center mb-12">
-          <h1 className="font-heading text-5xl font-bold mb-6">Request Partnership</h1>
-          <p className="text-xl text-foreground/80 leading-relaxed">
+    <main id="main" className="min-h-screen bg-gradient-to-br from-osu-scarlet/5 via-background to-osu-gray/5 flex items-center justify-center py-12 px-4">
+      <div className="max-w-2xl w-full mx-auto">
+        <div className="text-center mb-8">
+          <div className="flex items-center justify-center gap-3 mb-6">
+            <div className="p-3 bg-gradient-to-br from-osu-scarlet/20 to-osu-gray/20 rounded-xl">
+              <Building2 className="h-8 w-8 text-osu-scarlet" />
+            </div>
+            <h1 className="font-heading text-4xl md:text-5xl font-bold text-osu-scarlet">Request Partnership</h1>
+          </div>
+          <p className="text-lg text-osu-gray leading-relaxed max-w-lg mx-auto">
             Join our network of organizations committed to supporting justice-impacted individuals and families.
           </p>
-        </header>
+        </div>
         
-        <Card className="shadow-lg border-0">
-          <CardContent className="p-10">
-            <form onSubmit={onSubmit} className="grid gap-8">
-              <div>
-                <label className="block text-base font-medium mb-3" htmlFor="org-name">Organization Name</label>
+        <Card className="shadow-2xl border border-osu-gray/20 bg-white/95 backdrop-blur-sm">
+          <CardHeader className="bg-gradient-to-r from-osu-scarlet/5 to-osu-gray/5 text-center pb-6">
+            <CardTitle className="text-2xl text-osu-scarlet">Partnership Application</CardTitle>
+          </CardHeader>
+          <CardContent className="p-8">
+            <form onSubmit={onSubmit} className="space-y-6">
+              <div className="space-y-2">
+                <label className="flex items-center gap-2 text-base font-semibold text-osu-scarlet" htmlFor="org-name">
+                  <Building2 className="h-4 w-4" />
+                  Organization Name
+                </label>
                 <Input 
                   id="org-name"
                   required 
                   placeholder="Your nonprofit or program" 
                   value={organizationName}
                   onChange={(e) => setOrganizationName(e.target.value)}
-                  className="h-12 text-base"
+                  className="h-12 text-base border-osu-gray/30 focus:border-osu-scarlet focus:ring-osu-scarlet/20"
                 />
               </div>
-              <div>
-                <label className="block text-base font-medium mb-3" htmlFor="contact-email">Contact Email</label>
+              
+              <div className="space-y-2">
+                <label className="flex items-center gap-2 text-base font-semibold text-osu-scarlet" htmlFor="contact-email">
+                  <Mail className="h-4 w-4" />
+                  Contact Email
+                </label>
                 <Input 
                   id="contact-email"
                   required 
@@ -146,22 +162,39 @@ const RequestPartnership = () => {
                   placeholder="you@org.org" 
                   value={contactEmail}
                   onChange={(e) => setContactEmail(e.target.value)}
-                  className="h-12 text-base"
+                  className="h-12 text-base border-osu-gray/30 focus:border-osu-scarlet focus:ring-osu-scarlet/20"
                 />
               </div>
-              <div>
-                <label className="block text-base font-medium mb-3" htmlFor="collaboration">How would you like to collaborate?</label>
+              
+              <div className="space-y-2">
+                <label className="flex items-center gap-2 text-base font-semibold text-osu-scarlet" htmlFor="collaboration">
+                  <FileText className="h-4 w-4" />
+                  How would you like to collaborate?
+                </label>
                 <Textarea 
                   id="collaboration"
                   required 
-                  placeholder="Tell us about your programs and needs" 
+                  placeholder="Tell us about your programs, services, and how you'd like to partner with us to support justice-impacted individuals..." 
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
-                  className="min-h-32 text-base resize-none"
+                  className="min-h-32 text-base resize-none border-osu-gray/30 focus:border-osu-scarlet focus:ring-osu-scarlet/20"
                 />
               </div>
-              <Button type="submit" disabled={loading} size="lg" className="shadow-md">
-                {loading ? "Sending..." : "Send Request"}
+              
+              <Button 
+                type="submit" 
+                disabled={loading} 
+                size="lg" 
+                className="w-full bg-gradient-to-r from-osu-scarlet to-osu-gray hover:from-osu-scarlet/90 hover:to-osu-gray/90 text-white shadow-lg hover:shadow-xl transition-all duration-300 h-12"
+              >
+                {loading ? (
+                  <div className="flex items-center gap-2">
+                    <div className="animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full"></div>
+                    Sending Request...
+                  </div>
+                ) : (
+                  "Send Partnership Request"
+                )}
               </Button>
             </form>
           </CardContent>
@@ -170,4 +203,5 @@ const RequestPartnership = () => {
     </main>
   );
 };
+
 export default RequestPartnership;
