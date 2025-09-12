@@ -267,9 +267,9 @@ const Organizations = () => {
                        className={!city.hasOrganizations ? "opacity-50 blur-[0.5px] cursor-not-allowed" : ""}
                      >
                        {city.label}
-                       {!city.hasOrganizations && (
-                         <span className="text-xs text-muted-foreground ml-2">(No partners)</span>
-                       )}
+                        {!city.hasOrganizations && (
+                          <span className="text-xs text-muted-foreground ml-2">(Coming Soon)</span>
+                        )}
                      </SelectItem>
                    ))}
                  </SelectContent>
