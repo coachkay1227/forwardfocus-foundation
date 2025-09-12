@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { 
   ChevronRight, Users, BookOpen, Heart, CheckCircle, GraduationCap, 
-  MessageSquare, Shield, Clock, Star, ArrowRight, Award, UserCheck
+  MessageSquare, Shield, Clock, Star, ArrowRight, ArrowDown, Award, UserCheck
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { CommunityApplication } from "@/components/learn/CommunityApplication";
@@ -389,9 +389,9 @@ export default function CommunityLearning() {
         <section id="apply" className="py-12">
           <div className="container">
             <div className="max-w-4xl mx-auto text-center">
-              <div className="flex items-center justify-center gap-3 mb-6">
-                <div className="w-12 h-12 bg-gradient-osu-accent rounded-lg flex items-center justify-center">
-                  <ArrowRight className="h-6 w-6 text-white" />
+              <div className="mb-6">
+                <div className="w-12 h-12 bg-gradient-osu-accent rounded-lg flex items-center justify-center mx-auto mb-4">
+                  <ArrowDown className="h-6 w-6 text-white" />
                 </div>
                 <div>
                   <h2 className="text-2xl font-bold text-foreground">Ready to Join Our Community?</h2>
