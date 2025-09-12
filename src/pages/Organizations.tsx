@@ -136,7 +136,25 @@ const Organizations = () => {
     setFilteredOrgs(filtered);
   };
 
+  // All major Ohio cities
+  const allOhioCities = [
+    "Akron", "Athens", "Barberton", "Beavercreek", "Bowling Green", "Canton", "Cincinnati",
+    "Cleveland", "Columbus", "Dayton", "Delaware", "Elyria", "Fairborn", "Fairfield", 
+    "Findlay", "Hamilton", "Kettering", "Lima", "Lorain", "Mansfield", "Marion", 
+    "Massillon", "Medina", "Mentor", "Middletown", "Newark", "Norwood", "Parma", 
+    "Portsmouth", "Reynoldsburg", "Sandusky", "Springfield", "Steubenville", "Toledo", 
+    "Upper Arlington", "Warren", "Westerville", "Westlake", "Whitehall", "Xenia", 
+    "Youngstown", "Zanesville"
+  ].sort();
+
   const uniqueCities = [...new Set(organizations.map(org => org.city))].sort();
+  
+  // Combine and sort all cities, marking which ones have organizations
+  const cityOptions = allOhioCities.map(city => ({
+    value: city,
+    label: city,
+    hasOrganizations: uniqueCities.includes(city)
+  }));
 
   const clearFilters = () => {
     setSearchTerm("");
@@ -234,17 +252,27 @@ const Organizations = () => {
                   className="pl-10"
                 />
               </div>
-              <Select value={cityFilter} onValueChange={setCityFilter}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Filter by city" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">All cities</SelectItem>
-                  {uniqueCities.map(city => (
-                    <SelectItem key={city} value={city}>{city}</SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+               <Select value={cityFilter} onValueChange={setCityFilter}>
+                 <SelectTrigger>
+                   <SelectValue placeholder="Filter by city" />
+                 </SelectTrigger>
+                 <SelectContent className="max-h-60">
+                   <SelectItem value="all">All cities</SelectItem>
+                   {cityOptions.map(city => (
+                     <SelectItem 
+                       key={city.value} 
+                       value={city.value}
+                       disabled={!city.hasOrganizations}
+                       className={!city.hasOrganizations ? "opacity-50 blur-[0.5px] cursor-not-allowed" : ""}
+                     >
+                       {city.label}
+                       {!city.hasOrganizations && (
+                         <span className="text-xs text-muted-foreground ml-2">(No partners)</span>
+                       )}
+                     </SelectItem>
+                   ))}
+                 </SelectContent>
+               </Select>
               <Select value={verifiedFilter} onValueChange={setVerifiedFilter}>
                 <SelectTrigger>
                   <SelectValue placeholder="Verification status" />
