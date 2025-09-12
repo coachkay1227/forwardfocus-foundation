@@ -50,14 +50,6 @@ export default function GetHelpNow() {
 
   return (
     <>
-      {/* Support Banner */}
-      <div className="bg-destructive text-destructive-foreground py-3 text-center font-medium shadow-sm">
-        <div className="container flex items-center justify-center gap-2">
-          <AlertTriangle className="h-4 w-4" />
-          <span>Emergency? Call 911 | Crisis Support: 988 | Safe Text: HOME to 741741</span>
-        </div>
-      </div>
-
       {/* Hero Section */}
       <header className="bg-gradient-to-br from-primary/5 via-background to-secondary/5 border-b">
         <div className="container py-16 md:py-20">
