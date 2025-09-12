@@ -57,7 +57,7 @@ const ensureCanonical = () => {
 
 // Resource Card Component  
 const ResourceCard = ({ resource, isPreview = false }: { resource: any; isPreview?: boolean }) => (
-  <Card className="transition-all hover:shadow-lg duration-300 border-0 shadow-md">
+  <Card className="transition-all hover:shadow-lg duration-300 border-l-4 border-l-osu-scarlet shadow-md">
     <CardContent className="p-6">
       <div className="mb-4 flex items-start justify-between">
         <div className="flex-1">
@@ -69,7 +69,7 @@ const ResourceCard = ({ resource, isPreview = false }: { resource: any; isPrevie
           resource.type === 'Crisis Support' ? 'destructive' :
           resource.type === 'Legal Aid' ? 'secondary' :
           'outline'
-        } className="ml-3 font-medium">
+        } className="ml-3 font-medium bg-osu-scarlet text-white">
           {resource.type}
         </Badge>
       </div>
@@ -77,7 +77,7 @@ const ResourceCard = ({ resource, isPreview = false }: { resource: any; isPrevie
       <div className="flex items-center justify-between">
         <div className="flex gap-3">
           {resource.url && (
-            <Button asChild size="sm" className="shadow-sm">
+            <Button asChild size="sm" className="shadow-sm bg-gradient-osu-accent text-white">
               <a href={resource.url} target="_blank" rel="noopener noreferrer">
                 <ExternalLink className="mr-2 h-4 w-4" />
                 Visit Resource
@@ -85,7 +85,7 @@ const ResourceCard = ({ resource, isPreview = false }: { resource: any; isPrevie
             </Button>
           )}
           {resource.phone && (
-            <Button asChild size="sm" variant="secondary" className="shadow-sm">
+            <Button asChild size="sm" variant="secondary" className="shadow-sm bg-osu-gray text-white hover:bg-osu-gray-dark">
               <a href={`tel:${resource.phone}`}>
                 <Phone className="mr-2 h-4 w-4" />
                 Call
@@ -94,7 +94,7 @@ const ResourceCard = ({ resource, isPreview = false }: { resource: any; isPrevie
           )}
         </div>
         {resource.available && (
-          <Badge variant="outline" className="text-xs font-medium border-green-200 text-green-700">
+          <Badge variant="outline" className="text-xs font-medium border-osu-scarlet text-osu-scarlet-dark">
             {resource.available}
           </Badge>
         )}

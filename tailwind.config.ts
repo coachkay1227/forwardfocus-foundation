@@ -65,11 +65,13 @@ export default {
 					'osu-scarlet': {
 						DEFAULT: 'hsl(var(--osu-scarlet))',
 						dark: 'hsl(var(--osu-scarlet-dark))',
+						light: 'hsl(var(--osu-scarlet-light))',
 						foreground: 'hsl(var(--osu-scarlet-foreground))'
 					},
 					'osu-gray': {
 						DEFAULT: 'hsl(var(--osu-gray))',
 						light: 'hsl(var(--osu-gray-light))',
+						dark: 'hsl(var(--osu-gray-dark))',
 						foreground: 'hsl(var(--osu-gray-foreground))'
 					},
 					cream: {
@@ -79,6 +81,11 @@ export default {
 					navy: {
 						900: 'hsl(var(--navy-900))'
 					}
+				},
+				backgroundImage: {
+					'gradient-osu-primary': 'var(--gradient-osu-primary)',
+					'gradient-osu-accent': 'var(--gradient-osu-accent)',
+					'gradient-osu-subtle': 'var(--gradient-osu-subtle)'
 				},
 				borderRadius: {
 					lg: 'var(--radius)',

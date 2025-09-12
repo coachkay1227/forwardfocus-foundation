@@ -33,15 +33,15 @@ const EmergencyBar = () => {
   if (isDismissed) return null;
 
   return (
-    <div className="sticky top-0 z-[70] w-full bg-[#FDECEC] text-[#7A1D1D] h-10">
+    <div className="sticky top-0 z-[70] w-full bg-osu-scarlet-light/10 border-b border-osu-scarlet/20 text-osu-scarlet-dark h-10">
     <div className="container flex items-center justify-center h-full px-6 text-xs relative">
         <p className="font-medium">Need help now? Call 211 for local services or dial 988 for the Suicide & Crisis Lifeline.</p>
         <div className="flex items-center gap-2 absolute right-6">
           <div className="hidden sm:flex gap-2">
-            <Button asChild size="sm" variant="outline" className="bg-transparent border-[#7A1D1D] text-[#7A1D1D] hover:bg-[#7A1D1D] hover:text-white h-7 px-3 text-xs">
+            <Button asChild size="sm" variant="outline" className="bg-transparent border-osu-scarlet text-osu-scarlet hover:bg-osu-scarlet hover:text-white h-7 px-3 text-xs">
               <a href="tel:211" aria-label="Call 211 now">Call 211</a>
             </Button>
-            <Button asChild size="sm" variant="outline" className="bg-transparent border-[#7A1D1D] text-[#7A1D1D] hover:bg-[#7A1D1D] hover:text-white h-7 px-3 text-xs">
+            <Button asChild size="sm" variant="outline" className="bg-transparent border-osu-scarlet text-osu-scarlet hover:bg-osu-scarlet hover:text-white h-7 px-3 text-xs">
               <a href="https://www.211.org/" target="_blank" rel="noreferrer">Find Services</a>
             </Button>
           </div>
@@ -49,7 +49,7 @@ const EmergencyBar = () => {
             variant="ghost"
             size="sm"
             onClick={handleDismiss}
-            className="h-7 w-7 p-0 text-[#7A1D1D] hover:bg-[#7A1D1D] hover:text-white"
+            className="h-7 w-7 p-0 text-osu-scarlet hover:bg-osu-scarlet/10"
             aria-label="Dismiss emergency bar"
           >
             <X className="h-3 w-3" />
@@ -61,7 +61,7 @@ const EmergencyBar = () => {
         <a
           href="tel:211"
           aria-label="Call 211 now"
-          className="fixed bottom-4 right-4 inline-flex items-center gap-2 rounded-full bg-[#7A1D1D] text-white shadow-lg px-4 py-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring z-50"
+          className="fixed bottom-4 right-4 inline-flex items-center gap-2 rounded-full bg-osu-scarlet hover:bg-osu-scarlet-dark text-white shadow-lg px-4 py-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-osu-scarlet/20 z-50"
         >
           <Phone className="h-4 w-4" />
           <span>Call 211</span>

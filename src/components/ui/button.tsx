@@ -20,6 +20,9 @@ const buttonVariants = cva(
         link: "text-primary underline-offset-4 hover:underline",
         premium: "bg-gradient-to-r from-primary to-accent text-primary-foreground hover:from-primary/90 hover:to-accent/90 shadow-md",
         hero: "bg-white/10 text-white border border-white/20 hover:bg-white/20 shadow-sm",
+        "osu-scarlet": "bg-osu-scarlet text-osu-scarlet-foreground hover:bg-osu-scarlet-dark shadow-sm",
+        "osu-gray": "bg-osu-gray text-osu-gray-foreground hover:bg-osu-gray-dark shadow-sm",
+        "osu-gradient": "bg-gradient-osu-primary text-white hover:bg-osu-scarlet-dark shadow-md",
       },
       size: {
         default: "h-10 px-4 py-2",

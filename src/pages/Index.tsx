@@ -58,11 +58,11 @@ const Index = () => {
       <EmergencySafetySystem />
 
       {/* Hero */}
-      <section className="relative isolate min-h-[70vh] md:min-h-[60vh] grid place-items-center">
+      <section className="relative isolate min-h-[70vh] md:min-h-[60vh] grid place-items-center bg-gradient-osu-subtle">
         {/* Background image */}
         <div aria-hidden className="absolute inset-0 -z-10 bg-[url('/images/diverse-families-community.jpg')] bg-cover bg-center" />
-        {/* Overlay */}
-        <div aria-hidden className="absolute inset-0 -z-10 bg-black/40" />
+        {/* Overlay with OSU gradient */}
+        <div aria-hidden className="absolute inset-0 -z-10 bg-gradient-to-br from-osu-scarlet/60 via-black/40 to-osu-scarlet-dark/50" />
 
         <div className="container">
           <div className="max-w-5xl mx-auto text-center">
@@ -70,12 +70,12 @@ const Index = () => {
               Forward Focus Elevation
             </h1>
             
-            {/* State pill */}
+            {/* State pill with OSU styling */}
             <div className="mt-4 flex justify-center">
-              <button onClick={() => setShowStateModal(true)} className="inline-flex items-center gap-2 rounded-full bg-white/70 backdrop-blur px-3 py-1.5 text-sm shadow-sm hover:bg-white/80 transition-colors" aria-label="Change your state">
+              <button onClick={() => setShowStateModal(true)} className="inline-flex items-center gap-2 rounded-full bg-osu-scarlet/10 backdrop-blur-sm border border-osu-scarlet/20 px-3 py-1.5 text-sm shadow-sm hover:bg-osu-scarlet/20 transition-colors" aria-label="Change your state">
                 <span>📍</span>
-                <span className="text-gray-800">Your state: <strong>{selectedState?.name ?? "Ohio"}</strong></span>
-                <span className="text-gray-600">• Change</span>
+                <span className="text-white">Your state: <strong className="text-osu-scarlet-light">{selectedState?.name ?? "Ohio"}</strong></span>
+                <span className="text-white/70">• Change</span>
               </button>
             </div>
             
@@ -135,11 +135,11 @@ const Index = () => {
           desc: "Peer support, mentorship, and life coaching designed for your journey."
         }].map(item => {
           const Icon = item.icon;
-          return <Card key={item.title} className="bg-card hover:shadow-lg transition-all duration-300 hover:scale-[1.015] border-0 shadow-md">
+          return <Card key={item.title} className="bg-card hover:shadow-lg transition-all duration-300 hover:scale-[1.015] border-l-4 border-l-osu-scarlet shadow-md">
                 <CardHeader className="pb-4">
                   <div className="flex items-center gap-4">
-                    <div className="p-3 bg-primary/10 rounded-lg">
-                      <Icon className="h-6 w-6 text-primary" aria-hidden />
+                    <div className="p-3 bg-gradient-osu-accent rounded-lg">
+                      <Icon className="h-6 w-6 text-white" aria-hidden />
                     </div>
                     <CardTitle className="text-xl font-bold">{item.title}</CardTitle>
                   </div>
@@ -222,7 +222,7 @@ const Index = () => {
           
           {/* Status pill */}
           <div className="flex justify-center mb-12">
-            <div className="inline-flex items-center gap-2 bg-muted/50 px-4 py-2 rounded-full">
+            <div className="inline-flex items-center gap-2 bg-gradient-osu-accent px-4 py-2 rounded-full text-white shadow-lg">
               <span>📍</span>
               <span className="font-medium">Currently serving: Ohio</span>
             </div>
@@ -235,7 +235,7 @@ const Index = () => {
             const isActive = stateData?.active || false;
             return <div key={state} className="flex items-center justify-between py-1 px-2 rounded-md hover:bg-muted/30 transition-colors mx-[100px]">
                   <span className="text-foreground font-medium">{state}</span>
-                  <Badge variant={isActive ? "default" : "secondary"} className={isActive ? "bg-green-600 text-white" : "bg-muted text-muted-foreground"}>
+                  <Badge variant={isActive ? "default" : "secondary"} className={isActive ? "bg-osu-scarlet text-white border-osu-scarlet" : "bg-osu-gray-light text-osu-gray-dark"}>
                     {isActive ? "Available" : "Coming Soon"}
                   </Badge>
                 </div>;
@@ -259,18 +259,18 @@ const Index = () => {
       </section>
 
       {/* Choose Your Path */}
-      <section className="bg-gradient-to-r from-primary/5 via-secondary/10 to-accent/5">
+      <section className="bg-gradient-osu-subtle">
         <div className="container py-16 md:py-20">
           <h2 className="font-heading text-3xl md:text-4xl font-semibold text-center mb-12">
             Choose Your Path Forward
           </h2>
 
         <div className="grid gap-8 md:grid-cols-2 max-w-5xl mx-auto items-stretch">
-          <Card className="border-2 border-primary/20 bg-white shadow-lg hover:shadow-xl transition-all duration-300 h-full">
+          <Card className="border-2 border-osu-scarlet/30 bg-white shadow-lg hover:shadow-xl transition-all duration-300 h-full hover:border-osu-scarlet/50">
             <CardHeader className="pb-6">
               <div className="flex items-start gap-4">
-                <div className="p-3 bg-primary/10 rounded-lg">
-                  <Users className="h-7 w-7 text-primary" aria-hidden />
+                <div className="p-3 bg-gradient-osu-accent rounded-lg">
+                  <Users className="h-7 w-7 text-white" aria-hidden />
                 </div>
                 <div className="flex-1">
                   <CardTitle className="text-xl font-bold mb-2">Justice-Impacted Families</CardTitle>
@@ -285,17 +285,17 @@ const Index = () => {
                 Free learning community, peer support, and income-based life coaching designed
                 specifically for justice-impacted individuals and families.
               </p>
-              <Button asChild size="lg" className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold h-12" aria-label="Join learning community">
+              <Button asChild size="lg" className="w-full bg-gradient-osu-primary hover:bg-osu-scarlet text-white font-semibold h-12 shadow-md" aria-label="Join learning community">
                 <Link to="/learn">Join Learning Community →</Link>
               </Button>
             </CardContent>
           </Card>
 
-          <Card className="border-2 border-primary/20 bg-white shadow-lg hover:shadow-xl transition-all duration-300 h-full">
+          <Card className="border-2 border-osu-scarlet/30 bg-white shadow-lg hover:shadow-xl transition-all duration-300 h-full hover:border-osu-scarlet/50">
             <CardHeader className="pb-6">
               <div className="flex items-start gap-4">
-                <div className="p-3 bg-primary/10 rounded-lg">
-                  <Shield className="h-7 w-7 text-primary" aria-hidden />
+                <div className="p-3 bg-gradient-osu-accent rounded-lg">
+                  <Shield className="h-7 w-7 text-white" aria-hidden />
                 </div>
                 <div className="flex-1">
                   <CardTitle className="text-xl font-bold mb-2">Crime Victims &amp; Survivors</CardTitle>
@@ -310,7 +310,7 @@ const Index = () => {
                 Comprehensive healing &amp; safety hub with crisis support, compensation guidance,
                 and specialized trauma-informed coaching.
               </p>
-              <Button asChild size="lg" className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold h-12 mt-4" aria-label="Access Healing and Safety Hub">
+              <Button asChild size="lg" className="w-full bg-gradient-osu-primary hover:bg-osu-scarlet text-white font-semibold h-12 mt-4 shadow-md" aria-label="Access Healing and Safety Hub">
                 <Link to="/victim-services">Access Healing &amp; Safety Hub →</Link>
               </Button>
             </CardContent>

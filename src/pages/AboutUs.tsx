@@ -51,37 +51,37 @@ export default function AboutUs() {
   }, []);
   return <main id="main">
       {/* Hero Section */}
-      <header className="relative bg-primary text-primary-foreground overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/90 to-secondary/70"></div>
+      <header className="relative bg-gradient-osu-primary text-white overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-osu-scarlet/95 to-osu-scarlet-dark/80"></div>
         <div className="relative container py-24 md:py-32">
           <div className="max-w-5xl mx-auto">
             <h1 className="font-heading text-5xl md:text-7xl font-bold mb-8 leading-tight">
               About Forward Focus Elevation
             </h1>
-            <p className="text-lg md:text-xl mb-12 text-primary-foreground/90 leading-relaxed max-w-3xl">Real Healing. Smart Tools. Second Chances for Every Story. AI-powered transformation for justice-impacted individuals and families because your next chapter deserves more than survival.</p>
+            <p className="text-lg md:text-xl mb-12 text-white/90 leading-relaxed max-w-3xl">Real Healing. Smart Tools. Second Chances for Every Story. AI-powered transformation for justice-impacted individuals and families because your next chapter deserves more than survival.</p>
             <div className="flex items-center gap-6 text-sm mb-12 flex-wrap">
-              <span className="flex items-center gap-2 bg-accent/20 px-6 py-3 rounded-full backdrop-blur-sm">
+              <span className="flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 px-6 py-3 rounded-full">
                 <Shield className="h-5 w-5" />
                 Dignity
               </span>
-              <span className="flex items-center gap-2 bg-accent/20 px-6 py-3 rounded-full backdrop-blur-sm">
+              <span className="flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 px-6 py-3 rounded-full">
                 <Heart className="h-5 w-5" />
                 Hope
               </span>
-              <span className="flex items-center gap-2 bg-accent/20 px-6 py-3 rounded-full backdrop-blur-sm">
+              <span className="flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 px-6 py-3 rounded-full">
                 <Users className="h-5 w-5" />
                 Community
               </span>
             </div>
             
             <div className="flex flex-col sm:flex-row gap-4 max-w-lg">
-              <Button asChild size="lg" variant="secondary" className="flex-1">
+              <Button asChild size="lg" variant="secondary" className="flex-1 bg-white text-osu-scarlet hover:bg-white/90">
                 <Link to="/victim-services">
                   <Shield className="h-5 w-5 mr-2" />
                   Explore the Healing Hub
                 </Link>
               </Button>
-              <Button asChild size="lg" className="bg-accent hover:bg-accent/90 text-accent-foreground flex-1">
+              <Button asChild size="lg" className="bg-osu-gray hover:bg-osu-gray-dark text-white flex-1">
                 <Link to="/learn">
                   <Users className="h-5 w-5 mr-2" />
                   Join the Community

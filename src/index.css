@@ -57,14 +57,21 @@ All colors MUST be HSL.
     /* Ohio State Brand Colors */
     --osu-scarlet: 0 100% 37%;
     --osu-scarlet-dark: 0 100% 32%;
+    --osu-scarlet-light: 0 100% 45%;
     --osu-scarlet-foreground: 0 0% 100%;
     
     --osu-gray: 0 0% 40%;
     --osu-gray-light: 0 0% 85%;
+    --osu-gray-dark: 0 0% 25%;
     --osu-gray-foreground: 0 0% 100%;
     
     --cream: 45 29% 97%;
     --cream-foreground: 20 14% 25%;
+    
+    /* Ohio State Gradients */
+    --gradient-osu-primary: linear-gradient(135deg, hsl(var(--osu-scarlet)), hsl(var(--osu-scarlet-dark)));
+    --gradient-osu-accent: linear-gradient(135deg, hsl(var(--osu-scarlet-light)), hsl(var(--osu-scarlet)));
+    --gradient-osu-subtle: linear-gradient(180deg, hsl(var(--background)), hsl(var(--osu-scarlet) / 0.05));
   }
 
   .dark {
@@ -107,14 +114,21 @@ All colors MUST be HSL.
     /* Ohio State Brand Colors - Dark Mode */
     --osu-scarlet: 0 100% 42%;
     --osu-scarlet-dark: 0 100% 37%;
+    --osu-scarlet-light: 0 100% 50%;
     --osu-scarlet-foreground: 0 0% 100%;
     
     --osu-gray: 0 0% 45%;
     --osu-gray-light: 0 0% 20%;
+    --osu-gray-dark: 0 0% 15%;
     --osu-gray-foreground: 0 0% 100%;
     
     --cream: 45 29% 15%;
     --cream-foreground: 45 29% 92%;
+    
+    /* Ohio State Gradients - Dark Mode */
+    --gradient-osu-primary: linear-gradient(135deg, hsl(var(--osu-scarlet)), hsl(var(--osu-scarlet-dark)));
+    --gradient-osu-accent: linear-gradient(135deg, hsl(var(--osu-scarlet-light)), hsl(var(--osu-scarlet)));
+    --gradient-osu-subtle: linear-gradient(180deg, hsl(var(--background)), hsl(var(--osu-scarlet) / 0.08));
   }
 }
 
