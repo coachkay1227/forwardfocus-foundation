@@ -399,36 +399,9 @@ export default function CommunityLearning() {
                 </div>
               </div>
 
-              <div className="grid md:grid-cols-2 gap-8 items-center text-left">
-                <div>
-                  <h3 className="text-xl font-semibold mb-4 text-center">Application Process</h3>
-                  <div className="space-y-4">
-                    <div className="flex items-start gap-3">
-                      <div className="w-8 h-8 bg-osu-scarlet/20 rounded-full flex items-center justify-center text-osu-scarlet font-semibold text-sm">1</div>
-                      <div>
-                        <h4 className="font-medium text-foreground">Submit Application</h4>
-                        <p className="text-sm text-foreground/80">Share basic info about your situation and goals</p>
-                      </div>
-                    </div>
-                    <div className="flex items-start gap-3">
-                      <div className="w-8 h-8 bg-osu-scarlet/20 rounded-full flex items-center justify-center text-osu-scarlet font-semibold text-sm">2</div>
-                      <div>
-                        <h4 className="font-medium text-foreground">Review Process</h4>
-                        <p className="text-sm text-foreground/80">We review within 24-48 hours for community safety</p>
-                      </div>
-                    </div>
-                    <div className="flex items-start gap-3">
-                      <div className="w-8 h-8 bg-osu-scarlet/20 rounded-full flex items-center justify-center text-osu-scarlet font-semibold text-sm">3</div>
-                      <div>
-                        <h4 className="font-medium text-foreground">Welcome & Onboarding</h4>
-                        <p className="text-sm text-foreground/80">Get access to all modules and community features</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="bg-gradient-osu-subtle border border-osu-scarlet/20 rounded-lg p-6">
-                  <h3 className="text-xl font-semibold text-foreground mb-4 text-center">What You Get (Free Forever)</h3>
+              <div className="text-center">
+                <div className="bg-gradient-osu-subtle border border-osu-scarlet/20 rounded-lg p-6 max-w-2xl mx-auto">
+                  <h3 className="text-xl font-semibold text-foreground mb-4">What You Get (Free Forever)</h3>
                   <div className="space-y-3">
                     {[
                       "8+ comprehensive learning pathways",
@@ -460,6 +433,27 @@ export default function CommunityLearning() {
                   <p className="text-xs text-foreground/60 text-center mt-3">
                     No credit card required • Always free • Secure application
                   </p>
+                </div>
+
+                <div className="mt-8">
+                  <h3 className="text-xl font-semibold mb-6">Application Process</h3>
+                  <div className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+                    <div className="text-center">
+                      <div className="w-12 h-12 bg-osu-scarlet/20 rounded-full flex items-center justify-center text-osu-scarlet font-semibold text-lg mx-auto mb-3">1</div>
+                      <h4 className="font-medium text-foreground mb-2">Submit Application</h4>
+                      <p className="text-sm text-foreground/80">Share basic info about your situation and goals</p>
+                    </div>
+                    <div className="text-center">
+                      <div className="w-12 h-12 bg-osu-scarlet/20 rounded-full flex items-center justify-center text-osu-scarlet font-semibold text-lg mx-auto mb-3">2</div>
+                      <h4 className="font-medium text-foreground mb-2">Review Process</h4>
+                      <p className="text-sm text-foreground/80">We review within 24-48 hours for community safety</p>
+                    </div>
+                    <div className="text-center">
+                      <div className="w-12 h-12 bg-osu-scarlet/20 rounded-full flex items-center justify-center text-osu-scarlet font-semibold text-lg mx-auto mb-3">3</div>
+                      <h4 className="font-medium text-foreground mb-2">Welcome & Onboarding</h4>
+                      <p className="text-sm text-foreground/80">Get access to all modules and community features</p>
+                    </div>
+                  </div>
                 </div>
               </div>
 
