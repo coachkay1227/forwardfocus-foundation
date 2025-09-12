@@ -322,7 +322,7 @@ const Organizations = () => {
         <Separator className="mb-8" />
 
         {/* Results */}
-        <div className="mb-6">
+        <div className="mb-6 text-center">
           <h2 className="text-xl font-semibold">
             {filteredOrgs.length === 0 
               ? "No organizations found" 
