@@ -101,13 +101,34 @@ const CrisisSupportAI: React.FC<CrisisSupportAIProps> = ({ isOpen, onClose, init
 
     } catch (error) {
       console.error('Crisis AI error:', error);
-      const errorMessage: Message = {
-        id: (Date.now() + 1).toString(),
-        type: 'ai',
-        content: "I'm experiencing technical difficulties, but your safety is still my priority. For immediate crisis support: Call 911 for emergencies, 988 for suicide crisis support, or text HOME to 741741 for crisis text support.",
-        timestamp: new Date(),
-      };
-      setMessages(prev => [...prev, errorMessage]);
+      // Fallback: client-side crisis resource lookup so users still get help
+      try {
+        const { data: resources } = await supabase
+          .from('resources')
+          .select('*')
+          .or('type.ilike.%crisis%,type.ilike.%emergency%,type.ilike.%mental health%,type.ilike.%suicide%,type.ilike.%domestic violence%,type.ilike.%substance abuse%')
+          .eq('verified', 'verified')
+          .limit(8);
+
+        const content = "I'm experiencing technical difficulties, but your safety is my priority. For immediate support: Call 911 (emergency), 988 (suicide & crisis), or text HOME to 741741. Here are crisis resources I found:";
+        const aiMessage: Message = {
+          id: (Date.now() + 1).toString(),
+          type: 'ai',
+          content,
+          timestamp: new Date(),
+          resources: resources || []
+        };
+        setMessages(prev => [...prev, aiMessage]);
+      } catch (fallbackError) {
+        console.error('Crisis fallback failed:', fallbackError);
+        const errorMessage: Message = {
+          id: (Date.now() + 1).toString(),
+          type: 'ai',
+          content: "I'm experiencing technical difficulties. For immediate crisis support: Call 911 for emergencies, 988 for suicide crisis support, or text HOME to 741741.",
+          timestamp: new Date(),
+        };
+        setMessages(prev => [...prev, errorMessage]);
+      }
     } finally {
       setIsLoading(false);
     }

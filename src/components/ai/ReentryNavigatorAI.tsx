@@ -102,13 +102,34 @@ const ReentryNavigatorAI: React.FC<ReentryNavigatorAIProps> = ({ isOpen, onClose
 
     } catch (error) {
       console.error('Reentry Navigator AI error:', error);
-      const errorMessage: Message = {
-        id: (Date.now() + 1).toString(),
-        type: 'ai',
-        content: "I apologize for the technical issue. Your reentry success is still my priority. For immediate support, call 211 for comprehensive resource navigation, or visit your local reentry program or Ohio Means Jobs center.",
-        timestamp: new Date(),
-      };
-      setMessages(prev => [...prev, errorMessage]);
+      // Fallback: client-side reentry resource lookup so users still get help
+      try {
+        const { data: resources } = await supabase
+          .from('resources')
+          .select('*')
+          .or('type.ilike.%housing%,type.ilike.%employment%,type.ilike.%job training%,type.ilike.%education%,type.ilike.%reentry%,type.ilike.%legal aid%,type.ilike.%mental health%,type.ilike.%substance abuse%,type.ilike.%healthcare%,type.ilike.%transportation%')
+          .eq('verified', 'verified')
+          .limit(10);
+
+        const content = "I'm having trouble connecting to the AI right now, but here are reentry resources I found that match common needs:";
+        const aiMessage: Message = {
+          id: (Date.now() + 1).toString(),
+          type: 'ai',
+          content,
+          timestamp: new Date(),
+          resources: resources || []
+        };
+        setMessages(prev => [...prev, aiMessage]);
+      } catch (fallbackError) {
+        console.error('Reentry fallback failed:', fallbackError);
+        const errorMessage: Message = {
+          id: (Date.now() + 1).toString(),
+          type: 'ai',
+          content: "I apologize for the technical issue. Your reentry success is still my priority. For immediate support, call 211 for comprehensive resource navigation, or visit your local reentry program or Ohio Means Jobs center.",
+          timestamp: new Date(),
+        };
+        setMessages(prev => [...prev, errorMessage]);
+      }
     } finally {
       setIsLoading(false);
     }

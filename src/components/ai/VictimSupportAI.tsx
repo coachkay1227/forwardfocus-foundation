@@ -101,13 +101,34 @@ const VictimSupportAI: React.FC<VictimSupportAIProps> = ({ isOpen, onClose, init
 
     } catch (error) {
       console.error('Victim Support AI error:', error);
-      const errorMessage: Message = {
-        id: (Date.now() + 1).toString(),
-        type: 'ai',
-        content: "I apologize for the technical difficulty. Your healing journey is still important to me. For immediate support: National Domestic Violence Hotline 1-800-799-7233, RAINN Sexual Assault Hotline 1-800-656-4673, or Crisis Support 988.",
-        timestamp: new Date(),
-      };
-      setMessages(prev => [...prev, errorMessage]);
+      // Fallback: client-side victim services lookup so users still get help
+      try {
+        const { data: resources } = await supabase
+          .from('resources')
+          .select('*')
+          .or('type.ilike.%victim%,type.ilike.%legal aid%,type.ilike.%compensation%,type.ilike.%counseling%,type.ilike.%trauma%,type.ilike.%advocacy%,type.ilike.%domestic violence%,type.ilike.%sexual assault%')
+          .eq('verified', 'verified')
+          .limit(8);
+
+        const content = "I'm having trouble connecting to the AI right now, but here are trauma-informed victim services I found that may help:";
+        const aiMessage: Message = {
+          id: (Date.now() + 1).toString(),
+          type: 'ai',
+          content,
+          timestamp: new Date(),
+          resources: resources || []
+        };
+        setMessages(prev => [...prev, aiMessage]);
+      } catch (fallbackError) {
+        console.error('Victim fallback failed:', fallbackError);
+        const errorMessage: Message = {
+          id: (Date.now() + 1).toString(),
+          type: 'ai',
+          content: "I apologize for the technical difficulty. For immediate support: National Domestic Violence Hotline 1-800-799-7233, RAINN Sexual Assault Hotline 1-800-656-4673, or Crisis Support 988.",
+          timestamp: new Date(),
+        };
+        setMessages(prev => [...prev, errorMessage]);
+      }
     } finally {
       setIsLoading(false);
     }

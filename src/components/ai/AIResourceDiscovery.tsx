@@ -116,14 +116,45 @@ const AIResourceDiscovery: React.FC<AIResourceDiscoveryProps> = ({
         variant: "destructive",
       });
 
-      const errorMessage: Message = {
-        id: (Date.now() + 1).toString(),
-        type: 'ai',
-        content: "I'm sorry, I'm having trouble connecting right now. Please try again in a moment or contact our support team for assistance.",
-        timestamp: new Date()
-      };
+      // Fallback: client-side resource lookup so users still get help
+      try {
+        const tokens = query.toLowerCase().split(/\s+/).slice(0, 3);
+        let orFilter = tokens.map(t => `name.ilike.%${t}%,description.ilike.%${t}%,type.ilike.%${t}%`).join(',');
+        if (!orFilter) orFilter = 'name.ilike.%%';
 
-      setMessages(prev => [...prev, errorMessage]);
+        let resourceQuery = supabase
+          .from('resources')
+          .select('*')
+          .limit(8)
+          .or(orFilter);
+
+        if (county) resourceQuery = resourceQuery.ilike('county', `%${county}%`);
+        if (location) resourceQuery = resourceQuery.or(`city.ilike.%${location}%,county.ilike.%${location}%`);
+
+        const { data: fallbackResources } = await resourceQuery;
+
+        const content = fallbackResources && fallbackResources.length
+          ? "I couldn't reach the AI right now, but here are relevant Ohio resources I found:"
+          : "I'm having trouble connecting right now. Please try again in a moment.";
+
+        const aiMessage: Message = {
+          id: (Date.now() + 1).toString(),
+          type: 'ai',
+          content,
+          timestamp: new Date(),
+          resources: fallbackResources || []
+        };
+
+        setMessages(prev => [...prev, aiMessage]);
+      } catch (fallbackError) {
+        console.error('Fallback query failed:', fallbackError);
+        setMessages(prev => [...prev, {
+          id: (Date.now() + 1).toString(),
+          type: 'ai',
+          content: "I'm sorry, I'm having trouble connecting right now. Please try again in a moment or contact our support team for assistance.",
+          timestamp: new Date()
+        }]);
+      }
     } finally {
       setIsLoading(false);
       setIsTyping(false);
