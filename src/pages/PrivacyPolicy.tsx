@@ -2,11 +2,10 @@ import { useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Shield, Calendar, Mail } from "lucide-react";
-
 const PrivacyPolicy = () => {
   useEffect(() => {
     document.title = "Privacy Policy | Forward Focus Elevation";
-    
+
     // SEO meta tags
     const metaDescription = document.querySelector('meta[name="description"]');
     if (metaDescription) {
@@ -18,9 +17,7 @@ const PrivacyPolicy = () => {
       document.head.appendChild(meta);
     }
   }, []);
-
-  return (
-    <main id="main" className="min-h-screen bg-gradient-to-br from-cream via-background to-osu-gray-light/20">
+  return <main id="main" className="min-h-screen bg-gradient-to-br from-cream via-background to-osu-gray-light/20">
       <div className="container py-12">
         <div className="max-w-4xl mx-auto">
           {/* Header */}
@@ -90,7 +87,7 @@ const PrivacyPolicy = () => {
                   Forward Focus Elevation uses collected data to:
                 </p>
                 <ul className="list-disc pl-6 space-y-2 text-base leading-relaxed text-navy-900/80 text-center list-none">
-                  <li>Provide, improve, and personalize our services</li>
+                  <li className="px-0">Provide, improve, and personalize our services</li>
                   <li>Send updates, newsletters, and promotional materials (with your consent)</li>
                   <li>Respond to inquiries and customer support requests</li>
                   <li>Analyze website performance and user engagement</li>
@@ -157,10 +154,7 @@ const PrivacyPolicy = () => {
                 <div className="bg-osu-gray-light/20 p-4 rounded-lg mx-auto max-w-md flex justify-center border border-osu-scarlet/20">
                   <div className="flex items-center gap-2">
                     <Mail className="h-5 w-5 text-osu-scarlet" />
-                    <a 
-                      href="mailto:support@ffe.services" 
-                      className="text-osu-scarlet hover:text-osu-scarlet-dark hover:underline font-semibold transition-colors"
-                    >
+                    <a href="mailto:support@ffe.services" className="text-osu-scarlet hover:text-osu-scarlet-dark hover:underline font-semibold transition-colors">
                       support@ffe.services
                     </a>
                   </div>
@@ -170,8 +164,6 @@ const PrivacyPolicy = () => {
           </Card>
         </div>
       </div>
-    </main>
-  );
+    </main>;
 };
-
 export default PrivacyPolicy;
