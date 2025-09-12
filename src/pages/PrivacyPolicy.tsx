@@ -56,7 +56,7 @@ const PrivacyPolicy = () => {
                 <p className="text-base leading-relaxed text-navy-900/80 mb-4">
                   Forward Focus Elevation may collect the following types of information:
                 </p>
-                <div className="space-y-4 text-left">
+                <div className="space-y-4 text-center">
                   <div>
                     <h3 className="font-semibold text-lg mb-2 text-osu-scarlet">Personal Information:</h3>
                     <p className="text-base leading-relaxed text-navy-900/80">
@@ -89,7 +89,7 @@ const PrivacyPolicy = () => {
                 <p className="text-base leading-relaxed text-navy-900/80 mb-4">
                   Forward Focus Elevation uses collected data to:
                 </p>
-                <ul className="list-disc pl-6 space-y-2 text-base leading-relaxed text-navy-900/80 text-left">
+                <ul className="list-disc pl-6 space-y-2 text-base leading-relaxed text-navy-900/80 text-center list-none">
                   <li>Provide, improve, and personalize our services</li>
                   <li>Send updates, newsletters, and promotional materials (with your consent)</li>
                   <li>Respond to inquiries and customer support requests</li>
@@ -105,7 +105,7 @@ const PrivacyPolicy = () => {
                 <p className="text-base leading-relaxed text-navy-900/80 mb-4">
                   Forward Focus Elevation does not sell or rent your personal information. However, we may share it with:
                 </p>
-                <ul className="list-disc pl-6 space-y-2 text-base leading-relaxed text-navy-900/80 text-left">
+                <ul className="list-disc pl-6 space-y-2 text-base leading-relaxed text-navy-900/80 text-center list-none">
                   <li>Service providers who assist in operating our website</li>
                   <li>Legal authorities if required by law</li>
                   <li>Business partners or affiliates, with your consent</li>
@@ -129,7 +129,7 @@ const PrivacyPolicy = () => {
               {/* 6. Your Choices & Rights */}
               <section className="bg-gradient-to-r from-cream/10 to-osu-gray-light/10 p-6 rounded-lg border border-osu-gray/20">
                 <h2 className="font-heading text-2xl font-semibold mb-4 text-osu-scarlet">6. Your Choices & Rights</h2>
-                <ul className="list-disc pl-6 space-y-2 text-base leading-relaxed text-navy-900/80 text-left">
+                <ul className="list-disc pl-6 space-y-2 text-base leading-relaxed text-navy-900/80 text-center list-none">
                   <li>You can opt out of marketing emails at any time by clicking "unsubscribe."</li>
                   <li>You may request to access, update, or delete your personal information by contacting Forward Focus Elevation.</li>
                 </ul>
