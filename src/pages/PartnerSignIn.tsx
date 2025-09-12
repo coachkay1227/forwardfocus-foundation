@@ -128,8 +128,8 @@ const PartnerSignIn = () => {
           <div className="mt-6 text-center">
             <p className="text-sm text-muted-foreground">
               Need a partner account?{" "}
-              <Link to="/request-partnership" className="text-primary hover:underline">
-                Request Partnership
+              <Link to="/partner-signup" className="text-primary hover:underline">
+                Create Partner Account
               </Link>
             </p>
             <p className="text-sm text-muted-foreground mt-2">
