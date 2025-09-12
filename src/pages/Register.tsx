@@ -21,9 +21,20 @@ const Register = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
+    // Validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      toast({
+        title: "Invalid Email",
+        description: "Please enter a valid email address",
+        variant: "destructive",
+      });
+      return;
+    }
+
     if (password !== confirmPassword) {
       toast({
-        title: "Error",
+        title: "Password Mismatch",
         description: "Passwords do not match",
         variant: "destructive",
       });
@@ -32,7 +43,7 @@ const Register = () => {
 
     if (password.length < 6) {
       toast({
-        title: "Error",
+        title: "Weak Password",
         description: "Password must be at least 6 characters long",
         variant: "destructive",
       });
@@ -42,25 +53,46 @@ const Register = () => {
     setLoading(true);
     
     try {
-      const { error } = await signUp(email, password);
+      const { error } = await signUp(email.trim().toLowerCase(), password);
       
       if (error) {
-        toast({
-          title: "Registration failed",
-          description: error.message,
-          variant: "destructive",
-        });
+        // Handle specific error types
+        if (error.message.includes("User already registered")) {
+          toast({
+            title: "Account Already Exists",
+            description: "An account with this email already exists. Try signing in instead.",
+            variant: "destructive",
+          });
+        } else if (error.message.includes("Invalid email")) {
+          toast({
+            title: "Invalid Email",
+            description: "Please check your email address and try again",
+            variant: "destructive",
+          });
+        } else {
+          toast({
+            title: "Registration Failed",
+            description: error.message,
+            variant: "destructive",
+          });
+        }
       } else {
         toast({
-          title: "Registration successful!",
-          description: "Please check your email to verify your account.",
+          title: "Registration Successful!",
+          description: "Please check your email to verify your account before signing in.",
         });
-        navigate("/");
+        // Clear form
+        setEmail("");
+        setPassword("");
+        setConfirmPassword("");
+        // Redirect to auth page instead of home
+        navigate("/auth");
       }
-    } catch (error) {
+    } catch (error: any) {
+      console.error("Registration error:", error);
       toast({
-        title: "An error occurred",
-        description: "Please try again later",
+        title: "Registration Error",
+        description: "An unexpected error occurred. Please try again.",
         variant: "destructive",
       });
     } finally {
