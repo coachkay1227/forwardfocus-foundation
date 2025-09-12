@@ -9,7 +9,7 @@ const Footer = () => {
           </p>
         </div>
         <nav>
-          <div className="font-bold text-lg mb-4">Explore</div>
+          <div className="font-bold text-lg mb-4 text-center md:text-left">Explore</div>
           <ul className="space-y-3 text-base">
             <li>
               <a 
