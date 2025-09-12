@@ -388,10 +388,10 @@ export default function CommunityLearning() {
         {/* Join Today */}
         <section id="apply" className="py-12">
           <div className="container">
-            <div className="max-w-4xl mx-auto">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="w-12 h-12 bg-accent rounded-lg flex items-center justify-center">
-                  <ArrowRight className="h-6 w-6 text-accent-foreground" />
+            <div className="max-w-4xl mx-auto text-center">
+              <div className="flex items-center justify-center gap-3 mb-6">
+                <div className="w-12 h-12 bg-gradient-osu-accent rounded-lg flex items-center justify-center">
+                  <ArrowRight className="h-6 w-6 text-white" />
                 </div>
                 <div>
                   <h2 className="text-2xl font-bold text-foreground">Ready to Join Our Community?</h2>
@@ -399,26 +399,26 @@ export default function CommunityLearning() {
                 </div>
               </div>
 
-              <div className="grid md:grid-cols-2 gap-8 items-center">
+              <div className="grid md:grid-cols-2 gap-8 items-center text-left">
                 <div>
-                  <h3 className="text-xl font-semibold mb-4">Application Process</h3>
+                  <h3 className="text-xl font-semibold mb-4 text-center">Application Process</h3>
                   <div className="space-y-4">
                     <div className="flex items-start gap-3">
-                      <div className="w-8 h-8 bg-accent/20 rounded-full flex items-center justify-center text-accent font-semibold text-sm">1</div>
+                      <div className="w-8 h-8 bg-osu-scarlet/20 rounded-full flex items-center justify-center text-osu-scarlet font-semibold text-sm">1</div>
                       <div>
                         <h4 className="font-medium text-foreground">Submit Application</h4>
                         <p className="text-sm text-foreground/80">Share basic info about your situation and goals</p>
                       </div>
                     </div>
                     <div className="flex items-start gap-3">
-                      <div className="w-8 h-8 bg-accent/20 rounded-full flex items-center justify-center text-accent font-semibold text-sm">2</div>
+                      <div className="w-8 h-8 bg-osu-scarlet/20 rounded-full flex items-center justify-center text-osu-scarlet font-semibold text-sm">2</div>
                       <div>
                         <h4 className="font-medium text-foreground">Review Process</h4>
                         <p className="text-sm text-foreground/80">We review within 24-48 hours for community safety</p>
                       </div>
                     </div>
                     <div className="flex items-start gap-3">
-                      <div className="w-8 h-8 bg-accent/20 rounded-full flex items-center justify-center text-accent font-semibold text-sm">3</div>
+                      <div className="w-8 h-8 bg-osu-scarlet/20 rounded-full flex items-center justify-center text-osu-scarlet font-semibold text-sm">3</div>
                       <div>
                         <h4 className="font-medium text-foreground">Welcome & Onboarding</h4>
                         <p className="text-sm text-foreground/80">Get access to all modules and community features</p>
@@ -427,8 +427,8 @@ export default function CommunityLearning() {
                   </div>
                 </div>
 
-                <div className="bg-accent/10 border border-accent/20 rounded-lg p-6">
-                  <h3 className="text-xl font-semibold text-foreground mb-4">What You Get (Free Forever)</h3>
+                <div className="bg-gradient-osu-subtle border border-osu-scarlet/20 rounded-lg p-6">
+                  <h3 className="text-xl font-semibold text-foreground mb-4 text-center">What You Get (Free Forever)</h3>
                   <div className="space-y-3">
                     {[
                       "8+ comprehensive learning pathways",
@@ -442,7 +442,7 @@ export default function CommunityLearning() {
                       "Success milestone celebrations"
                     ].map((benefit, index) => (
                       <div key={index} className="flex items-center gap-2 text-sm text-foreground/90">
-                        <CheckCircle className="h-4 w-4 text-accent" />
+                        <CheckCircle className="h-4 w-4 text-osu-scarlet" />
                         {benefit}
                       </div>
                     ))}
@@ -450,7 +450,7 @@ export default function CommunityLearning() {
 
                   <Button 
                     onClick={() => setShowApplication(true)}
-                    className="w-full mt-6 bg-secondary hover:bg-secondary/90 text-secondary-foreground"
+                    className="w-full mt-6 bg-gradient-osu-accent hover:bg-osu-scarlet text-white shadow-md"
                     size="lg"
                   >
                     <Users className="h-4 w-4 mr-2" />
@@ -463,13 +463,13 @@ export default function CommunityLearning() {
                 </div>
               </div>
 
-              <div className="mt-12 bg-primary/10 border border-primary/20 rounded-lg p-6">
-                <h3 className="font-semibold text-primary mb-3">Not Ready to Apply Yet?</h3>
-                <p className="text-foreground/80 mb-4">
+              <div className="mt-12 bg-osu-scarlet/5 border border-osu-scarlet/20 rounded-lg p-6">
+                <h3 className="font-semibold text-osu-scarlet mb-3 text-center">Not Ready to Apply Yet?</h3>
+                <p className="text-foreground/80 mb-4 text-center">
                   That's completely okay. Everyone moves at their own pace. Here are other ways to get support:
                 </p>
                 <div className="grid md:grid-cols-3 gap-4">
-                  <Link to="/help" className="block p-3 bg-card border border-border rounded hover:bg-primary/5 transition-colors">
+                  <Link to="/help" className="block p-3 bg-card border border-border rounded hover:bg-osu-scarlet/5 transition-colors">
                     <div className="font-medium text-foreground">Get Immediate Help</div>
                     <div className="text-sm text-foreground/80">Crisis resources and immediate support</div>
                   </Link>
