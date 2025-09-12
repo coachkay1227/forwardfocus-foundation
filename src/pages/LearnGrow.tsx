@@ -98,7 +98,7 @@ export default function CommunityLearning() {
       {/* Community Visual Banner */}
       <section className="py-8 bg-card border-b">
         <div className="container">
-          <div className="relative rounded-lg overflow-hidden">
+          <div className="max-w-4xl mx-auto relative rounded-lg overflow-hidden">
             <img 
               src={learningCommunityDiverse} 
               alt="Diverse community members engaged in collaborative learning activities"
@@ -150,7 +150,7 @@ export default function CommunityLearning() {
         {/* Community Overview */}
         <section id="overview" className="py-12 bg-card">
           <div className="container">
-            <div className="max-w-4xl mx-auto">
+            <div className="max-w-4xl mx-auto text-center">
               <div className="flex items-center gap-3 mb-6">
                 <div className="w-12 h-12 bg-secondary rounded-lg flex items-center justify-center">
                   <Users className="h-6 w-6 text-secondary-foreground" />
@@ -240,8 +240,9 @@ export default function CommunityLearning() {
 
         {/* Learning Topic Previews */}
         <section id="learning" className="py-12">
-          <div className="max-w-5xl mx-auto px-4">
-            <div className="flex items-center gap-3 mb-6">
+          <div className="container">
+            <div className="max-w-4xl mx-auto text-center">
+              <div className="flex items-center justify-center gap-3 mb-6">
                 <div className="w-12 h-12 bg-secondary rounded-lg flex items-center justify-center">
                   <BookOpen className="h-6 w-6 text-secondary-foreground" />
                 </div>
@@ -326,12 +327,13 @@ export default function CommunityLearning() {
                 </p>
               </div>
             </div>
+          </div>
         </section>
 
         {/* Peer Support with Visual Enhancement */}
         <section id="support" className="py-12 bg-card">
           <div className="container">
-            <div className="max-w-4xl mx-auto">
+            <div className="max-w-4xl mx-auto text-center">
               <div className="flex items-center gap-3 mb-6">
                 <div className="w-12 h-12 bg-primary rounded-lg flex items-center justify-center">
                   <Heart className="h-6 w-6 text-primary-foreground" />
