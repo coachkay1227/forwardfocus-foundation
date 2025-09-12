@@ -220,7 +220,7 @@ const Index = () => {
           </h2>
           
           {/* Status pill */}
-          <div className="flex justify-center mb-6">
+          <div className="flex justify-center mb-12">
             <div className="inline-flex items-center gap-2 bg-muted/50 px-4 py-2 rounded-full">
               <span>📍</span>
               <span className="font-medium">Currently serving: Ohio</span>
@@ -228,11 +228,11 @@ const Index = () => {
           </div>
 
           {/* All 50 states in 3 columns */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-2 mb-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-2 mb-12">
             {allStates.sort().map(state => {
             const stateData = STATES.find(s => s.name === state);
             const isActive = stateData?.active || false;
-            return <div key={state} className="flex items-center justify-between py-1 px-2 rounded-md hover:bg-muted/30 transition-colors">
+            return <div key={state} className="flex items-center justify-between py-1 px-2 rounded-md hover:bg-muted/30 transition-colors mx-[100px]">
                   <span className="text-foreground font-medium">{state}</span>
                   <Badge variant={isActive ? "default" : "secondary"} className={isActive ? "bg-green-600 text-white" : "bg-muted text-muted-foreground"}>
                     {isActive ? "Available" : "Coming Soon"}
