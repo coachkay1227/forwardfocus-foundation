@@ -322,64 +322,66 @@ const Partners = () => {
 
           {/* Partner Network Tab */}
           <TabsContent value="network" className="space-y-6">
-            <Card className="border-osu-gray/20 shadow-lg">
-              <CardHeader className="bg-gradient-to-r from-osu-scarlet/5 to-osu-gray/5">
-                <CardTitle className="text-osu-scarlet">Partner Benefits</CardTitle>
-                <CardDescription className="text-osu-gray">
-                  Discover the advantages of being part of our partner network
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="pt-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {partnerBenefits.map((benefit, index) => {
-                    const IconComponent = benefit.icon;
-                    return (
-                      <div key={index} className="flex items-start gap-4">
-                        <div className="p-2 bg-gradient-to-br from-osu-scarlet/20 to-osu-gray/20 rounded-lg">
-                          <IconComponent className="h-5 w-5 text-osu-scarlet" />
+            <div className="max-w-4xl mx-auto">
+              <Card className="border-osu-gray/20 shadow-lg">
+                <CardHeader className="bg-gradient-to-r from-osu-scarlet/5 to-osu-gray/5 text-center">
+                  <CardTitle className="text-osu-scarlet">Partner Benefits</CardTitle>
+                  <CardDescription className="text-osu-gray">
+                    Discover the advantages of being part of our partner network
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="pt-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto">
+                    {partnerBenefits.map((benefit, index) => {
+                      const IconComponent = benefit.icon;
+                      return (
+                        <div key={index} className="flex flex-col items-center text-center gap-4">
+                          <div className="p-4 bg-gradient-to-br from-osu-scarlet/20 to-osu-gray/20 rounded-lg">
+                            <IconComponent className="h-6 w-6 text-osu-scarlet" />
+                          </div>
+                          <div>
+                            <h3 className="font-semibold mb-1 text-osu-scarlet">{benefit.title}</h3>
+                            <p className="text-sm text-osu-gray">{benefit.description}</p>
+                          </div>
                         </div>
-                        <div>
-                          <h3 className="font-semibold mb-1 text-osu-scarlet">{benefit.title}</h3>
-                          <p className="text-sm text-osu-gray">{benefit.description}</p>
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-              </CardContent>
-            </Card>
+                      );
+                    })}
+                  </div>
+                </CardContent>
+              </Card>
 
-            <Card className="border-osu-gray/20 shadow-lg">
-              <CardHeader className="bg-gradient-to-r from-osu-scarlet/5 to-osu-gray/5">
-                <CardTitle className="text-osu-scarlet">Become a Partner</CardTitle>
-                <CardDescription className="text-osu-gray">
-                  Join our network of organizations committed to supporting justice-impacted individuals
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4 pt-6">
-                <div className="bg-osu-gray/10 p-4 rounded-lg border border-osu-gray/20">
-                  <h4 className="font-semibold mb-2 text-osu-scarlet">Partnership Requirements</h4>
-                  <ul className="text-sm text-osu-gray space-y-1">
-                    <li>• Commitment to serving justice-impacted individuals</li>
-                    <li>• Demonstrated track record of community service</li>
-                    <li>• Agreement to partnership guidelines and standards</li>
-                    <li>• Regular participation in network activities</li>
-                  </ul>
-                </div>
-                <div className="flex gap-4">
-                  <Button asChild className="bg-gradient-to-r from-osu-scarlet to-osu-gray hover:from-osu-scarlet/90 hover:to-osu-gray/90 text-white">
-                    <NavLink to="/partners/request-partnership">
-                      Request Partnership
-                    </NavLink>
-                  </Button>
-                  <Button variant="outline" asChild className="border-osu-gray text-osu-gray hover:bg-osu-scarlet hover:text-white">
-                    <NavLink to="/organizations">
-                      View Partner Directory
-                    </NavLink>
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
+              <Card className="border-osu-gray/20 shadow-lg">
+                <CardHeader className="bg-gradient-to-r from-osu-scarlet/5 to-osu-gray/5 text-center">
+                  <CardTitle className="text-osu-scarlet">Become a Partner</CardTitle>
+                  <CardDescription className="text-osu-gray">
+                    Join our network of organizations committed to supporting justice-impacted individuals
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4 pt-6">
+                  <div className="bg-osu-gray/10 p-6 rounded-lg border border-osu-gray/20 max-w-2xl mx-auto">
+                    <h4 className="font-semibold mb-4 text-osu-scarlet text-center">Partnership Requirements</h4>
+                    <ul className="text-sm text-osu-gray space-y-2 text-center list-none">
+                      <li>• Commitment to serving justice-impacted individuals</li>
+                      <li>• Demonstrated track record of community service</li>
+                      <li>• Agreement to partnership guidelines and standards</li>
+                      <li>• Regular participation in network activities</li>
+                    </ul>
+                  </div>
+                  <div className="flex flex-col sm:flex-row gap-4 justify-center max-w-md mx-auto">
+                    <Button asChild className="bg-gradient-to-r from-osu-scarlet to-osu-gray hover:from-osu-scarlet/90 hover:to-osu-gray/90 text-white">
+                      <NavLink to="/partners/request-partnership">
+                        Request Partnership
+                      </NavLink>
+                    </Button>
+                    <Button variant="outline" asChild className="border-osu-gray text-osu-gray hover:bg-osu-scarlet hover:text-white">
+                      <NavLink to="/organizations">
+                        View Partner Directory
+                      </NavLink>
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
           </TabsContent>
 
           {/* Resources Tab */}
