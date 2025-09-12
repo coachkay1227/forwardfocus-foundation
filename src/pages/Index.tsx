@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { Link } from "react-router-dom";
 import { ArrowRight, MapPin, Users, Phone, Shield, Bot, Heart, HeartHandshake } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -285,7 +286,7 @@ const Index = () => {
                 specifically for justice-impacted individuals and families.
               </p>
               <Button asChild size="lg" className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold h-12" aria-label="Join learning community">
-                <a href="/learn">Join Learning Community →</a>
+                <Link to="/learn">Join Learning Community →</Link>
               </Button>
             </CardContent>
           </Card>
@@ -310,7 +311,7 @@ const Index = () => {
                 and specialized trauma-informed coaching.
               </p>
               <Button asChild size="lg" className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold h-12 mt-4" aria-label="Access Healing and Safety Hub">
-                <a href="/victim-services">Access Healing &amp; Safety Hub →</a>
+                <Link to="/victim-services">Access Healing &amp; Safety Hub →</Link>
               </Button>
             </CardContent>
           </Card>
@@ -327,7 +328,7 @@ const Index = () => {
             Whether you're a family, nonprofit, or mentor — there's a place for you here.
           </p>
           <Button size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg h-12 px-8 text-base font-semibold" asChild>
-            <a href="/partners">Join the Movement</a>
+            <Link to="/partners">Join the Movement</Link>
           </Button>
         </div>
       </section>
