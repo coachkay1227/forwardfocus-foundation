@@ -334,9 +334,9 @@ export default function CommunityLearning() {
         <section id="support" className="py-12 bg-card">
           <div className="container">
             <div className="max-w-4xl mx-auto text-center">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="w-12 h-12 bg-primary rounded-lg flex items-center justify-center">
-                  <Heart className="h-6 w-6 text-primary-foreground" />
+              <div className="flex items-center justify-center gap-3 mb-6">
+                <div className="w-12 h-12 bg-gradient-osu-accent rounded-lg flex items-center justify-center">
+                  <Heart className="h-6 w-6 text-white" />
                 </div>
                 <div>
                   <h2 className="text-2xl font-bold text-foreground">Peer Support & Connection</h2>
