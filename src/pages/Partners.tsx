@@ -282,7 +282,7 @@ const Partners = () => {
                     Please sign in to access your partner dashboard and track your impact.
                   </p>
                   <Button asChild>
-                    <NavLink to="/auth">Sign In</NavLink>
+                    <NavLink to="/partner-signin">Sign In to Partner Portal</NavLink>
                   </Button>
                 </CardContent>
               </Card>
