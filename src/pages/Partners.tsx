@@ -128,7 +128,7 @@ const Partners = () => {
       title: "Request Partnership",
       description: "Apply to become an official partner",
       icon: Building2,
-      href: "/partners/request-partnership",
+      href: "/RequestPartnership",
       variant: "outline" as const,
     },
   ];

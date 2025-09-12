@@ -65,6 +65,7 @@ const App = () => (
                   <Route path="/partners/submit-referral" element={<SubmitReferral />} />
                   <Route path="/partners/add-resource" element={<AddResource />} />
                   <Route path="/partners/request" element={<RequestPartnership />} />
+                  <Route path="/RequestPartnership" element={<RequestPartnership />} />
                   <Route path="/organizations" element={<Organizations />} />
                   <Route path="/privacy" element={<PrivacyPolicy />} />
                   <Route path="/terms" element={<TermsOfService />} />
