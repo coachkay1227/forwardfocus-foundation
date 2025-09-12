@@ -258,6 +258,7 @@ const Organizations = () => {
                  </SelectTrigger>
                  <SelectContent className="max-h-60">
                    <SelectItem value="all">All cities</SelectItem>
+                   <SelectItem value="ohio">Ohio (All locations)</SelectItem>
                    {cityOptions.map(city => (
                      <SelectItem 
                        key={city.value} 
