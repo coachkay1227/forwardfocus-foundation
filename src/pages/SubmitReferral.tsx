@@ -139,7 +139,7 @@ const SubmitReferral = () => {
       <div className="container py-12">
         <div className="max-w-2xl mx-auto text-center">
           <div className="bg-card rounded-xl shadow-lg border-0 p-8 text-left">
-            <form onSubmit={onSubmit} className="grid gap-6">
+            <form onSubmit={onSubmit} className="grid gap-6 text-center">
               <div>
                 <label className="block text-lg font-semibold mb-2">Individual's Name</label>
                 <Input 
