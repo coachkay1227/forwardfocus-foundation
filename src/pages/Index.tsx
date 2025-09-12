@@ -220,7 +220,7 @@ const Index = () => {
           </h2>
           
           {/* Status pill */}
-          <div className="flex justify-center mb-12">
+          <div className="flex justify-center mb-6">
             <div className="inline-flex items-center gap-2 bg-muted/50 px-4 py-2 rounded-full">
               <span>📍</span>
               <span className="font-medium">Currently serving: Ohio</span>
@@ -228,7 +228,7 @@ const Index = () => {
           </div>
 
           {/* All 50 states in 3 columns */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-2 mb-12">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-2 mb-8">
             {allStates.sort().map(state => {
             const stateData = STATES.find(s => s.name === state);
             const isActive = stateData?.active || false;
