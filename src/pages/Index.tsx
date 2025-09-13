@@ -235,7 +235,7 @@ const Index = () => {
             const isActive = stateData?.active || false;
             return <div key={state} className="flex items-center justify-between py-1 px-2 rounded-md hover:bg-muted/30 transition-colors mx-[100px]">
                   <span className="text-foreground font-medium">{state}</span>
-                  <Badge variant={isActive ? "default" : "secondary"} className={isActive ? "bg-osu-scarlet text-white border-osu-scarlet" : "bg-osu-gray-light text-osu-gray-dark"}>
+                  <Badge variant={isActive ? "default" : "secondary"} className={`${isActive ? "bg-osu-scarlet text-white border-osu-scarlet" : "bg-osu-gray-light text-osu-gray-dark"} ml-auto`}>
                     {isActive ? "Available" : "Coming Soon"}
                   </Badge>
                 </div>;
