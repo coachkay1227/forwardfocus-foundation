@@ -4,10 +4,12 @@ import { Navigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
 import { maskContactInfo } from "@/lib/security";
-import { Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff, Shield } from "lucide-react";
+import { SecurityMonitoringDashboard } from "@/components/security/SecurityMonitoringDashboard";
 
 interface PartnerReferral {
   id: string;
@@ -226,7 +228,14 @@ const Admin = () => {
     <main id="main" className="container py-10">
       <h1 className="font-heading text-3xl font-semibold mb-8">Admin Dashboard</h1>
       
-      <div className="grid gap-8">
+      <Tabs defaultValue="management" className="space-y-6">
+        <TabsList className="grid w-full grid-cols-2">
+          <TabsTrigger value="management">Management</TabsTrigger>
+          <TabsTrigger value="security">Security Monitoring</TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="management">
+          <div className="grid gap-8">
         {/* Partner Referrals Section */}
         <section>
           <h2 className="font-heading text-2xl font-semibold mb-4">Partner Referrals</h2>
@@ -378,7 +387,13 @@ const Admin = () => {
             </div>
           )}
         </section>
-      </div>
+          </div>
+        </TabsContent>
+
+        <TabsContent value="security">
+          <SecurityMonitoringDashboard />
+        </TabsContent>
+      </Tabs>
     </main>
   );
 };

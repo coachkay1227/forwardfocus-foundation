@@ -20,6 +20,9 @@ serve(async (req) => {
     return new Response(null, { headers: corsHeaders });
   }
 
+  const startTime = Date.now();
+  let errorCount = 0;
+
   try {
     const { query, location, county, urgencyLevel = 'moderate', previousContext = [] }: CrisisQuery = await req.json();
 
@@ -104,6 +107,7 @@ Remember: You are the first line of support. Your goal is crisis de-escalation a
 
     if (!openAIResponse.ok) {
       console.error('OpenAI API error:', await openAIResponse.text());
+      errorCount++;
       throw new Error('Failed to generate AI response');
     }
 
@@ -134,6 +138,19 @@ Remember: You are the first line of support. Your goal is crisis de-escalation a
              resourceType.includes('emergency');
     })?.slice(0, 8) || [];
 
+    // Log usage analytics
+    const responseTime = Date.now() - startTime;
+    try {
+      await supabase.rpc('log_ai_usage', {
+        p_endpoint_name: 'crisis-support-ai',
+        p_user_id: null,
+        p_response_time_ms: responseTime,
+        p_error_count: errorCount
+      });
+    } catch (logError) {
+      console.error('Failed to log AI usage:', logError);
+    }
+
     return new Response(JSON.stringify({
       response: aiMessage,
       resources: relevantResources,
@@ -152,6 +169,21 @@ Remember: You are the first line of support. Your goal is crisis de-escalation a
 
   } catch (error) {
     console.error('Crisis Support AI error:', error);
+    errorCount++;
+    
+    // Log error usage analytics  
+    const responseTime = Date.now() - startTime;
+    try {
+      await supabase.rpc('log_ai_usage', {
+        p_endpoint_name: 'crisis-support-ai',
+        p_user_id: null,
+        p_response_time_ms: responseTime,
+        p_error_count: errorCount
+      });
+    } catch (logError) {
+      console.error('Failed to log AI usage error:', logError);
+    }
+    
     return new Response(JSON.stringify({ 
       error: 'I apologize, but I encountered an error. For immediate crisis support, please call 911 for emergencies or 988 for suicide crisis support.',
       emergencyNumbers: {
