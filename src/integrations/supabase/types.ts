@@ -14,6 +14,45 @@ export type Database = {
   }
   public: {
     Tables: {
+      ai_usage_analytics: {
+        Row: {
+          created_at: string
+          endpoint_name: string
+          error_count: number | null
+          id: string
+          ip_address: unknown | null
+          request_count: number | null
+          response_time_ms: number | null
+          updated_at: string
+          user_agent: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          endpoint_name: string
+          error_count?: number | null
+          id?: string
+          ip_address?: unknown | null
+          request_count?: number | null
+          response_time_ms?: number | null
+          updated_at?: string
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          endpoint_name?: string
+          error_count?: number | null
+          id?: string
+          ip_address?: unknown | null
+          request_count?: number | null
+          response_time_ms?: number | null
+          updated_at?: string
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       audit_log: {
         Row: {
           action: string
@@ -427,6 +466,51 @@ export type Database = {
         }
         Relationships: []
       }
+      security_alerts: {
+        Row: {
+          alert_type: string
+          created_at: string
+          description: string | null
+          id: string
+          ip_address: unknown | null
+          metadata: Json | null
+          resolved: boolean | null
+          resolved_at: string | null
+          resolved_by: string | null
+          severity: string
+          title: string
+          user_id: string | null
+        }
+        Insert: {
+          alert_type: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          ip_address?: unknown | null
+          metadata?: Json | null
+          resolved?: boolean | null
+          resolved_at?: string | null
+          resolved_by?: string | null
+          severity: string
+          title: string
+          user_id?: string | null
+        }
+        Update: {
+          alert_type?: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          ip_address?: unknown | null
+          metadata?: Json | null
+          resolved?: boolean | null
+          resolved_at?: string | null
+          resolved_by?: string | null
+          severity?: string
+          title?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       states: {
         Row: {
           active: boolean
@@ -451,6 +535,33 @@ export type Database = {
           created_at?: string
           id?: string
           name?: string
+        }
+        Relationships: []
+      }
+      system_metrics: {
+        Row: {
+          id: string
+          metadata: Json | null
+          metric_name: string
+          metric_type: string
+          metric_value: number
+          recorded_at: string
+        }
+        Insert: {
+          id?: string
+          metadata?: Json | null
+          metric_name: string
+          metric_type: string
+          metric_value: number
+          recorded_at?: string
+        }
+        Update: {
+          id?: string
+          metadata?: Json | null
+          metric_name?: string
+          metric_type?: string
+          metric_value?: number
+          recorded_at?: string
         }
         Relationships: []
       }
@@ -562,8 +673,23 @@ export type Database = {
         Args: { admin_email: string }
         Returns: undefined
       }
+      create_security_alert: {
+        Args: {
+          p_alert_type: string
+          p_description?: string
+          p_metadata?: Json
+          p_severity: string
+          p_title: string
+          p_user_id?: string
+        }
+        Returns: string
+      }
       create_user_profile: {
         Args: { p_email: string; p_user_id: string }
+        Returns: undefined
+      }
+      detect_advanced_suspicious_activity: {
+        Args: Record<PropertyKey, never>
         Returns: undefined
       }
       detect_suspicious_activity: {
@@ -661,6 +787,18 @@ export type Database = {
           website: string
         }[]
       }
+      get_security_metrics_summary: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          ai_requests_24h: number
+          avg_response_time_ms: number
+          critical_alerts: number
+          high_alerts: number
+          total_alerts: number
+          unique_users_24h: number
+          unresolved_alerts: number
+        }[]
+      }
       get_verified_organizations: {
         Args: Record<PropertyKey, never>
         Returns: {
@@ -682,6 +820,15 @@ export type Database = {
       is_verified_partner: {
         Args: { user_id?: string }
         Returns: boolean
+      }
+      log_ai_usage: {
+        Args: {
+          p_endpoint_name: string
+          p_error_count?: number
+          p_response_time_ms?: number
+          p_user_id?: string
+        }
+        Returns: undefined
       }
       log_contact_access: {
         Args: { contact_type: string; org_id: string }
@@ -708,6 +855,10 @@ export type Database = {
       mask_contact_info: {
         Args: { contact_data: string }
         Returns: string
+      }
+      resolve_security_alert: {
+        Args: { p_alert_id: string }
+        Returns: undefined
       }
       reveal_organization_contact: {
         Args: { contact_type: string; org_id: string }
