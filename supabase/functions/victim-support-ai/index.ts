@@ -113,7 +113,6 @@ Remember: You're supporting someone on their healing journey. Your role is to pr
         model: 'gpt-4.1-2025-04-14',
         messages,
         max_completion_tokens: 1200,
-        temperature: 0.4, // Balanced temperature for empathetic yet helpful responses
       }),
     });
 

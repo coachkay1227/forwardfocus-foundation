@@ -99,7 +99,6 @@ Remember: You are the first line of support. Your goal is crisis de-escalation a
         model: 'gpt-4.1-2025-04-14',
         messages,
         max_completion_tokens: 1000,
-        temperature: 0.3, // Lower temperature for more consistent crisis responses
       }),
     });
 

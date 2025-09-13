@@ -117,7 +117,6 @@ Remember: Successful reentry requires addressing multiple interconnected needs. 
         model: 'gpt-4.1-2025-04-14',
         messages,
         max_completion_tokens: 1500,
-        temperature: 0.6, // Higher temperature for creative problem-solving
       }),
     });
 
