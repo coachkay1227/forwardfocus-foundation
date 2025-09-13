@@ -515,7 +515,42 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      organizations_public: {
+        Row: {
+          city: string | null
+          created_at: string | null
+          description: string | null
+          id: string | null
+          name: string | null
+          state_code: string | null
+          updated_at: string | null
+          verified: boolean | null
+          website: string | null
+        }
+        Insert: {
+          city?: string | null
+          created_at?: string | null
+          description?: string | null
+          id?: string | null
+          name?: string | null
+          state_code?: string | null
+          updated_at?: string | null
+          verified?: boolean | null
+          website?: string | null
+        }
+        Update: {
+          city?: string | null
+          created_at?: string | null
+          description?: string | null
+          id?: string | null
+          name?: string | null
+          state_code?: string | null
+          updated_at?: string | null
+          verified?: boolean | null
+          website?: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       admin_reveal_full_contact: {
@@ -641,6 +676,20 @@ export type Database = {
           id: string
           name: string
           phone: string
+          state_code: string
+          updated_at: string
+          verified: boolean
+          website: string
+        }[]
+      }
+      get_safe_organizations_public: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          city: string
+          created_at: string
+          description: string
+          id: string
+          name: string
           state_code: string
           updated_at: string
           verified: boolean
