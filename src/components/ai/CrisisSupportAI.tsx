@@ -159,14 +159,6 @@ const CrisisSupportAI: React.FC<CrisisSupportAIProps> = ({ isOpen, onClose, init
               <p className="text-sm opacity-90">Immediate help and safety resources</p>
             </div>
           </div>
-          <Button
-            variant="ghost" 
-            size="sm"
-            onClick={onClose}
-            className="text-destructive-foreground hover:bg-destructive-foreground/20"
-          >
-            <X className="h-4 w-4" />
-          </Button>
         </div>
 
         {/* Emergency Banner */}
