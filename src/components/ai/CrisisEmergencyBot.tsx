@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -65,7 +65,8 @@ export const CrisisEmergencyBot = ({ trigger }: CrisisEmergencyBotProps) => {
     }
   };
 
-  const handleSendMessage = async () => {
+  // Add performance optimization with useCallback
+  const handleSendMessage = useCallback(async () => {
     if (!inputValue.trim() || !isConnected) return;
 
     const userMessage = inputValue.trim();
@@ -73,31 +74,35 @@ export const CrisisEmergencyBot = ({ trigger }: CrisisEmergencyBotProps) => {
     addMessage(userMessage, true);
     setIsLoading(true);
 
-    // Simulate AI response for crisis support
+    // Enhanced AI response simulation with better crisis detection
     setTimeout(() => {
       let response = "";
       
-      if (userMessage.toLowerCase().includes('emergency') || userMessage.toLowerCase().includes('danger')) {
+      const lowerMessage = userMessage.toLowerCase();
+      
+      if (lowerMessage.includes('emergency') || lowerMessage.includes('danger') || lowerMessage.includes('911')) {
         response = "🚨 If you're in immediate danger, please call 911 right now.\n\nIf you're having thoughts of self-harm, please call the Crisis Lifeline at 988 or text HOME to 741741. You don't have to go through this alone.";
-      } else if (userMessage.toLowerCase().includes('suicid') || userMessage.toLowerCase().includes('hurt')) {
+      } else if (lowerMessage.includes('suicid') || lowerMessage.includes('kill') || lowerMessage.includes('die') || lowerMessage.includes('hurt myself')) {
         response = "I'm very concerned about you. Please reach out for immediate help:\n\n• Call 988 (Crisis Lifeline) - available 24/7\n• Text HOME to 741741\n• Go to your nearest emergency room\n\nYou matter, and there are people who want to help you through this.";
-      } else if (userMessage.toLowerCase().includes('help') || userMessage.toLowerCase().includes('support')) {
-        response = "I understand you're looking for help. Here are some resources:\n\n• Crisis support: 988\n• Text support: Text HOME to 741741\n• Local resources: Call 211\n\nWhat specific type of support would be most helpful right now?";
+      } else if (lowerMessage.includes('abuse') || lowerMessage.includes('violence') || lowerMessage.includes('unsafe')) {
+        response = "Your safety is my top priority. If you're in immediate danger, call 911. For domestic violence support:\n\n• National Hotline: 1-800-799-7233\n• Text START to 88788\n• Chat at thehotline.org\n\nYou deserve to be safe. Help is available.";
+      } else if (lowerMessage.includes('help') || lowerMessage.includes('support') || lowerMessage.includes('need')) {
+        response = "I understand you're looking for help. Here are some resources:\n\n• Crisis support: 988\n• Text support: Text HOME to 741741\n• Local resources: Call 211\n• Online chat: suicidepreventionlifeline.org\n\nWhat specific type of support would be most helpful right now?";
       } else {
         response = "Thank you for sharing with me. Remember that you're not alone in this. If you need immediate help, please call 988 or text HOME to 741741.\n\nCan you tell me more about what you're going through?";
       }
       
       addMessage(response, false);
       setIsLoading(false);
-    }, 1000);
-  };
+    }, 800); // Slightly faster response for crisis situations
+  }, [inputValue, isConnected]);
 
-  const handleKeyPress = (e: React.KeyboardEvent) => {
+  const handleKeyPress = useCallback((e: React.KeyboardEvent) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
       handleSendMessage();
     }
-  };
+  }, [handleSendMessage]);
 
   const handleVoiceToggle = () => {
     setIsListening(!isListening);
@@ -141,7 +146,7 @@ export const CrisisEmergencyBot = ({ trigger }: CrisisEmergencyBotProps) => {
             </div>
             <div className="flex items-center gap-2">
               <Badge variant="outline" className="text-xs">Text</Badge>
-              <a href="sms:741741?body=HOME" className="hover:underline font-medium">Text HOME to 741741</a>
+              <a href="sms:741741&body=HOME" className="hover:underline font-medium">Text HOME to 741741</a>
             </div>
           </div>
         </DialogHeader>

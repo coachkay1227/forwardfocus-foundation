@@ -111,25 +111,26 @@ const AIResourceDiscovery: React.FC<AIResourceDiscoveryProps> = ({
     } catch (error) {
       console.error('Error getting AI response:', error);
       
-      // Show more user-friendly error message
+      // Show more user-friendly error message with better fallback
       const isQuotaError = error.message?.includes('quota') || error.message?.includes('limit');
-      const isServiceError = error.message?.includes('temporarily unavailable');
+      const isServiceError = error.message?.includes('temporarily unavailable') || error.message?.includes('500');
+      const isNetworkError = error.message?.includes('network') || error.message?.includes('fetch');
       
-      let errorTitle = "Connection Issue";
-      let errorDescription = "I'm having trouble connecting right now. Let me search our database for you instead.";
+      let errorTitle = "AI Assistant Temporarily Unavailable";
+      let errorDescription = "I'm searching our database directly for you instead.";
       
       if (isQuotaError) {
-        errorTitle = "Service Temporarily Limited";
-        errorDescription = "Our AI assistant is at capacity. I'll search our resource database for you.";
-      } else if (isServiceError) {
-        errorTitle = "AI Assistant Unavailable"; 
-        errorDescription = "The AI service is temporarily down. Searching our database directly.";
+        errorTitle = "AI Service at Capacity";
+        errorDescription = "High demand detected. Using direct database search.";
+      } else if (isNetworkError) {
+        errorTitle = "Connection Issue";
+        errorDescription = "Network error detected. Falling back to database search.";
       }
       
       toast({
         title: errorTitle,
         description: errorDescription,
-        variant: "destructive",
+        variant: "default", // Changed from destructive to be less alarming
       });
 
       // Fallback: client-side resource lookup so users still get help
@@ -149,9 +150,9 @@ const AIResourceDiscovery: React.FC<AIResourceDiscoveryProps> = ({
 
         const { data: fallbackResources } = await resourceQuery;
 
-        const content = fallbackResources && fallbackResources.length
-          ? "I couldn't reach the AI right now, but here are relevant Ohio resources I found:"
-          : "I'm having trouble connecting right now. Please try again in a moment.";
+        const content = fallbackResources && fallbackResources.length > 0
+          ? `I found ${fallbackResources.length} Ohio resources that match your search. While the AI is unavailable, these resources should help:`
+          : "I'm having trouble connecting to our AI service right now. Please try again in a moment, or browse resources manually.";
 
         const aiMessage: Message = {
           id: (Date.now() + 1).toString(),
@@ -167,7 +168,7 @@ const AIResourceDiscovery: React.FC<AIResourceDiscoveryProps> = ({
         setMessages(prev => [...prev, {
           id: (Date.now() + 1).toString(),
           type: 'ai',
-          content: "I'm sorry, I'm having trouble connecting right now. Please try again in a moment or contact our support team for assistance.",
+          content: "I'm experiencing technical difficulties. Please try refreshing the page or contact support for assistance with finding resources.",
           timestamp: new Date()
         }]);
       }
