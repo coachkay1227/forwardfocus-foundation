@@ -179,7 +179,7 @@ const AIResourceDiscovery: React.FC<AIResourceDiscoveryProps> = ({
   };
 
   const ResourceCard = ({ resource }: { resource: Resource }) => (
-    <Card className="mb-3 border-l-4 border-l-primary">
+    <Card className="mb-3 border-l-4 border-l-osu-scarlet">
       <CardHeader className="pb-2">
         <div className="flex items-start justify-between">
           <div>
