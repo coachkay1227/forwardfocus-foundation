@@ -213,7 +213,7 @@ const AIResourceDiscovery: React.FC<AIResourceDiscoveryProps> = ({
           
           <div className="flex gap-2 pt-1">
             {resource.phone && (
-              <Button size="sm" variant="outline" className="h-7 px-2 text-xs" asChild>
+              <Button size="sm" variant="outline" className="h-7 px-2 text-xs border-osu-scarlet/30 text-osu-scarlet hover:bg-osu-scarlet hover:text-osu-scarlet-foreground" asChild>
                 <a href={`tel:${resource.phone}`}>
                   <Phone className="h-3 w-3 mr-1" />
                   Call
@@ -221,7 +221,7 @@ const AIResourceDiscovery: React.FC<AIResourceDiscoveryProps> = ({
               </Button>
             )}
             {resource.website && (
-              <Button size="sm" variant="outline" className="h-7 px-2 text-xs" asChild>
+              <Button size="sm" variant="outline" className="h-7 px-2 text-xs border-osu-gray/30 text-osu-gray hover:bg-osu-gray hover:text-osu-gray-foreground" asChild>
                 <a href={resource.website} target="_blank" rel="noopener noreferrer">
                   <Globe className="h-3 w-3 mr-1" />
                   Visit
@@ -248,10 +248,10 @@ const AIResourceDiscovery: React.FC<AIResourceDiscoveryProps> = ({
       <DialogContent className="max-w-4xl h-[80vh] p-0">
         <DialogHeader className="p-6 pb-0">
           <DialogTitle className="flex items-center gap-2">
-            <Bot className="h-5 w-5 text-primary" />
+            <Bot className="h-5 w-5 text-osu-scarlet" />
             AI Resource Discovery
             {(location || county) && (
-              <Badge variant="outline" className="ml-2">
+              <Badge variant="outline" className="ml-2 border-osu-scarlet/30 text-osu-scarlet bg-osu-scarlet/5">
                 {location || county}
               </Badge>
             )}
@@ -263,7 +263,7 @@ const AIResourceDiscovery: React.FC<AIResourceDiscoveryProps> = ({
             {messages.length === 0 ? (
               <div className="space-y-4">
                 <div className="text-center py-8">
-                  <Bot className="h-12 w-12 text-primary mx-auto mb-4" />
+                  <Bot className="h-12 w-12 text-osu-scarlet mx-auto mb-4" />
                   <h3 className="text-lg font-semibold mb-2">Hi! I'm your AI Resource Navigator</h3>
                   <p className="text-muted-foreground mb-6">
                     I can help you find resources and support services across all 88 Ohio counties. 
@@ -279,7 +279,7 @@ const AIResourceDiscovery: React.FC<AIResourceDiscoveryProps> = ({
                         key={index}
                         variant="outline"
                         size="sm"
-                        className="text-left justify-start h-auto p-3 text-sm"
+                        className="text-left justify-start h-auto p-3 text-sm border-osu-scarlet/20 hover:bg-osu-scarlet/10 hover:text-osu-scarlet hover:border-osu-scarlet/40"
                         onClick={() => handleSend(query)}
                       >
                         {query}
@@ -293,16 +293,16 @@ const AIResourceDiscovery: React.FC<AIResourceDiscoveryProps> = ({
                 {messages.map((message) => (
                   <div key={message.id} className={`flex gap-3 ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}>
                     {message.type === 'ai' && (
-                      <div className="flex-shrink-0 w-8 h-8 bg-primary rounded-full flex items-center justify-center">
-                        <Bot className="h-4 w-4 text-primary-foreground" />
+                      <div className="flex-shrink-0 w-8 h-8 bg-osu-scarlet rounded-full flex items-center justify-center">
+                        <Bot className="h-4 w-4 text-osu-scarlet-foreground" />
                       </div>
                     )}
                     
                     <div className={`max-w-[70%] space-y-2 ${message.type === 'user' ? 'order-first' : ''}`}>
                       <div className={`p-3 rounded-lg ${
                         message.type === 'user' 
-                          ? 'bg-primary text-primary-foreground ml-auto' 
-                          : 'bg-muted'
+                          ? 'bg-osu-scarlet text-osu-scarlet-foreground ml-auto' 
+                          : 'bg-osu-gray-light/20 border border-osu-scarlet/10'
                       }`}>
                         <p className="text-sm whitespace-pre-wrap">{message.content}</p>
                       </div>
@@ -347,7 +347,7 @@ const AIResourceDiscovery: React.FC<AIResourceDiscoveryProps> = ({
             <div ref={messagesEndRef} />
           </ScrollArea>
           
-          <div className="p-4 border-t">
+          <div className="p-4 border-t border-osu-scarlet/20 bg-gradient-osu-subtle">
             <div className="flex gap-2">
               <Input
                 value={inputValue}
@@ -361,6 +361,7 @@ const AIResourceDiscovery: React.FC<AIResourceDiscoveryProps> = ({
                 onClick={() => handleSend()} 
                 disabled={isLoading || !inputValue.trim()}
                 size="sm"
+                className="bg-osu-scarlet hover:bg-osu-scarlet-dark text-osu-scarlet-foreground"
               >
                 {isLoading ? (
                   <Loader2 className="h-4 w-4 animate-spin" />
