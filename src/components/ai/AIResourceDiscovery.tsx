@@ -259,7 +259,7 @@ const AIResourceDiscovery: React.FC<AIResourceDiscoveryProps> = ({
         </DialogHeader>
         
         <div className="flex flex-col h-full">
-          <ScrollArea className="flex-1 p-6 pt-2">
+          <ScrollArea className="flex-1 p-6 pt-2 bg-gradient-osu-subtle">
             {messages.length === 0 ? (
               <div className="space-y-4">
                 <div className="text-center py-8">
