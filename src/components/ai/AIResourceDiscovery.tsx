@@ -327,8 +327,8 @@ const AIResourceDiscovery: React.FC<AIResourceDiscoveryProps> = ({
                 
                 {isTyping && (
                   <div className="flex gap-3 justify-start">
-                    <div className="flex-shrink-0 w-8 h-8 bg-primary rounded-full flex items-center justify-center">
-                      <Bot className="h-4 w-4 text-primary-foreground" />
+                    <div className="flex-shrink-0 w-8 h-8 bg-osu-scarlet rounded-full flex items-center justify-center">
+                      <Bot className="h-4 w-4 text-osu-scarlet-foreground" />
                     </div>
                     <div className="bg-muted p-3 rounded-lg">
                       <div className="flex items-center gap-1">
