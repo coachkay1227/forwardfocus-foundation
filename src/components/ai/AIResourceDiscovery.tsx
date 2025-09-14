@@ -318,8 +318,8 @@ const AIResourceDiscovery: React.FC<AIResourceDiscoveryProps> = ({
                     </div>
                     
                     {message.type === 'user' && (
-                      <div className="flex-shrink-0 w-8 h-8 bg-muted rounded-full flex items-center justify-center">
-                        <User className="h-4 w-4 text-muted-foreground" />
+                      <div className="flex-shrink-0 w-8 h-8 bg-osu-gray/20 rounded-full flex items-center justify-center">
+                        <User className="h-4 w-4 text-osu-gray" />
                       </div>
                     )}
                   </div>
@@ -330,7 +330,7 @@ const AIResourceDiscovery: React.FC<AIResourceDiscoveryProps> = ({
                     <div className="flex-shrink-0 w-8 h-8 bg-osu-scarlet rounded-full flex items-center justify-center">
                       <Bot className="h-4 w-4 text-osu-scarlet-foreground" />
                     </div>
-                    <div className="bg-muted p-3 rounded-lg">
+                    <div className="bg-osu-gray-light/30 p-3 rounded-lg">
                       <div className="flex items-center gap-1">
                         <div className="flex space-x-1">
                           <div className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce"></div>
