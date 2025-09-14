@@ -10,6 +10,7 @@ import { toast } from "@/hooks/use-toast";
 import { maskContactInfo } from "@/lib/security";
 import { Eye, EyeOff, Shield } from "lucide-react";
 import { SecurityMonitoringDashboard } from "@/components/security/SecurityMonitoringDashboard";
+import { ContactAccessManager } from "@/components/security/ContactAccessManager";
 
 interface PartnerReferral {
   id: string;
@@ -229,8 +230,9 @@ const Admin = () => {
       <h1 className="font-heading text-3xl font-semibold mb-8">Admin Dashboard</h1>
       
       <Tabs defaultValue="management" className="space-y-6">
-        <TabsList className="grid w-full grid-cols-2">
+        <TabsList className="grid w-full grid-cols-3">
           <TabsTrigger value="management">Management</TabsTrigger>
+          <TabsTrigger value="contact-access">Contact Access</TabsTrigger>
           <TabsTrigger value="security">Security Monitoring</TabsTrigger>
         </TabsList>
 
@@ -388,6 +390,10 @@ const Admin = () => {
           )}
         </section>
           </div>
+        </TabsContent>
+
+        <TabsContent value="contact-access">
+          <ContactAccessManager />
         </TabsContent>
 
         <TabsContent value="security">

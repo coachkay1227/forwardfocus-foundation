@@ -89,6 +89,56 @@ export type Database = {
         }
         Relationships: []
       }
+      contact_access_permissions: {
+        Row: {
+          approved_at: string | null
+          approved_by: string | null
+          business_justification: string | null
+          created_at: string
+          expires_at: string | null
+          id: string
+          organization_id: string
+          request_reason: string
+          requester_id: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          approved_at?: string | null
+          approved_by?: string | null
+          business_justification?: string | null
+          created_at?: string
+          expires_at?: string | null
+          id?: string
+          organization_id: string
+          request_reason: string
+          requester_id: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          approved_at?: string | null
+          approved_by?: string | null
+          business_justification?: string | null
+          created_at?: string
+          expires_at?: string | null
+          id?: string
+          organization_id?: string
+          request_reason?: string
+          requester_id?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "contact_access_permissions_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       learning_modules: {
         Row: {
           compliance_note: string | null
@@ -669,6 +719,10 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: undefined
       }
+      cleanup_expired_contact_permissions: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
       create_admin_user: {
         Args: { admin_email: string }
         Returns: undefined
@@ -813,6 +867,10 @@ export type Database = {
           website: string
         }[]
       }
+      has_contact_access_permission: {
+        Args: { org_id: string; user_id: string }
+        Returns: boolean
+      }
       is_user_admin: {
         Args: { user_id?: string }
         Returns: boolean
@@ -852,8 +910,16 @@ export type Database = {
         }
         Returns: undefined
       }
+      manage_contact_access_request: {
+        Args: { expiry_days?: number; new_status: string; request_id: string }
+        Returns: undefined
+      }
       mask_contact_info: {
         Args: { contact_data: string }
+        Returns: string
+      }
+      request_contact_access: {
+        Args: { justification?: string; org_id: string; reason: string }
         Returns: string
       }
       resolve_security_alert: {

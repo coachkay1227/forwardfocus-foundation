@@ -22,6 +22,7 @@ import {
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
+import { ContactAccessRequest } from "@/components/security/ContactAccessRequest";
 
 // Import hero image
 import partnerOrgsHero from "@/assets/partner-organizations-hero.jpg";
@@ -423,11 +424,10 @@ const Organizations = () => {
                     )}
 
                     {user && !isAdmin && (org.phone || org.email) && (
-                      <div className="bg-muted/50 p-3 rounded-lg text-sm text-center">
-                        <p className="text-muted-foreground">
-                          Contact information is available to verified partners only.
-                        </p>
-                      </div>
+                      <ContactAccessRequest
+                        organizationId={org.id}
+                        organizationName={org.name}
+                      />
                     )}
 
                     {!user && (
