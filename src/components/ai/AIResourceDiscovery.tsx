@@ -110,9 +110,25 @@ const AIResourceDiscovery: React.FC<AIResourceDiscoveryProps> = ({
 
     } catch (error) {
       console.error('Error getting AI response:', error);
+      
+      // Show more user-friendly error message
+      const isQuotaError = error.message?.includes('quota') || error.message?.includes('limit');
+      const isServiceError = error.message?.includes('temporarily unavailable');
+      
+      let errorTitle = "Connection Issue";
+      let errorDescription = "I'm having trouble connecting right now. Let me search our database for you instead.";
+      
+      if (isQuotaError) {
+        errorTitle = "Service Temporarily Limited";
+        errorDescription = "Our AI assistant is at capacity. I'll search our resource database for you.";
+      } else if (isServiceError) {
+        errorTitle = "AI Assistant Unavailable"; 
+        errorDescription = "The AI service is temporarily down. Searching our database directly.";
+      }
+      
       toast({
-        title: "Error",
-        description: "Unable to get AI response. Please try again.",
+        title: errorTitle,
+        description: errorDescription,
         variant: "destructive",
       });
 
