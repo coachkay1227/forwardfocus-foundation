@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -12,7 +12,8 @@ const Support = () => {
     document.title = "Support Forward Focus Elevation | Make an Impact";
   }, []);
 
-  const supportMethods = [
+  // Memoize static data to improve performance
+  const supportMethods = useMemo(() => [
     {
       icon: DollarSign,
       title: "Financial Donations",
@@ -41,9 +42,9 @@ const Support = () => {
       action: "Partner With Us",
       highlight: "Tax benefits available",
     },
-  ];
+  ], []);
 
-  const faqs = [
+  const faqs = useMemo(() => [
     {
       question: "How do donations support the community?",
       answer: "100% of donations go directly to expanding our resource directory, developing new learning modules, and supporting community programs. We maintain full transparency with quarterly impact reports.",
@@ -64,7 +65,7 @@ const Support = () => {
       question: "Is Forward Focus Elevation a nonprofit?",
       answer: "Yes, we're a registered 501(c)(3) nonprofit organization. All donations are tax-deductible, and we provide receipts for your records.",
     },
-  ];
+  ], []);
 
   return (
     <main id="main" className="container py-8">
