@@ -53,7 +53,7 @@ export default function AboutUs() {
       {/* Hero Section */}
       <header className="relative bg-gradient-osu-primary text-white overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-osu-scarlet/95 to-osu-scarlet-dark/80"></div>
-        <div className="relative container py-24 md:py-32">
+        <div className="relative container py-24 md:py-32 text-center">
           <div className="max-w-5xl mx-auto">
             <h1 className="font-heading text-5xl md:text-7xl font-bold mb-8 leading-tight">
               About Forward Focus Elevation
