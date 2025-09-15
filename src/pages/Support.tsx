@@ -153,9 +153,9 @@ const Support = () => {
         <Separator className="mb-12" />
 
         {/* Contact and FAQ Section */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start lg:items-stretch">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 max-w-5xl mx-auto items-center justify-items-center">
           {/* Contact Form */}
-          <section>
+          <section className="w-full max-w-lg">
             <ContactForm 
               type="contact"
               title="Get In Touch"
@@ -188,8 +188,8 @@ const Support = () => {
           </section>
 
           {/* FAQ Section */}
-          <section>
-            <h2 className="font-heading text-2xl font-semibold mb-6">
+          <section className="w-full max-w-lg">
+            <h2 className="font-heading text-2xl font-semibold mb-6 text-center lg:text-left">
               Frequently Asked Questions
             </h2>
             <Accordion type="single" collapsible className="space-y-2">
