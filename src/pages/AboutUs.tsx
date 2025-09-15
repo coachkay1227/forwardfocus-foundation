@@ -4,12 +4,12 @@ import { Heart, Users, Shield, CheckCircle, Target, Brain, MessageSquare, BookOp
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import ContactForm from "@/components/forms/ContactForm";
+import ChatbotPopup from "@/components/ui/ChatbotPopup";
 
 // Import images
 import coachKayProfessional from "@/assets/coach-kay-professional.jpg";
 import diverseCommunityMeeting from "@/assets/diverse-community-meeting.jpg";
 export default function AboutUs() {
-  const [showContactForm, setShowContactForm] = useState(false);
   const [showConsultation, setShowConsultation] = useState(false);
   // Force cache refresh - all image imports are correctly updated
   useEffect(() => {
@@ -292,10 +292,7 @@ export default function AboutUs() {
                 </div>
                 
                 <div className="flex flex-col sm:flex-row gap-4 mt-8">
-                  <Button size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground" onClick={() => setShowContactForm(!showContactForm)}>
-                    <Mail className="h-5 w-5 mr-2" />
-                    {showContactForm ? "Hide Contact Form" : "Connect with Coach Kay"}
-                  </Button>
+                  <ChatbotPopup />
                   <Button size="lg" variant="outline" onClick={() => setShowConsultation(!showConsultation)}>
                     <Calendar className="h-5 w-5 mr-2" />
                     {showConsultation ? "Hide Consultation" : "Book Consultation"}
@@ -320,24 +317,6 @@ export default function AboutUs() {
           </div>
         </section>
 
-        {/* Contact Coach Kay */}
-        {showContactForm && (
-          <section id="contact-coach-kay" aria-labelledby="contact-coach" className="scroll-mt-16">
-            <div className="max-w-4xl mx-auto">
-              <div className="text-center mb-12">
-                <h2 id="contact-coach" className="font-heading text-3xl md:text-4xl font-bold text-foreground mb-6">
-                  Connect with Coach Kay
-                </h2>
-                <p className="text-xl text-foreground/70 leading-relaxed">
-                  Ready to take the next step in your journey? Coach Kay is here to provide personalized guidance, 
-                  support, and resources tailored to your unique needs and goals.
-                </p>
-              </div>
-              
-              <ContactForm type="coaching" className="shadow-xl border-accent/20 bg-gradient-to-br from-background to-accent/5" />
-            </div>
-          </section>
-        )}
 
         {/* Book Consultation */}
         {showConsultation && (
