@@ -8,38 +8,41 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Eye, EyeOff, Shield } from "lucide-react";
 import AuthLayout from "@/components/layout/AuthLayout";
-
 const PartnerSignIn = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
-  const { signIn, user } = useAuth();
-  const { toast } = useToast();
+  const {
+    signIn,
+    user
+  } = useAuth();
+  const {
+    toast
+  } = useToast();
   const navigate = useNavigate();
-
   useEffect(() => {
     if (user) {
       navigate("/partners");
     }
   }, [user, navigate]);
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-
     try {
-      const { error } = await signIn(email, password);
+      const {
+        error
+      } = await signIn(email, password);
       if (error) {
         toast({
           title: "Sign In Failed",
           description: error.message,
-          variant: "destructive",
+          variant: "destructive"
         });
       } else {
         toast({
           title: "Welcome back!",
-          description: "Successfully signed in to Partner Portal",
+          description: "Successfully signed in to Partner Portal"
         });
         navigate("/partners");
       }
@@ -47,31 +50,18 @@ const PartnerSignIn = () => {
       toast({
         title: "Error",
         description: "An unexpected error occurred",
-        variant: "destructive",
+        variant: "destructive"
       });
     } finally {
       setLoading(false);
     }
   };
-
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-primary/10 via-background to-accent/10 relative overflow-hidden">
+  return <div className="min-h-screen bg-gradient-to-br from-primary/10 via-background to-accent/10 relative overflow-hidden">
       {/* Background Pattern */}
       <div className="absolute inset-0 bg-[url('data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2260%22%20height%3D%2260%22%20viewBox%3D%220%200%2060%2060%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cg%20fill%3D%22none%22%20fill-rule%3D%22evenodd%22%3E%3Cg%20fill%3D%22%23000000%22%20fill-opacity%3D%220.03%22%3E%3Ccircle%20cx%3D%2230%22%20cy%3D%2230%22%20r%3D%221%22%2F%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E')] opacity-30"></div>
       
       {/* Navigation */}
-      <nav className="relative z-10 bg-white/80 backdrop-blur-sm border-b">
-        <div className="container mx-auto px-6 py-4 flex justify-between items-center">
-          <Link to="/" className="font-heading text-xl font-bold text-primary">
-            Forward Focus Elevation
-          </Link>
-          <div className="flex items-center gap-4 text-sm">
-            <Link to="/" className="text-muted-foreground hover:text-primary transition-colors">
-              Back to Home
-            </Link>
-          </div>
-        </div>
-      </nav>
+      
 
       {/* Main Content - Split Layout */}
       <div className="relative z-10 min-h-[calc(100vh-80px)] grid lg:grid-cols-2">
@@ -129,50 +119,20 @@ const PartnerSignIn = () => {
                 <form onSubmit={handleSubmit} className="space-y-6">
                   <div className="space-y-2">
                     <Label htmlFor="email" className="text-foreground font-medium">Email Address</Label>
-                    <Input
-                      id="email"
-                      type="email"
-                      placeholder="partner@organization.com"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      required
-                      className="h-12 bg-background/50 border-border/50 focus:border-primary focus:ring-primary/20"
-                    />
+                    <Input id="email" type="email" placeholder="partner@organization.com" value={email} onChange={e => setEmail(e.target.value)} required className="h-12 bg-background/50 border-border/50 focus:border-primary focus:ring-primary/20" />
                   </div>
                   
                   <div className="space-y-2">
                     <Label htmlFor="password" className="text-foreground font-medium">Password</Label>
                     <div className="relative">
-                      <Input
-                        id="password"
-                        type={showPassword ? "text" : "password"}
-                        placeholder="Enter your password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        required
-                        className="h-12 bg-background/50 border-border/50 focus:border-primary focus:ring-primary/20 pr-12"
-                      />
-                      <Button
-                        type="button"
-                        variant="ghost"
-                        size="sm"
-                        className="absolute right-2 top-1/2 -translate-y-1/2 h-8 w-8 p-0 hover:bg-muted/50"
-                        onClick={() => setShowPassword(!showPassword)}
-                      >
-                        {showPassword ? (
-                          <EyeOff className="h-4 w-4 text-muted-foreground" />
-                        ) : (
-                          <Eye className="h-4 w-4 text-muted-foreground" />
-                        )}
+                      <Input id="password" type={showPassword ? "text" : "password"} placeholder="Enter your password" value={password} onChange={e => setPassword(e.target.value)} required className="h-12 bg-background/50 border-border/50 focus:border-primary focus:ring-primary/20 pr-12" />
+                      <Button type="button" variant="ghost" size="sm" className="absolute right-2 top-1/2 -translate-y-1/2 h-8 w-8 p-0 hover:bg-muted/50" onClick={() => setShowPassword(!showPassword)}>
+                        {showPassword ? <EyeOff className="h-4 w-4 text-muted-foreground" /> : <Eye className="h-4 w-4 text-muted-foreground" />}
                       </Button>
                     </div>
                   </div>
 
-                  <Button 
-                    type="submit" 
-                    className="w-full h-12 bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-white font-medium shadow-lg" 
-                    disabled={loading}
-                  >
+                  <Button type="submit" className="w-full h-12 bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-white font-medium shadow-lg" disabled={loading}>
                     {loading ? "Signing in..." : "Access Partner Portal"}
                   </Button>
                 </form>
@@ -207,8 +167,6 @@ const PartnerSignIn = () => {
           </div>
         </div>
       </div>
-    </div>
-  );
+    </div>;
 };
-
 export default PartnerSignIn;
