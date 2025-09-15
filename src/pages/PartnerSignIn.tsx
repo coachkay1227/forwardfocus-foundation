@@ -67,16 +67,16 @@ const PartnerSignIn = () => {
       <div className="relative z-10 min-h-[calc(100vh-80px)] grid lg:grid-cols-2">
         {/* Left Side - Hero Content */}
         <div className="flex flex-col justify-center px-8 lg:px-16 py-16 bg-gradient-to-br from-primary/5 to-accent/5">
-          <div className="max-w-lg ml-auto mr-8">
-            {/* Logo/Icon */}
-            <div className="w-16 h-16 bg-gradient-to-br from-primary to-accent rounded-2xl flex items-center justify-center shadow-lg mb-8">
-              <Shield className="h-8 w-8 text-white" />
+          <div className="max-w-lg ml-auto mr-8">            
+            {/* Hero Text with Logo */}
+            <div className="flex items-center gap-4 mb-6">
+              <div className="w-16 h-16 bg-gradient-to-br from-primary to-accent rounded-2xl flex items-center justify-center shadow-lg">
+                <Shield className="h-8 w-8 text-white" />
+              </div>
+              <h1 className="font-heading text-4xl lg:text-5xl font-bold text-foreground leading-tight">
+                Partner Portal
+              </h1>
             </div>
-            
-            {/* Hero Text */}
-            <h1 className="font-heading text-4xl lg:text-5xl font-bold mb-6 text-foreground leading-tight">
-              Partner Portal
-            </h1>
             <p className="text-lg text-muted-foreground mb-8 leading-relaxed">
               Access your comprehensive dashboard to track referrals, monitor impact metrics, 
               manage resources, and strengthen community connections.
