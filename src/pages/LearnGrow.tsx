@@ -41,37 +41,37 @@ export default function CommunityLearning() {
   };
   return <>
       {/* Hero Section */}
-      <header className="bg-gradient-to-b from-accent/10 to-background border-b">
+      <header className="bg-gradient-to-b from-primary/5 to-background border-b">
         <div className="container py-12 md:py-16">
           <div className="max-w-4xl mx-auto text-center">
             <h1 className="font-heading text-4xl md:text-5xl font-bold text-foreground mb-4">
               Your Learning & Growth Community
             </h1>
-            <p className="text-xl text-foreground/90 mb-6">
+            <p className="text-xl text-muted-foreground mb-6">
               Free education, peer support, and guidance designed specifically for justice-impacted individuals and families. 
               Learn at your pace, connect with others who understand, and build the future you deserve.
             </p>
-            <div className="flex items-center justify-center gap-4 text-sm text-foreground/80 mb-8">
+            <div className="flex items-center justify-center gap-4 text-sm text-muted-foreground mb-8">
               <span className="flex items-center gap-2">
-                <CheckCircle className="h-4 w-4 text-accent" />
+                <CheckCircle className="h-4 w-4 text-primary" />
                 100% Free Education
               </span>
               <span className="flex items-center gap-2">
-                <CheckCircle className="h-4 w-4 text-accent" />
+                <CheckCircle className="h-4 w-4 text-primary" />
                 Trauma-Informed
               </span>
               <span className="flex items-center gap-2">
-                <CheckCircle className="h-4 w-4 text-accent" />
+                <CheckCircle className="h-4 w-4 text-primary" />
                 Peer Support
               </span>
             </div>
             
             <div className="flex flex-wrap justify-center gap-4">
-              <Button onClick={() => setShowApplication(true)} size="lg" className="bg-secondary hover:bg-secondary/90 text-secondary-foreground">
+              <Button onClick={() => setShowApplication(true)} size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground">
                 <Users className="h-4 w-4 mr-2" />
                 Apply to Join Community
               </Button>
-              <Button onClick={() => scrollToSection('learning')} size="lg" className="bg-accent hover:bg-accent/90 text-accent-foreground">
+              <Button onClick={() => scrollToSection('learning')} variant="outline" size="lg">
                 <BookOpen className="h-4 w-4 mr-2" />
                 Explore Learning Modules
               </Button>
@@ -85,7 +85,7 @@ export default function CommunityLearning() {
         <div className="container">
           <div className="max-w-4xl mx-auto relative rounded-lg overflow-hidden">
             <img src={learningCommunityDiverse} alt="Diverse community members engaged in collaborative learning activities" className="w-full h-64 md:h-80 object-cover" />
-            <div className="absolute inset-0 bg-gradient-to-r from-primary/90 to-secondary/80 flex items-center justify-center">
+            <div className="absolute inset-0 bg-gradient-to-r from-primary/90 to-primary/70 flex items-center justify-center">
               <div className="text-center text-primary-foreground">
                 <h2 className="text-2xl md:text-3xl font-bold mb-2">Building Stronger Families Through Learning</h2>
                 <p className="text-lg text-primary-foreground/90">Real community. Real support. Real results.</p>
@@ -131,7 +131,7 @@ export default function CommunityLearning() {
           <div className="container">
             <div className="max-w-4xl mx-auto text-center">
               <div className="flex items-center justify-center gap-3 mb-6">
-                <div className="w-12 h-12 bg-gradient-osu-accent rounded-lg flex items-center justify-center">
+                <div className="w-12 h-12 bg-primary rounded-lg flex items-center justify-center">
                   <Users className="h-6 w-6 text-primary-foreground" />
                 </div>
                 <div>
@@ -141,9 +141,9 @@ export default function CommunityLearning() {
               </div>
 
               <div className="grid md:grid-cols-3 gap-6">
-                <div className="bg-secondary/10 border border-secondary/20 rounded-lg p-6">
+                <div className="bg-primary/5 border border-primary/20 rounded-lg p-6">
                   <h3 className="font-semibold text-foreground mb-3 flex items-center gap-2">
-                    <Shield className="h-5 w-5 text-secondary" />
+                    <Shield className="h-5 w-5 text-primary" />
                     Application-Based Access
                   </h3>
                   <ul className="space-y-2 text-sm text-foreground/90">
@@ -154,9 +154,9 @@ export default function CommunityLearning() {
                   </ul>
                 </div>
 
-                <div className="bg-accent/10 border border-accent/20 rounded-lg p-6">
+                <div className="bg-secondary/5 border border-secondary/20 rounded-lg p-6">
                   <h3 className="font-semibold text-foreground mb-3 flex items-center gap-2">
-                    <BookOpen className="h-5 w-5 text-accent" />
+                    <BookOpen className="h-5 w-5 text-secondary" />
                     Self-Paced Learning
                   </h3>
                   <ul className="space-y-2 text-sm text-foreground/90">
@@ -188,27 +188,27 @@ export default function CommunityLearning() {
                 </h3>
                 <div className="grid md:grid-cols-2 gap-4 text-sm">
                   <div className="flex items-center gap-2">
-                    <CheckCircle className="h-4 w-4 text-accent" />
+                    <CheckCircle className="h-4 w-4 text-primary" />
                     Formerly incarcerated individuals
                   </div>
                   <div className="flex items-center gap-2">
-                    <CheckCircle className="h-4 w-4 text-accent" />
+                    <CheckCircle className="h-4 w-4 text-primary" />
                     Family members of incarcerated individuals
                   </div>
                   <div className="flex items-center gap-2">
-                    <CheckCircle className="h-4 w-4 text-accent" />
+                    <CheckCircle className="h-4 w-4 text-primary" />
                     People preparing for reentry
                   </div>
                   <div className="flex items-center gap-2">
-                    <CheckCircle className="h-4 w-4 text-accent" />
+                    <CheckCircle className="h-4 w-4 text-primary" />
                     Recently released individuals
                   </div>
                   <div className="flex items-center gap-2">
-                    <CheckCircle className="h-4 w-4 text-accent" />
+                    <CheckCircle className="h-4 w-4 text-primary" />
                     Long-term reentry support seekers
                   </div>
                   <div className="flex items-center gap-2">
-                    <CheckCircle className="h-4 w-4 text-accent" />
+                    <CheckCircle className="h-4 w-4 text-primary" />
                     Supporters and advocates
                   </div>
                 </div>
@@ -222,8 +222,8 @@ export default function CommunityLearning() {
           <div className="container">
             <div className="max-w-4xl mx-auto text-center">
               <div className="flex items-center justify-center gap-3 mb-6">
-                <div className="w-12 h-12 bg-secondary rounded-lg flex items-center justify-center">
-                  <BookOpen className="h-6 w-6 text-secondary-foreground" />
+                <div className="w-12 h-12 bg-primary rounded-lg flex items-center justify-center">
+                  <BookOpen className="h-6 w-6 text-primary-foreground" />
                 </div>
                 <div>
                   <h2 className="text-2xl font-bold text-foreground">Topics Covered in Our Skool Community</h2>
@@ -267,14 +267,14 @@ export default function CommunityLearning() {
                       <p className="text-foreground/80 text-sm group-hover:text-foreground transition-colors duration-300">
                         {topic.description}
                       </p>
-                      <div className="mt-3 text-xs text-secondary font-medium">Available in Community</div>
+                      <div className="mt-3 text-xs text-primary font-medium">Available in Community</div>
                     </div>
                   </div>)}
               </div>
 
-              <div className="bg-secondary/10 border border-secondary/20 rounded-lg p-6">
+              <div className="bg-primary/5 border border-primary/20 rounded-lg p-6">
                 <h3 className="font-semibold text-foreground mb-3 flex items-center gap-2 mx-[250px]">
-                  <Shield className="h-5 w-5 text-secondary" />
+                  <Shield className="h-5 w-5 text-primary" />
                   Full Access After Community Approval
                 </h3>
                 <p className="text-foreground/80">
@@ -292,7 +292,7 @@ export default function CommunityLearning() {
           <div className="container">
             <div className="max-w-4xl mx-auto text-center">
               <div className="flex items-center justify-center gap-3 mb-6">
-                <div className="w-12 h-12 bg-gradient-osu-accent rounded-lg flex items-center justify-center">
+                <div className="w-12 h-12 bg-primary rounded-lg flex items-center justify-center">
                   <Heart className="h-6 w-6 text-primary-foreground" />
                 </div>
                 <div>
@@ -347,7 +347,7 @@ export default function CommunityLearning() {
           <div className="container">
             <div className="max-w-4xl mx-auto text-center">
               <div className="mb-6">
-                <div className="w-12 h-12 bg-gradient-osu-accent rounded-lg flex items-center justify-center mx-auto mb-4">
+                <div className="w-12 h-12 bg-primary rounded-lg flex items-center justify-center mx-auto mb-4">
                   <ArrowDown className="h-6 w-6 text-primary-foreground" />
                 </div>
                 <div>
@@ -357,16 +357,16 @@ export default function CommunityLearning() {
               </div>
 
               <div className="text-center">
-                <div className="bg-gradient-osu-subtle border border-osu-scarlet/20 rounded-lg p-6 max-w-2xl mx-auto">
+                <div className="bg-primary/5 border border-primary/20 rounded-lg p-6 max-w-2xl mx-auto">
                   <h3 className="text-xl font-semibold text-foreground mb-4">What You Get (Free Forever)</h3>
                   <div className="space-y-3">
                     {["8+ comprehensive learning pathways", "AI Basics for Reentry module", "Peer support and discussion groups", "Progress tracking and recognition", "24/7 community access", "Resource navigation support", "Trauma-informed environment", "Mobile-optimized learning platform", "Success milestone celebrations"].map((benefit, index) => <div key={index} className="flex items-center justify-center gap-2 text-sm text-foreground/90">
-                        <CheckCircle className="h-4 w-4 text-osu-scarlet" />
+                        <CheckCircle className="h-4 w-4 text-primary" />
                         {benefit}
                       </div>)}
                   </div>
 
-                  <Button onClick={() => setShowApplication(true)} className="w-full mt-6 bg-gradient-osu-accent hover:bg-osu-scarlet text-primary-foreground shadow-md" size="lg">
+                  <Button onClick={() => setShowApplication(true)} className="w-full mt-6 bg-primary hover:bg-primary/90 text-primary-foreground shadow-md" size="lg">
                     <Users className="h-4 w-4 mr-2" />
                     Apply for Community Access
                   </Button>
@@ -380,41 +380,41 @@ export default function CommunityLearning() {
                   <h3 className="text-xl font-semibold mb-6">Application Process</h3>
                   <div className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
                     <div className="text-center">
-                      <div className="w-12 h-12 bg-osu-scarlet/20 rounded-full flex items-center justify-center text-osu-scarlet font-semibold text-lg mx-auto mb-3">1</div>
+                      <div className="w-12 h-12 bg-primary/20 rounded-full flex items-center justify-center text-primary font-semibold text-lg mx-auto mb-3">1</div>
                       <h4 className="font-medium text-foreground mb-2">Submit Application</h4>
-                      <p className="text-sm text-foreground/80">Share basic info about your situation and goals</p>
+                      <p className="text-sm text-muted-foreground">Share basic info about your situation and goals</p>
                     </div>
                     <div className="text-center">
-                      <div className="w-12 h-12 bg-osu-scarlet/20 rounded-full flex items-center justify-center text-osu-scarlet font-semibold text-lg mx-auto mb-3">2</div>
+                      <div className="w-12 h-12 bg-primary/20 rounded-full flex items-center justify-center text-primary font-semibold text-lg mx-auto mb-3">2</div>
                       <h4 className="font-medium text-foreground mb-2">Review Process</h4>
-                      <p className="text-sm text-foreground/80">We review within 24-48 hours for community safety</p>
+                      <p className="text-sm text-muted-foreground">We review within 24-48 hours for community safety</p>
                     </div>
                     <div className="text-center">
-                      <div className="w-12 h-12 bg-osu-scarlet/20 rounded-full flex items-center justify-center text-osu-scarlet font-semibold text-lg mx-auto mb-3">3</div>
+                      <div className="w-12 h-12 bg-primary/20 rounded-full flex items-center justify-center text-primary font-semibold text-lg mx-auto mb-3">3</div>
                       <h4 className="font-medium text-foreground mb-2">Welcome & Onboarding</h4>
-                      <p className="text-sm text-foreground/80">Get access to all modules and community features</p>
+                      <p className="text-sm text-muted-foreground">Get access to all modules and community features</p>
                     </div>
                   </div>
                 </div>
               </div>
 
-              <div className="mt-12 bg-osu-scarlet/5 border border-osu-scarlet/20 rounded-lg p-6">
-                <h3 className="font-semibold text-osu-scarlet mb-3 text-center">Not Ready to Apply Yet?</h3>
-                <p className="text-foreground/80 mb-4 text-center">
+              <div className="mt-12 bg-secondary/5 border border-secondary/20 rounded-lg p-6">
+                <h3 className="font-semibold text-primary mb-3 text-center">Not Ready to Apply Yet?</h3>
+                <p className="text-muted-foreground mb-4 text-center">
                   That's completely okay. Everyone moves at their own pace. Here are other ways to get support:
                 </p>
                 <div className="grid md:grid-cols-3 gap-4">
-                  <Link to="/help" className="block p-3 bg-card border border-border rounded hover:bg-osu-scarlet/5 transition-colors">
+                  <Link to="/help" className="block p-3 bg-card border border-border rounded hover:bg-primary/5 transition-colors">
                     <div className="font-medium text-foreground">Get Immediate Help</div>
-                    <div className="text-sm text-foreground/80">Crisis resources and immediate support</div>
+                    <div className="text-sm text-muted-foreground">Crisis resources and immediate support</div>
                   </Link>
                   <Link to="/help#ohio-resources" className="block p-3 bg-card border border-border rounded hover:bg-primary/5 transition-colors">
                     <div className="font-medium text-foreground">Browse Resources</div>
-                    <div className="text-sm text-foreground/80">Ohio resource directory</div>
+                    <div className="text-sm text-muted-foreground">Ohio resource directory</div>
                   </Link>
                   <Link to="/support" className="block p-3 bg-card border border-border rounded hover:bg-primary/5 transition-colors">
                     <div className="font-medium text-foreground">Contact Us</div>
-                    <div className="text-sm text-foreground/80">Questions about our community</div>
+                    <div className="text-sm text-muted-foreground">Questions about our community</div>
                   </Link>
                 </div>
               </div>
@@ -437,7 +437,7 @@ export default function CommunityLearning() {
                   <Users className="h-4 w-4 mr-2" />
                   Join Our Community
                 </Button>
-                 <Button onClick={() => scrollToSection('learning')} variant="outline" className="border-primary-foreground/30 text-destructive hover:bg-primary-foreground/10" size="lg">
+                 <Button onClick={() => scrollToSection('learning')} variant="outline" className="border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10" size="lg">
                   <BookOpen className="h-4 w-4 mr-2" />
                   Explore Learning Modules
                 </Button>
