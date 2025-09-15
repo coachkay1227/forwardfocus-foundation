@@ -3,6 +3,7 @@ import { X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "@/hooks/use-toast";
+import { useNavigate } from "react-router-dom";
 interface SignupModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -16,6 +17,7 @@ const SignupModal = ({
   onClose,
   onSignup
 }: SignupModalProps) => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: "",
     email: ""
@@ -78,7 +80,7 @@ const SignupModal = ({
               <Button type="submit" className="flex-1 bg-primary text-primary-foreground hover:bg-primary/90">
                 Get Started Free
               </Button>
-              <Button type="button" variant="outline" onClick={onClose} className="flex-1">
+              <Button type="button" variant="outline" onClick={() => navigate("/login")} className="flex-1">
                 Already a Member? Sign In
               </Button>
             </div>
