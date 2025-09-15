@@ -176,11 +176,10 @@ const Partners = () => {
         </div>
 
         <Tabs defaultValue="dashboard" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-1 md:grid-cols-4 bg-osu-gray/10 border border-osu-gray/20">
+          <TabsList className="grid w-full grid-cols-1 md:grid-cols-3 bg-osu-gray/10 border border-osu-gray/20">
             <TabsTrigger value="dashboard" className="data-[state=active]:bg-osu-scarlet data-[state=active]:text-white text-osu-gray">Dashboard</TabsTrigger>
             <TabsTrigger value="actions" className="data-[state=active]:bg-osu-scarlet data-[state=active]:text-white text-osu-gray">Quick Actions</TabsTrigger>
             <TabsTrigger value="network" className="data-[state=active]:bg-osu-scarlet data-[state=active]:text-white text-osu-gray">Partner Network</TabsTrigger>
-            <TabsTrigger value="resources" className="data-[state=active]:bg-osu-scarlet data-[state=active]:text-white text-osu-gray">Resources</TabsTrigger>
           </TabsList>
 
           {/* Dashboard Tab */}
@@ -384,62 +383,6 @@ const Partners = () => {
             </div>
           </TabsContent>
 
-          {/* Resources Tab */}
-          <TabsContent value="resources" className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <Card className="border-osu-gray/20 shadow-lg">
-                <CardHeader className="bg-gradient-to-r from-osu-scarlet/5 to-osu-gray/5">
-                  <CardTitle className="text-osu-scarlet">Resource Management</CardTitle>
-                  <CardDescription className="text-osu-gray">
-                    Add, update, and manage community resources
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4 pt-6">
-                  <Button asChild className="w-full bg-gradient-to-r from-osu-scarlet to-osu-gray hover:from-osu-scarlet/90 hover:to-osu-gray/90 text-white">
-                    <NavLink to="/partners/add-resource">
-                      <Plus className="h-4 w-4 mr-2" />
-                      Add New Resource
-                    </NavLink>
-                  </Button>
-                  <Button variant="outline" asChild className="w-full border-osu-gray text-osu-gray hover:bg-osu-scarlet hover:text-white">
-                    <NavLink to="/search">
-                      <FileText className="h-4 w-4 mr-2" />
-                      Browse Resource Directory
-                    </NavLink>
-                  </Button>
-                </CardContent>
-              </Card>
-
-              <Card className="border-osu-gray/20 shadow-lg">
-                <CardHeader className="bg-gradient-to-r from-osu-scarlet/5 to-osu-gray/5">
-                  <CardTitle className="text-osu-scarlet">Resource Guidelines</CardTitle>
-                  <CardDescription className="text-osu-gray">
-                    Best practices for adding quality resources
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="pt-6">
-                  <div className="space-y-3 text-sm">
-                    <div className="flex items-start gap-2">
-                      <Target className="h-4 w-4 text-osu-scarlet mt-0.5" />
-                      <span className="text-osu-gray">Provide accurate, up-to-date contact information</span>
-                    </div>
-                    <div className="flex items-start gap-2">
-                      <Target className="h-4 w-4 text-osu-scarlet mt-0.5" />
-                      <span className="text-osu-gray">Include clear descriptions of services offered</span>
-                    </div>
-                    <div className="flex items-start gap-2">
-                      <Target className="h-4 w-4 text-osu-scarlet mt-0.5" />
-                      <span className="text-osu-gray">Specify eligibility requirements and limitations</span>
-                    </div>
-                    <div className="flex items-start gap-2">
-                      <Target className="h-4 w-4 text-osu-scarlet mt-0.5" />
-                      <span className="text-osu-gray">Indicate if services are justice-friendly</span>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-          </TabsContent>
         </Tabs>
       </div>
     </main>
