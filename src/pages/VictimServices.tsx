@@ -275,7 +275,7 @@ export default function VictimServices() {
               {supportPaths.map((path, index) => {
                 const IconComponent = path.icon;
                 return (
-                  <Card key={index} className="hover:shadow-xl transition-all duration-300 border-0 shadow-lg group cursor-pointer">
+                  <Card key={index} className="hover:shadow-xl transition-all duration-300 border-0 shadow-lg group cursor-pointer h-full flex flex-col">
                     <CardHeader className="text-center pb-4">
                       <div className={`inline-flex p-6 rounded-2xl ${path.color} mb-6 group-hover:scale-110 transition-transform duration-300`}>
                         <IconComponent className="h-10 w-10" />
@@ -285,23 +285,23 @@ export default function VictimServices() {
                         {path.description}
                       </CardDescription>
                     </CardHeader>
-                    <CardContent>
-                      <div className="space-y-3">
+                    <CardContent className="flex-1 flex flex-col">
+                      <div className="flex-1 space-y-3">
                         {path.resources.slice(0, 2).map((resource, resourceIndex) => (
                           <div key={resourceIndex} className="p-3 rounded-lg bg-muted/50">
                             <div className="font-semibold text-sm">{resource.title}</div>
                             <div className="text-xs text-foreground/70">{resource.description}</div>
                           </div>
                         ))}
-                        <Button 
-                          variant="outline" 
-                          className="w-full mt-4 group-hover:bg-primary group-hover:text-primary-foreground transition-colors"
-                          onClick={() => setShowSignupModal(true)}
-                        >
-                          View All Resources
-                          <ArrowRight className="ml-2 h-4 w-4" />
-                        </Button>
                       </div>
+                      <Button 
+                        variant="outline" 
+                        className="w-full mt-4 group-hover:bg-primary group-hover:text-primary-foreground transition-colors"
+                        onClick={() => setShowSignupModal(true)}
+                      >
+                        View All Resources
+                        <ArrowRight className="ml-2 h-4 w-4" />
+                      </Button>
                     </CardContent>
                   </Card>
                 );
