@@ -4,6 +4,7 @@ import { Heart, Users, Shield, CheckCircle, Target, Brain, MessageSquare, BookOp
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import ContactForm from "@/components/forms/ContactForm";
+import ChatbotPopup from "@/components/ui/ChatbotPopup";
 
 
 // Import images
@@ -291,14 +292,7 @@ export default function AboutUs() {
                 </div>
                 
                 <div className="flex flex-col sm:flex-row gap-4 mt-8">
-                  <Button 
-                    size="lg" 
-                    className="bg-primary hover:bg-primary/90 text-primary-foreground"
-                    onClick={() => window.open('/help', '_blank')}
-                  >
-                    <MessageSquare className="h-5 w-5 mr-2" />
-                    Connect with Coach K
-                  </Button>
+                  <ChatbotPopup />
                   <Button 
                     size="lg" 
                     variant="outline" 
