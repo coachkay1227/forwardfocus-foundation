@@ -122,7 +122,7 @@ const SubmitReferral = () => {
         <div className="container py-16">
           <div className="max-w-4xl mx-auto text-center">
             <h1 className="font-heading text-4xl md:text-5xl font-bold mb-4 text-white">Submit a Referral</h1>
-            <p className="text-xl text-osu-scarlet-light">Connect someone in need with our comprehensive support network</p>
+            <p className="text-xl text-white">Connect someone in need with our comprehensive support network</p>
           </div>
         </div>
       </div>
