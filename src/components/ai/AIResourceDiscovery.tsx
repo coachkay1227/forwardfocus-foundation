@@ -297,7 +297,7 @@ const AIResourceDiscovery: React.FC<AIResourceDiscoveryProps> = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-4xl h-[80vh] p-0">
+      <DialogContent className="max-w-4xl h-[80vh] p-0" aria-describedby="ai-discovery-description">
         <DialogHeader className="p-6 pb-0">
           <DialogTitle className="flex items-center gap-2">
             <Bot className="h-5 w-5 text-osu-scarlet" />

@@ -196,7 +196,7 @@ const CrisisSupportAI: React.FC<CrisisSupportAIProps> = ({ isOpen, onClose, init
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-2xl h-[700px] p-0 overflow-hidden">
+      <DialogContent className="max-w-2xl h-[700px] p-0 overflow-hidden" aria-describedby="crisis-support-description">
         {/* Header */}
         <div className="flex items-center justify-between bg-destructive p-4 text-destructive-foreground">
           <div className="flex items-center gap-3">
