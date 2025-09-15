@@ -1,9 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { 
-  ChevronRight, Users, BookOpen, Heart, CheckCircle, GraduationCap, 
-  MessageSquare, Shield, Clock, Star, ArrowRight, ArrowDown, Award, UserCheck
-} from "lucide-react";
+import { ChevronRight, Users, BookOpen, Heart, CheckCircle, GraduationCap, MessageSquare, Shield, Clock, Star, ArrowRight, ArrowDown, Award, UserCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { CommunityApplication } from "@/components/learn/CommunityApplication";
 import AICompanion from "@/components/learn/AICompanion";
@@ -11,15 +8,12 @@ import AICompanion from "@/components/learn/AICompanion";
 // Import community images  
 import learningCommunityDiverse from "@/assets/learning-community-diverse.jpg";
 import peerSupportCircle from "@/assets/peer-support-circle.jpg";
-
 export default function CommunityLearning() {
   const [activeSection, setActiveSection] = useState<string>("overview");
   const [showApplication, setShowApplication] = useState(false);
-
   useEffect(() => {
     document.title = "Learning & Growth Community | Forward Focus Elevation";
     const desc = "Free education and peer support for justice-impacted individuals and families. Self-paced learning modules, trauma-informed community, progress tracking.";
-    
     let meta = document.querySelector('meta[name="description"]') as HTMLMetaElement | null;
     if (!meta) {
       meta = document.createElement("meta");
@@ -27,7 +21,6 @@ export default function CommunityLearning() {
       document.head.appendChild(meta);
     }
     meta.setAttribute("content", desc);
-
     let link = document.querySelector('link[rel="canonical"]') as HTMLLinkElement | null;
     if (!link) {
       link = document.createElement("link");
@@ -36,17 +29,17 @@ export default function CommunityLearning() {
     }
     link.setAttribute("href", `${window.location.origin}/learn`);
   }, []);
-
   const scrollToSection = (sectionId: string) => {
     setActiveSection(sectionId);
     const element = document.getElementById(sectionId);
     if (element) {
-      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      element.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
+      });
     }
   };
-
-  return (
-    <>
+  return <>
       {/* Hero Section */}
       <header className="bg-gradient-to-b from-accent/10 to-background border-b">
         <div className="container py-12 md:py-16">
@@ -74,19 +67,11 @@ export default function CommunityLearning() {
             </div>
             
             <div className="flex flex-wrap justify-center gap-4">
-              <Button 
-                onClick={() => setShowApplication(true)}
-                size="lg"
-                className="bg-secondary hover:bg-secondary/90 text-secondary-foreground"
-              >
+              <Button onClick={() => setShowApplication(true)} size="lg" className="bg-secondary hover:bg-secondary/90 text-secondary-foreground">
                 <Users className="h-4 w-4 mr-2" />
                 Apply to Join Community
               </Button>
-              <Button 
-                onClick={() => scrollToSection('learning')}
-                size="lg"
-                className="bg-accent hover:bg-accent/90 text-accent-foreground"
-              >
+              <Button onClick={() => scrollToSection('learning')} size="lg" className="bg-accent hover:bg-accent/90 text-accent-foreground">
                 <BookOpen className="h-4 w-4 mr-2" />
                 Explore Learning Modules
               </Button>
@@ -99,11 +84,7 @@ export default function CommunityLearning() {
       <section className="py-8 bg-card border-b">
         <div className="container">
           <div className="max-w-4xl mx-auto relative rounded-lg overflow-hidden">
-            <img 
-              src={learningCommunityDiverse} 
-              alt="Diverse community members engaged in collaborative learning activities"
-              className="w-full h-64 md:h-80 object-cover"
-            />
+            <img src={learningCommunityDiverse} alt="Diverse community members engaged in collaborative learning activities" className="w-full h-64 md:h-80 object-cover" />
             <div className="absolute inset-0 bg-gradient-to-r from-primary/90 to-secondary/80 flex items-center justify-center">
               <div className="text-center text-white">
                 <h2 className="text-2xl md:text-3xl font-bold mb-2">Building Stronger Families Through Learning</h2>
@@ -118,30 +99,28 @@ export default function CommunityLearning() {
         <nav className="bg-card border-b sticky top-0 z-40 shadow-sm">
           <div className="container py-4">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-              {[
-                { id: "overview", label: "Community Overview", icon: Users },
-                { id: "learning", label: "Learning Modules", icon: BookOpen },
-                { id: "apply", label: "Join Today", icon: ArrowRight }
-              ].map((section) => {
-                const Icon = section.icon;
-                return (
-                  <button
-                    key={section.id}
-                    onClick={() => scrollToSection(section.id)}
-                    className={`flex items-center gap-2 p-4 rounded-lg border-2 transition-all shadow-md hover:shadow-lg ${
-                      activeSection === section.id 
-                        ? 'border-primary bg-gradient-to-r from-primary/20 to-secondary/20 text-primary font-semibold shadow-lg' 
-                        : 'border-border bg-gradient-to-r from-background to-muted/30 hover:border-primary/50 hover:from-primary/5 hover:to-secondary/5 hover:text-primary'
-                    }`}
-                  >
+              {[{
+            id: "overview",
+            label: "Community Overview",
+            icon: Users
+          }, {
+            id: "learning",
+            label: "Learning Modules",
+            icon: BookOpen
+          }, {
+            id: "apply",
+            label: "Join Today",
+            icon: ArrowRight
+          }].map(section => {
+            const Icon = section.icon;
+            return <button key={section.id} onClick={() => scrollToSection(section.id)} className={`flex items-center gap-2 p-4 rounded-lg border-2 transition-all shadow-md hover:shadow-lg ${activeSection === section.id ? 'border-primary bg-gradient-to-r from-primary/20 to-secondary/20 text-primary font-semibold shadow-lg' : 'border-border bg-gradient-to-r from-background to-muted/30 hover:border-primary/50 hover:from-primary/5 hover:to-secondary/5 hover:text-primary'}`}>
                     <div className={`p-1 rounded-md ${activeSection === section.id ? 'bg-primary/20' : 'bg-muted/50'}`}>
                       <Icon className="h-4 w-4" />
                     </div>
                     <span className="text-sm font-medium">{section.label}</span>
                     <ChevronRight className="h-3 w-3 ml-auto" />
-                  </button>
-                );
-              })}
+                  </button>;
+          })}
             </div>
           </div>
         </nav>
@@ -203,7 +182,7 @@ export default function CommunityLearning() {
               </div>
 
               <div className="mt-8 bg-muted border border-border rounded-lg p-6">
-                <h3 className="font-semibold mb-4 flex items-center gap-2">
+                <h3 className="font-semibold mb-4 flex items-center gap-2 mx-[250px]">
                   <Users className="h-5 w-5 text-secondary" />
                   Who This Community Serves
                 </h3>
@@ -253,56 +232,35 @@ export default function CommunityLearning() {
               </div>
 
               {/* AI Assistant Integration */}
-              <div className="mb-8 bg-secondary/10 border border-secondary/20 rounded-lg p-6">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-8 h-8 bg-secondary rounded-lg flex items-center justify-center">
-                  <Star className="h-5 w-5 text-secondary-foreground" />
-                </div>
-                <h3 className="font-semibold text-foreground">Reentry Success Navigator</h3>
-              </div>
-              <p className="text-foreground/80 mb-4">
-                Get personalized help specifically for your reentry journey. Ask about housing, employment, legal questions, or family support strategies.
-              </p>
-                <AICompanion />
-              </div>
+              
 
               {/* 8 Topic Preview Cards */}
               <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-                {[
-                  {
-                    title: "Welcome Rest Your Path",
-                    description: "Begin your healing journey with trauma-informed practices and community connection"
-                  },
-                  {
-                    title: "Financial Foundations", 
-                    description: "Banking basics, budgeting strategies, and financial literacy for stability"
-                  },
-                  {
-                    title: "Clarity Support & Wellness",
-                    description: "Mental health resources, mindfulness practices, and emotional wellness tools"
-                  },
-                  {
-                    title: "AI Basics Training",
-                    description: "Learn how AI can support your reentry journey and daily life navigation"
-                  },
-                  {
-                    title: "Credit Confidence Starter",
-                    description: "Build and repair credit, understand credit reports, and establish financial trust"
-                  },
-                  {
-                    title: "Business Essentials",
-                    description: "Entrepreneurship fundamentals, business planning, and creating your own opportunities"
-                  },
-                  {
-                    title: "Reentry & Life Tools Vault",
-                    description: "Practical resources for housing, employment, documentation, and system navigation"
-                  },
-                  {
-                    title: "Purpose, Planning & Pathways",
-                    description: "Goal setting, life planning, and creating sustainable pathways forward"
-                  }
-                ].map((topic, index) => (
-                  <div key={index} className="group relative bg-card border border-border rounded-lg p-4 hover:shadow-lg transition-all duration-300 hover:scale-105">
+                {[{
+                title: "Welcome Rest Your Path",
+                description: "Begin your healing journey with trauma-informed practices and community connection"
+              }, {
+                title: "Financial Foundations",
+                description: "Banking basics, budgeting strategies, and financial literacy for stability"
+              }, {
+                title: "Clarity Support & Wellness",
+                description: "Mental health resources, mindfulness practices, and emotional wellness tools"
+              }, {
+                title: "AI Basics Training",
+                description: "Learn how AI can support your reentry journey and daily life navigation"
+              }, {
+                title: "Credit Confidence Starter",
+                description: "Build and repair credit, understand credit reports, and establish financial trust"
+              }, {
+                title: "Business Essentials",
+                description: "Entrepreneurship fundamentals, business planning, and creating your own opportunities"
+              }, {
+                title: "Reentry & Life Tools Vault",
+                description: "Practical resources for housing, employment, documentation, and system navigation"
+              }, {
+                title: "Purpose, Planning & Pathways",
+                description: "Goal setting, life planning, and creating sustainable pathways forward"
+              }].map((topic, index) => <div key={index} className="group relative bg-card border border-border rounded-lg p-4 hover:shadow-lg transition-all duration-300 hover:scale-105">
                     <div className="absolute inset-0 bg-gradient-to-br from-secondary/20 to-accent/20 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                     <div className="relative z-10">
                       <h3 className="font-semibold text-foreground mb-2">{topic.title}</h3>
@@ -311,12 +269,11 @@ export default function CommunityLearning() {
                       </p>
                       <div className="mt-3 text-xs text-secondary font-medium">Available in Community</div>
                     </div>
-                  </div>
-                ))}
+                  </div>)}
               </div>
 
               <div className="bg-secondary/10 border border-secondary/20 rounded-lg p-6">
-                <h3 className="font-semibold text-foreground mb-3 flex items-center gap-2">
+                <h3 className="font-semibold text-foreground mb-3 flex items-center gap-2 mx-[250px]">
                   <Shield className="h-5 w-5 text-secondary" />
                   Full Access After Community Approval
                 </h3>
@@ -346,7 +303,7 @@ export default function CommunityLearning() {
 
               <div className="grid md:grid-cols-2 gap-6">
                 <div className="bg-primary/10 border border-primary/20 rounded-lg p-6">
-                  <h3 className="font-semibold text-foreground mb-4">Discussion Groups</h3>
+                  <h3 className="font-semibold text-foreground mb-4 mx-0 my-0">Discussion Groups</h3>
                   <ul className="space-y-3 text-sm text-foreground/80">
                     <li className="flex items-start gap-2">
                       <MessageSquare className="h-4 w-4 mt-0.5 text-primary" />
@@ -403,29 +360,13 @@ export default function CommunityLearning() {
                 <div className="bg-gradient-osu-subtle border border-osu-scarlet/20 rounded-lg p-6 max-w-2xl mx-auto">
                   <h3 className="text-xl font-semibold text-foreground mb-4">What You Get (Free Forever)</h3>
                   <div className="space-y-3">
-                    {[
-                      "8+ comprehensive learning pathways",
-                      "AI Basics for Reentry module", 
-                      "Peer support and discussion groups",
-                      "Progress tracking and recognition",
-                      "24/7 community access",
-                      "Resource navigation support",
-                      "Trauma-informed environment",
-                      "Mobile-optimized learning platform",
-                      "Success milestone celebrations"
-                    ].map((benefit, index) => (
-                      <div key={index} className="flex items-center justify-center gap-2 text-sm text-foreground/90">
+                    {["8+ comprehensive learning pathways", "AI Basics for Reentry module", "Peer support and discussion groups", "Progress tracking and recognition", "24/7 community access", "Resource navigation support", "Trauma-informed environment", "Mobile-optimized learning platform", "Success milestone celebrations"].map((benefit, index) => <div key={index} className="flex items-center justify-center gap-2 text-sm text-foreground/90">
                         <CheckCircle className="h-4 w-4 text-osu-scarlet" />
                         {benefit}
-                      </div>
-                    ))}
+                      </div>)}
                   </div>
 
-                  <Button 
-                    onClick={() => setShowApplication(true)}
-                    className="w-full mt-6 bg-gradient-osu-accent hover:bg-osu-scarlet text-white shadow-md"
-                    size="lg"
-                  >
+                  <Button onClick={() => setShowApplication(true)} className="w-full mt-6 bg-gradient-osu-accent hover:bg-osu-scarlet text-white shadow-md" size="lg">
                     <Users className="h-4 w-4 mr-2" />
                     Apply for Community Access
                   </Button>
@@ -492,20 +433,11 @@ export default function CommunityLearning() {
               </p>
               
               <div className="flex flex-wrap justify-center gap-4">
-                <Button 
-                  onClick={() => setShowApplication(true)}
-                  className="bg-secondary hover:bg-secondary/90 text-secondary-foreground"
-                  size="lg"
-                >
+                <Button onClick={() => setShowApplication(true)} className="bg-secondary hover:bg-secondary/90 text-secondary-foreground" size="lg">
                   <Users className="h-4 w-4 mr-2" />
                   Join Our Community
                 </Button>
-                 <Button 
-                  onClick={() => scrollToSection('learning')}
-                  variant="outline"
-                  className="border-primary-foreground/30 text-destructive hover:bg-primary-foreground/10"
-                  size="lg"
-                >
+                 <Button onClick={() => scrollToSection('learning')} variant="outline" className="border-primary-foreground/30 text-destructive hover:bg-primary-foreground/10" size="lg">
                   <BookOpen className="h-4 w-4 mr-2" />
                   Explore Learning Modules
                 </Button>
@@ -531,10 +463,6 @@ export default function CommunityLearning() {
       </main>
 
       {/* Community Application Modal */}
-      <CommunityApplication 
-        isOpen={showApplication} 
-        onClose={() => setShowApplication(false)} 
-      />
-    </>
-  );
+      <CommunityApplication isOpen={showApplication} onClose={() => setShowApplication(false)} />
+    </>;
 }
