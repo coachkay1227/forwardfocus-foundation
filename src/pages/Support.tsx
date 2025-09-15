@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Heart, Mail, Phone, MapPin, Clock, Users, BookOpen, HandHeart, DollarSign } from "lucide-react";
-import ContactForm from "@/components/forms/ContactForm";
+import ChatbotPopup from "@/components/ui/ChatbotPopup";
 
 const Support = () => {
   useEffect(() => {
@@ -175,15 +175,17 @@ const Support = () => {
           </Card>
         </section>
 
-        {/* Contact and FAQ Section */}
+        {/* Chat and FAQ Section */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 max-w-5xl mx-auto items-center justify-items-center">
-          {/* Contact Form */}
+          {/* Chatbot */}
           <section className="w-full max-w-lg">
-            <ContactForm 
-              type="contact"
-              title="Get In Touch"
-              description="Have questions about supporting our community? We're here to help connect you with the right opportunities."
-            />
+            <div className="text-center space-y-4">
+              <h2 className="font-heading text-2xl font-semibold">Get Instant Support</h2>
+              <p className="text-muted-foreground">
+                Have questions about supporting our community? Chat with us for quick answers.
+              </p>
+              <ChatbotPopup />
+            </div>
           </section>
 
           {/* FAQ Section */}
