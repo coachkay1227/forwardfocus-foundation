@@ -121,7 +121,7 @@ export default function GetHelpNow() {
         <section id="crisis" className="py-16 bg-card">
           <div className="container">
             <div className="max-w-4xl mx-auto">
-              <div className="flex items-center gap-4 mb-8">
+              <div className="flex items-center justify-center gap-4 mb-8">
                 <div className="w-16 h-16 bg-destructive rounded-xl flex items-center justify-center">
                   <Phone className="h-8 w-8 text-destructive-foreground" />
                 </div>
