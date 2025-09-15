@@ -307,6 +307,17 @@ export default function VictimServices() {
                 );
               })}
             </div>
+            
+            <div className="text-center mt-12">
+              <Button 
+                size="lg" 
+                className="text-lg px-10 py-6 shadow-lg hover:shadow-xl transition-all duration-300"
+                onClick={() => setShowSignupModal(true)}
+              >
+                Choose Your Support Path
+                <ArrowRight className="ml-3 h-6 w-6" />
+              </Button>
+            </div>
           </div>
         </section>
 
