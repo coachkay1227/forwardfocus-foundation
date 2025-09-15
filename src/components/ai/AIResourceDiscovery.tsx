@@ -68,6 +68,87 @@ const AIResourceDiscovery: React.FC<AIResourceDiscoveryProps> = ({
     }
   }, [isOpen, initialQuery]);
 
+  const sendMessage = async (messages: { role: string; content: string }[]) => {
+    try {
+      const response = await fetch('/functions/v1/chat', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          messages,
+          topic: 'resource-discovery'
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      if (!response.body) {
+        throw new Error('No response body');
+      }
+
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder();
+
+      // Create initial AI message
+      const aiMessageId = (Date.now() + 1).toString();
+      const aiMessage: Message = {
+        id: aiMessageId,
+        type: 'ai',
+        content: '',
+        timestamp: new Date()
+      };
+
+      setMessages(prev => [...prev, aiMessage]);
+      setIsTyping(false);
+
+      let done = false;
+      while (!done) {
+        const { value, done: readerDone } = await reader.read();
+        done = readerDone;
+
+        if (value) {
+          const chunk = decoder.decode(value, { stream: true });
+          
+          // Parse Server-Sent Events format
+          const lines = chunk.split('\n');
+          for (const line of lines) {
+            if (line.startsWith('data: ')) {
+              const data = line.slice(6);
+              if (data === '[DONE]') {
+                done = true;
+                break;
+              }
+              
+              try {
+                const parsed = JSON.parse(data);
+                const content = parsed.choices?.[0]?.delta?.content || '';
+                
+                if (content) {
+                  setMessages(prev => 
+                    prev.map(msg => 
+                      msg.id === aiMessageId 
+                        ? { ...msg, content: msg.content + content }
+                        : msg
+                    )
+                  );
+                  scrollToBottom();
+                }
+              } catch (parseError) {
+                // Ignore parsing errors for individual chunks
+              }
+            }
+          }
+        }
+      }
+    } catch (error) {
+      console.error('Stream error:', error);
+      throw error;
+    }
+  };
+
   const handleSend = async (queryText?: string) => {
     const query = queryText || inputValue.trim();
     if (!query) return;
@@ -85,55 +166,26 @@ const AIResourceDiscovery: React.FC<AIResourceDiscoveryProps> = ({
     setIsTyping(true);
 
     try {
-      const { data, error } = await supabase.functions.invoke('ai-resource-discovery', {
-        body: {
-          query,
-          location,
-          county,
-          limit: 8
-        }
-      });
+      // Prepare messages for the chat API
+      const chatMessages = [
+        ...messages.map(msg => ({
+          role: msg.type === 'user' ? 'user' : 'assistant',
+          content: msg.content
+        })),
+        { role: 'user', content: query }
+      ];
 
-      if (error) {
-        throw error;
-      }
-
-      const aiMessage: Message = {
-        id: (Date.now() + 1).toString(),
-        type: 'ai',
-        content: data.response,
-        timestamp: new Date(),
-        resources: data.resources
-      };
-
-      setMessages(prev => [...prev, aiMessage]);
-
+      await sendMessage(chatMessages);
     } catch (error) {
       console.error('Error getting AI response:', error);
       
-      // Show more user-friendly error message with better fallback
-      const isQuotaError = error.message?.includes('quota') || error.message?.includes('limit');
-      const isServiceError = error.message?.includes('temporarily unavailable') || error.message?.includes('500');
-      const isNetworkError = error.message?.includes('network') || error.message?.includes('fetch');
-      
-      let errorTitle = "AI Assistant Temporarily Unavailable";
-      let errorDescription = "I'm searching our database directly for you instead.";
-      
-      if (isQuotaError) {
-        errorTitle = "AI Service at Capacity";
-        errorDescription = "High demand detected. Using direct database search.";
-      } else if (isNetworkError) {
-        errorTitle = "Connection Issue";
-        errorDescription = "Network error detected. Falling back to database search.";
-      }
-      
       toast({
-        title: errorTitle,
-        description: errorDescription,
-        variant: "default", // Changed from destructive to be less alarming
+        title: "AI Assistant Temporarily Unavailable", 
+        description: "I'm searching our database directly for you instead.",
+        variant: "default",
       });
 
-      // Fallback: client-side resource lookup so users still get help
+      // Fallback: client-side resource lookup
       try {
         const tokens = query.toLowerCase().split(/\s+/).slice(0, 3);
         let orFilter = tokens.map(t => `name.ilike.%${t}%,description.ilike.%${t}%,type.ilike.%${t}%`).join(',');
