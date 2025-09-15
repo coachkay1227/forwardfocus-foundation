@@ -366,15 +366,10 @@ const Partners = () => {
                       <li>• Regular participation in network activities</li>
                     </ul>
                   </div>
-                  <div className="flex flex-col sm:flex-row gap-3 justify-center max-w-md mx-auto">
+                  <div className="flex justify-center max-w-md mx-auto">
                     <Button asChild className="bg-gradient-to-r from-osu-scarlet to-osu-gray hover:from-osu-scarlet/90 hover:to-osu-gray/90 text-white">
-                      <NavLink to="/partners/request-partnership">
+                      <NavLink to="/partners/request">
                         Request Partnership
-                      </NavLink>
-                    </Button>
-                    <Button variant="outline" asChild className="border-osu-gray text-osu-gray hover:bg-osu-scarlet hover:text-white">
-                      <NavLink to="/organizations">
-                        View Partner Directory
                       </NavLink>
                     </Button>
                   </div>
