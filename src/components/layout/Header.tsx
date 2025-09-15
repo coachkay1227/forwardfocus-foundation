@@ -147,7 +147,7 @@ const Header = ({
             </div>
 
             {/* Main Navigation - Desktop */}
-            <nav className="hidden md:flex main-nav space-x-8">
+            <nav className="hidden md:flex main-nav space-x-4 lg:space-x-6">
               <NavLink to="/" className={linkCls}>Home</NavLink>
               <NavLink to="/get-help-now" className={linkCls}>Get Help Now</NavLink>
               <NavLink to="/about" className={linkCls}>About</NavLink>
