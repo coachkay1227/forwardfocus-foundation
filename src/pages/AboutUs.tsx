@@ -59,7 +59,7 @@ export default function AboutUs() {
               About Forward Focus Elevation
             </h1>
             <p className="text-lg md:text-xl mb-12 text-white/90 leading-relaxed max-w-3xl">Real Healing. Smart Tools. Second Chances for Every Story. AI-powered transformation for justice-impacted individuals and families because your next chapter deserves more than survival.</p>
-            <div className="flex items-center gap-6 text-sm mb-12 flex-wrap">
+            <div className="flex items-center justify-center gap-6 text-sm mb-12 flex-wrap">
               <span className="flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 px-6 py-3 rounded-full">
                 <Shield className="h-5 w-5" />
                 Dignity
