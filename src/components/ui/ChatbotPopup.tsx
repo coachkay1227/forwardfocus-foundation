@@ -103,7 +103,9 @@ const ChatbotPopup = () => {
       console.error('Coach K error:', error);
       const errorMessage: Message = {
         id: (Date.now() + 2).toString(),
-        text: "I'm sorry, I'm having trouble connecting right now. For immediate crisis support, please call 988 (Suicide & Crisis Lifeline) or 614-525-5200 (NetCare Access).",
+        text: error instanceof Error && error.message ? 
+          `Error: ${error.message}` : 
+          "Sorry, I can't reach the server right now. Please try again in a moment.",
         isBot: true,
         timestamp: new Date(),
       };
