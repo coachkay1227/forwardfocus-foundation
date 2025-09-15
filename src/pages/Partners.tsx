@@ -146,28 +146,28 @@ const Partners = () => {
 
   return (
     <main id="main" className="min-h-screen bg-gradient-to-br from-osu-scarlet/5 via-background to-osu-gray/5">
-      <div className="max-w-6xl mx-auto px-6 py-8">
+      <div className="max-w-6xl mx-auto px-6 py-4">
         {/* Header with Hero Image */}
-        <div className="mb-12">
+        <div className="mb-6">
           <div className="relative rounded-2xl overflow-hidden shadow-2xl">
             <img 
               src={partnershipCollaboration} 
               alt="Diverse team of professionals working together on community partnerships"
-              className="w-full h-80 object-cover"
+              className="w-full h-48 md:h-64 object-cover"
             />
             <div className="absolute inset-0 bg-gradient-to-r from-osu-scarlet/90 to-osu-gray/80 flex items-center justify-center">
-              <div className="text-center text-white max-w-4xl px-8">
-                <div className="flex items-center justify-center gap-4 mb-6">
-                  <Building2 className="h-12 w-12" />
+              <div className="text-center text-white max-w-4xl px-6">
+                <div className="flex items-center justify-center gap-3 mb-4">
+                  <Building2 className="h-10 w-10" />
                   {user && (
-                    <Badge variant="secondary" className="text-lg px-4 py-2 inline-flex items-center gap-2 bg-white/20 text-white border-white/30">
-                      <CheckCircle className="h-5 w-5" />
+                    <Badge variant="secondary" className="text-sm px-3 py-1 inline-flex items-center gap-2 bg-white/20 text-white border-white/30">
+                      <CheckCircle className="h-4 w-4" />
                       Authenticated Partner
                     </Badge>
                   )}
                 </div>
-                <h1 className="font-heading text-5xl md:text-6xl font-bold mb-4">Partner Portal</h1>
-                <p className="text-2xl leading-relaxed">
+                <h1 className="font-heading text-3xl md:text-4xl font-bold mb-2">Partner Portal</h1>
+                <p className="text-lg md:text-xl leading-relaxed">
                   Collaborate, contribute, and track your impact in our community network
                 </p>
               </div>
@@ -175,7 +175,7 @@ const Partners = () => {
           </div>
         </div>
 
-        <Tabs defaultValue="dashboard" className="space-y-6">
+        <Tabs defaultValue="dashboard" className="space-y-4">
           <TabsList className="grid w-full grid-cols-1 md:grid-cols-3 bg-osu-gray/10 border border-osu-gray/20">
             <TabsTrigger value="dashboard" className="data-[state=active]:bg-osu-scarlet data-[state=active]:text-white text-osu-gray">Dashboard</TabsTrigger>
             <TabsTrigger value="actions" className="data-[state=active]:bg-osu-scarlet data-[state=active]:text-white text-osu-gray">Quick Actions</TabsTrigger>
@@ -183,30 +183,30 @@ const Partners = () => {
           </TabsList>
 
           {/* Dashboard Tab */}
-          <TabsContent value="dashboard" className="space-y-6">
+          <TabsContent value="dashboard" className="space-y-4">
             {user ? (
               <>
                 {/* Stats Overview */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                   <Card className="hover:shadow-lg transition-all duration-300 border-osu-gray/20 shadow-md">
-                    <CardContent className="p-8">
-                      <div className="flex items-center gap-4">
-                        <div className="p-4 bg-gradient-to-br from-osu-scarlet/20 to-osu-gray/20 rounded-xl">
-                          <Users className="h-7 w-7 text-osu-scarlet" />
+                    <CardContent className="p-4">
+                      <div className="flex items-center gap-3">
+                        <div className="p-2 bg-gradient-to-br from-osu-scarlet/20 to-osu-gray/20 rounded-lg">
+                          <Users className="h-5 w-5 text-osu-scarlet" />
                         </div>
                         <div>
-                          <div className="text-3xl font-bold text-osu-scarlet">{stats.totalReferrals}</div>
-                          <div className="text-base font-medium text-osu-gray">Total Referrals</div>
+                          <div className="text-2xl font-bold text-osu-scarlet">{stats.totalReferrals}</div>
+                          <div className="text-sm font-medium text-osu-gray">Total Referrals</div>
                         </div>
                       </div>
                     </CardContent>
                   </Card>
 
                   <Card className="hover:shadow-lg transition-all duration-300 border-osu-gray/20 shadow-md">
-                    <CardContent className="p-6">
-                      <div className="flex items-center gap-4">
-                        <div className="p-3 bg-gradient-to-br from-osu-scarlet/20 to-osu-gray/20 rounded-lg">
-                          <Clock className="h-6 w-6 text-osu-scarlet" />
+                    <CardContent className="p-4">
+                      <div className="flex items-center gap-3">
+                        <div className="p-2 bg-gradient-to-br from-osu-scarlet/20 to-osu-gray/20 rounded-lg">
+                          <Clock className="h-5 w-5 text-osu-scarlet" />
                         </div>
                         <div>
                           <div className="text-2xl font-bold text-osu-scarlet">{stats.activeReferrals}</div>
@@ -217,10 +217,10 @@ const Partners = () => {
                   </Card>
 
                   <Card className="hover:shadow-lg transition-all duration-300 border-osu-gray/20 shadow-md">
-                    <CardContent className="p-6">
-                      <div className="flex items-center gap-4">
-                        <div className="p-3 bg-gradient-to-br from-osu-scarlet/20 to-osu-gray/20 rounded-lg">
-                          <CheckCircle className="h-6 w-6 text-osu-scarlet" />
+                    <CardContent className="p-4">
+                      <div className="flex items-center gap-3">
+                        <div className="p-2 bg-gradient-to-br from-osu-scarlet/20 to-osu-gray/20 rounded-lg">
+                          <CheckCircle className="h-5 w-5 text-osu-scarlet" />
                         </div>
                         <div>
                           <div className="text-2xl font-bold text-osu-scarlet">{stats.completedReferrals}</div>
@@ -231,10 +231,10 @@ const Partners = () => {
                   </Card>
 
                   <Card className="hover:shadow-lg transition-all duration-300 border-osu-gray/20 shadow-md">
-                    <CardContent className="p-6">
-                      <div className="flex items-center gap-4">
-                        <div className="p-3 bg-gradient-to-br from-osu-scarlet/20 to-osu-gray/20 rounded-lg">
-                          <FileText className="h-6 w-6 text-osu-scarlet" />
+                    <CardContent className="p-4">
+                      <div className="flex items-center gap-3">
+                        <div className="p-2 bg-gradient-to-br from-osu-scarlet/20 to-osu-gray/20 rounded-lg">
+                          <FileText className="h-5 w-5 text-osu-scarlet" />
                         </div>
                         <div>
                           <div className="text-2xl font-bold text-osu-scarlet">{stats.resourcesAdded}</div>
@@ -247,25 +247,25 @@ const Partners = () => {
 
                 {/* Impact Score */}
                 <Card className="border-osu-gray/20 shadow-lg">
-                  <CardHeader className="bg-gradient-to-r from-osu-scarlet/5 to-osu-gray/5">
-                    <CardTitle className="flex items-center gap-2 text-osu-scarlet">
+                  <CardHeader className="bg-gradient-to-r from-osu-scarlet/5 to-osu-gray/5 pb-3">
+                    <CardTitle className="flex items-center gap-2 text-osu-scarlet text-lg">
                       <TrendingUp className="h-5 w-5" />
                       Community Impact Score
                     </CardTitle>
-                    <CardDescription className="text-osu-gray">
+                    <CardDescription className="text-osu-gray text-sm">
                       Your organization's contribution to community outcomes
                     </CardDescription>
                   </CardHeader>
-                  <CardContent className="pt-6">
-                    <div className="space-y-4">
+                  <CardContent className="pt-4">
+                    <div className="space-y-3">
                       <div className="flex items-center justify-between">
-                        <span className="text-3xl font-bold text-osu-scarlet">{stats.impactScore}/100</span>
+                        <span className="text-2xl font-bold text-osu-scarlet">{stats.impactScore}/100</span>
                         <Badge variant={stats.impactScore >= 80 ? "default" : "secondary"} className="bg-osu-scarlet text-white">
                           {stats.impactScore >= 80 ? "Excellent" : "Good"}
                         </Badge>
                       </div>
-                      <Progress value={stats.impactScore} className="h-3" />
-                      <p className="text-sm text-osu-gray">
+                      <Progress value={stats.impactScore} className="h-2" />
+                      <p className="text-xs text-osu-gray">
                         Based on referral success rates, resource quality, and community feedback
                       </p>
                     </div>
@@ -274,10 +274,10 @@ const Partners = () => {
               </>
             ) : (
               <Card className="border-osu-gray/20 shadow-lg">
-                <CardContent className="p-8 text-center">
-                  <AlertCircle className="h-12 w-12 text-osu-gray mx-auto mb-4" />
+                <CardContent className="p-6 text-center">
+                  <AlertCircle className="h-10 w-10 text-osu-gray mx-auto mb-3" />
                   <h3 className="text-lg font-semibold mb-2 text-osu-scarlet">Authentication Required</h3>
-                  <p className="text-osu-gray mb-6">
+                  <p className="text-osu-gray mb-4 text-sm">
                     Please sign in to access your partner dashboard and track your impact.
                   </p>
                   <Button asChild className="bg-gradient-to-r from-osu-scarlet to-osu-gray hover:from-osu-scarlet/90 hover:to-osu-gray/90 text-white">
@@ -289,24 +289,24 @@ const Partners = () => {
           </TabsContent>
 
           {/* Quick Actions Tab */}
-          <TabsContent value="actions" className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <TabsContent value="actions" className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {quickActions.map((action, index) => {
                 const IconComponent = action.icon;
                 return (
                   <Card key={index} className="hover:shadow-lg transition-shadow border-osu-gray/20">
-                    <CardHeader className="bg-gradient-to-r from-osu-scarlet/5 to-osu-gray/5">
-                      <div className="flex items-start gap-4">
-                        <div className="p-3 bg-gradient-to-br from-osu-scarlet/20 to-osu-gray/20 rounded-lg">
-                          <IconComponent className="h-6 w-6 text-osu-scarlet" />
+                    <CardHeader className="bg-gradient-to-r from-osu-scarlet/5 to-osu-gray/5 pb-3">
+                      <div className="flex items-start gap-3">
+                        <div className="p-2 bg-gradient-to-br from-osu-scarlet/20 to-osu-gray/20 rounded-lg">
+                          <IconComponent className="h-5 w-5 text-osu-scarlet" />
                         </div>
                         <div>
-                          <CardTitle className="text-lg text-osu-scarlet">{action.title}</CardTitle>
-                          <CardDescription className="text-osu-gray">{action.description}</CardDescription>
+                          <CardTitle className="text-base text-osu-scarlet">{action.title}</CardTitle>
+                          <CardDescription className="text-osu-gray text-sm">{action.description}</CardDescription>
                         </div>
                       </div>
                     </CardHeader>
-                    <CardContent>
+                    <CardContent className="pt-2">
                       <Button asChild variant={action.variant} className="w-full bg-gradient-to-r from-osu-scarlet to-osu-gray hover:from-osu-scarlet/90 hover:to-osu-gray/90 text-white border-osu-gray">
                         <NavLink to={action.href}>
                           {action.title}
@@ -320,27 +320,27 @@ const Partners = () => {
           </TabsContent>
 
           {/* Partner Network Tab */}
-          <TabsContent value="network" className="space-y-6">
+          <TabsContent value="network" className="space-y-4">
             <div className="max-w-4xl mx-auto">
               <Card className="border-osu-gray/20 shadow-lg">
-                <CardHeader className="bg-gradient-to-r from-osu-scarlet/5 to-osu-gray/5 text-center">
-                  <CardTitle className="text-osu-scarlet">Partner Benefits</CardTitle>
-                  <CardDescription className="text-osu-gray">
+                <CardHeader className="bg-gradient-to-r from-osu-scarlet/5 to-osu-gray/5 text-center pb-3">
+                  <CardTitle className="text-osu-scarlet text-lg">Partner Benefits</CardTitle>
+                  <CardDescription className="text-osu-gray text-sm">
                     Discover the advantages of being part of our partner network
                   </CardDescription>
                 </CardHeader>
-                <CardContent className="pt-6">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto">
+                <CardContent className="pt-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-3xl mx-auto">
                     {partnerBenefits.map((benefit, index) => {
                       const IconComponent = benefit.icon;
                       return (
-                        <div key={index} className="flex flex-col items-center text-center gap-4">
-                          <div className="p-4 bg-gradient-to-br from-osu-scarlet/20 to-osu-gray/20 rounded-lg">
-                            <IconComponent className="h-6 w-6 text-osu-scarlet" />
+                        <div key={index} className="flex flex-col items-center text-center gap-3">
+                          <div className="p-3 bg-gradient-to-br from-osu-scarlet/20 to-osu-gray/20 rounded-lg">
+                            <IconComponent className="h-5 w-5 text-osu-scarlet" />
                           </div>
                           <div>
-                            <h3 className="font-semibold mb-1 text-osu-scarlet">{benefit.title}</h3>
-                            <p className="text-sm text-osu-gray">{benefit.description}</p>
+                            <h3 className="font-semibold mb-1 text-osu-scarlet text-sm">{benefit.title}</h3>
+                            <p className="text-xs text-osu-gray">{benefit.description}</p>
                           </div>
                         </div>
                       );
@@ -350,23 +350,23 @@ const Partners = () => {
               </Card>
 
               <Card className="border-osu-gray/20 shadow-lg">
-                <CardHeader className="bg-gradient-to-r from-osu-scarlet/5 to-osu-gray/5 text-center">
-                  <CardTitle className="text-osu-scarlet">Become a Partner</CardTitle>
-                  <CardDescription className="text-osu-gray">
+                <CardHeader className="bg-gradient-to-r from-osu-scarlet/5 to-osu-gray/5 text-center pb-3">
+                  <CardTitle className="text-osu-scarlet text-lg">Become a Partner</CardTitle>
+                  <CardDescription className="text-osu-gray text-sm">
                     Join our network of organizations committed to supporting justice-impacted individuals
                   </CardDescription>
                 </CardHeader>
-                <CardContent className="space-y-4 pt-6">
-                  <div className="bg-osu-gray/10 p-6 rounded-lg border border-osu-gray/20 max-w-2xl mx-auto">
-                    <h4 className="font-semibold mb-4 text-osu-scarlet text-center">Partnership Requirements</h4>
-                    <ul className="text-sm text-osu-gray space-y-2 text-center list-none">
+                <CardContent className="space-y-3 pt-4">
+                  <div className="bg-osu-gray/10 p-4 rounded-lg border border-osu-gray/20 max-w-2xl mx-auto">
+                    <h4 className="font-semibold mb-3 text-osu-scarlet text-center text-sm">Partnership Requirements</h4>
+                    <ul className="text-xs text-osu-gray space-y-1 text-center list-none">
                       <li>• Commitment to serving justice-impacted individuals</li>
                       <li>• Demonstrated track record of community service</li>
                       <li>• Agreement to partnership guidelines and standards</li>
                       <li>• Regular participation in network activities</li>
                     </ul>
                   </div>
-                  <div className="flex flex-col sm:flex-row gap-4 justify-center max-w-md mx-auto">
+                  <div className="flex flex-col sm:flex-row gap-3 justify-center max-w-md mx-auto">
                     <Button asChild className="bg-gradient-to-r from-osu-scarlet to-osu-gray hover:from-osu-scarlet/90 hover:to-osu-gray/90 text-white">
                       <NavLink to="/partners/request-partnership">
                         Request Partnership
