@@ -31,13 +31,22 @@ serve(async (req) => {
 
     // Validate messages
     if (!messages || !Array.isArray(messages)) {
-      return new Response(
-        JSON.stringify({ error: 'Messages array is required' }),
-        { 
-          status: 400, 
-          headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
+      const errorStream = new ReadableStream({
+        start(controller) {
+          controller.enqueue(new TextEncoder().encode(`data: {"choices":[{"delta":{"content":"Invalid request format. Please try again. Need more help? Reply here any time."}}]}\n\n`));
+          controller.enqueue(new TextEncoder().encode('data: [DONE]\n\n'));
+          controller.close();
         }
-      );
+      });
+      
+      return new Response(errorStream, {
+        headers: {
+          ...corsHeaders,
+          'Content-Type': 'text/event-stream',
+          'Cache-Control': 'no-cache',
+          'Connection': 'keep-alive',
+        },
+      });
     }
 
     // Prepare messages for OpenAI with Coach K system prompt
@@ -69,7 +78,31 @@ serve(async (req) => {
     if (!response.ok) {
       const error = await response.text();
       console.error('OpenAI API error:', error);
-      throw new Error(`OpenAI API error: ${response.status}`);
+      
+      let errorMessage = 'Service temporarily unavailable';
+      if (response.status === 429) {
+        errorMessage = 'Service busy - please try again in a moment';
+      } else if (response.status === 401) {
+        errorMessage = 'Authentication error - please try again';
+      }
+      
+      // Return streaming error response
+      const errorStream = new ReadableStream({
+        start(controller) {
+          controller.enqueue(new TextEncoder().encode(`data: {"choices":[{"delta":{"content":"${errorMessage}. Need more help? Reply here any time."}}]}\n\n`));
+          controller.enqueue(new TextEncoder().encode('data: [DONE]\n\n'));
+          controller.close();
+        }
+      });
+      
+      return new Response(errorStream, {
+        headers: {
+          ...corsHeaders,
+          'Content-Type': 'text/event-stream',
+          'Cache-Control': 'no-cache',
+          'Connection': 'keep-alive',
+        },
+      });
     }
 
     // Return streaming response
@@ -84,14 +117,23 @@ serve(async (req) => {
 
   } catch (error) {
     console.error('Error in coach-k function:', error);
-    return new Response(
-      JSON.stringify({ 
-        error: error instanceof Error ? error.message : 'Internal server error' 
-      }),
-      { 
-        status: 500, 
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
+    
+    // Return streaming error response for consistency
+    const errorStream = new ReadableStream({
+      start(controller) {
+        controller.enqueue(new TextEncoder().encode(`data: {"choices":[{"delta":{"content":"Sorry, I can't reach the server right now. Please try again in a moment. Need more help? Reply here any time."}}]}\n\n`));
+        controller.enqueue(new TextEncoder().encode('data: [DONE]\n\n'));
+        controller.close();
       }
-    );
+    });
+    
+    return new Response(errorStream, {
+      headers: {
+        ...corsHeaders,
+        'Content-Type': 'text/event-stream',
+        'Cache-Control': 'no-cache',
+        'Connection': 'keep-alive',
+      },
+    });
   }
 });
