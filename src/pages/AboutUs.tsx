@@ -4,7 +4,7 @@ import { Heart, Users, Shield, CheckCircle, Target, Brain, MessageSquare, BookOp
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import ContactForm from "@/components/forms/ContactForm";
-import ChatbotPopup from "@/components/ui/ChatbotPopup";
+import BookingCalendar from "@/components/ui/BookingCalendar";
 
 // Import images
 import coachKayProfessional from "@/assets/coach-kay-professional.jpg";
@@ -292,7 +292,7 @@ export default function AboutUs() {
                 </div>
                 
                 <div className="flex flex-col sm:flex-row gap-4 mt-8">
-                  <ChatbotPopup />
+                  <BookingCalendar />
                   <Button size="lg" variant="outline" onClick={() => setShowConsultation(!showConsultation)}>
                     <Calendar className="h-5 w-5 mr-2" />
                     {showConsultation ? "Hide Consultation" : "Book Consultation"}
