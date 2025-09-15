@@ -5,9 +5,10 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Badge } from '@/components/ui/badge';
-import { Loader2, Send, Bot, User, Phone, Globe, MapPin, Star, Shield } from 'lucide-react';
+import { Loader2, Send, Bot, User, Phone, Globe, MapPin, Star, Shield, Mail } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
+import { parseTextForLinks, formatAIResponse } from '@/lib/text-parser';
 
 interface Message {
   id: string;
@@ -27,6 +28,7 @@ interface Resource {
   description?: string;
   phone?: string;
   website?: string;
+  email?: string;
   verified: string;
   justice_friendly: boolean;
   rating?: number;
@@ -92,7 +94,7 @@ const AIResourceDiscovery: React.FC<AIResourceDiscoveryProps> = ({
       const aiMessage: Message = {
         id: (Date.now() + 1).toString(),
         type: 'ai',
-        content: data.response || 'I found some resources for you.',
+        content: formatAIResponse(data.response || 'I found some resources for you.'),
         timestamp: new Date(),
         resources: data.resources || []
       };
@@ -178,14 +180,14 @@ const AIResourceDiscovery: React.FC<AIResourceDiscoveryProps> = ({
   };
 
   const ResourceCard = ({ resource }: { resource: Resource }) => (
-    <Card className="mb-3 border-l-4 border-l-osu-scarlet">
-      <CardHeader className="pb-2">
+    <Card className="mb-3 border-l-4 border-l-primary shadow-sm hover:shadow-md transition-shadow">
+      <CardHeader className="pb-3">
         <div className="flex items-start justify-between">
           <div>
-            <CardTitle className="text-sm font-semibold text-foreground">{resource.name}</CardTitle>
-            <p className="text-xs text-muted-foreground">{resource.organization}</p>
+            <CardTitle className="text-base font-semibold text-foreground">{resource.name}</CardTitle>
+            <p className="text-sm text-muted-foreground">{resource.organization}</p>
           </div>
-          <div className="flex gap-1">
+          <div className="flex gap-1 flex-wrap">
             {resource.verified === 'partner' && (
               <Badge variant="default" className="text-xs">
                 <Shield className="h-3 w-3 mr-1" />
@@ -199,31 +201,39 @@ const AIResourceDiscovery: React.FC<AIResourceDiscoveryProps> = ({
         </div>
       </CardHeader>
       <CardContent className="pt-0">
-        <div className="space-y-2">
-          <div className="flex items-center gap-2 text-xs text-muted-foreground">
-            <MapPin className="h-3 w-3" />
+        <div className="space-y-3">
+          <div className="flex items-center gap-2 text-sm text-muted-foreground">
+            <MapPin className="h-4 w-4" />
             <span>{resource.city}, {resource.county} County</span>
             <Badge variant="outline" className="text-xs">{resource.type}</Badge>
           </div>
           
           {resource.description && (
-            <p className="text-xs text-foreground line-clamp-2">{resource.description}</p>
+            <p className="text-sm text-foreground leading-relaxed">{resource.description}</p>
           )}
           
-          <div className="flex gap-2 pt-1">
+          <div className="flex gap-2 pt-2 flex-wrap">
             {resource.phone && (
-              <Button size="sm" variant="outline" className="h-7 px-2 text-xs border-osu-scarlet/30 text-osu-scarlet hover:bg-osu-scarlet hover:text-osu-scarlet-foreground" asChild>
-                <a href={`tel:${resource.phone}`}>
-                  <Phone className="h-3 w-3 mr-1" />
+              <Button size="sm" variant="outline" className="h-8 px-3 text-sm" asChild>
+                <a href={`tel:${resource.phone.replace(/[^\d]/g, '')}`}>
+                  <Phone className="h-3 w-3 mr-2" />
                   Call
                 </a>
               </Button>
             )}
+            {resource.email && (
+              <Button size="sm" variant="outline" className="h-8 px-3 text-sm" asChild>
+                <a href={`mailto:${resource.email}`}>
+                  <Mail className="h-3 w-3 mr-2" />
+                  Email
+                </a>
+              </Button>
+            )}
             {resource.website && (
-              <Button size="sm" variant="outline" className="h-7 px-2 text-xs border-osu-gray/30 text-osu-gray hover:bg-osu-gray hover:text-osu-gray-foreground" asChild>
-                <a href={resource.website} target="_blank" rel="noopener noreferrer">
-                  <Globe className="h-3 w-3 mr-1" />
-                  Visit
+              <Button size="sm" variant="outline" className="h-8 px-3 text-sm" asChild>
+                <a href={resource.website.startsWith('http') ? resource.website : `https://${resource.website}`} target="_blank" rel="noopener noreferrer">
+                  <Globe className="h-3 w-3 mr-2" />
+                  Website
                 </a>
               </Button>
             )}
@@ -232,6 +242,36 @@ const AIResourceDiscovery: React.FC<AIResourceDiscoveryProps> = ({
       </CardContent>
     </Card>
   );
+
+  const ParsedMessage = ({ content }: { content: string }) => {
+    const segments = parseTextForLinks(content);
+    
+    return (
+      <div className="text-sm leading-relaxed">
+        {segments.map((segment, index) => {
+          if (segment.type === 'text') {
+            return (
+              <span key={index} className="whitespace-pre-wrap">
+                {segment.content}
+              </span>
+            );
+          }
+          
+          return (
+            <a
+              key={index}
+              href={segment.href}
+              target={segment.type === 'website' ? '_blank' : undefined}
+              rel={segment.type === 'website' ? 'noopener noreferrer' : undefined}
+              className="text-primary hover:text-primary/80 underline underline-offset-2 font-medium transition-colors"
+            >
+              {segment.content}
+            </a>
+          );
+        })}
+      </div>
+    );
+  };
 
   const suggestedQueries = [
     "Find housing assistance in my area",
@@ -244,7 +284,7 @@ const AIResourceDiscovery: React.FC<AIResourceDiscoveryProps> = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-4xl h-[80vh] p-0" aria-describedby="ai-discovery-description">
+      <DialogContent className="max-w-4xl max-h-[85vh] h-[85vh] p-0 flex flex-col" aria-describedby="ai-discovery-description">
         <DialogHeader className="p-6 pb-0">
           <DialogTitle className="flex items-center gap-2">
             <Bot className="h-5 w-5 text-osu-scarlet" />
@@ -260,8 +300,8 @@ const AIResourceDiscovery: React.FC<AIResourceDiscoveryProps> = ({
           </DialogDescription>
         </DialogHeader>
         
-        <div className="flex flex-col h-full">
-          <ScrollArea className="flex-1 p-6 pt-2 bg-gradient-osu-subtle">
+        <div className="flex flex-col flex-1 min-h-0">
+          <ScrollArea className="flex-1 p-6 pt-2 bg-gradient-subtle">
             {messages.length === 0 ? (
               <div className="space-y-4">
                 <div className="text-center py-8">
@@ -281,7 +321,7 @@ const AIResourceDiscovery: React.FC<AIResourceDiscoveryProps> = ({
                         key={index}
                         variant="outline"
                         size="sm"
-                        className="text-left justify-start h-auto p-3 text-sm border-osu-scarlet/20 hover:bg-osu-scarlet/10 hover:text-osu-scarlet hover:border-osu-scarlet/40"
+                        className="text-left justify-start h-auto p-3 text-sm hover:bg-primary/10"
                         onClick={() => handleSend(query)}
                       >
                         {query}
@@ -300,28 +340,37 @@ const AIResourceDiscovery: React.FC<AIResourceDiscoveryProps> = ({
                       </div>
                     )}
                     
-                    <div className={`max-w-[70%] space-y-2 ${message.type === 'user' ? 'order-first' : ''}`}>
-                      <div className={`p-3 rounded-lg ${
+                  <div className={`max-w-[75%] space-y-3 ${message.type === 'user' ? 'order-first' : ''}`}>
+                      <div className={`p-4 rounded-lg ${
                         message.type === 'user' 
-                          ? 'bg-osu-scarlet text-osu-scarlet-foreground ml-auto' 
-                          : 'bg-osu-gray-light/20 border border-osu-scarlet/10'
+                          ? 'bg-primary text-primary-foreground ml-auto' 
+                          : 'bg-muted/50 border border-border'
                       }`}>
-                        <p className="text-sm whitespace-pre-wrap">{message.content}</p>
+                        {message.type === 'ai' ? (
+                          <ParsedMessage content={message.content} />
+                        ) : (
+                          <p className="text-sm whitespace-pre-wrap">{message.content}</p>
+                        )}
                       </div>
                       
                       {message.resources && message.resources.length > 0 && (
-                        <div className="space-y-2">
-                          <h4 className="text-sm font-semibold text-foreground">Relevant Resources:</h4>
-                          {message.resources.map((resource) => (
-                            <ResourceCard key={resource.id} resource={resource} />
-                          ))}
+                        <div className="space-y-3">
+                          <h4 className="text-base font-semibold text-foreground flex items-center gap-2">
+                            <MapPin className="h-4 w-4" />
+                            Recommended Resources ({message.resources.length})
+                          </h4>
+                          <div className="space-y-3">
+                            {message.resources.map((resource) => (
+                              <ResourceCard key={resource.id} resource={resource} />
+                            ))}
+                          </div>
                         </div>
                       )}
                     </div>
                     
                     {message.type === 'user' && (
-                      <div className="flex-shrink-0 w-8 h-8 bg-osu-gray/20 rounded-full flex items-center justify-center">
-                        <User className="h-4 w-4 text-osu-gray" />
+                      <div className="flex-shrink-0 w-8 h-8 bg-primary/20 rounded-full flex items-center justify-center">
+                        <User className="h-4 w-4 text-primary" />
                       </div>
                     )}
                   </div>
@@ -329,17 +378,17 @@ const AIResourceDiscovery: React.FC<AIResourceDiscoveryProps> = ({
                 
                 {isTyping && (
                   <div className="flex gap-3 justify-start">
-                    <div className="flex-shrink-0 w-8 h-8 bg-osu-scarlet rounded-full flex items-center justify-center">
-                      <Bot className="h-4 w-4 text-osu-scarlet-foreground" />
+                    <div className="flex-shrink-0 w-8 h-8 bg-primary rounded-full flex items-center justify-center">
+                      <Bot className="h-4 w-4 text-primary-foreground" />
                     </div>
-                    <div className="bg-osu-gray-light/30 p-3 rounded-lg">
-                      <div className="flex items-center gap-1">
+                    <div className="bg-muted/50 border border-border p-4 rounded-lg">
+                      <div className="flex items-center gap-2">
                         <div className="flex space-x-1">
-                          <div className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce"></div>
-                          <div className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
-                          <div className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+                          <div className="w-2 h-2 bg-primary rounded-full animate-bounce"></div>
+                          <div className="w-2 h-2 bg-primary rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
+                          <div className="w-2 h-2 bg-primary rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
                         </div>
-                        <span className="text-xs text-muted-foreground ml-2">AI is thinking...</span>
+                        <span className="text-sm text-muted-foreground">Searching for resources...</span>
                       </div>
                     </div>
                   </div>
@@ -349,7 +398,7 @@ const AIResourceDiscovery: React.FC<AIResourceDiscoveryProps> = ({
             <div ref={messagesEndRef} />
           </ScrollArea>
           
-          <div className="p-4 border-t border-osu-scarlet/20 bg-gradient-osu-subtle">
+          <div className="p-4 border-t border-border bg-background/95 backdrop-blur-sm flex-shrink-0">
             <div className="flex gap-2">
               <Input
                 value={inputValue}
@@ -363,7 +412,7 @@ const AIResourceDiscovery: React.FC<AIResourceDiscoveryProps> = ({
                 onClick={() => handleSend()} 
                 disabled={isLoading || !inputValue.trim()}
                 size="sm"
-                className="bg-osu-scarlet hover:bg-osu-scarlet-dark text-osu-scarlet-foreground"
+                className="bg-primary hover:bg-primary/90 text-primary-foreground px-4"
               >
                 {isLoading ? (
                   <Loader2 className="h-4 w-4 animate-spin" />
