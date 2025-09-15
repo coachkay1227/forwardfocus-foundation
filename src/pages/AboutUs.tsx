@@ -52,7 +52,7 @@ export default function AboutUs() {
   return <main id="main">
       {/* Hero Section */}
       <header className="relative bg-gradient-osu-primary text-white overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-osu-scarlet/95 to-osu-scarlet-dark/80"></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-muted/90 via-osu-scarlet/80 to-osu-scarlet-dark/70"></div>
         <div className="relative container py-24 md:py-32 flex items-center justify-center text-center">
           <div className="max-w-5xl mx-auto text-center">
             <h1 className="font-heading text-5xl md:text-7xl font-bold mb-8 leading-tight">
