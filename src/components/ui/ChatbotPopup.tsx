@@ -101,11 +101,21 @@ const ChatbotPopup = () => {
       }
     } catch (error) {
       console.error('Coach K error:', error);
+      let errorText = "Sorry, I can't reach the server right now. Please try again in a moment.";
+      
+      if (error instanceof Error && error.message) {
+        if (error.message.includes('quota exceeded')) {
+          errorText = "I'm temporarily unavailable due to high usage. Please try again in a few minutes.";
+        } else if (error.message.includes('rate limit')) {
+          errorText = "Too many requests right now. Please wait a moment and try again.";
+        } else {
+          errorText = `Error: ${error.message}`;
+        }
+      }
+      
       const errorMessage: Message = {
         id: (Date.now() + 2).toString(),
-        text: error instanceof Error && error.message ? 
-          `Error: ${error.message}` : 
-          "Sorry, I can't reach the server right now. Please try again in a moment.",
+        text: errorText,
         isBot: true,
         timestamp: new Date(),
       };

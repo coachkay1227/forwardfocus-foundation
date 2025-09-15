@@ -69,7 +69,17 @@ serve(async (req) => {
     if (!response.ok) {
       const error = await response.text();
       console.error('OpenAI API error:', error);
-      throw new Error(`OpenAI API error: ${response.status}`);
+      
+      // Handle specific OpenAI API errors
+      if (response.status === 429) {
+        const errorData = JSON.parse(error);
+        if (errorData.error?.code === 'insufficient_quota') {
+          throw new Error('OpenAI API quota exceeded. Please check your billing plan.');
+        }
+        throw new Error('OpenAI API rate limit exceeded. Please try again later.');
+      }
+      
+      throw new Error(`OpenAI API error: ${response.status} - ${error}`);
     }
 
     // Return streaming response
