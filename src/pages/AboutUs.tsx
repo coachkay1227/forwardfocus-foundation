@@ -74,7 +74,7 @@ export default function AboutUs() {
               </span>
             </div>
             
-            <div className="flex flex-col sm:flex-row gap-4 max-w-lg justify-center">
+            <div className="flex flex-col sm:flex-row gap-4 max-w-lg justify-center mx-auto">
               <Button asChild size="lg" variant="secondary" className="flex-1 bg-white text-osu-scarlet hover:bg-white/90">
                 <Link to="/victim-services">
                   <Shield className="h-5 w-5 mr-2" />
