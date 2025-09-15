@@ -30,51 +30,57 @@ const testimonials = [
 
 export const TestimonialsSection = () => {
   return (
-    <section className="py-12 md:py-16 bg-gradient-to-b from-muted/30 to-muted/10">
-      <div className="container px-4">
-        <div className="text-center mb-10">
-          <h2 className="font-heading text-3xl md:text-4xl font-bold mb-4 text-foreground">
+    <section className="py-10 md:py-14 bg-gradient-to-b from-osu-gray/5 via-muted/20 to-osu-gray/8 relative overflow-hidden">
+      {/* Subtle background pattern */}
+      <div className="absolute inset-0 bg-gradient-to-br from-osu-scarlet/2 via-transparent to-osu-gray/3" aria-hidden />
+      
+      <div className="container px-4 relative">
+        <div className="text-center mb-8">
+          <h2 className="font-heading text-2xl md:text-3xl font-bold mb-3 text-foreground">
             Real Stories, Real Progress
           </h2>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+          <p className="text-base text-muted-foreground max-w-xl mx-auto leading-relaxed">
             Hear from community members about their transformative experiences
           </p>
         </div>
 
-        <div className="grid gap-6 md:grid-cols-3 max-w-6xl mx-auto">
+        <div className="grid gap-5 md:grid-cols-3 max-w-5xl mx-auto">
           {testimonials.map((testimonial, index) => (
             <Card 
               key={index} 
-              className="bg-card/90 backdrop-blur-sm shadow-lg hover:shadow-xl transition-all duration-300 border-0 hover:scale-[1.02]"
+              className="bg-white/95 backdrop-blur-sm shadow-xl hover:shadow-2xl transition-all duration-300 border border-osu-gray/10 hover:scale-[1.02] hover:border-osu-scarlet/20 group relative overflow-hidden"
             >
-              <CardContent className="pt-6 pb-6">
-                <div className="flex items-center gap-3 mb-4">
+              {/* Subtle OSU accent */}
+              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-osu-scarlet via-osu-scarlet-dark to-osu-gray" aria-hidden />
+              
+              <CardContent className="pt-5 pb-5">
+                <div className="flex items-center gap-3 mb-3">
                   <img 
                     src={testimonial.avatar} 
                     alt={`${testimonial.name} testimonial photo`} 
-                    className="w-12 h-12 rounded-full object-cover border-2 border-osu-scarlet/20" 
+                    className="w-11 h-11 rounded-full object-cover border-2 border-osu-scarlet/30 shadow-md" 
                   />
                   <div>
-                    <div className="font-semibold text-foreground">{testimonial.name}</div>
-                    <div className="text-sm text-muted-foreground">{testimonial.location}</div>
+                    <div className="font-semibold text-foreground text-sm">{testimonial.name}</div>
+                    <div className="text-xs text-muted-foreground">{testimonial.location}</div>
                   </div>
                 </div>
                 
                 <div className="flex mb-3">
                   {Array.from({ length: testimonial.stars }).map((_, starIndex) => (
-                    <span key={starIndex} className="text-yellow-400 text-lg">★</span>
+                    <span key={starIndex} className="text-osu-scarlet text-base">★</span>
                   ))}
                 </div>
                 
-                <div className="text-osu-scarlet/20 text-4xl mb-3 leading-none" aria-hidden>
+                <div className="text-osu-gray/30 text-3xl mb-2 leading-none" aria-hidden>
                   &quot;
                 </div>
-                <p className="text-base text-foreground leading-relaxed mb-4">
+                <p className="text-sm text-foreground leading-relaxed mb-3 group-hover:text-foreground/90 transition-colors">
                   {testimonial.quote}
                 </p>
                 
-                <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                  <Heart className="h-4 w-4 text-osu-scarlet" aria-hidden />
+                <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                  <Heart className="h-3 w-3 text-osu-scarlet/80" aria-hidden />
                   <span>Verified Community Member</span>
                 </div>
               </CardContent>
