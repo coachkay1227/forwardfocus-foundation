@@ -67,7 +67,7 @@ const PartnerSignIn = () => {
       <div className="relative z-10 min-h-[calc(100vh-80px)] grid lg:grid-cols-2">
         {/* Left Side - Hero Content */}
         <div className="flex flex-col justify-center px-8 lg:px-16 py-16 bg-gradient-to-br from-primary/5 to-accent/5">
-          <div className="max-w-lg mx-[6px]">
+          <div className="max-w-lg ml-auto mr-8">
             {/* Logo/Icon */}
             <div className="w-16 h-16 bg-gradient-to-br from-primary to-accent rounded-2xl flex items-center justify-center shadow-lg mb-8">
               <Shield className="h-8 w-8 text-white" />
