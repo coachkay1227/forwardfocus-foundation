@@ -24,7 +24,7 @@ const AddResource = () => {
         <div className="container py-16">
           <div className="max-w-4xl mx-auto text-center">
             <h1 className="font-heading text-4xl md:text-5xl font-bold mb-4 text-white">Add a Resource</h1>
-            <p className="text-xl text-osu-scarlet-light">Help expand our comprehensive community resource directory</p>
+            <p className="text-xl text-white">Help expand our comprehensive community resource directory</p>
           </div>
         </div>
       </div>
