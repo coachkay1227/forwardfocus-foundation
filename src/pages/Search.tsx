@@ -132,7 +132,7 @@ const Search = () => {
         <div className="container py-16">
           <div className="max-w-4xl mx-auto text-center">
             <h1 className="font-heading text-5xl md:text-6xl font-bold mb-6 text-white">Find Resources</h1>
-            <p className="text-xl text-osu-scarlet-light leading-relaxed">
+            <p className="text-xl text-white leading-relaxed">
               Search our comprehensive directory of resources, organizations, and support services 
               for justice-impacted individuals and families.
             </p>
