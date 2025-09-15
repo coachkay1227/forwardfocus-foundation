@@ -122,7 +122,7 @@ const Support = () => {
                 <div className="space-y-3">
                   <div className="flex items-center gap-3 text-sm">
                     <Mail className="h-4 w-4 text-muted-foreground" />
-                    <span>support@forwardfocuselevation.org</span>
+                    <span>support@ffeservices.net</span>
                   </div>
                   <div className="flex items-center gap-3 text-sm">
                     <Phone className="h-4 w-4 text-muted-foreground" />
