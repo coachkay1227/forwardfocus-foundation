@@ -36,9 +36,9 @@ const Support = () => {
       <div className="container py-16 md:py-20">
         <div className="max-w-6xl mx-auto space-y-24">
         {/* Ways to Support Grid */}
-        <section className="bg-secondary/5 py-16 -mx-4 px-4 rounded-2xl">
+        <section className="bg-secondary/5 py-16 -mx-4 px-4 rounded-2xl border-2 border-osu-scarlet/20">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <Card className="bg-background rounded-xl p-10 border shadow-lg hover:shadow-xl transition-all">
+            <Card className="bg-background rounded-xl p-10 border-2 border-osu-scarlet/30 shadow-lg hover:shadow-xl hover:shadow-osu-scarlet/20 transition-all duration-300 hover:scale-105 hover:-translate-y-1 active:scale-95 cursor-pointer">
               <CardHeader className="pb-6">
                 <CardTitle className="text-2xl font-semibold text-foreground mb-4">Donate</CardTitle>
                 <CardDescription className="text-foreground/70 text-lg leading-relaxed">Every gift directly funds programs and resources.</CardDescription>
@@ -50,7 +50,7 @@ const Support = () => {
               </CardContent>
             </Card>
 
-            <Card className="bg-background rounded-xl p-10 border shadow-lg hover:shadow-xl transition-all">
+            <Card className="bg-background rounded-xl p-10 border-2 border-osu-scarlet/30 shadow-lg hover:shadow-xl hover:shadow-osu-scarlet/20 transition-all duration-300 hover:scale-105 hover:-translate-y-1 active:scale-95 cursor-pointer">
               <CardHeader className="pb-6">
                 <CardTitle className="text-2xl font-semibold text-foreground mb-4">Volunteer</CardTitle>
                 <CardDescription className="text-foreground/70 text-lg leading-relaxed">Flexible ways to mentor, facilitate, or support.</CardDescription>
@@ -62,7 +62,7 @@ const Support = () => {
               </CardContent>
             </Card>
 
-            <Card className="bg-background rounded-xl p-10 border shadow-lg hover:shadow-xl transition-all">
+            <Card className="bg-background rounded-xl p-10 border-2 border-osu-scarlet/30 shadow-lg hover:shadow-xl hover:shadow-osu-scarlet/20 transition-all duration-300 hover:scale-105 hover:-translate-y-1 active:scale-95 cursor-pointer">
               <CardHeader className="pb-6">
                 <CardTitle className="text-2xl font-semibold text-foreground mb-4">Share Skills</CardTitle>
                 <CardDescription className="text-foreground/70 text-lg leading-relaxed">Offer expertise through training, workshops, or mentorship.</CardDescription>
@@ -74,7 +74,7 @@ const Support = () => {
               </CardContent>
             </Card>
 
-            <Card className="bg-background rounded-xl p-10 border shadow-lg hover:shadow-xl transition-all">
+            <Card className="bg-background rounded-xl p-10 border-2 border-osu-scarlet/30 shadow-lg hover:shadow-xl hover:shadow-osu-scarlet/20 transition-all duration-300 hover:scale-105 hover:-translate-y-1 active:scale-95 cursor-pointer">
               <CardHeader className="pb-6">
                 <CardTitle className="text-2xl font-semibold text-foreground mb-4">Partner With Us</CardTitle>
                 <CardDescription className="text-foreground/70 text-lg leading-relaxed">Organizations can co-create programs or provide funding.</CardDescription>
