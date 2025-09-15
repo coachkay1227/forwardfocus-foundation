@@ -91,6 +91,9 @@ const Header = ({
                         <NavLink to="/" onClick={() => setOpen(false)}>Home</NavLink>
                       </Button>
                       <Button variant="ghost" size="sm" asChild className="justify-start w-full">
+                        <NavLink to="/get-help-now" onClick={() => setOpen(false)}>Get Help Now</NavLink>
+                      </Button>
+                      <Button variant="ghost" size="sm" asChild className="justify-start w-full">
                         <NavLink to="/about" onClick={() => setOpen(false)}>About</NavLink>
                       </Button>
                       <Button variant="ghost" size="sm" asChild className="justify-start w-full">
@@ -146,6 +149,7 @@ const Header = ({
             {/* Main Navigation - Desktop */}
             <nav className="hidden md:flex main-nav space-x-8">
               <NavLink to="/" className={linkCls}>Home</NavLink>
+              <NavLink to="/get-help-now" className={linkCls}>Get Help Now</NavLink>
               <NavLink to="/about" className={linkCls}>About</NavLink>
               <NavLink to="/learn" className={linkCls}>Join Learning Community</NavLink>
               <NavLink to="/victim-services" className={linkCls}>
