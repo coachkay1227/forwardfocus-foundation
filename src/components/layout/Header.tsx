@@ -103,9 +103,6 @@ const Header = ({
                           Healing Hub
                         </NavLink>
                       <Button variant="ghost" size="sm" asChild className="justify-start w-full">
-                        <NavLink to="/partners/submit-referral" onClick={() => setOpen(false)}>Submit Referral</NavLink>
-                      </Button>
-                      <Button variant="ghost" size="sm" asChild className="justify-start w-full">
                         <NavLink to="/partners" onClick={() => setOpen(false)}>Partner Portal</NavLink>
                       </Button>
                     </nav>
@@ -155,7 +152,6 @@ const Header = ({
               <NavLink to="/victim-services" className={linkCls}>
                 Healing Hub
               </NavLink>
-              <NavLink to="/partners/submit-referral" className={linkCls}>Submit a referral</NavLink>
               <NavLink to="/partners" className={linkCls}>Partner Portal</NavLink>
             </nav>
 
