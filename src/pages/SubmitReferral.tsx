@@ -141,36 +141,41 @@ const SubmitReferral = () => {
           <div className="bg-card rounded-xl shadow-lg border border-osu-scarlet/10 p-8 text-left">
             <form onSubmit={onSubmit} className="grid gap-6">
               <div>
-                <label className="block text-lg font-semibold mb-2">Individual's Name</label>
+                <label className="block text-lg font-semibold mb-2 text-osu-scarlet">Individual's Name</label>
                 <Input 
                   required 
                   placeholder="Full name" 
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="h-12 text-lg"
+                  className="h-12 text-lg border-osu-gray/30 focus:border-osu-scarlet focus:ring-osu-scarlet/20"
                 />
               </div>
               <div>
-                <label className="block text-lg font-semibold mb-2">Contact Email or Phone</label>
+                <label className="block text-lg font-semibold mb-2 text-osu-scarlet">Contact Email or Phone</label>
                 <Input 
                   required 
                   placeholder="email@domain.com or (555) 555-5555" 
                   value={contactInfo}
                   onChange={(e) => setContactInfo(e.target.value)}
-                  className="h-12 text-lg"
+                  className="h-12 text-lg border-osu-gray/30 focus:border-osu-scarlet focus:ring-osu-scarlet/20"
                 />
               </div>
               <div>
-                <label className="block text-lg font-semibold mb-2">Referral Notes</label>
+                <label className="block text-lg font-semibold mb-2 text-osu-scarlet">Referral Notes</label>
                 <Textarea 
                   required 
                   placeholder="Briefly describe the situation and needs" 
                   value={notes}
                   onChange={(e) => setNotes(e.target.value)}
-                  className="min-h-32 text-lg"
+                  className="min-h-32 text-lg border-osu-gray/30 focus:border-osu-scarlet focus:ring-osu-scarlet/20"
                 />
               </div>
-              <Button type="submit" disabled={loading} variant="premium" size="lg" className="h-14 text-lg">
+              <Button 
+                type="submit" 
+                disabled={loading} 
+                size="lg" 
+                className="h-14 text-lg bg-gradient-to-r from-osu-scarlet to-osu-gray hover:from-osu-scarlet/90 hover:to-osu-gray/90 text-white shadow-lg"
+              >
                 {loading ? "Submitting..." : "Submit Referral"}
               </Button>
             </form>
