@@ -215,47 +215,7 @@ const Index = () => {
 
       {/* Expanding Nationwide */}
       <section className="py-12 md:py-16">
-        <div className="max-w-screen-xl mx-auto px-6">
-          <h2 className="font-heading text-3xl md:text-4xl font-semibold text-center mb-12">
-            Expanding Nationwide
-          </h2>
-          
-          {/* Status pill */}
-          <div className="flex justify-center mb-12">
-            <div className="inline-flex items-center gap-2 bg-gradient-osu-accent px-4 py-2 rounded-full text-white shadow-lg">
-              <span>📍</span>
-              <span className="font-medium">Currently serving: Ohio</span>
-            </div>
-          </div>
-
-          {/* All 50 states in 3 columns */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-2 mb-12">
-            {allStates.sort().map(state => {
-            const stateData = STATES.find(s => s.name === state);
-            const isActive = stateData?.active || false;
-            return <div key={state} className="flex items-center justify-between py-1 px-2 rounded-md hover:bg-muted/30 transition-colors mx-[100px]">
-                  <span className="text-foreground font-medium">{state}</span>
-                  <Badge variant={isActive ? "default" : "secondary"} className={`${isActive ? "bg-osu-scarlet text-white border-osu-scarlet" : "bg-osu-gray-light text-osu-gray-dark"} ml-auto`}>
-                    {isActive ? "Available" : "Coming Soon"}
-                  </Badge>
-                </div>;
-          })}
-          </div>
-
-          {/* Centered notification form */}
-          <div className="max-w-md mx-auto">
-            <Card className="bg-white shadow-lg border">
-              <CardContent className="p-6">
-                <form onSubmit={onSignup} className="space-y-4" aria-label="Notify me form">
-                  <Input type="email" required value={email} onChange={e => setEmail(e.target.value)} placeholder="Enter your email to get notified when we launch in your state" className="h-12 text-base bg-white border-2 focus:border-primary" aria-label="Email address" />
-                  <Button type="submit" size="lg" className="w-full h-12 text-base font-bold bg-primary hover:bg-primary/90 text-primary-foreground shadow-md">
-                    Notify Me When Available
-                  </Button>
-                </form>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
+        
       </section>
 
       {/* Choose Your Path */}
