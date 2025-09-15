@@ -60,46 +60,65 @@ const ReentryNavigatorAI: React.FC<ReentryNavigatorAIProps> = ({ isOpen, onClose
     }
   }, [initialQuery, isOpen]);
 
-  const handleSend = async () => {
-    if (!input.trim() || isLoading) return;
-
-    const userMessage: Message = {
-      id: Date.now().toString(),
-      type: 'user',
-      content: input,
-      timestamp: new Date(),
-    };
-
-    setMessages(prev => [...prev, userMessage]);
-    setInput('');
-    setIsLoading(true);
-
+  const sendMessage = async (messages: {role: string, content: string}[]) => {
     try {
-      // Update conversation context
-      const newContext = [...conversationContext, { role: 'user', content: input }];
-      
-      const { data, error } = await supabase.functions.invoke('reentry-navigator-ai', {
-        body: {
-          query: input,
-          previousContext: newContext,
-          reentryStage: 'recently_released'
-        }
+      const response = await fetch(`https://gzukhsqgkwljfvwkfuno.supabase.co/functions/v1/chat`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd6dWtoc3Fna3dsamZ2d2tmdW5vIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU3MjQyOTMsImV4cCI6MjA3MTMwMDI5M30.Skon84aKH5K5TjW9pVnCI2A-6Z-9KrTYiNknpiqeCpk`
+        },
+        body: JSON.stringify({
+          messages,
+          topic: "reentry-navigator"
+        })
       });
 
-      if (error) throw error;
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
 
-      const aiMessage: Message = {
-        id: (Date.now() + 1).toString(),
-        type: 'ai',
-        content: data.response,
-        timestamp: new Date(),
-        resources: data.resources,
-        reentryStage: data.reentryStage,
-      };
+      const reader = response.body?.getReader();
+      if (!reader) {
+        throw new Error('No response body');
+      }
 
-      setMessages(prev => [...prev, aiMessage]);
-      setConversationContext([...newContext, { role: 'assistant', content: data.response }]);
+      const decoder = new TextDecoder();
+      let buffer = '';
 
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+
+        buffer += decoder.decode(value, { stream: true });
+        const lines = buffer.split('\n');
+        buffer = lines.pop() || '';
+
+        for (const line of lines) {
+          if (line.startsWith('data: ')) {
+            const data = line.slice(6);
+            if (data === '[DONE]') continue;
+            
+            try {
+              const parsed = JSON.parse(data);
+              const content = parsed.choices?.[0]?.delta?.content;
+              if (content) {
+                setMessages(prev => {
+                  const newMessages = [...prev];
+                  const lastMessage = newMessages[newMessages.length - 1];
+                  if (lastMessage.type === 'ai') {
+                    lastMessage.content += content;
+                  }
+                  return newMessages;
+                });
+                scrollToBottom();
+              }
+            } catch (e) {
+              // Skip invalid JSON
+            }
+          }
+        }
+      }
     } catch (error) {
       console.error('Reentry Navigator AI error:', error);
       // Fallback: client-side reentry resource lookup so users still get help
@@ -130,9 +149,39 @@ const ReentryNavigatorAI: React.FC<ReentryNavigatorAIProps> = ({ isOpen, onClose
         };
         setMessages(prev => [...prev, errorMessage]);
       }
-    } finally {
-      setIsLoading(false);
     }
+  };
+
+  const handleSend = async () => {
+    if (!input.trim() || isLoading) return;
+
+    const userMessage: Message = {
+      id: Date.now().toString(),
+      type: 'user',
+      content: input,
+      timestamp: new Date(),
+    };
+
+    setMessages(prev => [...prev, userMessage]);
+    const userInput = input;
+    setInput('');
+    setIsLoading(true);
+
+    // Add empty AI message for streaming
+    const aiMessage: Message = {
+      id: (Date.now() + 1).toString(),
+      type: 'ai',
+      content: '...',
+      timestamp: new Date(),
+    };
+    setMessages(prev => [...prev, aiMessage]);
+
+    // Update conversation context and send message
+    const newContext = [...conversationContext, { role: 'user', content: userInput }];
+    await sendMessage(newContext);
+    
+    setConversationContext([...newContext, { role: 'assistant', content: '' }]);
+    setIsLoading(false);
   };
 
   const quickActions = [
