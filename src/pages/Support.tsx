@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { Mail, Phone, MapPin, Clock } from "lucide-react";
+import { Mail, Phone, MapPin, Clock, DollarSign, Users, BookOpen, Handshake } from "lucide-react";
 const Support = () => {
   useEffect(() => {
     document.title = "Support Forward Focus Elevation | Make an Impact";
@@ -40,49 +40,117 @@ const Support = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <Card className="bg-background rounded-xl p-10 border-2 border-osu-scarlet/30 shadow-lg hover:shadow-xl hover:shadow-osu-scarlet/20 transition-all duration-300 hover:scale-105 hover:-translate-y-1 active:scale-95 cursor-pointer">
               <CardHeader className="pb-6">
-                <CardTitle className="text-2xl font-semibold text-foreground mb-4">Donate</CardTitle>
-                <CardDescription className="text-foreground/70 text-lg leading-relaxed">Every gift directly funds programs and resources.</CardDescription>
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="p-3 bg-osu-scarlet/10 rounded-full">
+                    <DollarSign className="h-6 w-6 text-osu-scarlet" />
+                  </div>
+                  <CardTitle className="text-2xl font-semibold text-foreground">Donate</CardTitle>
+                </div>
+                <CardDescription className="text-foreground/70 text-lg leading-relaxed">
+                  Every gift directly funds programs and resources that help justice-impacted families rebuild their lives. 
+                  Your donation supports housing assistance, job training, mental health services, and educational opportunities.
+                </CardDescription>
               </CardHeader>
               <CardContent className="pt-0">
-                <Button variant="link" className="p-0 text-primary font-medium text-lg">
-                  Donate Now →
-                </Button>
+                <div className="space-y-3">
+                  <div className="text-sm text-foreground/60">
+                    • $25 provides a week of childcare support
+                    <br />
+                    • $100 funds job training materials
+                    <br />
+                    • $500 helps with housing deposits
+                  </div>
+                  <Button variant="link" className="p-0 text-primary font-medium text-lg">
+                    Donate Now →
+                  </Button>
+                </div>
               </CardContent>
             </Card>
 
             <Card className="bg-background rounded-xl p-10 border-2 border-osu-scarlet/30 shadow-lg hover:shadow-xl hover:shadow-osu-scarlet/20 transition-all duration-300 hover:scale-105 hover:-translate-y-1 active:scale-95 cursor-pointer">
               <CardHeader className="pb-6">
-                <CardTitle className="text-2xl font-semibold text-foreground mb-4">Volunteer</CardTitle>
-                <CardDescription className="text-foreground/70 text-lg leading-relaxed">Flexible ways to mentor, facilitate, or support.</CardDescription>
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="p-3 bg-osu-scarlet/10 rounded-full">
+                    <Users className="h-6 w-6 text-osu-scarlet" />
+                  </div>
+                  <CardTitle className="text-2xl font-semibold text-foreground">Volunteer</CardTitle>
+                </div>
+                <CardDescription className="text-foreground/70 text-lg leading-relaxed">
+                  Flexible volunteer opportunities to mentor individuals, facilitate support groups, assist with events, 
+                  or provide administrative support. Choose from weekly, monthly, or project-based commitments.
+                </CardDescription>
               </CardHeader>
               <CardContent className="pt-0">
-                <Button variant="link" className="p-0 text-primary font-medium text-lg">
-                  Get Involved →
-                </Button>
+                <div className="space-y-3">
+                  <div className="text-sm text-foreground/60">
+                    • Mentorship programs (2-4 hours/week)
+                    <br />
+                    • Event assistance (flexible schedule)
+                    <br />
+                    • Administrative support (remote available)
+                  </div>
+                  <Button variant="link" className="p-0 text-primary font-medium text-lg">
+                    Get Involved →
+                  </Button>
+                </div>
               </CardContent>
             </Card>
 
             <Card className="bg-background rounded-xl p-10 border-2 border-osu-scarlet/30 shadow-lg hover:shadow-xl hover:shadow-osu-scarlet/20 transition-all duration-300 hover:scale-105 hover:-translate-y-1 active:scale-95 cursor-pointer">
               <CardHeader className="pb-6">
-                <CardTitle className="text-2xl font-semibold text-foreground mb-4">Share Skills</CardTitle>
-                <CardDescription className="text-foreground/70 text-lg leading-relaxed">Offer expertise through training, workshops, or mentorship.</CardDescription>
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="p-3 bg-osu-scarlet/10 rounded-full">
+                    <BookOpen className="h-6 w-6 text-osu-scarlet" />
+                  </div>
+                  <CardTitle className="text-2xl font-semibold text-foreground">Share Skills</CardTitle>
+                </div>
+                <CardDescription className="text-foreground/70 text-lg leading-relaxed">
+                  Offer your professional expertise through training workshops, skill-building sessions, career coaching, 
+                  or specialized mentorship in your field of expertise.
+                </CardDescription>
               </CardHeader>
               <CardContent className="pt-0">
-                <Button variant="link" className="p-0 text-primary font-medium text-lg">
-                  Contribute →
-                </Button>
+                <div className="space-y-3">
+                  <div className="text-sm text-foreground/60">
+                    • Professional skills workshops
+                    <br />
+                    • Career coaching and resume help
+                    <br />
+                    • Industry-specific mentorship
+                  </div>
+                  <Button variant="link" className="p-0 text-primary font-medium text-lg">
+                    Contribute →
+                  </Button>
+                </div>
               </CardContent>
             </Card>
 
             <Card className="bg-background rounded-xl p-10 border-2 border-osu-scarlet/30 shadow-lg hover:shadow-xl hover:shadow-osu-scarlet/20 transition-all duration-300 hover:scale-105 hover:-translate-y-1 active:scale-95 cursor-pointer">
               <CardHeader className="pb-6">
-                <CardTitle className="text-2xl font-semibold text-foreground mb-4">Partner With Us</CardTitle>
-                <CardDescription className="text-foreground/70 text-lg leading-relaxed">Organizations can co-create programs or provide funding.</CardDescription>
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="p-3 bg-osu-scarlet/10 rounded-full">
+                    <Handshake className="h-6 w-6 text-osu-scarlet" />
+                  </div>
+                  <CardTitle className="text-2xl font-semibold text-foreground">Partner With Us</CardTitle>
+                </div>
+                <CardDescription className="text-foreground/70 text-lg leading-relaxed">
+                  Organizations can co-create programs, provide funding, offer employment opportunities, 
+                  or collaborate on community initiatives that create lasting change for justice-impacted families.
+                </CardDescription>
               </CardHeader>
               <CardContent className="pt-0">
-                <Button variant="link" className="p-0 text-primary font-medium text-lg">
-                  Partner Today →
-                </Button>
+                <div className="space-y-3">
+                  <div className="text-sm text-foreground/60">
+                    • Corporate sponsorship opportunities
+                    <br />
+                    • Employment partnership programs
+                    <br />
+                    • Community collaboration initiatives
+                  </div>
+                  <Button variant="link" className="p-0 text-primary font-medium text-lg">
+                    Partner Today →
+                  </Button>
+                </div>
               </CardContent>
             </Card>
           </div>
