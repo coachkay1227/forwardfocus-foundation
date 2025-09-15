@@ -39,7 +39,7 @@ export const HeroSection = ({ selectedState, onShowStateModal, onShowAIDiscovery
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-6">
             <Button size="lg" variant="premium" className="h-12 px-6 text-base shadow-xl hover:shadow-2xl transition-all duration-300" asChild>
-              <Link to="/get-help-now">Get Help Now</Link>
+              <Link to="/help">Get Help Now</Link>
             </Button>
 
             <Button 
