@@ -152,6 +152,29 @@ const Support = () => {
 
         <Separator className="mb-12" />
 
+        {/* Final CTA */}
+        <section className="mb-12 text-center">
+          <Card className="bg-primary/5 border-primary/20">
+            <CardContent className="p-8">
+              <h2 className="font-heading text-2xl font-semibold mb-4">
+                Ready to Make a Difference?
+              </h2>
+              <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
+                Join our community of supporters who believe in second chances and the power of 
+                collective action to create lasting change.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <Button size="lg" className="px-8">
+                  Start Supporting Today
+                </Button>
+                <Button size="lg" variant="outline" className="px-8">
+                  Learn More About Our Impact
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        </section>
+
         {/* Contact and FAQ Section */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 max-w-5xl mx-auto items-center justify-items-center">
           {/* Contact Form */}
@@ -206,29 +229,6 @@ const Support = () => {
             </Accordion>
           </section>
         </div>
-
-        {/* Final CTA */}
-        <section className="mt-12 text-center">
-          <Card className="bg-primary/5 border-primary/20">
-            <CardContent className="p-8">
-              <h2 className="font-heading text-2xl font-semibold mb-4">
-                Ready to Make a Difference?
-              </h2>
-              <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
-                Join our community of supporters who believe in second chances and the power of 
-                collective action to create lasting change.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button size="lg" className="px-8">
-                  Start Supporting Today
-                </Button>
-                <Button size="lg" variant="outline" className="px-8">
-                  Learn More About Our Impact
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-        </section>
       </div>
     </main>
   );
