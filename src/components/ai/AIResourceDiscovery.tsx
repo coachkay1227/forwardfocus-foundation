@@ -68,83 +68,39 @@ const AIResourceDiscovery: React.FC<AIResourceDiscoveryProps> = ({
     }
   }, [isOpen, initialQuery]);
 
-  const sendMessage = async (messages: { role: string; content: string }[]) => {
+  const sendMessage = async (query: string) => {
     try {
-      const response = await fetch('/functions/v1/chat', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          messages,
-          topic: 'resource-discovery'
-        })
+      const { data, error } = await supabase.functions.invoke('ai-resource-discovery', {
+        body: {
+          query,
+          location: location,
+          county: county,
+          resourceType: undefined,
+          limit: 10
+        }
       });
 
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+      if (error) {
+        throw new Error(`Function error: ${error.message}`);
       }
 
-      if (!response.body) {
-        throw new Error('No response body');
+      if (!data) {
+        throw new Error('No response data');
       }
 
-      const reader = response.body.getReader();
-      const decoder = new TextDecoder();
-
-      // Create initial AI message
-      const aiMessageId = (Date.now() + 1).toString();
+      // Create AI message with the response
       const aiMessage: Message = {
-        id: aiMessageId,
+        id: (Date.now() + 1).toString(),
         type: 'ai',
-        content: '',
-        timestamp: new Date()
+        content: data.response || 'I found some resources for you.',
+        timestamp: new Date(),
+        resources: data.resources || []
       };
 
       setMessages(prev => [...prev, aiMessage]);
       setIsTyping(false);
-
-      let done = false;
-      while (!done) {
-        const { value, done: readerDone } = await reader.read();
-        done = readerDone;
-
-        if (value) {
-          const chunk = decoder.decode(value, { stream: true });
-          
-          // Parse Server-Sent Events format
-          const lines = chunk.split('\n');
-          for (const line of lines) {
-            if (line.startsWith('data: ')) {
-              const data = line.slice(6);
-              if (data === '[DONE]') {
-                done = true;
-                break;
-              }
-              
-              try {
-                const parsed = JSON.parse(data);
-                const content = parsed.choices?.[0]?.delta?.content || '';
-                
-                if (content) {
-                  setMessages(prev => 
-                    prev.map(msg => 
-                      msg.id === aiMessageId 
-                        ? { ...msg, content: msg.content + content }
-                        : msg
-                    )
-                  );
-                  scrollToBottom();
-                }
-              } catch (parseError) {
-                // Ignore parsing errors for individual chunks
-              }
-            }
-          }
-        }
-      }
     } catch (error) {
-      console.error('Stream error:', error);
+      console.error('AI Resource Discovery error:', error);
       throw error;
     }
   };
@@ -166,16 +122,7 @@ const AIResourceDiscovery: React.FC<AIResourceDiscoveryProps> = ({
     setIsTyping(true);
 
     try {
-      // Prepare messages for the chat API
-      const chatMessages = [
-        ...messages.map(msg => ({
-          role: msg.type === 'user' ? 'user' : 'assistant',
-          content: msg.content
-        })),
-        { role: 'user', content: query }
-      ];
-
-      await sendMessage(chatMessages);
+      await sendMessage(query);
     } catch (error) {
       console.error('Error getting AI response:', error);
       
