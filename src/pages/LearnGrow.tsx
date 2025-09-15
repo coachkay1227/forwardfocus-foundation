@@ -86,9 +86,9 @@ export default function CommunityLearning() {
           <div className="max-w-4xl mx-auto relative rounded-lg overflow-hidden">
             <img src={learningCommunityDiverse} alt="Diverse community members engaged in collaborative learning activities" className="w-full h-64 md:h-80 object-cover" />
             <div className="absolute inset-0 bg-gradient-to-r from-primary/90 to-secondary/80 flex items-center justify-center">
-              <div className="text-center text-white">
+              <div className="text-center text-primary-foreground">
                 <h2 className="text-2xl md:text-3xl font-bold mb-2">Building Stronger Families Through Learning</h2>
-                <p className="text-lg text-white/90">Real community. Real support. Real results.</p>
+                <p className="text-lg text-primary-foreground/90">Real community. Real support. Real results.</p>
               </div>
             </div>
           </div>
@@ -132,7 +132,7 @@ export default function CommunityLearning() {
             <div className="max-w-4xl mx-auto text-center">
               <div className="flex items-center justify-center gap-3 mb-6">
                 <div className="w-12 h-12 bg-gradient-osu-accent rounded-lg flex items-center justify-center">
-                  <Users className="h-6 w-6 text-white" />
+                  <Users className="h-6 w-6 text-primary-foreground" />
                 </div>
                 <div>
                   <h2 className="text-2xl font-bold text-foreground">How Our Community Works</h2>
@@ -293,7 +293,7 @@ export default function CommunityLearning() {
             <div className="max-w-4xl mx-auto text-center">
               <div className="flex items-center justify-center gap-3 mb-6">
                 <div className="w-12 h-12 bg-gradient-osu-accent rounded-lg flex items-center justify-center">
-                  <Heart className="h-6 w-6 text-white" />
+                  <Heart className="h-6 w-6 text-primary-foreground" />
                 </div>
                 <div>
                   <h2 className="text-2xl font-bold text-foreground">Peer Support & Connection</h2>
@@ -348,7 +348,7 @@ export default function CommunityLearning() {
             <div className="max-w-4xl mx-auto text-center">
               <div className="mb-6">
                 <div className="w-12 h-12 bg-gradient-osu-accent rounded-lg flex items-center justify-center mx-auto mb-4">
-                  <ArrowDown className="h-6 w-6 text-white" />
+                  <ArrowDown className="h-6 w-6 text-primary-foreground" />
                 </div>
                 <div>
                   <h2 className="text-2xl font-bold text-foreground">Ready to Join Our Community?</h2>
@@ -366,7 +366,7 @@ export default function CommunityLearning() {
                       </div>)}
                   </div>
 
-                  <Button onClick={() => setShowApplication(true)} className="w-full mt-6 bg-gradient-osu-accent hover:bg-osu-scarlet text-white shadow-md" size="lg">
+                  <Button onClick={() => setShowApplication(true)} className="w-full mt-6 bg-gradient-osu-accent hover:bg-osu-scarlet text-primary-foreground shadow-md" size="lg">
                     <Users className="h-4 w-4 mr-2" />
                     Apply for Community Access
                   </Button>
@@ -437,7 +437,7 @@ export default function CommunityLearning() {
                   <Users className="h-4 w-4 mr-2" />
                   Join Our Community
                 </Button>
-                 <Button onClick={() => scrollToSection('learning')} variant="outline" className="border-primary-foreground/30 text-destructive hover:bg-primary-foreground/10" size="lg">
+                 <Button onClick={() => scrollToSection('learning')} variant="outline" className="border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10" size="lg">
                   <BookOpen className="h-4 w-4 mr-2" />
                   Explore Learning Modules
                 </Button>
