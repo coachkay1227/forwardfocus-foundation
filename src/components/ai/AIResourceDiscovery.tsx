@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Badge } from '@/components/ui/badge';
 import { Loader2, Send, Bot, User, Phone, Globe, MapPin, Star, Shield } from 'lucide-react';
@@ -308,6 +308,9 @@ const AIResourceDiscovery: React.FC<AIResourceDiscoveryProps> = ({
               </Badge>
             )}
           </DialogTitle>
+          <DialogDescription id="ai-discovery-description">
+            Get personalized resource recommendations using AI based on your specific needs and location
+          </DialogDescription>
         </DialogHeader>
         
         <div className="flex flex-col h-full">

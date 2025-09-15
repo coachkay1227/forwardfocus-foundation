@@ -204,8 +204,8 @@ const CrisisSupportAI: React.FC<CrisisSupportAIProps> = ({ isOpen, onClose, init
               <AlertTriangle className="h-5 w-5" />
             </div>
             <div>
-              <h3 className="font-bold text-lg">Crisis Support Navigator</h3>
-              <p className="text-sm opacity-90">Immediate help and safety resources</p>
+              <h3 className="font-bold text-lg" id="crisis-support-title">Crisis Support Navigator</h3>
+              <p className="text-sm opacity-90" id="crisis-support-description">Immediate help and safety resources for crisis situations</p>
             </div>
           </div>
         </div>

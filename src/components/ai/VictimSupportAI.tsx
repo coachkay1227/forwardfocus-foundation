@@ -211,8 +211,8 @@ const VictimSupportAI: React.FC<VictimSupportAIProps> = ({ isOpen, onClose, init
               <Heart className="h-5 w-5" />
             </div>
             <div>
-              <h3 className="font-bold text-lg">Healing & Support Navigator</h3>
-              <p className="text-sm opacity-90">Trauma-informed victim services</p>
+              <h3 className="font-bold text-lg" id="victim-support-title">Healing & Support Navigator</h3>
+              <p className="text-sm opacity-90" id="victim-support-description">Trauma-informed victim services and healing resources</p>
             </div>
           </div>
           <Button

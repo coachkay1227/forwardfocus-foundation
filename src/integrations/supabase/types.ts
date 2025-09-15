@@ -723,6 +723,10 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: undefined
       }
+      cleanup_expired_referral_data: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
       create_admin_user: {
         Args: { admin_email: string }
         Returns: undefined
@@ -963,6 +967,10 @@ export type Database = {
       }
       validate_password_strength: {
         Args: { password: string }
+        Returns: boolean
+      }
+      verify_admin_contact_access: {
+        Args: { admin_user_id: string; operation_type: string }
         Returns: boolean
       }
     }
