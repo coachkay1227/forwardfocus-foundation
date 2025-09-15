@@ -285,8 +285,8 @@ export default function VictimServices() {
                         {path.description}
                       </CardDescription>
                     </CardHeader>
-                    <CardContent className="flex-1 flex flex-col">
-                      <div className="flex-1 space-y-3">
+                    <CardContent className="flex-1 flex flex-col justify-between">
+                      <div className="flex-1 space-y-3 flex flex-col justify-center">
                         {path.resources.slice(0, 2).map((resource, resourceIndex) => (
                           <div key={resourceIndex} className="p-3 rounded-lg bg-muted/50 text-center">
                             <div className="font-semibold text-sm">{resource.title}</div>
