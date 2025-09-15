@@ -102,7 +102,7 @@ const PartnerSignIn = () => {
 
         {/* Right Side - Sign In Form */}
         <div className="flex flex-col justify-center px-8 lg:px-16 py-16">
-          <div className="max-w-md mx-auto w-full">
+          <div className="max-w-md ml-auto mr-8 w-full">
             {/* Form Header */}
             <div className="text-center mb-6">
               <h2 className="font-heading text-2xl font-bold text-foreground mb-2">
