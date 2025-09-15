@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
@@ -16,38 +16,103 @@ const ChatbotPopup = () => {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
-      text: "Hi! I'm here to help you learn more about Forward Focus Elevation. How can I assist you today?",
+      text: "Hi! I'm Coach K, your crisis-support navigator. I'm here to help you find local resources and support in Columbus, Ohio. How can I assist you today?",
       isBot: true,
       timestamp: new Date()
     }
   ]);
   const [inputMessage, setInputMessage] = useState("");
   const [isOpen, setIsOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const scrollAreaRef = useRef<HTMLDivElement>(null);
 
-  const botResponses = {
-    default: "Thanks for your message! For detailed support, please contact our team directly. How else can I help you?",
-    support: "I can help you learn about our programs, volunteer opportunities, or donation options. What interests you most?",
-    donate: "Thank you for your interest in supporting us! You can make a financial donation to directly support our programs and community growth.",
-    volunteer: "We'd love to have you volunteer! We have opportunities for mentors, program facilitators, and resource coordinators with flexible schedules.",
-    programs: "We offer learning pathways, resource directories, and community support for justice-impacted individuals and families across Ohio."
+  const scrollToBottom = () => {
+    setTimeout(() => {
+      if (scrollAreaRef.current) {
+        const scrollContainer = scrollAreaRef.current.querySelector('[data-radix-scroll-area-viewport]');
+        if (scrollContainer) {
+          scrollContainer.scrollTop = scrollContainer.scrollHeight;
+        }
+      }
+    }, 100);
   };
 
-  const getResponse = (message: string) => {
-    const lowerMessage = message.toLowerCase();
-    if (lowerMessage.includes('donate') || lowerMessage.includes('donation')) {
-      return botResponses.donate;
-    } else if (lowerMessage.includes('volunteer') || lowerMessage.includes('help')) {
-      return botResponses.volunteer;
-    } else if (lowerMessage.includes('program') || lowerMessage.includes('service')) {
-      return botResponses.programs;
-    } else if (lowerMessage.includes('support') || lowerMessage.includes('contact')) {
-      return botResponses.support;
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
+
+  const sendMessage = async (messages: {role: string, content: string}[]) => {
+    try {
+      const response = await fetch(`https://gzukhsqgkwljfvwkfuno.supabase.co/functions/v1/coach-k`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd6dWtoc3Fna3dsamZ2d2tmdW5vIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU3MjQyOTMsImV4cCI6MjA3MTMwMDI5M30.Skon84aKH5K5TjW9pVnCI2A-6Z-9KrTYiNknpiqeCpk`
+        },
+        body: JSON.stringify({
+          messages
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const reader = response.body?.getReader();
+      if (!reader) {
+        throw new Error('No response body');
+      }
+
+      const decoder = new TextDecoder();
+      let buffer = '';
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+
+        buffer += decoder.decode(value, { stream: true });
+        const lines = buffer.split('\n');
+        buffer = lines.pop() || '';
+
+        for (const line of lines) {
+          if (line.startsWith('data: ')) {
+            const data = line.slice(6);
+            if (data === '[DONE]') continue;
+            
+            try {
+              const parsed = JSON.parse(data);
+              const content = parsed.choices?.[0]?.delta?.content;
+              if (content) {
+                setMessages(prev => {
+                  const newMessages = [...prev];
+                  const lastMessage = newMessages[newMessages.length - 1];
+                  if (lastMessage.isBot) {
+                    lastMessage.text += content;
+                  }
+                  return newMessages;
+                });
+                scrollToBottom();
+              }
+            } catch (e) {
+              // Skip invalid JSON
+            }
+          }
+        }
+      }
+    } catch (error) {
+      console.error('Coach K error:', error);
+      const errorMessage: Message = {
+        id: (Date.now() + 2).toString(),
+        text: "I'm sorry, I'm having trouble connecting right now. For immediate crisis support, please call 988 (Suicide & Crisis Lifeline) or 614-525-5200 (NetCare Access).",
+        isBot: true,
+        timestamp: new Date(),
+      };
+      setMessages(prev => [...prev, errorMessage]);
     }
-    return botResponses.default;
   };
 
-  const handleSendMessage = () => {
-    if (!inputMessage.trim()) return;
+  const handleSendMessage = async () => {
+    if (!inputMessage.trim() || isLoading) return;
 
     const userMessage: Message = {
       id: Date.now().toString(),
@@ -57,19 +122,30 @@ const ChatbotPopup = () => {
     };
 
     setMessages(prev => [...prev, userMessage]);
-
-    // Simulate bot response
-    setTimeout(() => {
-      const botMessage: Message = {
-        id: (Date.now() + 1).toString(),
-        text: getResponse(inputMessage),
-        isBot: true,
-        timestamp: new Date()
-      };
-      setMessages(prev => [...prev, botMessage]);
-    }, 1000);
-
+    const userInput = inputMessage;
     setInputMessage("");
+    setIsLoading(true);
+
+    // Add empty AI message for streaming
+    const aiMessage: Message = {
+      id: (Date.now() + 1).toString(),
+      text: '',
+      isBot: true,
+      timestamp: new Date(),
+    };
+    setMessages(prev => [...prev, aiMessage]);
+
+    // Convert messages to OpenAI format
+    const chatMessages = messages.map(msg => ({
+      role: msg.isBot ? 'assistant' : 'user',
+      content: msg.text
+    }));
+    
+    // Add the new user message
+    chatMessages.push({ role: 'user', content: userInput });
+
+    await sendMessage(chatMessages);
+    setIsLoading(false);
   };
 
   return (
@@ -91,7 +167,7 @@ const ChatbotPopup = () => {
           </DialogTitle>
         </DialogHeader>
         <div className="space-y-4">
-          <ScrollArea className="h-80 pr-4">
+          <ScrollArea className="h-80 pr-4" ref={scrollAreaRef}>
             <div className="space-y-4">
               {messages.map((message) => (
                 <div
