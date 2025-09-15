@@ -54,11 +54,11 @@ const Support = () => {
               <CardContent className="pt-0">
                 <div className="space-y-3">
                   <div className="text-sm text-foreground/60">
-                    • $25 provides a week of childcare support
+                    • Childcare support programs
                     <br />
-                    • $100 funds job training materials
+                    • Job training and materials
                     <br />
-                    • $500 helps with housing deposits
+                    • Housing assistance programs
                   </div>
                   <Button variant="link" className="p-0 text-primary font-medium text-lg">
                     Donate Now →
