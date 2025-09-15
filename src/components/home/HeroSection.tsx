@@ -10,7 +10,7 @@ interface HeroSectionProps {
 
 export const HeroSection = ({ selectedState, onShowStateModal, onShowAIDiscovery }: HeroSectionProps) => {
   return (
-    <section className="relative isolate min-h-[65vh] grid place-items-center bg-gradient-to-br from-osu-scarlet via-osu-scarlet-dark to-black">
+    <section className="relative isolate min-h-[55vh] grid place-items-center bg-gradient-to-br from-osu-scarlet via-osu-scarlet-dark to-black">
       {/* Background image */}
       <div aria-hidden className="absolute inset-0 -z-10 bg-[url('/images/diverse-families-community.jpg')] bg-cover bg-center opacity-30" />
       
