@@ -184,30 +184,6 @@ const Support = () => {
               title="Get In Touch"
               description="Have questions about supporting our community? We're here to help connect you with the right opportunities."
             />
-            
-            <Card className="mt-6">
-              <CardContent className="p-6">
-                <h3 className="font-semibold">Other Ways to Reach Us</h3>
-                <div className="space-y-3">
-                  <div className="flex items-center gap-3 text-sm">
-                    <Mail className="h-4 w-4 text-muted-foreground" />
-                    <span>support@forwardfocuselevation.org</span>
-                  </div>
-                  <div className="flex items-center gap-3 text-sm">
-                    <Phone className="h-4 w-4 text-muted-foreground" />
-                    <span>(614) 555-0123</span>
-                  </div>
-                  <div className="flex items-center gap-3 text-sm">
-                    <MapPin className="h-4 w-4 text-muted-foreground" />
-                    <span>Columbus, Ohio</span>
-                  </div>
-                  <div className="flex items-center gap-3 text-sm">
-                    <Clock className="h-4 w-4 text-muted-foreground" />
-                    <span>Mon-Fri, 9AM-5PM EST</span>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
           </section>
 
           {/* FAQ Section */}
