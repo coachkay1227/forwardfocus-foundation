@@ -126,7 +126,7 @@ const Support = () => {
                   </div>
                   <div className="flex items-center gap-3 text-sm">
                     <Phone className="h-4 w-4 text-muted-foreground" />
-                    <span>(614) 555-0123</span>
+                    <span>(380) 287-4505</span>
                   </div>
                   <div className="flex items-center gap-3 text-sm">
                     <MapPin className="h-4 w-4 text-muted-foreground" />
