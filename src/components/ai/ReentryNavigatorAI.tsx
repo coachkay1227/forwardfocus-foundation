@@ -31,14 +31,21 @@ interface ReentryNavigatorAIProps {
   isOpen: boolean;
   onClose: () => void;
   initialQuery?: string;
+  selectedCoach?: {
+    name: string;
+    specialty: string;
+    description: string;
+  };
 }
 
-const ReentryNavigatorAI: React.FC<ReentryNavigatorAIProps> = ({ isOpen, onClose, initialQuery }) => {
+const ReentryNavigatorAI: React.FC<ReentryNavigatorAIProps> = ({ isOpen, onClose, initialQuery, selectedCoach }) => {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
       type: 'ai',
-      content: "Hey there! I'm Jordan, your personal Reentry Navigator. I've helped hundreds of people successfully rebuild their lives after incarceration, and I'm here to help you too! 💪\n\nI know this journey takes real courage, and every small step forward is worth celebrating. I can help you with housing, employment, legal matters, education, healthcare, family connections, and financial stability.\n\nWhat's your biggest priority right now? Let's tackle it together!",
+      content: selectedCoach 
+        ? `Hey there! I'm ${selectedCoach.name.split(' ')[1]}, your ${selectedCoach.specialty} specialist. ${selectedCoach.description}\n\nI'm here to provide personalized support in my area of expertise. What specific challenge can I help you tackle today?`
+        : "Hey there! I'm Jordan, your personal Reentry Navigator. I've helped hundreds of people successfully rebuild their lives after incarceration, and I'm here to help you too! 💪\n\nI know this journey takes real courage, and every small step forward is worth celebrating. I can help you with housing, employment, legal matters, education, healthcare, family connections, and financial stability.\n\nWhat's your biggest priority right now? Let's tackle it together!",
       timestamp: new Date(),
     }
   ]);
@@ -69,6 +76,7 @@ const ReentryNavigatorAI: React.FC<ReentryNavigatorAIProps> = ({ isOpen, onClose
           query: userQuery,
           reentryStage,
           priorityNeeds: [],
+          selectedCoach: selectedCoach,
           previousContext: conversationContext.slice(-6), // Keep last 6 messages for context
         }
       });
@@ -161,14 +169,78 @@ const ReentryNavigatorAI: React.FC<ReentryNavigatorAIProps> = ({ isOpen, onClose
     setIsLoading(false);
   };
 
-  const quickActions = [
-    "I need housing options that accept my background",
-    "Help me find employers who hire people with records", 
-    "What documents do I need to get started?",
-    "How can I clear my record?",
-    "I need job training and skills programs",
-    "Help me rebuild relationships with my family"
-  ];
+  const getCoachSpecificActions = (coachName: string) => {
+    const coachActions = {
+      'Coach Dana': [
+        "I need transitional housing options",
+        "Help with rental applications with my background",
+        "Understanding tenant rights and protections",
+        "Housing voucher program applications",
+        "Communicating with landlords about my record",
+        "Budget-friendly housing search help"
+      ],
+      'Coach Malik': [
+        "Help me write a strong resume",
+        "Find fair-chance employers in my area",
+        "Interview preparation and confidence building",
+        "Job training program recommendations",
+        "Professional skill development opportunities",
+        "Understanding workplace rights"
+      ],
+      'Coach Rivera': [
+        "Help me understand expungement eligibility",
+        "Managing court obligations and compliance",
+        "Legal documentation assistance",
+        "Understanding probation/parole requirements",
+        "Connecting with legal aid resources",
+        "Rights restoration processes"
+      ],
+      'Coach Taylor': [
+        "Communication strategies with family",
+        "Setting healthy boundaries",
+        "Co-parenting and custody guidance",
+        "Family therapy and mediation resources",
+        "Rebuilding trust after absence",
+        "Supporting children through transitions"
+      ],
+      'Coach Jordan': [
+        "Opening a bank account with my record",
+        "Basic budgeting and money management",
+        "Credit repair and building strategies",
+        "Applying for benefits (SNAP, healthcare, housing)",
+        "Financial literacy and planning",
+        "Avoiding predatory lending and scams"
+      ],
+      'Coach Sam': [
+        "Finding trauma-informed mental health resources",
+        "Coping strategies for stress and anxiety",
+        "Substance abuse recovery support",
+        "Crisis intervention and de-escalation help",
+        "Building healthy routines and self-care",
+        "Community support and peer connections"
+      ]
+    };
+    
+    return coachActions[coachName as keyof typeof coachActions] || [
+      "I need housing options that accept my background",
+      "Help me find employers who hire people with records", 
+      "What documents do I need to get started?",
+      "How can I clear my record?",
+      "I need job training and skills programs",
+      "Help me rebuild relationships with my family"
+    ];
+  };
+
+  const quickActions = selectedCoach 
+    ? getCoachSpecificActions(selectedCoach.name)
+    : [
+        "I need housing options that accept my background",
+        "Help me find employers who hire people with records", 
+        "What documents do I need to get started?",
+        "How can I clear my record?",
+        "I need job training and skills programs",
+        "Help me rebuild relationships with my family"
+      ];
 
   const reentryAreas = [
     { icon: Home, label: "Housing", color: "text-primary" },
@@ -191,8 +263,12 @@ const ReentryNavigatorAI: React.FC<ReentryNavigatorAIProps> = ({ isOpen, onClose
               <Bot className="h-5 w-5" />
             </div>
             <div>
-              <h3 className="font-bold text-lg">Jordan - Your Reentry Navigator</h3>
-              <p className="text-sm opacity-90">Encouraging support for your success journey</p>
+              <h3 className="font-bold text-lg">
+                {selectedCoach ? `${selectedCoach.name} - ${selectedCoach.specialty}` : 'Jordan - Your Reentry Navigator'}
+              </h3>
+              <p className="text-sm opacity-90">
+                {selectedCoach ? selectedCoach.description : 'Encouraging support for your success journey'}
+              </p>
             </div>
           </div>
           <Button
@@ -339,7 +415,7 @@ const ReentryNavigatorAI: React.FC<ReentryNavigatorAIProps> = ({ isOpen, onClose
             <Input
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              placeholder="What can Jordan help you with today?"
+              placeholder={selectedCoach ? `What can ${selectedCoach.name.split(' ')[1]} help you with today?` : "What can Jordan help you with today?"}
               onKeyDown={(e) => e.key === 'Enter' && handleSend()}
               disabled={isLoading}
             />

@@ -9,6 +9,11 @@ import ReentryNavigatorAI from "@/components/ai/ReentryNavigatorAI";
 export default function CommunityLearning() {
   const [showApplication, setShowApplication] = useState(false);
   const [showReentryAI, setShowReentryAI] = useState(false);
+  const [selectedCoach, setSelectedCoach] = useState<{
+    name: string;
+    specialty: string;
+    description: string;
+  } | undefined>(undefined);
 
   useEffect(() => {
     // SEO optimization
@@ -283,7 +288,14 @@ export default function CommunityLearning() {
       />
       
       {/* Reentry Navigator AI */}
-      <ReentryNavigatorAI isOpen={showReentryAI} onClose={() => setShowReentryAI(false)} />
+      <ReentryNavigatorAI 
+        isOpen={showReentryAI} 
+        onClose={() => {
+          setShowReentryAI(false);
+          setSelectedCoach(undefined);
+        }}
+        selectedCoach={selectedCoach}
+      />
     </div>
   );
 }
