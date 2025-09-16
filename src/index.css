@@ -140,4 +140,35 @@ All colors MUST be HSL.
   body {
     @apply bg-background text-foreground;
   }
+
+  /* Healing Toolkit Animations */
+  @keyframes breathe {
+    0%, 100% { transform: scale(0.8); opacity: 0.7; }
+    50% { transform: scale(1.2); opacity: 1; }
+  }
+
+  .breathing-circle {
+    animation: breathe 4s ease-in-out infinite;
+  }
+
+  .mood-slider::-webkit-slider-thumb {
+    appearance: none;
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+    background: hsl(var(--osu-scarlet));
+    cursor: pointer;
+    border: 2px solid white;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  }
+
+  .mood-slider::-moz-range-thumb {
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+    background: hsl(var(--osu-scarlet));
+    cursor: pointer;
+    border: 2px solid white;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  }
 }
