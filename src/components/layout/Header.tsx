@@ -71,9 +71,9 @@ const Header = ({
       {/* Top Utility Bar - removed, replaced with crisis popup */}
 
       {/* Main Navigation */}
-      <div className="bg-white border-b border-border">
+      <div className="bg-white/95 backdrop-blur-sm border-b border-border shadow-sm">
         <div className="container mx-auto px-4">
-          <div className="flex items-center justify-between h-16">
+          <div className="flex items-center justify-between h-18">
             {/* Mobile menu button */}
             <div className="md:hidden">
               <Sheet open={open} onOpenChange={setOpen}>
@@ -94,14 +94,14 @@ const Header = ({
                         <NavLink to="/help" onClick={() => setOpen(false)}>Get Help Now</NavLink>
                       </Button>
                       <Button variant="ghost" size="sm" asChild className="justify-start w-full">
-                        <NavLink to="/about" onClick={() => setOpen(false)}>About</NavLink>
+                        <NavLink to="/victim-services" onClick={() => setOpen(false)}>Healing Hub</NavLink>
                       </Button>
                       <Button variant="ghost" size="sm" asChild className="justify-start w-full">
                         <NavLink to="/learn" onClick={() => setOpen(false)}>The Collective</NavLink>
                       </Button>
-                        <NavLink to="/victim-services" className="justify-start w-full text-left px-2 py-2 text-sm font-medium text-foreground hover:bg-muted rounded-md" onClick={() => setOpen(false)}>
-                          Healing Hub
-                        </NavLink>
+                      <Button variant="ghost" size="sm" asChild className="justify-start w-full">
+                        <NavLink to="/about" onClick={() => setOpen(false)}>About</NavLink>
+                      </Button>
                       <Button variant="ghost" size="sm" asChild className="justify-start w-full">
                         <NavLink to="/partners" onClick={() => setOpen(false)}>Partner Portal</NavLink>
                       </Button>
@@ -123,11 +123,11 @@ const Header = ({
                           <LogOut className="mr-2 h-4 w-4" />
                           Sign Out
                         </Button>
-                      </> : <div className="flex flex-col space-y-2 px-4">
-                        <Button variant="ghost" size="sm" asChild className="justify-start">
+                      </> : <div className="flex flex-col space-y-2">
+                        <Button variant="ghost" size="sm" asChild className="justify-start w-full">
                           <NavLink to="/auth" onClick={() => setOpen(false)}>Sign In</NavLink>
                         </Button>
-                        <Button variant="outline" size="sm" asChild className="justify-start">
+                        <Button variant="outline" size="sm" asChild className="justify-start w-full">
                           <NavLink to="/register" onClick={() => setOpen(false)}>Register</NavLink>
                         </Button>
                       </div>}
@@ -138,28 +138,26 @@ const Header = ({
 
             {/* Logo */}
             <div className="logo flex-1 md:flex-none">
-              <NavLink to="/" className="font-heading text-xl font-bold text-primary hover:text-primary/80 transition-colors">
+              <NavLink to="/" className="font-heading text-xl font-bold text-[hsl(var(--osu-scarlet))] hover:text-[hsl(var(--osu-scarlet-dark))] transition-colors">
                 Forward Focus Elevation
               </NavLink>
             </div>
 
             {/* Main Navigation - Desktop */}
-            <nav className="hidden md:flex main-nav space-x-2 lg:space-x-4 xl:space-x-6 text-sm lg:text-base">
+            <nav className="hidden md:flex main-nav items-center space-x-1 lg:space-x-2 xl:space-x-4 text-sm lg:text-base font-medium">
               <NavLink to="/" className={linkCls}>Home</NavLink>
               <NavLink to="/help" className={linkCls}>Get Help Now</NavLink>
-              <NavLink to="/about" className={linkCls}>About</NavLink>
+              <NavLink to="/victim-services" className={linkCls}>Healing Hub</NavLink>
               <NavLink to="/learn" className={linkCls}>The Collective</NavLink>
-              <NavLink to="/victim-services" className={linkCls}>
-                Healing Hub
-              </NavLink>
+              <NavLink to="/about" className={linkCls}>About</NavLink>
               <NavLink to="/partners" className={linkCls}>Partner Portal</NavLink>
             </nav>
 
             {/* Auth Links */}
-            <div className="auth-links flex items-center space-x-2">
+            <div className="auth-links flex items-center gap-3">
               {user ? <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" size="sm" className="text-foreground">
+                    <Button variant="ghost" size="sm" className="text-foreground font-medium">
                       <User className="mr-2 h-4 w-4" />
                       <span className="max-w-[120px] truncate">{user.email}</span>
                     </Button>
@@ -173,17 +171,17 @@ const Header = ({
                       Sign Out
                     </DropdownMenuItem>
                   </DropdownMenuContent>
-                </DropdownMenu> : <div className="hidden md:flex items-center space-x-2">
-                  <Button variant="ghost" size="sm" asChild className="text-foreground">
+                </DropdownMenu> : <div className="hidden md:flex flex-col items-end gap-1">
+                  <Button variant="ghost" size="sm" asChild className="text-foreground font-medium h-8 px-3">
                     <NavLink to="/auth">Sign In</NavLink>
                   </Button>
-                  <Button variant="outline" size="sm" asChild>
+                  <Button variant="outline" size="sm" asChild className="h-8 px-3 border-[hsl(var(--osu-scarlet))] text-[hsl(var(--osu-scarlet))] hover:bg-[hsl(var(--osu-scarlet))] hover:text-white">
                     <NavLink to="/register">Register</NavLink>
                   </Button>
                 </div>}
 
               {/* Support CTA */}
-              <Button size="sm" asChild className="support-link bg-primary hover:bg-primary/90 text-white">
+              <Button size="sm" asChild className="support-link bg-[hsl(var(--osu-scarlet))] hover:bg-[hsl(var(--osu-scarlet-dark))] text-white font-medium px-4 h-9">
                 <NavLink to="/support">Get Support</NavLink>
               </Button>
             </div>
