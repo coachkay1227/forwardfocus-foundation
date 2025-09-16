@@ -121,7 +121,7 @@ export default function CommunityLearning() {
           {/* Welcome Section */}
           <section className="space-y-6">
             <h1 className="text-4xl md:text-5xl font-bold text-foreground leading-tight">
-              Welcome, we're so glad you're here
+              Welcome to the Collective
             </h1>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
               Whether you're rebuilding, reconnecting, or just figuring it out day by day, you don't have to do it alone.
