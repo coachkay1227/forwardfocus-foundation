@@ -127,9 +127,6 @@ export default function CommunityLearning() {
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed font-medium">
               Whether you're rebuilding, reconnecting, or just figuring it out day by day, you don't have to do it alone.
             </p>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto font-body">
-              This Reentry Navigator is built just for you. Free, 24/7 support for housing, employment, legal guidance, healing, and more. Start wherever feels right.
-            </p>
             
             {/* Access Navigator Button */}
             <div className="flex justify-center">
