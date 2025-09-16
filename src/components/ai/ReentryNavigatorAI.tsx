@@ -6,6 +6,7 @@ import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { Badge } from '@/components/ui/badge';
 import { supabase } from '@/integrations/supabase/client';
 import { parseTextForLinks, formatAIResponse, type ParsedTextSegment } from '@/lib/text-parser';
+import EmailChatHistoryModal from './EmailChatHistoryModal';
 
 interface Message {
   id: string;
@@ -45,10 +46,12 @@ const ReentryNavigatorAI: React.FC<ReentryNavigatorAIProps> = ({ isOpen, onClose
       type: 'ai',
       content: selectedCoach 
         ? `Hey there! I'm ${selectedCoach.name.split(' ')[1]}, your ${selectedCoach.specialty} specialist. ${selectedCoach.description}\n\nI'm here to provide personalized support in my area of expertise. What specific challenge can I help you tackle today?`
-        : "Hey there! I'm Jordan, your personal Reentry Navigator. I've helped hundreds of people successfully rebuild their lives after incarceration, and I'm here to help you too! 💪\n\nI know this journey takes real courage, and every small step forward is worth celebrating. I can help you with housing, employment, legal matters, education, healthcare, family connections, and financial stability.\n\nWhat's your biggest priority right now? Let's tackle it together!",
+        : "Hey there! I'm Coach Kay, your personal Reentry Navigator. I've helped hundreds of people successfully rebuild their lives after incarceration, and I'm here to help you too! 💪\n\nI know this journey takes real courage, and every small step forward is worth celebrating. I can help you with housing, employment, legal matters, education, healthcare, family connections, and financial stability.\n\nWhat's your biggest priority right now? Let's tackle it together!",
       timestamp: new Date(),
     }
   ]);
+  const [showEmailModal, setShowEmailModal] = useState(false);
+  const [userEmail, setUserEmail] = useState('');
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [conversationContext, setConversationContext] = useState<Array<{role: string, content: string}>>([]);
@@ -105,7 +108,7 @@ const ReentryNavigatorAI: React.FC<ReentryNavigatorAIProps> = ({ isOpen, onClose
         { role: 'assistant', content: formattedResponse }
       ]);
     } catch (error) {
-      console.error('Jordan (Reentry Navigator) AI error:', error);
+      console.error(`${selectedCoach ? selectedCoach.name : 'Coach Kay'} (Reentry Navigator) AI error:`, error);
       // Fallback: client-side reentry resource lookup so users still get help
       try {
         const { data: resources } = await supabase
@@ -115,7 +118,8 @@ const ReentryNavigatorAI: React.FC<ReentryNavigatorAIProps> = ({ isOpen, onClose
           .eq('verified', 'verified')
           .limit(10);
 
-        const content = "I'm experiencing a technical hiccup right now, but don't worry - I've still got your back! Here are some solid reentry resources that can help with common needs. Your success matters, and there are people ready to support you! 💪";
+        const coachName = selectedCoach ? selectedCoach.name.split(' ')[1] : 'Coach Kay';
+        const content = `I'm experiencing a technical hiccup right now, but don't worry - I've still got your back! Here are some solid reentry resources that can help with common needs. Your success matters, and there are people ready to support you! 💪`;
         setMessages(prev => {
           const newMessages = [...prev];
           const lastMessage = newMessages[newMessages.length - 1];
@@ -127,7 +131,8 @@ const ReentryNavigatorAI: React.FC<ReentryNavigatorAIProps> = ({ isOpen, onClose
         });
       } catch (fallbackError) {
         console.error('Reentry fallback failed:', fallbackError);
-        const errorMessage = "I'm having technical difficulties, but your reentry journey is still important to me. For immediate support, call **2-1-1** for comprehensive resource navigation, or visit your local reentry program. You've got this! 🌟";
+        const coachName = selectedCoach ? selectedCoach.name.split(' ')[1] : 'Coach Kay';
+        const errorMessage = `I'm having technical difficulties, but your reentry journey is still important to me. For immediate support, call **2-1-1** for comprehensive resource navigation, or visit your local reentry program. You've got this! 🌟`;
         setMessages(prev => {
           const newMessages = [...prev];
           const lastMessage = newMessages[newMessages.length - 1];
@@ -164,7 +169,7 @@ const ReentryNavigatorAI: React.FC<ReentryNavigatorAIProps> = ({ isOpen, onClose
     };
     setMessages(prev => [...prev, aiMessage]);
 
-    // Send message to Jordan
+    // Send message to the selected coach
     await sendMessage(userInput);
     setIsLoading(false);
   };
@@ -264,7 +269,7 @@ const ReentryNavigatorAI: React.FC<ReentryNavigatorAIProps> = ({ isOpen, onClose
             </div>
             <div>
               <h3 className="font-bold text-lg">
-                {selectedCoach ? `${selectedCoach.name} - ${selectedCoach.specialty}` : 'Jordan - Your Reentry Navigator'}
+                {selectedCoach ? `${selectedCoach.name} - ${selectedCoach.specialty}` : 'Coach Kay - Your Reentry Navigator'}
               </h3>
               <p className="text-sm opacity-90">
                 {selectedCoach ? selectedCoach.description : 'Encouraging support for your success journey'}
@@ -415,7 +420,7 @@ const ReentryNavigatorAI: React.FC<ReentryNavigatorAIProps> = ({ isOpen, onClose
             <Input
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              placeholder={selectedCoach ? `What can ${selectedCoach.name.split(' ')[1]} help you with today?` : "What can Jordan help you with today?"}
+              placeholder={selectedCoach ? `What can ${selectedCoach.name.split(' ')[1]} help you with today?` : "What can Coach Kay help you with today?"}
               onKeyDown={(e) => e.key === 'Enter' && handleSend()}
               disabled={isLoading}
             />
@@ -423,10 +428,28 @@ const ReentryNavigatorAI: React.FC<ReentryNavigatorAIProps> = ({ isOpen, onClose
               <Send className="h-4 w-4" />
             </Button>
           </div>
-          <p className="text-xs text-muted-foreground mt-2">
-            Your success matters • Justice-friendly resources • Encouraging guidance every step
-          </p>
+          <div className="flex items-center justify-between mt-2">
+            <p className="text-xs text-muted-foreground">
+              Your success matters • Justice-friendly resources • Encouraging guidance every step
+            </p>
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              className="text-xs" 
+              onClick={() => setShowEmailModal(true)}
+            >
+              Email Chat History
+            </Button>
+          </div>
         </div>
+
+        {/* Email Modal */}
+        <EmailChatHistoryModal
+          isOpen={showEmailModal}
+          onClose={() => setShowEmailModal(false)}
+          messages={messages}
+          coachName={selectedCoach ? selectedCoach.name : 'Coach Kay'}
+        />
       </DialogContent>
     </Dialog>
   );
