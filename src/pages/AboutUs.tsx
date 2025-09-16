@@ -296,7 +296,7 @@ export default function AboutUs() {
                   <Button 
                     size="lg" 
                     variant="outline" 
-                    onClick={() => window.open('https://calendly.com/coach-kay-consultation', '_blank')}
+                    onClick={() => window.open('https://calendly.com/ffe_coach_kay', '_blank')}
                   >
                     <Calendar className="h-5 w-5 mr-2" />
                     Book Consultation
