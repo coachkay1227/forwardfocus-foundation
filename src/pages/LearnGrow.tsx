@@ -162,7 +162,18 @@ export default function CommunityLearning() {
               {supportCoaches.map((coach, index) => {
                 const Icon = coach.icon;
                 return (
-                  <Card key={index} className="text-left hover:shadow-lg transition-all duration-300 border-l-4 border-l-[hsl(var(--osu-scarlet))]">
+                  <Card 
+                    key={index} 
+                    className="text-left hover:shadow-lg transition-all duration-300 border-l-4 border-l-[hsl(var(--osu-scarlet))] cursor-pointer hover:scale-105"
+                    onClick={() => {
+                      setSelectedCoach({
+                        name: coach.name,
+                        specialty: coach.specialty,
+                        description: coach.description
+                      });
+                      setShowReentryAI(true);
+                    }}
+                  >
                     <CardContent className="p-4">
                       <div className="flex items-start gap-3">
                         <div className="w-8 h-8 bg-[hsl(var(--osu-scarlet))] rounded-lg flex items-center justify-center flex-shrink-0 mt-1">
@@ -174,6 +185,11 @@ export default function CommunityLearning() {
                           <p className="text-sm text-muted-foreground leading-relaxed">
                             {coach.description}
                           </p>
+                          <div className="mt-3">
+                            <Button size="sm" variant="outline" className="text-xs">
+                              Chat with {coach.name.split(' ')[1]}
+                            </Button>
+                          </div>
                         </div>
                       </div>
                     </CardContent>
