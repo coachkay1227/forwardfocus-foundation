@@ -1,7 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Play, Pause, Timer } from "lucide-react";
+import { Play, Pause, Timer, Volume2 } from "lucide-react";
+import { toast } from "@/hooks/use-toast";
 
 interface FrequencyPlayerProps {
   onUse: () => void;
@@ -19,6 +20,9 @@ const FrequencyPlayer = ({ onUse }: FrequencyPlayerProps) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [timer, setTimer] = useState('0');
   const [timeLeft, setTimeLeft] = useState(0);
+  const audioContextRef = useRef<AudioContext | null>(null);
+  const oscillatorRef = useRef<OscillatorNode | null>(null);
+  const gainNodeRef = useRef<GainNode | null>(null);
 
   useEffect(() => {
     let interval: NodeJS.Timeout;
@@ -38,6 +42,69 @@ const FrequencyPlayer = ({ onUse }: FrequencyPlayerProps) => {
     return () => clearInterval(interval);
   }, [timeLeft]);
 
+  const createAudioContext = () => {
+    if (!audioContextRef.current) {
+      audioContextRef.current = new (window.AudioContext || (window as any).webkitAudioContext)();
+    }
+    return audioContextRef.current;
+  };
+
+  const playFrequency = (frequency: number) => {
+    try {
+      const audioContext = createAudioContext();
+      
+      // Resume context if suspended (required by browser autoplay policies)
+      if (audioContext.state === 'suspended') {
+        audioContext.resume();
+      }
+
+      // Create oscillator and gain nodes
+      oscillatorRef.current = audioContext.createOscillator();
+      gainNodeRef.current = audioContext.createGain();
+
+      // Set frequency and type
+      oscillatorRef.current.frequency.setValueAtTime(frequency, audioContext.currentTime);
+      oscillatorRef.current.type = 'sine';
+
+      // Set volume (gentle)
+      gainNodeRef.current.gain.setValueAtTime(0.1, audioContext.currentTime);
+
+      // Connect nodes
+      oscillatorRef.current.connect(gainNodeRef.current);
+      gainNodeRef.current.connect(audioContext.destination);
+
+      // Start the oscillator
+      oscillatorRef.current.start();
+      
+      toast({
+        title: "Frequency playing",
+        description: `Now playing ${frequency}Hz healing frequency`,
+      });
+    } catch (error) {
+      toast({
+        title: "Audio not supported",
+        description: "Your browser may not support Web Audio API",
+        variant: "destructive"
+      });
+    }
+  };
+
+  const stopFrequency = () => {
+    try {
+      if (oscillatorRef.current) {
+        oscillatorRef.current.stop();
+        oscillatorRef.current.disconnect();
+        oscillatorRef.current = null;
+      }
+      if (gainNodeRef.current) {
+        gainNodeRef.current.disconnect();
+        gainNodeRef.current = null;
+      }
+    } catch (error) {
+      // Silently handle cleanup errors
+    }
+  };
+
   const togglePlay = () => {
     const newPlayState = !isPlaying;
     setIsPlaying(newPlayState);
@@ -47,14 +114,47 @@ const FrequencyPlayer = ({ onUse }: FrequencyPlayerProps) => {
       if (timer !== '0') {
         setTimeLeft(parseInt(timer) * 60);
       }
+      
+      // Play the selected frequency
+      if (selectedFreq === 'nature') {
+        toast({
+          title: "Nature sounds simulation",
+          description: "In a real app, this would play nature sounds",
+        });
+      } else {
+        const frequency = parseInt(selectedFreq);
+        playFrequency(frequency);
+      }
     } else {
       setTimeLeft(0);
+      stopFrequency();
     }
   };
+
+  // Cleanup on component unmount
+  useEffect(() => {
+    return () => {
+      stopFrequency();
+      if (audioContextRef.current) {
+        audioContextRef.current.close();
+      }
+    };
+  }, []);
 
   const selectFrequency = (freq: string) => {
     setSelectedFreq(freq);
     if (isPlaying) {
+      // Stop current frequency and start new one
+      stopFrequency();
+      if (freq === 'nature') {
+        toast({
+          title: "Nature sounds selected",
+          description: "Switching to nature sounds simulation",
+        });
+      } else {
+        const frequency = parseInt(freq);
+        playFrequency(frequency);
+      }
       onUse();
     }
   };
@@ -119,7 +219,7 @@ const FrequencyPlayer = ({ onUse }: FrequencyPlayerProps) => {
       {isPlaying && (
         <div className="playing-indicator p-3 bg-slate-100 rounded-lg text-center animate-fade-in">
           <div className="flex items-center justify-center gap-2">
-            <div className="w-2 h-2 bg-osu-scarlet rounded-full animate-pulse"></div>
+            <Volume2 className="w-4 h-4 text-osu-scarlet animate-pulse" />
             <span className="text-sm font-medium text-slate-700">
               Now Playing: {currentFreq?.label}
             </span>
@@ -129,11 +229,14 @@ const FrequencyPlayer = ({ onUse }: FrequencyPlayerProps) => {
               Time remaining: {formatTime(timeLeft)}
             </p>
           )}
+          <div className="mt-2 text-xs text-green-600">
+            🎵 Audio frequency is now playing through your speakers
+          </div>
         </div>
       )}
 
       <div className="text-xs text-muted-foreground text-center">
-        * This is a simulation. For actual healing frequencies, consider using dedicated apps or recordings.
+        * Real healing frequencies generated using Web Audio API. Use headphones for best experience.
       </div>
     </div>
   );

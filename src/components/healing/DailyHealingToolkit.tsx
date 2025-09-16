@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Slider } from "@/components/ui/slider";
 import { Button } from "@/components/ui/button";
 import { Phone, MessageCircle, Play, Pause, Timer, TrendingUp, Award } from "lucide-react";
+import { toast } from "@/hooks/use-toast";
 import { useHealingProgress } from "@/hooks/useHealingProgress";
 import BreathingExercise from "./BreathingExercise";
 import FrequencyPlayer from "./FrequencyPlayer";
@@ -49,12 +50,38 @@ const DailyHealingToolkit = () => {
     return "It's wonderful to see you feeling positive today!";
   };
 
-  const shareProgress = () => {
+  const shareProgress = async () => {
     const text = `I've been strong for ${progress.daysStrong} days on my healing journey! 💪 #HealingJourney #StayStrong`;
-    if (navigator.share) {
-      navigator.share({ text });
-    } else {
-      navigator.clipboard.writeText(text);
+    
+    try {
+      if (navigator.share && navigator.canShare) {
+        await navigator.share({ text });
+        toast({
+          title: "Shared successfully!",
+          description: "Your progress has been shared."
+        });
+      } else {
+        await navigator.clipboard.writeText(text);
+        toast({
+          title: "Copied to clipboard!",
+          description: "Your progress message is ready to share."
+        });
+      }
+    } catch (error) {
+      // Fallback: copy to clipboard
+      try {
+        await navigator.clipboard.writeText(text);
+        toast({
+          title: "Copied to clipboard!",
+          description: "Your progress message is ready to share."
+        });
+      } catch (clipboardError) {
+        toast({
+          title: "Share message",
+          description: text,
+          duration: 10000
+        });
+      }
     }
   };
 
