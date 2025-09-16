@@ -150,11 +150,15 @@ const Header = ({
               <NavLink to="/victim-services" className={linkCls}>Healing Hub</NavLink>
               <NavLink to="/learn" className={linkCls}>The Collective</NavLink>
               <NavLink to="/about" className={linkCls}>About</NavLink>
-              <NavLink to="/partners" className={linkCls}>Partner Portal</NavLink>
             </nav>
 
             {/* Auth Links */}
             <div className="auth-links flex items-center gap-3">
+              {/* Partner Portal Link */}
+              <Button variant="ghost" size="sm" asChild className="hidden md:flex text-foreground font-medium h-8 px-3">
+                <NavLink to="/partners">Partner Portal</NavLink>
+              </Button>
+
               {user ? <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <Button variant="ghost" size="sm" className="text-foreground font-medium">
