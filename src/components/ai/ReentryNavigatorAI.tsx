@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { X, Send, Bot, Home, Briefcase, GraduationCap, Heart, Scale, DollarSign, User } from 'lucide-react';
+import { X, Send, Bot, Home, Briefcase, GraduationCap, Heart, Scale, DollarSign, User, FileText, Phone } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
@@ -50,7 +50,7 @@ const ReentryNavigatorAI: React.FC<ReentryNavigatorAIProps> = ({ isOpen, onClose
     type: 'ai',
     content: selectedCoach
       ? `Hey there! I'm ${selectedCoach.name.split(' ')[1]}, your ${selectedCoach.specialty} specialist. ${selectedCoach.description}\n\nI'm here to provide personalized support in my area of expertise. What specific challenge can I help you tackle today?`
-      : "Hey there! I'm Coach Kay, your personal Reentry Navigator. I've helped hundreds of people successfully rebuild their lives after incarceration, and I'm here to help you too! 💪\n\nI know this journey takes real courage, and every small step forward is worth celebrating. I can help you with housing, employment, legal matters, education, healthcare, family connections, and financial stability.\n\nWhat's your biggest priority right now? Let's tackle it together!",
+      : "Hey there! I'm Coach Kay, your personal Reentry Navigator. I've helped hundreds of people successfully rebuild their lives after incarceration, and I'm here to help you too!\n\nI know this journey takes real courage, and every small step forward is worth celebrating. I can help you with housing, employment, legal matters, education, healthcare, family connections, and financial stability.\n\nWhat's your biggest priority right now? Let's tackle it together!",
     timestamp: new Date(),
   });
 
@@ -155,7 +155,7 @@ const ReentryNavigatorAI: React.FC<ReentryNavigatorAIProps> = ({ isOpen, onClose
           .limit(10);
 
         const coachName = selectedCoach ? selectedCoach.name.split(' ')[1] : 'Coach Kay';
-        const content = `I'm experiencing a technical hiccup right now, but don't worry - I've still got your back! Here are some solid reentry resources that can help with common needs. Your success matters, and there are people ready to support you! 💪`;
+        const content = `I'm experiencing a technical hiccup right now, but don't worry - I've still got your back! Here are some solid reentry resources that can help with common needs. Your success matters, and there are people ready to support you!`;
         setMessages(prev => {
           const newMessages = [...prev];
           const lastMessage = newMessages[newMessages.length - 1];
@@ -168,7 +168,7 @@ const ReentryNavigatorAI: React.FC<ReentryNavigatorAIProps> = ({ isOpen, onClose
       } catch (fallbackError) {
         console.error('Reentry fallback failed:', fallbackError);
         const coachName = selectedCoach ? selectedCoach.name.split(' ')[1] : 'Coach Kay';
-        const errorMessage = `I'm having technical difficulties, but your reentry journey is still important to me. For immediate support, call **2-1-1** for comprehensive resource navigation, or visit your local reentry program. You've got this! 🌟`;
+        const errorMessage = `I'm having technical difficulties, but your reentry journey is still important to me. For immediate support, call **2-1-1** for comprehensive resource navigation, or visit your local reentry program. You've got this!`;
         setMessages(prev => {
           const newMessages = [...prev];
           const lastMessage = newMessages[newMessages.length - 1];
@@ -383,8 +383,9 @@ const ReentryNavigatorAI: React.FC<ReentryNavigatorAIProps> = ({ isOpen, onClose
 
                       {message.resources && message.resources.length > 0 && (
                         <div className="mt-4 space-y-3">
-                          <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wider border-b border-border/30 pb-1">
-                            📋 Recommended Resources
+                          <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wider border-b border-border/30 pb-1 flex items-center gap-2">
+                            <FileText className="h-3 w-3" />
+                            Recommended Resources
                           </div>
                           <div className="space-y-3">
                             {message.resources.map((resource, resourceIndex) => (
@@ -409,7 +410,7 @@ const ReentryNavigatorAI: React.FC<ReentryNavigatorAIProps> = ({ isOpen, onClose
                                 <div className="space-y-2 text-sm">
                                   {resource.phone && (
                                     <div className="flex items-center gap-2 text-foreground">
-                                      <span className="text-green-600">📞</span>
+                                      <Phone className="h-3 w-3 text-green-600" />
                                       <span className="font-medium">Phone:</span>
                                       <a 
                                         href={`tel:${resource.phone.replace(/[^\d]/g, '')}`}

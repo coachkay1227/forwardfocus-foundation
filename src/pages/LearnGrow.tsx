@@ -1,9 +1,10 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { BookOpen, CheckCircle, Users, MessageSquare, MapPin, Phone, FileText, DollarSign, Heart, Brain, GraduationCap, Home, Briefcase, Scale, HeartHandshake, PiggyBank } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { CommunityApplication } from "@/components/learn/CommunityApplication";
+import { PathwayVisual } from "@/components/learn/PathwayVisual";
 import ReentryNavigatorAI from "@/components/ai/ReentryNavigatorAI";
 
 export default function CommunityLearning() {
@@ -14,28 +15,6 @@ export default function CommunityLearning() {
     specialty: string;
     description: string;
   } | undefined>(undefined);
-
-  useEffect(() => {
-    // SEO optimization
-    document.title = "The Collective | Forward Focus Collective";
-    const desc = "Access your Reentry Navigator and comprehensive learning community designed for justice impacted individuals and families.";
-    
-    let meta = document.querySelector('meta[name="description"]') as HTMLMetaElement | null;
-    if (!meta) {
-      meta = document.createElement("meta");
-      meta.setAttribute("name", "description");
-      document.head.appendChild(meta);
-    }
-    meta.setAttribute("content", desc);
-    
-    let link = document.querySelector('link[rel="canonical"]') as HTMLLinkElement | null;
-    if (!link) {
-      link = document.createElement("link");
-      link.setAttribute("rel", "canonical");
-      document.head.appendChild(link);
-    }
-    link.setAttribute("href", `${window.location.origin}/learn`);
-  }, []);
 
   const supportCoaches = [
     {
@@ -132,6 +111,7 @@ export default function CommunityLearning() {
           
           {/* Welcome Section */}
           <section className="space-y-6">
+            <PathwayVisual pathway="community" />
             <h1 className="text-4xl md:text-5xl font-heading font-bold text-foreground leading-tight tracking-tight">
               Welcome to the Collective
             </h1>
@@ -141,7 +121,7 @@ export default function CommunityLearning() {
             
             {/* Access Navigator Button */}
             <div className="flex justify-center">
-              <Button onClick={() => setShowReentryAI(true)} className="bg-[hsl(var(--osu-scarlet))] hover:bg-[hsl(var(--osu-scarlet-dark))] text-white">
+              <Button onClick={() => setShowReentryAI(true)} variant="osu-scarlet" className="shadow-lg hover:shadow-xl transition-all duration-300">
                 Access Your Reentry Navigator
               </Button>
             </div>
@@ -164,7 +144,7 @@ export default function CommunityLearning() {
                 return (
                   <Card 
                     key={index} 
-                    className="text-left hover:shadow-lg transition-all duration-300 border-l-4 border-l-[hsl(var(--osu-scarlet))] cursor-pointer hover:scale-105"
+                    className="text-left hover:shadow-lg transition-all duration-300 border-l-4 border-l-osu-scarlet cursor-pointer hover:scale-105"
                     onClick={() => {
                       setSelectedCoach({
                         name: coach.name,
@@ -176,12 +156,12 @@ export default function CommunityLearning() {
                   >
                     <CardContent className="p-4">
                       <div className="flex items-start gap-3">
-                        <div className="w-8 h-8 bg-[hsl(var(--osu-scarlet))] rounded-lg flex items-center justify-center flex-shrink-0 mt-1">
-                          <Icon className="h-4 w-4 text-white" />
+                        <div className="w-8 h-8 bg-osu-scarlet rounded-lg flex items-center justify-center flex-shrink-0 mt-1">
+                          <Icon className="h-4 w-4 text-osu-scarlet-foreground" />
                         </div>
                         <div>
                           <h3 className="font-semibold text-foreground mb-1">{coach.name}</h3>
-                          <p className="text-sm text-[hsl(var(--osu-scarlet))] font-medium mb-2">{coach.specialty}</p>
+                          <p className="text-sm text-osu-scarlet font-medium mb-2">{coach.specialty}</p>
                           <p className="text-sm text-muted-foreground leading-relaxed">
                             {coach.description}
                           </p>
@@ -202,23 +182,24 @@ export default function CommunityLearning() {
           {/* Tools for Your Journey Section */}
           <section className="space-y-12">
             <div className="space-y-4">
+              <PathwayVisual pathway="learning" />
               <h2 className="text-3xl md:text-4xl font-heading font-bold text-foreground flex items-center justify-center gap-3">
-                <BookOpen className="h-8 w-8 text-[hsl(var(--osu-scarlet))]" />
+                <BookOpen className="h-8 w-8 text-osu-scarlet" />
                 Tools for Your Journey
               </h2>
               <p className="text-lg text-muted-foreground font-body">
                 8 guided learning modules to help you rebuild your life at your pace
               </p>
               <div className="flex items-center justify-center gap-2">
-                <Badge variant="secondary" className="text-xs bg-[hsl(var(--osu-gray))] text-white">100% Free</Badge>
-                <Badge variant="secondary" className="text-xs bg-[hsl(var(--osu-gray))] text-white">Educational Only</Badge>
+                <Badge variant="secondary" className="text-xs bg-osu-gray text-osu-gray-foreground">100% Free</Badge>
+                <Badge variant="secondary" className="text-xs bg-osu-gray text-osu-gray-foreground">Educational Only</Badge>
               </div>
             </div>
 
             <div className="space-y-10">
               {Object.entries(learningGroups).map(([groupName, modules]) => (
                 <div key={groupName} className="space-y-6">
-                  <h3 className="text-xl md:text-2xl font-heading font-semibold text-[hsl(var(--osu-scarlet))]">
+                  <h3 className="text-xl md:text-2xl font-heading font-semibold text-osu-scarlet">
                     {groupName}
                   </h3>
                   <div className={`grid gap-4 justify-center ${modules.length === 2 ? 'grid-cols-1 md:grid-cols-2 max-w-2xl mx-auto' : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3 max-w-4xl mx-auto'}`}>
@@ -227,8 +208,8 @@ export default function CommunityLearning() {
                       return (
                         <Card key={index} className="text-left hover:shadow-lg transition-all duration-300 hover:scale-105">
                           <CardHeader className="pb-3">
-                            <div className="w-10 h-10 bg-[hsl(var(--osu-scarlet))]/10 rounded-lg flex items-center justify-center mb-3">
-                              <Icon className="h-5 w-5 text-[hsl(var(--osu-scarlet))]" />
+                            <div className="w-10 h-10 bg-osu-scarlet/10 rounded-lg flex items-center justify-center mb-3">
+                              <Icon className="h-5 w-5 text-osu-scarlet" />
                             </div>
                             <CardTitle className="text-lg leading-tight">
                               {module.title}
@@ -250,7 +231,7 @@ export default function CommunityLearning() {
             <Button 
               onClick={() => setShowApplication(true)} 
               size="lg"
-              className="bg-[hsl(var(--osu-scarlet))] hover:bg-[hsl(var(--osu-scarlet-dark))] text-white shadow-lg hover:shadow-xl transition-all duration-300"
+              variant="osu-gradient"
             >
               <Users className="h-5 w-5 mr-2" />
               Join the Collective Now
@@ -258,30 +239,30 @@ export default function CommunityLearning() {
           </section>
 
           {/* Emergency Help Section */}
-          <section className="bg-[hsl(var(--osu-gray))]/10 rounded-xl p-8 space-y-6">
+          <section className="bg-osu-gray/10 rounded-xl p-8 space-y-6">
             <h2 className="text-2xl font-heading font-semibold text-foreground">
               Need Help Right Now?
             </h2>
             
             <div className="grid md:grid-cols-3 gap-4 max-w-2xl mx-auto">
-              <Button variant="outline" size="lg" className="h-auto p-4 flex flex-col gap-2 border-[hsl(var(--osu-gray))]">
-                <Phone className="h-5 w-5 text-[hsl(var(--osu-scarlet))]" />
+              <Button variant="outline" size="lg" className="h-auto p-4 flex flex-col gap-2 border-osu-gray">
+                <Phone className="h-5 w-5 text-osu-scarlet" />
                 <div>
                   <div className="font-semibold">911</div>
                   <div className="text-xs text-muted-foreground">Emergency</div>
                 </div>
               </Button>
               
-              <Button variant="outline" size="lg" className="h-auto p-4 flex flex-col gap-2 border-[hsl(var(--osu-gray))]">
-                <MessageSquare className="h-5 w-5 text-[hsl(var(--osu-scarlet))]" />
+              <Button variant="outline" size="lg" className="h-auto p-4 flex flex-col gap-2 border-osu-gray">
+                <MessageSquare className="h-5 w-5 text-osu-scarlet" />
                 <div>
                   <div className="font-semibold">988</div>
                   <div className="text-xs text-muted-foreground">Mental Health Support</div>
                 </div>
               </Button>
               
-              <Button variant="outline" size="lg" className="h-auto p-4 flex flex-col gap-2 border-[hsl(var(--osu-gray))]">
-                <Users className="h-5 w-5 text-[hsl(var(--osu-scarlet))]" />
+              <Button variant="outline" size="lg" className="h-auto p-4 flex flex-col gap-2 border-osu-gray">
+                <Users className="h-5 w-5 text-osu-scarlet" />
                 <div>
                   <div className="font-semibold">Quick Exit</div>
                   <div className="text-xs text-muted-foreground">Top Corner</div>

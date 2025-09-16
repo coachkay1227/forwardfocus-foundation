@@ -75,17 +75,15 @@ export default function GetHelpNow() {
               </span>
             </div>
             
-            <div className="flex justify-center">
               <Button 
                 onClick={() => setShowCrisisAI(true)}
                 size="lg"
-                variant="premium"
+                variant="osu-gradient"
                 className="h-16 px-12 text-xl"
               >
                 <Bot className="h-6 w-6 mr-3" />
                 Get Crisis Support Now
               </Button>
-            </div>
           </div>
         </div>
       </header>
@@ -155,7 +153,7 @@ export default function GetHelpNow() {
                   </CardHeader>
                   <CardContent>
                     <p className="mb-4 text-muted-foreground">24/7 suicide & crisis lifeline</p>
-                    <Button asChild variant="premium" size="lg" className="w-full">
+                    <Button asChild variant="osu-gradient" size="lg" className="w-full">
                       <a href="tel:988">Call 988</a>
                     </Button>
                   </CardContent>
@@ -220,7 +218,7 @@ export default function GetHelpNow() {
                         <span>AI learning companion</span>
                       </div>
                     </div>
-                    <Button asChild variant="premium" className="w-full">
+                    <Button asChild variant="osu-scarlet" className="w-full">
                       <Link to="/learn">Explore Learning Programs</Link>
                     </Button>
                   </CardContent>
@@ -276,13 +274,13 @@ export default function GetHelpNow() {
                 <Button 
                   onClick={() => setShowCrisisAI(true)}
                   size="lg"
-                  variant="premium"
+                  variant="osu-gradient"
                   className="h-14 px-8 text-lg"
                 >
                   <Bot className="h-5 w-5 mr-2" />
                   Get Immediate Help
                 </Button>
-                <Button asChild size="lg" variant="secondary" className="h-14 px-8 text-lg">
+                <Button asChild size="lg" variant="osu-gray" className="h-14 px-8 text-lg">
                   <Link to="/auth">
                     <Users className="h-5 w-5 mr-2" />
                     Join Community
