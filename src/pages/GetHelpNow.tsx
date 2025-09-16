@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Phone, AlertTriangle, Heart, Users, BookOpen, Shield, ArrowDown, MessageCircle, ChevronRight, ExternalLink, Bot, CheckCircle } from "lucide-react";
+import { Phone, AlertTriangle, Heart, Users, BookOpen, Shield, ArrowDown, MessageCircle, ChevronRight, ExternalLink, Bot, CheckCircle, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import CrisisSupportAI from "@/components/ai/CrisisSupportAI";
@@ -46,7 +46,8 @@ export default function GetHelpNow() {
   };
 
   return (
-    <main id="main">
+    <>
+      <main id="main">
       {/* Hero Section */}
       <header className="relative bg-gradient-osu-primary text-white overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-muted/90 via-osu-scarlet/80 to-osu-scarlet-dark/70"></div>
@@ -260,4 +261,6 @@ export default function GetHelpNow() {
       isOpen={showCrisisAI} 
       onClose={() => setShowCrisisAI(false)} 
     />
+    </>
   );
+}
