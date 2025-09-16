@@ -196,7 +196,7 @@ export default function CommunityLearning() {
                   <h3 className="text-xl md:text-2xl font-semibold text-[hsl(var(--osu-scarlet))]">
                     {groupName}
                   </h3>
-                  <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  <div className={`grid gap-4 justify-center ${modules.length === 2 ? 'grid-cols-1 md:grid-cols-2 max-w-2xl mx-auto' : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3 max-w-4xl mx-auto'}`}>
                     {modules.map((module, index) => {
                       const Icon = module.icon;
                       return (
