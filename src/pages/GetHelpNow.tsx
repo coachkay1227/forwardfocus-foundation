@@ -4,7 +4,6 @@ import { Phone, AlertTriangle, Heart, Users, BookOpen, Shield, ArrowDown, Messag
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import CrisisSupportAI from "@/components/ai/CrisisSupportAI";
-import DailyHealingToolkit from "@/components/healing/DailyHealingToolkit";
 import diverseWomenSupport from "@/assets/diverse-women-support.jpg";
 
 
@@ -92,9 +91,6 @@ export default function GetHelpNow() {
           </div>
         </div>
       </header>
-
-      {/* Daily Healing Toolkit */}
-      <DailyHealingToolkit />
 
       <div className="container py-24 space-y-32">
         {/* Crisis Support Section */}
