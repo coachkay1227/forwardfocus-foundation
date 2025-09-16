@@ -5,6 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { Badge } from '@/components/ui/badge';
 import { supabase } from '@/integrations/supabase/client';
+import { parseTextForLinks, formatAIResponse, type ParsedTextSegment } from '@/lib/text-parser';
 
 interface Message {
   id: string;
@@ -37,13 +38,14 @@ const ReentryNavigatorAI: React.FC<ReentryNavigatorAIProps> = ({ isOpen, onClose
     {
       id: '1',
       type: 'ai',
-      content: "Welcome to your Reentry Success Navigator! I'm here to help you build a stable, successful life after incarceration. I understand the unique challenges of reentry and can provide step-by-step guidance for housing, employment, legal matters, education, healthcare, family reunification, and financial stability. What area would you like to focus on first?",
+      content: "Hey there! I'm Jordan, your personal Reentry Navigator. I've helped hundreds of people successfully rebuild their lives after incarceration, and I'm here to help you too! 💪\n\nI know this journey takes real courage, and every small step forward is worth celebrating. I can help you with housing, employment, legal matters, education, healthcare, family connections, and financial stability.\n\nWhat's your biggest priority right now? Let's tackle it together!",
       timestamp: new Date(),
     }
   ]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [conversationContext, setConversationContext] = useState<Array<{role: string, content: string}>>([]);
+  const [reentryStage, setReentryStage] = useState<'preparing' | 'recently_released' | 'long_term' | 'family_member'>('recently_released');
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
@@ -60,67 +62,42 @@ const ReentryNavigatorAI: React.FC<ReentryNavigatorAIProps> = ({ isOpen, onClose
     }
   }, [initialQuery, isOpen]);
 
-  const sendMessage = async (messages: {role: string, content: string}[]) => {
+  const sendMessage = async (userQuery: string) => {
     try {
-      const response = await fetch(`https://gzukhsqgkwljfvwkfuno.supabase.co/functions/v1/chat`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd6dWtoc3Fna3dsamZ2d2tmdW5vIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU3MjQyOTMsImV4cCI6MjA3MTMwMDI5M30.Skon84aKH5K5TjW9pVnCI2A-6Z-9KrTYiNknpiqeCpk`
-        },
-        body: JSON.stringify({
-          messages,
-          topic: "reentry-navigator"
-        })
+      const { data, error } = await supabase.functions.invoke('reentry-navigator-ai', {
+        body: {
+          query: userQuery,
+          reentryStage,
+          priorityNeeds: [],
+          previousContext: conversationContext.slice(-6), // Keep last 6 messages for context
+        }
       });
 
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+      if (error) {
+        console.error('Reentry Navigator AI error:', error);
+        throw error;
       }
 
-      const reader = response.body?.getReader();
-      if (!reader) {
-        throw new Error('No response body');
-      }
-
-      const decoder = new TextDecoder();
-      let buffer = '';
-
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) break;
-
-        buffer += decoder.decode(value, { stream: true });
-        const lines = buffer.split('\n');
-        buffer = lines.pop() || '';
-
-        for (const line of lines) {
-          if (line.startsWith('data: ')) {
-            const data = line.slice(6);
-            if (data === '[DONE]') continue;
-            
-            try {
-              const parsed = JSON.parse(data);
-              const content = parsed.choices?.[0]?.delta?.content;
-              if (content) {
-                setMessages(prev => {
-                  const newMessages = [...prev];
-                  const lastMessage = newMessages[newMessages.length - 1];
-                  if (lastMessage.type === 'ai') {
-                    lastMessage.content += content;
-                  }
-                  return newMessages;
-                });
-                scrollToBottom();
-              }
-            } catch (e) {
-              // Skip invalid JSON
-            }
-          }
+      const formattedResponse = formatAIResponse(data.response);
+      
+      setMessages(prev => {
+        const newMessages = [...prev];
+        const lastMessage = newMessages[newMessages.length - 1];
+        if (lastMessage.type === 'ai') {
+          lastMessage.content = formattedResponse;
+          lastMessage.resources = data.resources || [];
         }
-      }
+        return newMessages;
+      });
+
+      // Update conversation context
+      setConversationContext(prev => [
+        ...prev,
+        { role: 'user', content: userQuery },
+        { role: 'assistant', content: formattedResponse }
+      ]);
     } catch (error) {
-      console.error('Reentry Navigator AI error:', error);
+      console.error('Jordan (Reentry Navigator) AI error:', error);
       // Fallback: client-side reentry resource lookup so users still get help
       try {
         const { data: resources } = await supabase
@@ -130,24 +107,27 @@ const ReentryNavigatorAI: React.FC<ReentryNavigatorAIProps> = ({ isOpen, onClose
           .eq('verified', 'verified')
           .limit(10);
 
-        const content = "I'm having trouble connecting to the AI right now, but here are reentry resources I found that match common needs:";
-        const aiMessage: Message = {
-          id: (Date.now() + 1).toString(),
-          type: 'ai',
-          content,
-          timestamp: new Date(),
-          resources: resources || []
-        };
-        setMessages(prev => [...prev, aiMessage]);
+        const content = "I'm experiencing a technical hiccup right now, but don't worry - I've still got your back! Here are some solid reentry resources that can help with common needs. Your success matters, and there are people ready to support you! 💪";
+        setMessages(prev => {
+          const newMessages = [...prev];
+          const lastMessage = newMessages[newMessages.length - 1];
+          if (lastMessage.type === 'ai') {
+            lastMessage.content = content;
+            lastMessage.resources = resources || [];
+          }
+          return newMessages;
+        });
       } catch (fallbackError) {
         console.error('Reentry fallback failed:', fallbackError);
-        const errorMessage: Message = {
-          id: (Date.now() + 1).toString(),
-          type: 'ai',
-          content: "I apologize for the technical issue. Your reentry success is still my priority. For immediate support, call 211 for comprehensive resource navigation, or visit your local reentry program or Ohio Means Jobs center.",
-          timestamp: new Date(),
-        };
-        setMessages(prev => [...prev, errorMessage]);
+        const errorMessage = "I'm having technical difficulties, but your reentry journey is still important to me. For immediate support, call **2-1-1** for comprehensive resource navigation, or visit your local reentry program. You've got this! 🌟";
+        setMessages(prev => {
+          const newMessages = [...prev];
+          const lastMessage = newMessages[newMessages.length - 1];
+          if (lastMessage.type === 'ai') {
+            lastMessage.content = errorMessage;
+          }
+          return newMessages;
+        });
       }
     }
   };
@@ -167,30 +147,27 @@ const ReentryNavigatorAI: React.FC<ReentryNavigatorAIProps> = ({ isOpen, onClose
     setInput('');
     setIsLoading(true);
 
-    // Add empty AI message for streaming
+    // Add empty AI message for response
     const aiMessage: Message = {
       id: (Date.now() + 1).toString(),
       type: 'ai',
-      content: '...',
+      content: 'Let me help you with that...',
       timestamp: new Date(),
     };
     setMessages(prev => [...prev, aiMessage]);
 
-    // Update conversation context and send message
-    const newContext = [...conversationContext, { role: 'user', content: userInput }];
-    await sendMessage(newContext);
-    
-    setConversationContext([...newContext, { role: 'assistant', content: '' }]);
+    // Send message to Jordan
+    await sendMessage(userInput);
     setIsLoading(false);
   };
 
   const quickActions = [
-    "I need transitional housing",
-    "Help me find fair-chance employers",
-    "What documents do I need?",
-    "How do I expunge my record?",
-    "I need job training programs",
-    "Help me reconnect with my family"
+    "I need housing options that accept my background",
+    "Help me find employers who hire people with records", 
+    "What documents do I need to get started?",
+    "How can I clear my record?",
+    "I need job training and skills programs",
+    "Help me rebuild relationships with my family"
   ];
 
   const reentryAreas = [
@@ -206,7 +183,7 @@ const ReentryNavigatorAI: React.FC<ReentryNavigatorAIProps> = ({ isOpen, onClose
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-2xl h-[700px] p-0 overflow-hidden">
+      <DialogContent className="max-w-2xl max-h-[85vh] p-0 flex flex-col overflow-hidden">
         {/* Header */}
         <div className="flex items-center justify-between bg-secondary p-4 text-secondary-foreground">
           <div className="flex items-center gap-3">
@@ -214,8 +191,8 @@ const ReentryNavigatorAI: React.FC<ReentryNavigatorAIProps> = ({ isOpen, onClose
               <Bot className="h-5 w-5" />
             </div>
             <div>
-              <h3 className="font-bold text-lg">Reentry Success Navigator</h3>
-              <p className="text-sm opacity-90">Comprehensive reentry support & planning</p>
+              <h3 className="font-bold text-lg">Jordan - Your Reentry Navigator</h3>
+              <p className="text-sm opacity-90">Encouraging support for your success journey</p>
             </div>
           </div>
           <Button
@@ -248,11 +225,28 @@ const ReentryNavigatorAI: React.FC<ReentryNavigatorAIProps> = ({ isOpen, onClose
           {messages.map((message) => (
             <div key={message.id} className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}>
               <div className={`max-w-[80%] rounded-lg p-3 ${
-                message.type === 'user' 
+                 message.type === 'user' 
                   ? 'bg-secondary text-secondary-foreground' 
                   : 'bg-muted text-foreground border'
-              }`}>
-                <p className="text-sm leading-relaxed">{message.content}</p>
+               }`}>
+                <div className="text-sm leading-relaxed">
+                  {parseTextForLinks(message.content).map((segment: ParsedTextSegment, segmentIndex: number) => (
+                    <span key={segmentIndex}>
+                      {segment.type === 'text' ? (
+                        segment.content
+                      ) : (
+                        <a
+                          href={segment.href}
+                          className="text-primary hover:underline font-medium"
+                          target={segment.type === 'website' ? '_blank' : undefined}
+                          rel={segment.type === 'website' ? 'noopener noreferrer' : undefined}
+                        >
+                          {segment.content}
+                        </a>
+                      )}
+                    </span>
+                  ))}
+                </div>
 
                 {message.resources && message.resources.length > 0 && (
                   <div className="mt-3 space-y-2">
@@ -324,8 +318,8 @@ const ReentryNavigatorAI: React.FC<ReentryNavigatorAIProps> = ({ isOpen, onClose
         </div>
 
         {/* Quick Actions */}
-        <div className="border-t p-4">
-          <p className="text-sm font-medium mb-3">Common reentry needs:</p>
+        <div className="border-t p-4 bg-background">
+          <p className="text-sm font-medium mb-3">Quick help with common needs:</p>
           <div className="grid grid-cols-2 gap-2 mb-4">
             {quickActions.map((action, index) => (
               <Button
@@ -345,7 +339,7 @@ const ReentryNavigatorAI: React.FC<ReentryNavigatorAIProps> = ({ isOpen, onClose
             <Input
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              placeholder="What do you need help with for your reentry?"
+              placeholder="What can Jordan help you with today?"
               onKeyDown={(e) => e.key === 'Enter' && handleSend()}
               disabled={isLoading}
             />
@@ -354,7 +348,7 @@ const ReentryNavigatorAI: React.FC<ReentryNavigatorAIProps> = ({ isOpen, onClose
             </Button>
           </div>
           <p className="text-xs text-muted-foreground mt-2">
-            Comprehensive reentry support • Justice-friendly resources • Success-focused guidance
+            Your success matters • Justice-friendly resources • Encouraging guidance every step
           </p>
         </div>
       </DialogContent>
