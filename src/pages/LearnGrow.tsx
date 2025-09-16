@@ -4,10 +4,11 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { CommunityApplication } from "@/components/learn/CommunityApplication";
-import AICompanion from "@/components/learn/AICompanion";
+import ReentryNavigatorAI from "@/components/ai/ReentryNavigatorAI";
 
 export default function CommunityLearning() {
   const [showApplication, setShowApplication] = useState(false);
+  const [showReentryAI, setShowReentryAI] = useState(false);
 
   useEffect(() => {
     // SEO optimization
@@ -129,6 +130,13 @@ export default function CommunityLearning() {
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
               This Reentry Navigator is built just for you—free, 24/7 support for housing, employment, legal guidance, healing, and more. Start wherever feels right.
             </p>
+            
+            {/* Access Navigator Button */}
+            <div className="flex justify-center">
+              <Button onClick={() => setShowReentryAI(true)} className="bg-[hsl(var(--osu-scarlet))] hover:bg-[hsl(var(--osu-scarlet-dark))] text-white">
+                Access Your Reentry Navigator
+              </Button>
+            </div>
           </section>
 
           {/* Reentry Navigator Section */}
@@ -164,8 +172,6 @@ export default function CommunityLearning() {
                 );
               })}
             </div>
-
-            <AICompanion />
           </section>
 
           {/* Tools for Your Journey Section */}
@@ -271,6 +277,9 @@ export default function CommunityLearning() {
         isOpen={showApplication} 
         onClose={() => setShowApplication(false)} 
       />
+      
+      {/* Reentry Navigator AI */}
+      <ReentryNavigatorAI isOpen={showReentryAI} onClose={() => setShowReentryAI(false)} />
     </div>
   );
 }
