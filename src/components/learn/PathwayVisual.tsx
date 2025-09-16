@@ -34,7 +34,7 @@ export const PathwayVisual = ({ pathway }: { pathway: string }) => {
       <img 
         src={getImage()} 
         alt={getAlt()}
-        className="w-full h-auto aspect-[3/2] object-cover transition-transform duration-300 hover:scale-105"
+        className="w-full h-80 object-cover transition-transform duration-300 hover:scale-105"
       />
       <div className="absolute inset-0 bg-gradient-to-t from-osu-scarlet/30 via-transparent to-transparent" />
     </div>
