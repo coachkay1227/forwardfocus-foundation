@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { X, Send, Bot, Home, Briefcase, GraduationCap, Heart, Scale, DollarSign } from 'lucide-react';
+import { X, Send, Bot, Home, Briefcase, GraduationCap, Heart, Scale, DollarSign, User } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
@@ -18,7 +18,9 @@ interface Message {
     name: string;
     organization: string;
     phone?: string;
+    email?: string;
     website?: string;
+    address?: string;
     type: string;
     description?: string;
     justice_friendly?: boolean;
@@ -337,95 +339,151 @@ const ReentryNavigatorAI: React.FC<ReentryNavigatorAIProps> = ({ isOpen, onClose
         </div>
 
         {/* Messages */}
-        <div className="flex-1 overflow-y-auto p-4 space-y-4">
+        <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-background/50">
           {messages.map((message) => (
-            <div key={message.id} className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}>
-              <div className={`max-w-[80%] rounded-lg p-3 ${
-                 message.type === 'user' 
-                  ? 'bg-secondary text-secondary-foreground' 
-                  : 'bg-muted text-foreground border'
-               }`}>
-                <div className="text-sm leading-relaxed">
-                  {parseTextForLinks(message.content).map((segment: ParsedTextSegment, segmentIndex: number) => (
-                    <span key={segmentIndex}>
-                      {segment.type === 'text' ? (
-                        segment.content
-                      ) : (
-                        <a
-                          href={segment.href}
-                          className="text-primary hover:underline font-medium"
-                          target={segment.type === 'website' ? '_blank' : undefined}
-                          rel={segment.type === 'website' ? 'noopener noreferrer' : undefined}
-                        >
-                          {segment.content}
-                        </a>
-                      )}
-                    </span>
-                  ))}
-                </div>
-
-                {message.resources && message.resources.length > 0 && (
-                  <div className="mt-3 space-y-2">
-                    <p className="text-xs font-semibold text-foreground/80">Reentry Resources:</p>
-                    {message.resources.map((resource) => (
-                      <div key={resource.id} className="bg-card border rounded-lg p-3 text-xs">
-                        <div className="flex items-start justify-between">
-                          <div className="flex-1">
-                            <div className="font-semibold text-foreground">{resource.name}</div>
-                            <div className="text-muted-foreground">{resource.organization}</div>
-                            {resource.description && (
-                              <p className="text-muted-foreground mt-1">{resource.description}</p>
-                            )}
-                          </div>
-                          {resource.justice_friendly && (
-                            <Badge variant="secondary" className="ml-2 text-xs">
-                              Justice-Friendly
-                            </Badge>
-                          )}
-                        </div>
-                        
-                        <div className="flex items-center gap-2 mt-2">
-                          <Badge variant="outline" className="text-xs">
-                            {resource.type}
-                          </Badge>
-                          {resource.city && resource.county && (
-                            <span className="text-xs text-muted-foreground">
-                              {resource.city}, {resource.county} County
-                            </span>
-                          )}
-                        </div>
-                        
-                        <div className="flex gap-2 mt-2">
-                          {resource.phone && (
-                            <Button asChild size="sm" variant="default">
-                              <a href={`tel:${resource.phone}`}>
-                                Call: {resource.phone}
-                              </a>
-                            </Button>
-                          )}
-                          {resource.website && (
-                            <Button asChild size="sm" variant="outline">
-                              <a href={resource.website} target="_blank" rel="noopener noreferrer">
-                                Visit Website
-                              </a>
-                            </Button>
-                          )}
-                        </div>
-                      </div>
-                    ))}
+            <div key={message.id}>
+              {message.type === 'ai' ? (
+                <div className="flex gap-3 mb-6">
+                  <div className="flex-shrink-0 w-8 h-8 bg-primary rounded-full flex items-center justify-center">
+                    <Bot className="h-4 w-4 text-primary-foreground" />
                   </div>
-                )}
-              </div>
+                  <div className="flex-grow min-w-0">
+                    <div className="bg-muted/30 rounded-2xl px-4 py-3 max-w-[90%] border border-border/40">
+                      <div className="text-sm leading-relaxed space-y-3">
+                        {parseTextForLinks(message.content).map((segment, segIndex) => (
+                          <span key={segIndex} className="inline">
+                            {segment.type === 'text' ? (
+                              <span 
+                                dangerouslySetInnerHTML={{ 
+                                  __html: segment.content
+                                    .replace(/\*\*(.*?)\*\*/g, '<strong class="font-semibold">$1</strong>')
+                                    .replace(/\*(.*?)\*/g, '<em class="italic">$1</em>')
+                                    .replace(/\n/g, '<br />')
+                                }} 
+                              />
+                            ) : (
+                              <a
+                                href={segment.href}
+                                className="text-primary hover:text-primary/80 underline underline-offset-2 font-medium transition-colors"
+                                target={segment.type === 'website' ? '_blank' : undefined}
+                                rel={segment.type === 'website' ? 'noopener noreferrer' : undefined}
+                                onClick={(e) => {
+                                  if (segment.type === 'phone') {
+                                    // Allow default tel: behavior
+                                    console.log(`Calling ${segment.content}`);
+                                  }
+                                }}
+                              >
+                                {segment.content}
+                              </a>
+                            )}
+                          </span>
+                        ))}
+                      </div>
+
+                      {message.resources && message.resources.length > 0 && (
+                        <div className="mt-4 space-y-3">
+                          <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wider border-b border-border/30 pb-1">
+                            📋 Recommended Resources
+                          </div>
+                          <div className="space-y-3">
+                            {message.resources.map((resource, resourceIndex) => (
+                              <div 
+                                key={resourceIndex} 
+                                className="bg-background/80 border border-border/60 rounded-xl p-4 text-sm hover:shadow-sm transition-shadow"
+                              >
+                                <div className="font-semibold text-foreground mb-2 text-base">{resource.name}</div>
+                                {resource.organization && (
+                                  <div className="text-muted-foreground mb-3 font-medium">{resource.organization}</div>
+                                )}
+                                {resource.type && (
+                                  <div className="inline-block bg-primary/10 text-primary text-xs font-medium px-2 py-1 rounded-full mb-3">
+                                    {resource.type}
+                                  </div>
+                                )}
+                                {resource.description && (
+                                  <div className="text-muted-foreground mb-3 leading-relaxed">
+                                    {resource.description}
+                                  </div>
+                                )}
+                                <div className="space-y-2 text-sm">
+                                  {resource.phone && (
+                                    <div className="flex items-center gap-2 text-foreground">
+                                      <span className="text-green-600">📞</span>
+                                      <span className="font-medium">Phone:</span>
+                                      <a 
+                                        href={`tel:${resource.phone.replace(/[^\d]/g, '')}`}
+                                        className="text-primary hover:text-primary/80 underline underline-offset-2 font-medium"
+                                      >
+                                        {resource.phone}
+                                      </a>
+                                    </div>
+                                  )}
+                                  {resource.email && (
+                                    <div className="flex items-center gap-2 text-foreground">
+                                      <span className="text-blue-600">✉️</span>
+                                      <span className="font-medium">Email:</span>
+                                      <a 
+                                        href={`mailto:${resource.email}`}
+                                        className="text-primary hover:text-primary/80 underline underline-offset-2 font-medium"
+                                      >
+                                        {resource.email}
+                                      </a>
+                                    </div>
+                                  )}
+                                  {resource.website && (
+                                    <div className="flex items-center gap-2 text-foreground">
+                                      <span className="text-purple-600">🌐</span>
+                                      <span className="font-medium">Website:</span>
+                                      <a 
+                                        href={resource.website.startsWith('http') ? resource.website : `https://${resource.website}`}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="text-primary hover:text-primary/80 underline underline-offset-2 font-medium"
+                                      >
+                                        {resource.website}
+                                      </a>
+                                    </div>
+                                  )}
+                                  {resource.address && (
+                                    <div className="flex items-center gap-2 text-foreground">
+                                      <span className="text-red-600">📍</span>
+                                      <span className="font-medium">Address:</span>
+                                      <span className="text-muted-foreground">{resource.address}</span>
+                                    </div>
+                                  )}
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <div className="flex gap-3 mb-6 justify-end">
+                  <div className="bg-primary text-primary-foreground rounded-2xl px-4 py-3 max-w-[80%] shadow-sm">
+                    <div className="text-sm leading-relaxed">{message.content}</div>
+                  </div>
+                  <div className="flex-shrink-0 w-8 h-8 bg-secondary rounded-full flex items-center justify-center">
+                    <Bot className="h-4 w-4 text-secondary-foreground" />
+                  </div>
+                </div>
+              )}
             </div>
           ))}
 
           {isLoading && (
-            <div className="flex justify-start">
-              <div className="bg-muted rounded-lg p-3 border">
+            <div className="flex gap-3 mb-6">
+              <div className="flex-shrink-0 w-8 h-8 bg-primary rounded-full flex items-center justify-center">
+                <Bot className="h-4 w-4 text-primary-foreground" />
+              </div>
+              <div className="bg-muted/30 rounded-2xl px-4 py-3 border border-border/40">
                 <div className="flex space-x-1">
-                  <div className="h-2 w-2 bg-secondary rounded-full animate-bounce" />
-                  <div className="h-2 w-2 bg-secondary rounded-full animate-bounce" style={{ animationDelay: '0.1s' }} />
-                  <div className="h-2 w-2 bg-secondary rounded-full animate-bounce" style={{ animationDelay: '0.2s' }} />
+                  <div className="h-2 w-2 bg-primary rounded-full animate-bounce" />
+                  <div className="h-2 w-2 bg-primary rounded-full animate-bounce" style={{ animationDelay: '0.1s' }} />
+                  <div className="h-2 w-2 bg-primary rounded-full animate-bounce" style={{ animationDelay: '0.2s' }} />
                 </div>
               </div>
             </div>
@@ -463,7 +521,7 @@ const ReentryNavigatorAI: React.FC<ReentryNavigatorAIProps> = ({ isOpen, onClose
               <Send className="h-4 w-4" />
             </Button>
           </div>
-          <div className="flex items-center justify-between mt-2">
+          <div className="flex items-center justify-between mt-3">
             <p className="text-xs text-muted-foreground">
               Your success matters • Justice-friendly resources • Encouraging guidance every step
             </p>
@@ -484,6 +542,39 @@ const ReentryNavigatorAI: React.FC<ReentryNavigatorAIProps> = ({ isOpen, onClose
               >
                 Email Chat History
               </Button>
+            </div>
+          </div>
+
+          {/* Emergency Help Section */}
+          <div className="border-t border-border/50 mt-4 pt-4 bg-destructive/5 rounded-lg">
+            <div className="text-sm text-center space-y-3">
+              <div className="font-semibold text-foreground flex items-center justify-center gap-2">
+                <span className="text-red-600">🚨</span>
+                Need Help Right Now?
+              </div>
+              <div className="flex justify-center gap-6 text-sm">
+                <a 
+                  href="tel:911" 
+                  className="flex items-center gap-2 text-red-600 hover:text-red-700 font-medium transition-colors"
+                >
+                  <span>🚨</span>
+                  Emergency: 911
+                </a>
+                <a 
+                  href="tel:988" 
+                  className="flex items-center gap-2 text-blue-600 hover:text-blue-700 font-medium transition-colors"
+                >
+                  <span>💙</span>
+                  Crisis: 988
+                </a>
+                <a 
+                  href="tel:211" 
+                  className="flex items-center gap-2 text-green-600 hover:text-green-700 font-medium transition-colors"
+                >
+                  <span>📞</span>
+                  Resources: 211
+                </a>
+              </div>
             </div>
           </div>
         </div>

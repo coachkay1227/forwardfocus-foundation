@@ -7,10 +7,10 @@ export interface ParsedTextSegment {
 export function parseTextForLinks(text: string): ParsedTextSegment[] {
   const segments: ParsedTextSegment[] = [];
   
-  // Enhanced regex patterns
-  const phoneRegex = /(\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4})/g;
-  const emailRegex = /([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/g;
-  const websiteRegex = /(https?:\/\/[^\s<>"']+|www\.[^\s<>"']+\.[a-zA-Z]{2,})/g;
+  // Enhanced regex patterns for better detection
+  const phoneRegex = /(\(?([0-9]{3})\)?[-.\s]?([0-9]{3})[-.\s]?([0-9]{4})|\b(911|988|211|\d{1}-800-\d{3}-\d{4})\b)/g;
+  const emailRegex = /\b([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})\b/g;
+  const websiteRegex = /(https?:\/\/[^\s<>"'\[\]()]+(?:\([^\s<>"'\[\]()]*\))?[^\s<>"'\[\]()]*|(?:www\.)?[a-zA-Z0-9]([a-zA-Z0-9\-]{0,61}[a-zA-Z0-9])?(\.[a-zA-Z0-9]([a-zA-Z0-9\-]{0,61}[a-zA-Z0-9])?)*\.[a-zA-Z]{2,}(?:\/[^\s<>"'\[\]()]*)?)/g;
   
   let lastIndex = 0;
   const matches: { index: number; length: number; type: 'phone' | 'email' | 'website'; content: string; href: string }[] = [];
@@ -93,16 +93,29 @@ export function parseTextForLinks(text: string): ParsedTextSegment[] {
 }
 
 export function formatAIResponse(text: string): string {
-  // Add better formatting for AI responses
+  // Enhanced formatting for ChatGPT-like appearance
   return text
-    .replace(/\n\n/g, '\n\n') // Preserve paragraph breaks
-    .replace(/\*\*(.*?)\*\*/g, '$1') // Remove markdown bold
-    .replace(/\*(.*?)\*/g, '$1') // Remove markdown italic
-    .replace(/^- /gm, '• ') // Convert bullet points
-    .replace(/^\d+\. /gm, (match, offset, string) => {
-      const lineStart = string.lastIndexOf('\n', offset) + 1;
-      const prefix = string.slice(lineStart, offset);
-      return prefix.length === 0 ? match : match;
-    })
+    // Preserve and enhance paragraph breaks
+    .replace(/\n\n/g, '\n\n')
+    // Preserve markdown formatting (don't strip it)
+    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') // Bold to HTML
+    .replace(/(?<!\*)\*([^*\n]+)\*(?!\*)/g, '<em>$1</em>') // Italic to HTML
+    // Enhanced bullet point formatting
+    .replace(/^[\s]*[-*+]\s/gm, '• ')
+    // Enhanced numbered list formatting  
+    .replace(/^[\s]*(\d+)[\.\)]\s/gm, '$1. ')
+    // Format phone numbers
+    .replace(/\b(\d{3}[-.\s]?\d{3}[-.\s]?\d{4})\b/g, '$1')
+    // Clean up extra whitespace while preserving intentional breaks
+    .replace(/[ \t]+/g, ' ')
+    .replace(/\n\s*\n\s*\n/g, '\n\n')
     .trim();
+}
+
+export function renderFormattedText(text: string): string {
+  const formatted = formatAIResponse(text);
+  return formatted
+    .split('\n')
+    .map(line => line.trim())
+    .join('\n');
 }
