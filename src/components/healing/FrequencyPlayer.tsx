@@ -12,8 +12,7 @@ const frequencies = [
   { value: '528', label: '528 Hz - Love & Healing', description: 'DNA repair and transformation' },
   { value: '432', label: '432 Hz - Anxiety Relief', description: 'Calming frequency for reducing anxiety and stress' },
   { value: '396', label: '396 Hz - Fear Release', description: 'Liberating fear and guilt' },
-  { value: '741', label: '741 Hz - Expression', description: 'Awakening intuition' },
-  { value: 'nature', label: 'Nature Sounds', description: 'Ocean waves and forest sounds' }
+  { value: '741', label: '741 Hz - Expression', description: 'Awakening intuition' }
 ];
 
 const FrequencyPlayer = ({ onUse }: FrequencyPlayerProps) => {
@@ -117,15 +116,8 @@ const FrequencyPlayer = ({ onUse }: FrequencyPlayerProps) => {
       }
       
       // Play the selected frequency
-      if (selectedFreq === 'nature') {
-        toast({
-          title: "Nature sounds simulation",
-          description: "In a real app, this would play nature sounds",
-        });
-      } else {
-        const frequency = parseInt(selectedFreq);
-        playFrequency(frequency);
-      }
+      const frequency = parseInt(selectedFreq);
+      playFrequency(frequency);
     } else {
       setTimeLeft(0);
       stopFrequency();
@@ -147,15 +139,8 @@ const FrequencyPlayer = ({ onUse }: FrequencyPlayerProps) => {
     if (isPlaying) {
       // Stop current frequency and start new one
       stopFrequency();
-      if (freq === 'nature') {
-        toast({
-          title: "Nature sounds selected",
-          description: "Switching to nature sounds simulation",
-        });
-      } else {
-        const frequency = parseInt(freq);
-        playFrequency(frequency);
-      }
+      const frequency = parseInt(freq);
+      playFrequency(frequency);
       onUse();
     }
   };
