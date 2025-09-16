@@ -109,8 +109,12 @@ export default function CommunityLearning() {
       {/* Hero Section with Premium Branding */}
       <header className="relative bg-gradient-osu-primary text-white overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-muted/90 via-osu-scarlet/80 to-osu-scarlet-dark/70"></div>
-        <div className="relative container py-20 md:py-28 text-center">
-          <div className="max-w-5xl mx-auto">
+        <div className="relative container py-24 md:py-32">
+          <div className="max-w-5xl mx-auto text-center">
+            <div className="flex items-center justify-center gap-3 mb-8">
+              <Users className="h-8 w-8 text-white" />
+              <span className="text-sm uppercase tracking-wider font-medium bg-white/10 backdrop-blur-sm border border-white/20 px-4 py-2 rounded-full">The Collective</span>
+            </div>
             <h1 className="font-heading text-5xl md:text-7xl font-bold mb-8 leading-tight">
               Welcome to the Collective
             </h1>
@@ -133,7 +137,6 @@ export default function CommunityLearning() {
               </span>
             </div>
 
-            {/* Access Navigator Button */}
             <div className="flex justify-center">
               <Button onClick={() => setShowReentryAI(true)} variant="secondary" size="lg" className="bg-white text-osu-scarlet hover:bg-white/90 shadow-lg hover:shadow-xl transition-all duration-300">
                 <Bot className="h-5 w-5 mr-2" />
@@ -144,7 +147,7 @@ export default function CommunityLearning() {
         </div>
       </header>
 
-      <main className="container py-20 space-y-24 font-body">
+      <main className="container py-24 space-y-32 font-body">
         <div className="max-w-6xl mx-auto">
           
           {/* Community Visual */}

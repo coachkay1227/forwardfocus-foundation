@@ -205,49 +205,37 @@ export default function VictimServices() {
         <header className="relative bg-gradient-osu-primary text-white overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-br from-muted/90 via-osu-scarlet/80 to-osu-scarlet-dark/70"></div>
           <div className="relative container py-24 md:py-32">
-            <div className="grid lg:grid-cols-2 gap-16 items-center">
-              <div className="text-center lg:text-left">
-                <div className="flex items-center justify-center lg:justify-start gap-3 mb-8">
-                  <Shield className="h-8 w-8 text-white" />
-                  <span className="text-sm uppercase tracking-wider font-medium bg-white/10 backdrop-blur-sm border border-white/20 px-4 py-2 rounded-full">Healing & Safety Hub</span>
-                </div>
-                <h1 className="font-heading text-5xl md:text-7xl font-bold mb-8 leading-tight">
-                  You Are Not Alone.
-                  <span className="text-white/80">Healing Starts Here.</span>
-                </h1>
-                <p className="text-lg md:text-xl text-white/90 mb-12 leading-relaxed">
-                  Comprehensive support for crime victims and survivors. Crisis intervention, advocacy, 
-                  legal aid, and trauma-informed healing resources available 24/7.
-                </p>
-                <div className="flex flex-col sm:flex-row gap-4 max-w-lg mx-auto lg:mx-0">
-                  <Button 
-                    size="lg" 
-                    variant="secondary"
-                    className="bg-white text-osu-scarlet hover:bg-white/90"
-                    onClick={() => setShowVictimAI(true)}
-                  >
-                    <Bot className="h-5 w-5 mr-2" />
-                    Get Personalized Help
-                  </Button>
-                  <Button 
-                    size="lg" 
-                    variant="hero"
-                    onClick={() => window.location.href = 'tel:988'}
-                  >
-                    <Phone className="h-5 w-5 mr-2" />
-                    Crisis Support: 988
-                  </Button>
-                </div>
+            <div className="max-w-5xl mx-auto text-center">
+              <div className="flex items-center justify-center gap-3 mb-8">
+                <Shield className="h-8 w-8 text-white" />
+                <span className="text-sm uppercase tracking-wider font-medium bg-white/10 backdrop-blur-sm border border-white/20 px-4 py-2 rounded-full">Healing & Safety Hub</span>
               </div>
-              <div className="relative rounded-2xl overflow-hidden shadow-xl">
-                <img src={diverseFamiliesImage} alt="Diverse families healing together in supportive community environment" className="w-full h-80 object-cover" />
-                <div className="absolute inset-0 bg-gradient-to-t from-accent/90 to-transparent flex items-end">
-                  <div className="p-8 text-accent-foreground w-full text-center">
-                    <p className="text-2xl font-semibold">
-                      Strength in community, healing in connection
-                    </p>
-                  </div>
-                </div>
+              <h1 className="font-heading text-5xl md:text-7xl font-bold mb-8 leading-tight">
+                You Are Not Alone.
+                <span className="block text-white/80">Healing Starts Here.</span>
+              </h1>
+              <p className="text-lg md:text-xl text-white/90 mb-12 leading-relaxed max-w-3xl mx-auto">
+                Comprehensive support for crime victims and survivors. Crisis intervention, advocacy, 
+                legal aid, and trauma-informed healing resources available 24/7.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 max-w-lg mx-auto">
+                <Button 
+                  size="lg" 
+                  variant="secondary"
+                  className="bg-white text-osu-scarlet hover:bg-white/90"
+                  onClick={() => setShowVictimAI(true)}
+                >
+                  <Bot className="h-5 w-5 mr-2" />
+                  Get Personalized Help
+                </Button>
+                <Button 
+                  size="lg" 
+                  variant="hero"
+                  onClick={() => window.location.href = 'tel:988'}
+                >
+                  <Phone className="h-5 w-5 mr-2" />
+                  Crisis Support: 988
+                </Button>
               </div>
             </div>
           </div>
