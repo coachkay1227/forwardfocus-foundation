@@ -67,13 +67,13 @@ const Header = ({
       window.location.href = `/search?q=${encodeURIComponent(searchQuery)}`;
     }
   };
-  return <header className="sticky top-0 z-50 bg-white border-b">
+  return <header className="sticky top-0 z-50 bg-gradient-to-r from-osu-gray-light/30 via-cream/50 to-osu-gray-light/20 border-b">
       {/* Crisis Ribbon - removed */}
 
       {/* Top Utility Bar - removed, replaced with crisis popup */}
 
       {/* Main Navigation */}
-      <div className="bg-white/95 backdrop-blur-sm border-b border-border shadow-sm">
+      <div className="bg-gradient-to-r from-osu-gray-light/30 via-cream/50 to-osu-gray-light/20 backdrop-blur-sm border-b border-border/50 shadow-sm">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-18">
             {/* Mobile menu button */}
@@ -150,8 +150,12 @@ const Header = ({
 
             {/* Logo */}
             <div className="logo flex-1 md:flex-none">
-              <NavLink to="/" className="flex items-center hover:opacity-80 transition-opacity">
-                <img src="/logo-new.png" alt="Forward Focus Elevation" className="h-12 w-auto" />
+              <NavLink to="/" className="flex items-center hover:scale-105 transition-all duration-300 group">
+                <img 
+                  src="/logo-new.png" 
+                  alt="Forward Focus Elevation" 
+                  className="h-14 w-auto drop-shadow-lg filter brightness-110 contrast-110 group-hover:drop-shadow-xl transition-all duration-300" 
+                />
               </NavLink>
             </div>
 
