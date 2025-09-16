@@ -34,33 +34,39 @@ export default function CommunityLearning() {
 
   const supportCoaches = [
     {
-      name: "Housing Transition Coach",
-      description: "Find transitional housing, navigate rental applications, understand tenant rights",
+      name: "Coach Dana",
+      specialty: "Housing Transition",
+      description: "I help you find safe, stable housing and navigate the rental process with confidence",
       icon: Home
     },
     {
-      name: "Employment Navigator", 
-      description: "Resume building, interview prep, felon-friendly employers, job search strategies",
+      name: "Coach Malik", 
+      specialty: "Employment Support",
+      description: "From resume building to interview prep, I'm here to help you land meaningful work",
       icon: Briefcase
     },
     {
-      name: "Legal Document Assistant",
-      description: "Court obligations, record expungement, documentation guidance",
+      name: "Coach Rivera",
+      specialty: "Legal Guidance",
+      description: "Let's tackle court obligations, expungement, and legal paperwork together",
       icon: Scale
     },
     {
-      name: "Family Reconnection Guide",
-      description: "Communication strategies, boundary setting, rebuilding trust and relationships",
+      name: "Coach Taylor",
+      specialty: "Family Support",
+      description: "Rebuilding relationships takes time. I'll guide you through every conversation",
       icon: HeartHandshake
     },
     {
-      name: "Financial Stability Coach",
-      description: "Banking basics, budgeting, credit repair, benefit applications",
+      name: "Coach Jordan",
+      specialty: "Financial Stability",
+      description: "Banking, budgeting, credit repair - we'll build your financial foundation step by step",
       icon: PiggyBank
     },
     {
-      name: "Wellness & Trauma Support",
-      description: "Mental health resources, coping strategies, crisis intervention",
+      name: "Coach Sam",
+      specialty: "Mental Wellness",
+      description: "Your mental health matters. I'm here to support your healing journey",
       icon: Brain
     }
   ];
@@ -158,7 +164,8 @@ export default function CommunityLearning() {
                           <Icon className="h-4 w-4 text-white" />
                         </div>
                         <div>
-                          <h3 className="font-semibold text-foreground mb-2">{coach.name}</h3>
+                          <h3 className="font-semibold text-foreground mb-1">{coach.name}</h3>
+                          <p className="text-sm text-[hsl(var(--osu-scarlet))] font-medium mb-2">{coach.specialty}</p>
                           <p className="text-sm text-muted-foreground leading-relaxed">
                             {coach.description}
                           </p>
