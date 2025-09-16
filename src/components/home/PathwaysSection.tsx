@@ -41,7 +41,7 @@ export const PathwaysSection = () => {
                 className="w-full bg-gradient-to-r from-osu-scarlet to-osu-scarlet-dark hover:from-osu-scarlet-dark hover:to-osu-scarlet text-white font-semibold h-12 shadow-md hover:shadow-lg transition-all duration-300" 
                 aria-label="Join learning community"
               >
-                <Link to="/learn">Join Learning Community →</Link>
+                <Link to="/learn">The Collective →</Link>
               </Button>
             </CardContent>
           </Card>

@@ -12,8 +12,8 @@ export default function CommunityLearning() {
 
   useEffect(() => {
     // SEO optimization
-    document.title = "Learning & Growth Community | Forward Focus Collective";
-    const desc = "Access your AI-powered Reentry Navigator and 8 comprehensive learning modules designed for justice-impacted individuals and families.";
+    document.title = "The Collective | Forward Focus Collective";
+    const desc = "Access your Reentry Navigator and comprehensive learning community designed for justice impacted individuals and families.";
     
     let meta = document.querySelector('meta[name="description"]') as HTMLMetaElement | null;
     if (!meta) {
@@ -69,7 +69,7 @@ export default function CommunityLearning() {
     "Mind & Healing": [
       {
         title: "Welcome Rest Your Path",
-        description: "Begin your healing journey with trauma-informed practices and community connection",
+        description: "Begin your healing journey with trauma informed practices and community connection",
         icon: Heart
       },
       {
@@ -85,7 +85,7 @@ export default function CommunityLearning() {
         icon: DollarSign
       },
       {
-        title: "Credit Confidence Starter",
+        title: "Credit Confidence",
         description: "Build and repair credit, understand credit reports, and establish financial trust",
         icon: CheckCircle
       },
@@ -107,7 +107,7 @@ export default function CommunityLearning() {
         icon: FileText
       },
       {
-        title: "Purpose, Planning & Pathways",
+        title: "Purpose Planning & Pathways",
         description: "Goal setting, life planning, and creating sustainable pathways forward",
         icon: MapPin
       }
@@ -115,20 +115,20 @@ export default function CommunityLearning() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-background to-muted/20">
-      <main className="container py-16">
+    <div className="min-h-screen bg-gradient-to-b from-background to-muted/20 font-sans">
+      <main className="container py-16 font-body">
         <div className="max-w-4xl mx-auto text-center space-y-16">
           
           {/* Welcome Section */}
           <section className="space-y-6">
-            <h1 className="text-4xl md:text-5xl font-bold text-foreground leading-tight">
+            <h1 className="text-4xl md:text-5xl font-heading font-bold text-foreground leading-tight tracking-tight">
               Welcome to the Collective
             </h1>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed font-medium">
               Whether you're rebuilding, reconnecting, or just figuring it out day by day, you don't have to do it alone.
             </p>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              This Reentry Navigator is built just for you—free, 24/7 support for housing, employment, legal guidance, healing, and more. Start wherever feels right.
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto font-body">
+              This Reentry Navigator is built just for you. Free, 24/7 support for housing, employment, legal guidance, healing, and more. Start wherever feels right.
             </p>
             
             {/* Access Navigator Button */}
@@ -142,11 +142,11 @@ export default function CommunityLearning() {
           {/* Reentry Navigator Section */}
           <section className="space-y-8">
             <div className="space-y-4">
-              <h2 className="text-3xl md:text-4xl font-bold text-foreground">
+              <h2 className="text-3xl md:text-4xl font-heading font-bold text-foreground">
                 Your Reentry Success Navigator
               </h2>
-              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                AI-powered guidance specifically designed for reentry challenges. Get personalized support for housing, employment, legal matters, and family reconnection - available 24/7.
+              <p className="text-lg text-muted-foreground max-w-2xl mx-auto font-body">
+                Personalized guidance specifically designed for reentry challenges. Get support for housing, employment, legal matters, and family reconnection available 24/7.
               </p>
             </div>
             
@@ -177,12 +177,12 @@ export default function CommunityLearning() {
           {/* Tools for Your Journey Section */}
           <section className="space-y-12">
             <div className="space-y-4">
-              <h2 className="text-3xl md:text-4xl font-bold text-foreground flex items-center justify-center gap-3">
+              <h2 className="text-3xl md:text-4xl font-heading font-bold text-foreground flex items-center justify-center gap-3">
                 <BookOpen className="h-8 w-8 text-[hsl(var(--osu-scarlet))]" />
                 Tools for Your Journey
               </h2>
-              <p className="text-lg text-muted-foreground">
-                8 guided learning modules to help you rebuild your life—at your pace
+              <p className="text-lg text-muted-foreground font-body">
+                8 guided learning modules to help you rebuild your life at your pace
               </p>
               <div className="flex items-center justify-center gap-2">
                 <Badge variant="secondary" className="text-xs bg-[hsl(var(--osu-gray))] text-white">100% Free</Badge>
@@ -193,7 +193,7 @@ export default function CommunityLearning() {
             <div className="space-y-10">
               {Object.entries(learningGroups).map(([groupName, modules]) => (
                 <div key={groupName} className="space-y-6">
-                  <h3 className="text-xl md:text-2xl font-semibold text-[hsl(var(--osu-scarlet))]">
+                  <h3 className="text-xl md:text-2xl font-heading font-semibold text-[hsl(var(--osu-scarlet))]">
                     {groupName}
                   </h3>
                   <div className={`grid gap-4 justify-center ${modules.length === 2 ? 'grid-cols-1 md:grid-cols-2 max-w-2xl mx-auto' : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3 max-w-4xl mx-auto'}`}>
@@ -234,7 +234,7 @@ export default function CommunityLearning() {
 
           {/* Emergency Help Section */}
           <section className="bg-[hsl(var(--osu-gray))]/10 rounded-xl p-8 space-y-6">
-            <h2 className="text-2xl font-semibold text-foreground">
+            <h2 className="text-2xl font-heading font-semibold text-foreground">
               Need Help Right Now?
             </h2>
             

@@ -97,7 +97,7 @@ const Header = ({
                         <NavLink to="/about" onClick={() => setOpen(false)}>About</NavLink>
                       </Button>
                       <Button variant="ghost" size="sm" asChild className="justify-start w-full">
-                        <NavLink to="/learn" onClick={() => setOpen(false)}>Join Learning Community</NavLink>
+                        <NavLink to="/learn" onClick={() => setOpen(false)}>The Collective</NavLink>
                       </Button>
                         <NavLink to="/victim-services" className="justify-start w-full text-left px-2 py-2 text-sm font-medium text-foreground hover:bg-muted rounded-md" onClick={() => setOpen(false)}>
                           Healing Hub
@@ -148,7 +148,7 @@ const Header = ({
               <NavLink to="/" className={linkCls}>Home</NavLink>
               <NavLink to="/help" className={linkCls}>Get Help Now</NavLink>
               <NavLink to="/about" className={linkCls}>About</NavLink>
-              <NavLink to="/learn" className={linkCls}>Join Learning Community</NavLink>
+              <NavLink to="/learn" className={linkCls}>The Collective</NavLink>
               <NavLink to="/victim-services" className={linkCls}>
                 Healing Hub
               </NavLink>
