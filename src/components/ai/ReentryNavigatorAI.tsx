@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { X, Send, Bot, Home, Briefcase, GraduationCap, Heart, Scale, DollarSign } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Dialog, DialogContent } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
 import { Badge } from '@/components/ui/badge';
 import { supabase } from '@/integrations/supabase/client';
 import { parseTextForLinks, formatAIResponse, type ParsedTextSegment } from '@/lib/text-parser';
@@ -40,16 +40,19 @@ interface ReentryNavigatorAIProps {
 }
 
 const ReentryNavigatorAI: React.FC<ReentryNavigatorAIProps> = ({ isOpen, onClose, initialQuery, selectedCoach }) => {
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      id: '1',
-      type: 'ai',
-      content: selectedCoach 
-        ? `Hey there! I'm ${selectedCoach.name.split(' ')[1]}, your ${selectedCoach.specialty} specialist. ${selectedCoach.description}\n\nI'm here to provide personalized support in my area of expertise. What specific challenge can I help you tackle today?`
-        : "Hey there! I'm Coach Kay, your personal Reentry Navigator. I've helped hundreds of people successfully rebuild their lives after incarceration, and I'm here to help you too! 💪\n\nI know this journey takes real courage, and every small step forward is worth celebrating. I can help you with housing, employment, legal matters, education, healthcare, family connections, and financial stability.\n\nWhat's your biggest priority right now? Let's tackle it together!",
-      timestamp: new Date(),
-    }
-  ]);
+  const prevCoachNameRef = useRef<string | null>(selectedCoach?.name ?? 'Coach Kay');
+  const pendingCloseRef = useRef(false);
+
+  const getInitialMessage = (): Message => ({
+    id: 'initial',
+    type: 'ai',
+    content: selectedCoach
+      ? `Hey there! I'm ${selectedCoach.name.split(' ')[1]}, your ${selectedCoach.specialty} specialist. ${selectedCoach.description}\n\nI'm here to provide personalized support in my area of expertise. What specific challenge can I help you tackle today?`
+      : "Hey there! I'm Coach Kay, your personal Reentry Navigator. I've helped hundreds of people successfully rebuild their lives after incarceration, and I'm here to help you too! 💪\n\nI know this journey takes real courage, and every small step forward is worth celebrating. I can help you with housing, employment, legal matters, education, healthcare, family connections, and financial stability.\n\nWhat's your biggest priority right now? Let's tackle it together!",
+    timestamp: new Date(),
+  });
+
+  const [messages, setMessages] = useState<Message[]>([getInitialMessage()]);
   const [showEmailModal, setShowEmailModal] = useState(false);
   const [userEmail, setUserEmail] = useState('');
   const [input, setInput] = useState('');
@@ -58,6 +61,28 @@ const ReentryNavigatorAI: React.FC<ReentryNavigatorAIProps> = ({ isOpen, onClose
   const [reentryStage, setReentryStage] = useState<'preparing' | 'recently_released' | 'long_term' | 'family_member'>('recently_released');
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
+  const resetConversation = () => {
+    setConversationContext([]);
+    setInput('');
+    setIsLoading(false);
+    setMessages([getInitialMessage()]);
+  };
+
+  const finalizeClose = () => {
+    onClose();
+    // ensure next open starts fresh
+    resetConversation();
+  };
+
+  const handleCloseRequest = () => {
+    const hasUserMessages = messages.some((m) => m.type === 'user');
+    if (hasUserMessages) {
+      pendingCloseRef.current = true;
+      setShowEmailModal(true);
+    } else {
+      finalizeClose();
+    }
+  };
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
@@ -71,6 +96,15 @@ const ReentryNavigatorAI: React.FC<ReentryNavigatorAIProps> = ({ isOpen, onClose
       setInput(initialQuery);
     }
   }, [initialQuery, isOpen]);
+
+  // Reset conversation when switching coaches while open
+  useEffect(() => {
+    const currentCoach = selectedCoach?.name ?? 'Coach Kay';
+    if (isOpen && prevCoachNameRef.current !== currentCoach) {
+      resetConversation();
+      prevCoachNameRef.current = currentCoach;
+    }
+  }, [selectedCoach?.name, isOpen]);
 
   const sendMessage = async (userQuery: string) => {
     try {
@@ -259,8 +293,9 @@ const ReentryNavigatorAI: React.FC<ReentryNavigatorAIProps> = ({ isOpen, onClose
   if (!isOpen) return null;
 
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
+    <Dialog open={isOpen} onOpenChange={(open) => { if (!open) handleCloseRequest(); }}>
       <DialogContent className="max-w-2xl max-h-[85vh] p-0 flex flex-col overflow-hidden">
+        <DialogTitle className="sr-only">{selectedCoach ? `${selectedCoach.name} Chat` : 'Coach Kay Chat'}</DialogTitle>
         {/* Header */}
         <div className="flex items-center justify-between bg-secondary p-4 text-secondary-foreground">
           <div className="flex items-center gap-3">
@@ -279,7 +314,7 @@ const ReentryNavigatorAI: React.FC<ReentryNavigatorAIProps> = ({ isOpen, onClose
           <Button
             variant="ghost" 
             size="sm"
-            onClick={onClose}
+            onClick={handleCloseRequest}
             className="text-secondary-foreground hover:bg-secondary-foreground/20"
           >
             <X className="h-4 w-4" />
@@ -432,21 +467,37 @@ const ReentryNavigatorAI: React.FC<ReentryNavigatorAIProps> = ({ isOpen, onClose
             <p className="text-xs text-muted-foreground">
               Your success matters • Justice-friendly resources • Encouraging guidance every step
             </p>
-            <Button 
-              variant="ghost" 
-              size="sm" 
-              className="text-xs" 
-              onClick={() => setShowEmailModal(true)}
-            >
-              Email Chat History
-            </Button>
+            <div className="flex items-center gap-2">
+              <Button 
+                variant="outline" 
+                size="sm" 
+                className="text-xs" 
+                onClick={resetConversation}
+              >
+                New Chat
+              </Button>
+              <Button 
+                variant="ghost" 
+                size="sm" 
+                className="text-xs" 
+                onClick={() => setShowEmailModal(true)}
+              >
+                Email Chat History
+              </Button>
+            </div>
           </div>
         </div>
 
         {/* Email Modal */}
         <EmailChatHistoryModal
           isOpen={showEmailModal}
-          onClose={() => setShowEmailModal(false)}
+          onClose={() => {
+            setShowEmailModal(false);
+            if (pendingCloseRef.current) {
+              finalizeClose();
+              pendingCloseRef.current = false;
+            }
+          }}
           messages={messages}
           coachName={selectedCoach ? selectedCoach.name : 'Coach Kay'}
         />
