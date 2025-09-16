@@ -285,8 +285,8 @@ export default function VictimServices() {
                         {path.description}
                       </CardDescription>
                     </CardHeader>
-                    <CardContent className="flex-1 flex flex-col justify-between">
-                      <div className="flex-1 space-y-3 flex flex-col justify-center">
+                    <CardContent className="flex-1 flex flex-col justify-center">
+                      <div className="space-y-3">
                         {path.resources.slice(0, 2).map((resource, resourceIndex) => (
                           <div key={resourceIndex} className="p-3 rounded-lg bg-muted/50 text-center">
                             <div className="font-semibold text-sm">{resource.title}</div>
@@ -294,14 +294,6 @@ export default function VictimServices() {
                           </div>
                         ))}
                       </div>
-                      <Button 
-                        variant="outline" 
-                        className="w-full mt-4 group-hover:bg-primary group-hover:text-primary-foreground transition-colors"
-                        onClick={() => setShowSignupModal(true)}
-                      >
-                        View All Resources
-                        <ArrowRight className="ml-2 h-4 w-4" />
-                      </Button>
                     </CardContent>
                   </Card>
                 );
