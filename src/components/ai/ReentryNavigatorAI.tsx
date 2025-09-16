@@ -467,7 +467,7 @@ const ReentryNavigatorAI: React.FC<ReentryNavigatorAIProps> = ({ isOpen, onClose
                     <div className="text-sm leading-relaxed">{message.content}</div>
                   </div>
                   <div className="flex-shrink-0 w-8 h-8 bg-secondary rounded-full flex items-center justify-center">
-                    <Bot className="h-4 w-4 text-secondary-foreground" />
+                    <User className="h-4 w-4 text-secondary-foreground" />
                   </div>
                 </div>
               )}
@@ -553,80 +553,35 @@ const ReentryNavigatorAI: React.FC<ReentryNavigatorAIProps> = ({ isOpen, onClose
               </h3>
               
               <div className="grid grid-cols-3 gap-3">
-                {/* Emergency 911 */}
-                <a 
-                  href="tel:911"
-                  className="flex flex-col items-center p-4 bg-red-50 dark:bg-red-950/20 border-2 border-red-200 dark:border-red-800 rounded-xl hover:bg-red-100 dark:hover:bg-red-950/40 transition-colors group"
-                  onClick={(e) => {
-                    // Force navigation for tel: links
-                    window.location.href = 'tel:911';
-                  }}
-                >
+                {/* 911 */}
+                <a href="tel:911" aria-label="Call 911 Emergency"
+                  className="flex flex-col items-center p-4 bg-red-50 dark:bg-red-950/20 border-2 border-red-200 dark:border-red-800 rounded-xl hover:bg-red-100 dark:hover:bg-red-950/40 transition-colors">
                   <div className="w-8 h-8 bg-red-600 rounded-full flex items-center justify-center mb-2">
                     <span className="text-white text-lg">📞</span>
                   </div>
                   <div className="font-semibold text-red-700 dark:text-red-400 text-sm">911</div>
                   <div className="text-xs text-red-600 dark:text-red-500 text-center">Emergency</div>
                 </a>
-
-                {/* Crisis 988 */}
-                <a 
-                  href="tel:988"
-                  className="flex flex-col items-center p-4 bg-blue-50 dark:bg-blue-950/20 border-2 border-blue-200 dark:border-blue-800 rounded-xl hover:bg-blue-100 dark:hover:bg-blue-950/40 transition-colors group"
-                  onClick={(e) => {
-                    // Force navigation for tel: links
-                    window.location.href = 'tel:988';
-                  }}
-                >
+                {/* 988 */}
+                <a href="tel:988" aria-label="Call 988 Mental Health Support"
+                  className="flex flex-col items-center p-4 bg-blue-50 dark:bg-blue-950/20 border-2 border-blue-200 dark:border-blue-800 rounded-xl hover:bg-blue-100 dark:hover:bg-blue-950/40 transition-colors">
                   <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center mb-2">
                     <span className="text-white text-lg">💬</span>
                   </div>
                   <div className="font-semibold text-blue-700 dark:text-blue-400 text-sm">988</div>
                   <div className="text-xs text-blue-600 dark:text-blue-500 text-center">Mental Health Support</div>
                 </a>
-
-                {/* Quick Exit */}
-                <button
-                  onClick={() => {
-                    // Quick exit - close modal and navigate away
-                    onClose();
-                    // Navigate to a safe page
-                    window.location.href = 'https://www.google.com';
-                  }}
-                  className="flex flex-col items-center p-4 bg-purple-50 dark:bg-purple-950/20 border-2 border-purple-200 dark:border-purple-800 rounded-xl hover:bg-purple-100 dark:hover:bg-purple-950/40 transition-colors group"
-                >
-                  <div className="w-8 h-8 bg-purple-600 rounded-full flex items-center justify-center mb-2">
-                    <span className="text-white text-lg">🚪</span>
+                {/* 211 */}
+                <a href="tel:211" aria-label="Call 211 Local Resources"
+                  className="flex flex-col items-center p-4 bg-green-50 dark:bg-green-950/20 border-2 border-green-200 dark:border-green-800 rounded-xl hover:bg-green-100 dark:hover:bg-green-950/40 transition-colors">
+                  <div className="w-8 h-8 bg-green-600 rounded-full flex items-center justify-center mb-2">
+                    <span className="text-white text-lg">📱</span>
                   </div>
-                  <div className="font-semibold text-purple-700 dark:text-purple-400 text-sm">Quick Exit</div>
-                  <div className="text-xs text-purple-600 dark:text-purple-500 text-center">Top Corner</div>
-                </button>
+                  <div className="font-semibold text-green-700 dark:text-green-400 text-sm">211</div>
+                  <div className="text-xs text-green-600 dark:text-green-500 text-center">Local Resources</div>
+                </a>
               </div>
 
-              {/* Additional emergency numbers */}
-              <div className="flex justify-center gap-4 pt-2 border-t border-border/30">
-                <a 
-                  href="tel:211"
-                  className="flex items-center gap-2 text-green-600 hover:text-green-700 dark:text-green-400 dark:hover:text-green-300 font-medium text-xs transition-colors"
-                  onClick={(e) => {
-                    window.location.href = 'tel:211';
-                  }}
-                >
-                  <span>📞</span>
-                  Resources: 211
-                </a>
-                <span className="text-muted-foreground text-xs">|</span>
-                <a 
-                  href="sms:741741"
-                  className="flex items-center gap-2 text-purple-600 hover:text-purple-700 dark:text-purple-400 dark:hover:text-purple-300 font-medium text-xs transition-colors"
-                  onClick={(e) => {
-                    window.location.href = 'sms:741741';
-                  }}
-                >
-                  <span>💬</span>
-                  Text: 741741
-                </a>
-              </div>
               
               <p className="text-xs text-muted-foreground italic">
                 You're safe here. Take what you need, when you're ready.
