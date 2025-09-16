@@ -10,6 +10,7 @@ interface FrequencyPlayerProps {
 
 const frequencies = [
   { value: '528', label: '528 Hz - Love & Healing', description: 'DNA repair and transformation' },
+  { value: '432', label: '432 Hz - Anxiety Relief', description: 'Calming frequency for reducing anxiety and stress' },
   { value: '396', label: '396 Hz - Fear Release', description: 'Liberating fear and guilt' },
   { value: '741', label: '741 Hz - Expression', description: 'Awakening intuition' },
   { value: 'nature', label: 'Nature Sounds', description: 'Ocean waves and forest sounds' }
