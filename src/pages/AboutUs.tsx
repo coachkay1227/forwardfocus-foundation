@@ -129,56 +129,6 @@ export default function AboutUs() {
           </div>
         </section>
 
-        {/* Meet Coach Kay Section - Expanded */}
-        <section aria-labelledby="coach-kay" className="scroll-mt-16 bg-gradient-to-br from-secondary/10 to-accent/10 py-24 -mx-4 px-4 rounded-2xl">
-          <div className="max-w-6xl mx-auto">
-            <div className="grid lg:grid-cols-2 gap-16 items-center">
-              <div className="order-2 lg:order-1">
-                <h2 id="coach-kay" className="font-heading text-4xl md:text-5xl font-bold text-foreground mb-8">
-                  Meet Coach Kay
-                </h2>
-                <div className="space-y-6 text-foreground">
-                  <p className="text-xl leading-relaxed">
-                    Behind Forward Focus Elevation is Coach Kay, a passionate advocate with lived proximity to the justice system. As someone who has supported family, friends, and community members through incarceration, reentry, and systemic trauma, she's seen firsthand how generational harm, lack of resources, and broken systems impact entire families not just individuals.
-                  </p>
-                  <p className="text-lg leading-relaxed">
-                    What began as personal support for loved ones evolved into a mission. Coach Kay combined her spiritual practice, trauma-informed education, and deep commitment to equity to create tools that meet people where they are with compassion, clarity, and modern solutions.
-                  </p>
-                  <p className="text-lg leading-relaxed">
-                    Through Forward Focus Elevation and the Collective, a free community peer supported community she now designs AI-powered resources, healing programs, and safe spaces that center justice-impacted individuals and their families. Her belief is simple: everyone deserves dignity, access, and a real chance to rebuild.
-                  </p>
-                  
-                </div>
-                
-                <div className="flex flex-col sm:flex-row gap-4 mt-8">
-                  <ChatbotPopup />
-                  <Button 
-                    size="lg" 
-                    variant="outline" 
-                    onClick={() => window.open('https://calendly.com/ffe_coach_kay', '_blank')}
-                  >
-                    <Calendar className="h-5 w-5 mr-2" />
-                    Book Consultation
-                  </Button>
-                </div>
-              </div>
-              
-              <div className="order-1 lg:order-2 relative">
-                <div className="relative rounded-2xl overflow-hidden shadow-2xl">
-                  <img src="/lovable-uploads/fad5cdf5-77d8-4054-93a4-6e6af3cf8099.png" alt="Coach Kay, founder of Forward Focus Elevation, sitting professionally in a modern office setting" className="w-full h-96 lg:h-[500px] object-contain" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-primary/80 to-transparent flex items-end">
-                    <div className="p-8 text-white">
-                      <p className="text-xl font-semibold mb-2">
-                        "We hustle different. With clarity. With care. With cause."
-                      </p>
-                      <p className="text-white/90">— Coach Kay, Founder</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
 
         {/* Contact Section */}
         <section className="scroll-mt-16">
