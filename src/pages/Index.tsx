@@ -8,6 +8,7 @@ import { HowItWorksSection } from "@/components/home/HowItWorksSection";
 import { TestimonialsSection } from "@/components/home/TestimonialsSection";
 import { PathwaysSection } from "@/components/home/PathwaysSection";
 import { CallToActionSection } from "@/components/home/CallToActionSection";
+import { CoachKaySection } from "@/components/home/CoachKaySection";
 import { STATES } from "@/data/states";
 const Index = () => {
   const [showAIDiscovery, setShowAIDiscovery] = useState(false);
@@ -46,6 +47,7 @@ const Index = () => {
       />
       
       <HowItWorksSection />
+      <CoachKaySection />
       <TestimonialsSection />
       <PathwaysSection />
       <CallToActionSection />

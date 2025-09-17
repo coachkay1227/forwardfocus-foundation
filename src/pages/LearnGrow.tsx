@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { BookOpen, CheckCircle, Users, MessageSquare, MapPin, Phone, FileText, DollarSign, Heart, Brain, GraduationCap, Home, Briefcase, Scale, HeartHandshake, PiggyBank, Shield, Bot } from "lucide-react";
+import { BookOpen, CheckCircle, Users, MessageSquare, MapPin, Phone, FileText, DollarSign, Heart, Brain, GraduationCap, Home, Briefcase, Scale, HeartHandshake, PiggyBank, Shield, Bot, Target } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -258,6 +258,39 @@ export default function CommunityLearning() {
                   </div>
                 </div>
               ))}
+            </div>
+
+            {/* What Makes Us Different - Learning Community Focus */}
+            <div className="mt-16 grid md:grid-cols-2 gap-8 bg-secondary/5 py-16 px-8 rounded-2xl">
+              <div className="bg-background rounded-xl p-10 border shadow-lg hover:shadow-xl transition-all">
+                <div className="flex items-center gap-6 mb-8">
+                  <div className="w-16 h-16 bg-secondary rounded-xl flex items-center justify-center shadow-md">
+                    <Users className="h-8 w-8 text-secondary-foreground" />
+                  </div>
+                  <h3 className="text-2xl font-semibold text-foreground">
+                    Built for Diverse Communities
+                  </h3>
+                </div>
+                <p className="text-foreground/70 text-lg leading-relaxed">
+                  Accessible, inclusive, and designed for real life. We understand that every 
+                  journey is unique and every person deserves dignity and respect.
+                </p>
+              </div>
+
+              <div className="bg-background rounded-xl p-10 border shadow-lg hover:shadow-xl transition-all">
+                <div className="flex items-center gap-6 mb-8">
+                  <div className="w-16 h-16 bg-primary rounded-xl flex items-center justify-center shadow-md">
+                    <Target className="h-8 w-8 text-primary-foreground" />
+                  </div>
+                  <h3 className="text-2xl font-semibold text-foreground">
+                    Interactive Tools That Create Action
+                  </h3>
+                </div>
+                <p className="text-foreground/70 text-lg leading-relaxed">
+                  Move beyond just reading information. Our platform helps you take concrete 
+                  steps toward your goals with personalized guidance and real-world resources.
+                </p>
+              </div>
             </div>
 
             <div className="text-center bg-gradient-to-r from-osu-scarlet/5 via-osu-scarlet/10 to-osu-scarlet/5 rounded-2xl p-12">

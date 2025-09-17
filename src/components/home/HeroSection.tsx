@@ -37,6 +37,21 @@ export const HeroSection = ({ selectedState, onShowStateModal, onShowAIDiscovery
             Empowering justice-impacted families with the tools to rebuild and thrive.
           </p>
 
+          <div className="flex items-center justify-center gap-6 text-sm mb-12 flex-wrap">
+            <span className="flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 px-6 py-3 rounded-full">
+              <span>🛡️</span>
+              Dignity
+            </span>
+            <span className="flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 px-6 py-3 rounded-full">
+              <span>❤️</span>
+              Hope
+            </span>
+            <span className="flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 px-6 py-3 rounded-full">
+              <span>👥</span>
+              Community
+            </span>
+          </div>
+
           <div className="flex flex-col sm:flex-row gap-4 max-w-lg mx-auto mb-8">
             <Button size="lg" variant="secondary" className="bg-white text-osu-scarlet hover:bg-white/90" asChild>
               <Link to="/help">Get Help Now</Link>
