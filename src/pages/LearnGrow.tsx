@@ -110,7 +110,7 @@ export default function CommunityLearning() {
       <header className="relative bg-gradient-osu-primary text-white overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-muted/90 via-osu-scarlet/80 to-osu-scarlet-dark/70"></div>
         <div className="relative container py-24 md:py-32">
-          <div className="max-w-5xl mx-auto text-center">
+          <div className="max-w-full px-4 md:max-w-5xl mx-auto text-center">
             <div className="flex items-center justify-center gap-3 mb-8">
               <Users className="h-8 w-8 text-white" />
               <span className="text-sm uppercase tracking-wider font-medium bg-white/10 backdrop-blur-sm border border-white/20 px-4 py-2 rounded-full">The Collective</span>
@@ -148,7 +148,7 @@ export default function CommunityLearning() {
       </header>
 
       <main className="container py-24 space-y-32 font-body">
-        <div className="max-w-6xl mx-auto">
+        <div className="max-w-full px-4 md:max-w-6xl mx-auto">
           
           {/* Community Visual */}
           <section className="mb-16">
@@ -167,7 +167,7 @@ export default function CommunityLearning() {
                 </p>
               </div>
               
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 max-w-full md:max-w-6xl mx-auto">
                 {supportCoaches.map((coach, index) => {
                   const Icon = coach.icon;
                   return (
@@ -234,7 +234,7 @@ export default function CommunityLearning() {
                   <h3 className="text-2xl md:text-3xl font-heading font-semibold text-osu-scarlet mb-8 text-center">
                     {groupName}
                   </h3>
-                  <div className={`grid gap-6 ${modules.length === 2 ? 'grid-cols-1 md:grid-cols-2 max-w-3xl mx-auto' : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3 max-w-5xl mx-auto'}`}>
+                  <div className={`grid gap-4 md:gap-6 ${modules.length === 2 ? 'grid-cols-1 md:grid-cols-2 max-w-full md:max-w-3xl mx-auto' : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3 max-w-full md:max-w-5xl mx-auto'}`}>
                     {modules.map((module, index) => {
                       const Icon = module.icon;
                       return (
@@ -261,8 +261,8 @@ export default function CommunityLearning() {
             </div>
 
             {/* What Makes Us Different - Learning Community Focus */}
-            <div className="mt-16 grid md:grid-cols-2 gap-8 bg-secondary/5 py-16 px-8 rounded-2xl">
-              <div className="bg-background rounded-xl p-10 border shadow-lg hover:shadow-xl transition-all">
+            <div className="mt-16 grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 bg-secondary/5 py-8 md:py-16 px-4 md:px-8 rounded-2xl overflow-hidden">
+              <div className="bg-background rounded-xl p-6 md:p-10 border shadow-lg hover:shadow-xl transition-all overflow-hidden">
                 <div className="flex items-center gap-6 mb-8">
                   <div className="w-16 h-16 bg-secondary rounded-xl flex items-center justify-center shadow-md">
                     <Users className="h-8 w-8 text-secondary-foreground" />
@@ -277,7 +277,7 @@ export default function CommunityLearning() {
                 </p>
               </div>
 
-              <div className="bg-background rounded-xl p-10 border shadow-lg hover:shadow-xl transition-all">
+              <div className="bg-background rounded-xl p-6 md:p-10 border shadow-lg hover:shadow-xl transition-all overflow-hidden">
                 <div className="flex items-center gap-6 mb-8">
                   <div className="w-16 h-16 bg-primary rounded-xl flex items-center justify-center shadow-md">
                     <Target className="h-8 w-8 text-primary-foreground" />
@@ -312,7 +312,7 @@ export default function CommunityLearning() {
               Need Help Right Now?
             </h2>
             
-            <div className="grid md:grid-cols-3 gap-6 max-w-3xl mx-auto mb-8">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 max-w-full md:max-w-3xl mx-auto mb-8">
               <Button asChild variant="outline" size="lg" className="h-auto p-6 flex flex-col gap-3 border-osu-gray hover:bg-osu-gray hover:text-white transition-all duration-300 shadow-lg">
                 <a href="tel:911">
                   <Phone className="h-6 w-6 text-osu-scarlet" />

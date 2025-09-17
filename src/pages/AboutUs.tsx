@@ -130,6 +130,73 @@ export default function AboutUs() {
         </section>
 
 
+        {/* Our Values & Mission */}
+        <section aria-labelledby="values" className="scroll-mt-16">
+          <div className="max-w-6xl mx-auto">
+            <div className="text-center mb-16">
+              <h2 id="values" className="font-heading text-4xl md:text-5xl font-bold text-foreground mb-8">
+                Our Values & Mission
+              </h2>
+              <p className="text-xl text-foreground/70 leading-relaxed max-w-3xl mx-auto">
+                Everything we do is guided by these core principles that shape our community and platform.
+              </p>
+            </div>
+            
+            <div className="grid md:grid-cols-3 gap-8 mb-16">
+              <Card className="text-center p-8 border-l-4 border-l-primary hover:shadow-xl transition-all">
+                <CardHeader>
+                  <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <Shield className="h-8 w-8 text-primary" />
+                  </div>
+                  <CardTitle className="text-2xl">Dignity First</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-foreground/70 leading-relaxed">
+                    Every person deserves respect, compassion, and the opportunity to rebuild their life with dignity intact.
+                  </p>
+                </CardContent>
+              </Card>
+              
+              <Card className="text-center p-8 border-l-4 border-l-accent hover:shadow-xl transition-all">
+                <CardHeader>
+                  <div className="w-16 h-16 bg-accent/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <Heart className="h-8 w-8 text-accent" />
+                  </div>
+                  <CardTitle className="text-2xl">Hope-Centered</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-foreground/70 leading-relaxed">
+                    We believe in the power of hope to transform lives and create lasting positive change for families.
+                  </p>
+                </CardContent>
+              </Card>
+              
+              <Card className="text-center p-8 border-l-4 border-l-secondary hover:shadow-xl transition-all">
+                <CardHeader>
+                  <div className="w-16 h-16 bg-secondary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <Users className="h-8 w-8 text-secondary" />
+                  </div>
+                  <CardTitle className="text-2xl">Community Power</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-foreground/70 leading-relaxed">
+                    Real change happens when people come together, support each other, and build something bigger than themselves.
+                  </p>
+                </CardContent>
+              </Card>
+            </div>
+            
+            <div className="bg-gradient-to-br from-primary/5 to-accent/5 rounded-2xl p-12 text-center">
+              <h3 className="text-3xl font-bold text-foreground mb-6">Our Mission</h3>
+              <p className="text-xl text-foreground/80 leading-relaxed max-w-4xl mx-auto">
+                To create a trauma-informed, AI-powered ecosystem where justice-impacted individuals and families 
+                can access the tools, community, and support they need to not just survive, but thrive. We're building 
+                a future where everyone has the opportunity to write their next chapter with hope and dignity.
+              </p>
+            </div>
+          </div>
+        </section>
+
         {/* Contact Section */}
         <section className="scroll-mt-16">
           <div className="max-w-4xl mx-auto text-center">
