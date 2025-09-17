@@ -247,7 +247,7 @@ export default function VictimServices() {
 
         <div className="container py-24 space-y-32">
           {/* Community Visual Banner */}
-          <section className="bg-secondary/5 py-24 -mx-4 px-4 rounded-2xl">
+          <section className="bg-secondary/5 py-24 rounded-2xl">
             <div className="max-w-6xl mx-auto">
               <div className="relative overflow-hidden rounded-2xl shadow-2xl">
                 <img

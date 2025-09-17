@@ -36,7 +36,7 @@ const Support = () => {
       <div className="container py-16 md:py-20">
         <div className="max-w-6xl mx-auto space-y-24">
         {/* Ways to Support Grid */}
-        <section className="bg-secondary/5 py-16 -mx-4 px-4 rounded-2xl border-2 border-osu-scarlet/20">
+        <section className="bg-secondary/5 py-16 rounded-2xl border-2 border-osu-scarlet/20">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <Card className="bg-background rounded-xl p-10 border-2 border-osu-scarlet/30 shadow-lg hover:shadow-xl hover:shadow-osu-scarlet/20 transition-all duration-300 hover:scale-105 hover:-translate-y-1 active:scale-95 cursor-pointer">
               <CardHeader className="pb-6">
@@ -170,7 +170,7 @@ const Support = () => {
         </section>
 
         {/* Contact Section */}
-        <section className="bg-secondary/5 py-24 -mx-4 px-4 rounded-2xl">
+        <section className="bg-secondary/5 py-24 rounded-2xl">
           <div className="max-w-6xl mx-auto">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
               {/* Contact Form */}

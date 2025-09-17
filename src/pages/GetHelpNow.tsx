@@ -94,7 +94,7 @@ export default function GetHelpNow() {
 
       <div className="container py-24 space-y-32">
         {/* Crisis Support Section */}
-        <section id="crisis-support" className="scroll-mt-16 bg-secondary/5 py-24 -mx-4 px-4 rounded-2xl">
+        <section id="crisis-support" className="scroll-mt-16 bg-secondary/5 py-24 rounded-2xl">
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-16">
               <h2 className="font-heading text-4xl md:text-5xl font-bold text-foreground mb-6">
