@@ -48,7 +48,7 @@ export const TestimonialsSection = () => {
           {testimonials.map((testimonial, index) => (
             <Card 
               key={index} 
-              className="bg-white/95 backdrop-blur-sm shadow-xl hover:shadow-2xl transition-all duration-300 border border-osu-gray/10 hover:scale-[1.02] hover:border-osu-scarlet/20 group relative overflow-hidden"
+              className="bg-white/95 backdrop-blur-sm shadow-xl hover:shadow-2xl transition-all duration-300 border border-osu-gray/10 md:hover:scale-[1.02] md:hover:border-osu-scarlet/20 group relative overflow-hidden"
             >
               {/* Subtle OSU accent */}
               <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-osu-scarlet via-osu-scarlet-dark to-osu-gray" aria-hidden />

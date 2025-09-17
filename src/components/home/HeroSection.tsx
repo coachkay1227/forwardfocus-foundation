@@ -24,7 +24,7 @@ export const HeroSection = ({ selectedState, onShowStateModal, onShowAIDiscovery
           <div className="mb-8 flex justify-center">
             <button 
               onClick={onShowStateModal} 
-              className="inline-flex items-center gap-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 px-4 py-2 text-sm shadow-lg hover:bg-white/20 transition-all duration-300 hover:scale-105" 
+              className="inline-flex items-center gap-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 px-4 py-2 text-sm shadow-lg hover:bg-white/20 transition-all duration-300 md:hover:scale-105" 
               aria-label="Change your state"
             >
               <span>📍</span>

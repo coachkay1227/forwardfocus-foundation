@@ -287,9 +287,9 @@ export default function VictimServices() {
                 {supportPaths.map((path, index) => {
                   const IconComponent = path.icon;
                   return (
-                    <Card key={index} className="bg-background rounded-xl border shadow-lg hover:shadow-xl transition-all duration-300 group cursor-pointer h-full flex flex-col hover:-translate-y-1">
+                    <Card key={index} className="bg-background rounded-xl border shadow-lg hover:shadow-xl transition-all duration-300 group cursor-pointer h-full flex flex-col md:hover:-translate-y-1">
                       <CardHeader className="text-center pb-4">
-                        <div className={`inline-flex p-6 rounded-2xl ${path.color} mb-6 group-hover:scale-110 transition-transform duration-300 shadow-md`}>
+                        <div className={`inline-flex p-6 rounded-2xl ${path.color} mb-6 md:group-hover:scale-110 transition-transform duration-300 shadow-md`}>
                           <IconComponent className="h-10 w-10" />
                         </div>
                         <CardTitle className="text-2xl font-semibold text-foreground mb-3">{path.title}</CardTitle>

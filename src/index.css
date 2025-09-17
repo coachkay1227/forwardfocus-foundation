@@ -141,6 +141,11 @@ All colors MUST be HSL.
     @apply bg-background text-foreground;
   }
 
+  /* Prevent horizontal scroll on mobile */
+  html, body {
+    overflow-x: hidden;
+  }
+
   /* Mobile layout fixes */
   .container {
     @apply px-4 mx-auto;

@@ -150,7 +150,7 @@ const Header = ({
 
             {/* Logo */}
             <div className="logo flex-1 md:flex-none">
-              <NavLink to="/" className="flex items-center hover:scale-105 transition-all duration-300 group">
+              <NavLink to="/" className="flex items-center md:hover:scale-105 transition-all duration-300 group">
                 <img 
                   src="/logo-new.png" 
                   alt="Forward Focus Elevation" 

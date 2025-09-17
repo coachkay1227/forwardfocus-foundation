@@ -173,7 +173,7 @@ export default function CommunityLearning() {
                   return (
                     <Card 
                       key={index} 
-                      className="text-left hover:shadow-xl transition-all duration-300 border-l-4 border-l-osu-scarlet cursor-pointer hover:scale-105 bg-white/80 backdrop-blur-sm"
+                      className="text-left hover:shadow-xl transition-all duration-300 border-l-4 border-l-osu-scarlet cursor-pointer md:hover:scale-105 bg-white/80 backdrop-blur-sm"
                       onClick={() => {
                         setSelectedCoach({
                           name: coach.name,
@@ -238,7 +238,7 @@ export default function CommunityLearning() {
                     {modules.map((module, index) => {
                       const Icon = module.icon;
                       return (
-                        <Card key={index} className="text-left hover:shadow-xl transition-all duration-300 hover:scale-105 bg-white/80 backdrop-blur-sm border border-osu-gray/20">
+                        <Card key={index} className="text-left hover:shadow-xl transition-all duration-300 md:hover:scale-105 bg-white/80 backdrop-blur-sm border border-osu-gray/20">
                           <CardHeader className="pb-4">
                             <div className="w-12 h-12 bg-osu-scarlet/10 rounded-xl flex items-center justify-center mb-4 shadow-inner">
                               <Icon className="h-6 w-6 text-osu-scarlet" />

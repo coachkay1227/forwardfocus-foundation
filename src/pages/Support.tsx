@@ -36,9 +36,9 @@ const Support = () => {
       <div className="container py-16 md:py-20">
         <div className="max-w-6xl mx-auto space-y-24">
         {/* Ways to Support Grid */}
-        <section className="bg-secondary/5 py-16 rounded-2xl border-2 border-osu-scarlet/20">
+        <section className="bg-secondary/5 py-16 rounded-2xl border-2 border-osu-scarlet/20 overflow-hidden">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <Card className="bg-background rounded-xl p-10 border-2 border-osu-scarlet/30 shadow-lg hover:shadow-xl hover:shadow-osu-scarlet/20 transition-all duration-300 hover:scale-105 hover:-translate-y-1 active:scale-95 cursor-pointer">
+            <Card className="bg-background rounded-xl p-10 border-2 border-osu-scarlet/30 shadow-lg hover:shadow-xl hover:shadow-osu-scarlet/20 transition-all duration-300 md:hover:scale-105 md:hover:-translate-y-1 active:scale-95 cursor-pointer">
               <CardHeader className="pb-6">
                 <div className="flex items-center gap-3 mb-4">
                   <div className="p-3 bg-osu-scarlet/10 rounded-full">
@@ -67,7 +67,7 @@ const Support = () => {
               </CardContent>
             </Card>
 
-            <Card className="bg-background rounded-xl p-10 border-2 border-osu-scarlet/30 shadow-lg hover:shadow-xl hover:shadow-osu-scarlet/20 transition-all duration-300 hover:scale-105 hover:-translate-y-1 active:scale-95 cursor-pointer">
+            <Card className="bg-background rounded-xl p-10 border-2 border-osu-scarlet/30 shadow-lg hover:shadow-xl hover:shadow-osu-scarlet/20 transition-all duration-300 md:hover:scale-105 md:hover:-translate-y-1 active:scale-95 cursor-pointer">
               <CardHeader className="pb-6">
                 <div className="flex items-center gap-3 mb-4">
                   <div className="p-3 bg-osu-scarlet/10 rounded-full">
@@ -96,7 +96,7 @@ const Support = () => {
               </CardContent>
             </Card>
 
-            <Card className="bg-background rounded-xl p-10 border-2 border-osu-scarlet/30 shadow-lg hover:shadow-xl hover:shadow-osu-scarlet/20 transition-all duration-300 hover:scale-105 hover:-translate-y-1 active:scale-95 cursor-pointer">
+            <Card className="bg-background rounded-xl p-10 border-2 border-osu-scarlet/30 shadow-lg hover:shadow-xl hover:shadow-osu-scarlet/20 transition-all duration-300 md:hover:scale-105 md:hover:-translate-y-1 active:scale-95 cursor-pointer">
               <CardHeader className="pb-6">
                 <div className="flex items-center gap-3 mb-4">
                   <div className="p-3 bg-osu-scarlet/10 rounded-full">
@@ -125,7 +125,7 @@ const Support = () => {
               </CardContent>
             </Card>
 
-            <Card className="bg-background rounded-xl p-10 border-2 border-osu-scarlet/30 shadow-lg hover:shadow-xl hover:shadow-osu-scarlet/20 transition-all duration-300 hover:scale-105 hover:-translate-y-1 active:scale-95 cursor-pointer">
+            <Card className="bg-background rounded-xl p-10 border-2 border-osu-scarlet/30 shadow-lg hover:shadow-xl hover:shadow-osu-scarlet/20 transition-all duration-300 md:hover:scale-105 md:hover:-translate-y-1 active:scale-95 cursor-pointer">
               <CardHeader className="pb-6">
                 <div className="flex items-center gap-3 mb-4">
                   <div className="p-3 bg-osu-scarlet/10 rounded-full">

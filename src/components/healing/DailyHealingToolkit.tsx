@@ -99,7 +99,7 @@ const DailyHealingToolkit = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
           {/* Crisis Relief Toolkit */}
-          <Card className="crisis-toolkit border-2 border-red-200 bg-red-50/50 hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+          <Card className="crisis-toolkit border-2 border-red-200 bg-red-50/50 hover:shadow-xl transition-all duration-300 md:hover:-translate-y-1">
             <CardHeader className="text-center">
               <div className="text-4xl mb-2">🚨</div>
               <CardTitle className="text-osu-scarlet">Instant Crisis Relief</CardTitle>
@@ -147,7 +147,7 @@ const DailyHealingToolkit = () => {
           </Card>
 
           {/* Daily Check-In */}
-          <Card className="daily-checkin bg-slate-50/50 border-2 border-slate-200 hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+          <Card className="daily-checkin bg-slate-50/50 border-2 border-slate-200 hover:shadow-xl transition-all duration-300 md:hover:-translate-y-1">
             <CardHeader className="text-center">
               <div className="text-4xl mb-2">💭</div>
               <CardTitle className="text-slate-700">Daily Check-In</CardTitle>
@@ -188,7 +188,7 @@ const DailyHealingToolkit = () => {
           </Card>
 
           {/* Healing Frequencies Player */}
-          <Card className="frequency-player bg-slate-50/50 border-2 border-slate-300 hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+          <Card className="frequency-player bg-slate-50/50 border-2 border-slate-300 hover:shadow-xl transition-all duration-300 md:hover:-translate-y-1">
             <CardHeader className="text-center">
               <div className="text-4xl mb-2">🎵</div>
               <CardTitle className="text-slate-700">Healing Frequencies</CardTitle>
@@ -200,7 +200,7 @@ const DailyHealingToolkit = () => {
           </Card>
 
           {/* Progress Dashboard */}
-          <Card className="progress-dashboard bg-slate-50/50 border-2 border-slate-200 hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+          <Card className="progress-dashboard bg-slate-50/50 border-2 border-slate-200 hover:shadow-xl transition-all duration-300 md:hover:-translate-y-1">
             <CardHeader className="text-center">
               <div className="text-4xl mb-2">📈</div>
               <CardTitle className="text-slate-700">Your Healing Journey</CardTitle>

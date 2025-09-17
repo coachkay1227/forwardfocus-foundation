@@ -241,7 +241,7 @@ export const EmergencySafetySystem = () => {
                 className="flex flex-col items-center gap-3 p-2 bg-transparent border-0 cursor-pointer"
               >
                 <span 
-                  className="w-20 h-20 rounded-full flex items-center justify-center relative transition-all duration-200 hover:translate-y-[-2px] hover:scale-105"
+                  className="w-20 h-20 rounded-full flex items-center justify-center relative transition-all duration-200 md:hover:translate-y-[-2px] md:hover:scale-105"
                   style={{
                     background: 'radial-gradient(120% 120% at 30% 20%, #fb7185 0%, #e11d48 55%, #7f1d1d 100%)',
                     boxShadow: 'inset 0 -10px 24px rgba(255,255,255,.08), 0 10px 22px rgba(0,0,0,.25)'
@@ -262,7 +262,7 @@ export const EmergencySafetySystem = () => {
                 className="flex flex-col items-center gap-3 p-2 bg-transparent border-0 cursor-pointer"
               >
                 <span 
-                  className="w-20 h-20 rounded-full flex items-center justify-center relative transition-all duration-200 hover:translate-y-[-2px] hover:scale-105"
+                  className="w-20 h-20 rounded-full flex items-center justify-center relative transition-all duration-200 md:hover:translate-y-[-2px] md:hover:scale-105"
                   style={{
                     background: 'radial-gradient(120% 120% at 30% 20%, #fdba74 0%, #ea580c 55%, #7c2d12 100%)',
                     boxShadow: 'inset 0 -10px 24px rgba(255,255,255,.08), 0 10px 22px rgba(0,0,0,.25)'
@@ -284,7 +284,7 @@ export const EmergencySafetySystem = () => {
                 className="flex flex-col items-center gap-3 p-2 bg-transparent border-0 cursor-pointer"
               >
                 <span 
-                  className="w-20 h-20 rounded-full flex items-center justify-center relative transition-all duration-200 hover:translate-y-[-2px] hover:scale-105"
+                  className="w-20 h-20 rounded-full flex items-center justify-center relative transition-all duration-200 md:hover:translate-y-[-2px] md:hover:scale-105"
                   style={{
                     background: 'radial-gradient(120% 120% at 30% 20%, #93c5fd 0%, #2563eb 55%, #1e3a8a 100%)',
                     boxShadow: 'inset 0 -10px 24px rgba(255,255,255,.08), 0 10px 22px rgba(0,0,0,.25)'
@@ -308,7 +308,7 @@ export const EmergencySafetySystem = () => {
                 className="flex flex-col items-center gap-3 p-2 bg-transparent border-0 cursor-pointer"
               >
                 <span 
-                  className="w-20 h-20 rounded-full flex items-center justify-center relative transition-all duration-200 hover:translate-y-[-2px] hover:scale-105"
+                  className="w-20 h-20 rounded-full flex items-center justify-center relative transition-all duration-200 md:hover:translate-y-[-2px] md:hover:scale-105"
                   style={{
                     background: 'radial-gradient(120% 120% at 30% 20%, #6ee7b7 0%, #059669 55%, #064e3b 100%)',
                     boxShadow: 'inset 0 -10px 24px rgba(255,255,255,.08), 0 10px 22px rgba(0,0,0,.25)'
@@ -330,7 +330,7 @@ export const EmergencySafetySystem = () => {
                 className="flex flex-col items-center gap-3 p-2 bg-transparent border-0 cursor-pointer"
               >
                 <span 
-                  className="w-20 h-20 rounded-full flex items-center justify-center relative transition-all duration-200 hover:translate-y-[-2px] hover:scale-105"
+                  className="w-20 h-20 rounded-full flex items-center justify-center relative transition-all duration-200 md:hover:translate-y-[-2px] md:hover:scale-105"
                   style={{
                     background: 'radial-gradient(120% 120% at 30% 20%, #a5b4fc 0%, #4f46e5 55%, #1e1b4b 100%)',
                     boxShadow: 'inset 0 -10px 24px rgba(255,255,255,.08), 0 10px 22px rgba(0,0,0,.25)'
@@ -352,7 +352,7 @@ export const EmergencySafetySystem = () => {
                 className="flex flex-col items-center gap-3 p-2 bg-transparent border-0 cursor-pointer"
               >
                 <span 
-                  className="w-20 h-20 rounded-full flex items-center justify-center relative transition-all duration-200 hover:translate-y-[-2px] hover:scale-105"
+                  className="w-20 h-20 rounded-full flex items-center justify-center relative transition-all duration-200 md:hover:translate-y-[-2px] md:hover:scale-105"
                   style={{
                     background: 'radial-gradient(120% 120% at 30% 20%, #9ca3af 0%, #111827 70%, #0b0f17 100%)',
                     boxShadow: 'inset 0 -10px 24px rgba(255,255,255,.08), 0 10px 22px rgba(0,0,0,.25)'

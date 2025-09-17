@@ -38,7 +38,7 @@ export const HowItWorksSection = () => {
             return (
               <Card 
                 key={item.title} 
-                className="bg-card/80 backdrop-blur-sm hover:shadow-lg transition-all duration-300 hover:scale-[1.02] border-l-4 border-l-osu-scarlet shadow-md group"
+                className="bg-card/80 backdrop-blur-sm hover:shadow-lg transition-all duration-300 md:hover:scale-[1.02] border-l-4 border-l-osu-scarlet shadow-md group"
               >
                 <CardHeader className="pb-3">
                   <div className="flex items-center gap-3">

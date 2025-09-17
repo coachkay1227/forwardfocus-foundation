@@ -2,7 +2,6 @@ import { useEffect, useMemo, useState } from "react";
 import { useStateContext } from "@/contexts/StateContext";
 import AIResourceDiscovery from "@/components/ai/AIResourceDiscovery";
 import StateModal from "@/components/ui/StateModal";
-import { EmergencySafetySystem } from "@/components/safety/EmergencySafetySystem";
 import { HeroSection } from "@/components/home/HeroSection";
 import { HowItWorksSection } from "@/components/home/HowItWorksSection";
 import { TestimonialsSection } from "@/components/home/TestimonialsSection";
@@ -38,8 +37,6 @@ const Index = () => {
   const stateForAI = selectedState?.name ?? "Ohio";
   return (
     <main id="main" className="min-h-screen bg-background">
-      <EmergencySafetySystem />
-      
       <HeroSection 
         selectedState={selectedState}
         onShowStateModal={() => setShowStateModal(true)}
