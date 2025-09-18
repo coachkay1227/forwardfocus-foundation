@@ -355,27 +355,12 @@ const Discover = () => {
                 </div>
               ) : resources.length > 0 ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {resources.map((resource) => (
-                    <ResourceCard 
-                      key={resource.id} 
-                      resource={{
-                        id: resource.id,
-                        name: resource.name,
-                        org: resource.organization,
-                        phone: resource.phone ? `tel:${resource.phone}` : undefined,
-                        website: resource.website,
-                        address: resource.address,
-                        city: resource.city,
-                        county: resource.county,
-                        type: resource.type as "Housing" | "Employment" | "Legal" | "Financial" | "Health" | "Education" | "Family",
-                        verified: resource.verified as "community" | "partner",
-                        justiceFriendly: resource.justice_friendly,
-                        rating: resource.rating,
-                        updatedAt: resource.updated_at,
-                        description: resource.description,
-                      }}
-                    />
-                  ))}
+                   {resources.map((resource) => (
+                     <ResourceCard 
+                       key={resource.id} 
+                       resource={resource}
+                     />
+                   ))}
                 </div>
               ) : (
                 <div className="text-center py-12">
