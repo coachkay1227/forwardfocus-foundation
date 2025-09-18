@@ -277,10 +277,10 @@ export default function VictimServices() {
           <section id="main-content" className="scroll-mt-16">
             <div className="max-w-6xl mx-auto">
               <div className="text-center mb-16">
-                <h2 className="font-heading text-4xl md:text-5xl font-bold text-foreground mb-6">Choose Your Support Path</h2>
+                <h2 className="font-heading text-4xl md:text-5xl font-bold text-foreground mb-6">How Our AI Can Help You</h2>
                 <p className="text-xl text-foreground/70 max-w-3xl mx-auto leading-relaxed">
-                  Every survivor's journey is unique. Select the type of support that feels right 
-                  for where you are today.
+                  Our AI assistant is trained to help with these key areas. When you chat with us, 
+                  we'll provide personalized resources and guidance based on your specific needs.
                 </p>
               </div>
 
@@ -349,7 +349,7 @@ export default function VictimServices() {
                   className="text-lg px-6 sm:px-10 py-6 shadow-lg hover:shadow-xl transition-all duration-300 bg-osu-scarlet hover:bg-osu-scarlet-dark w-full max-w-sm sm:max-w-none sm:w-auto"
                   onClick={() => setShowSignupModal(true)}
                 >
-                  Choose Your Support Path
+                  Start Getting Help Now
                   <ArrowRight className="ml-3 h-6 w-6" />
                 </Button>
               </div>
