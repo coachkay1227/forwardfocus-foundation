@@ -22,6 +22,7 @@ import PartnerSignIn from "./pages/PartnerSignIn";
 import PartnerSignUp from "./pages/PartnerSignUp";
 import Admin from "./pages/Admin";
 import Search from "./pages/Search";
+import Discover from "./pages/Discover";
 import Partners from "./pages/Partners";
 import SubmitReferral from "./pages/SubmitReferral";
 import AddResource from "./pages/AddResource";
@@ -60,7 +61,8 @@ const App = () => (
                   <Route path="/partner-signup" element={<PartnerSignUp />} />
                   <Route path="/login" element={<Navigate to="/auth" replace />} />
                   <Route path="/admin" element={<Admin />} />
-                  <Route path="/search" element={<Search />} />
+          <Route path="/search" element={<Search />} />
+          <Route path="/discover" element={<Discover />} />
                   <Route path="/partners" element={<Partners />} />
                   <Route path="/partners/submit-referral" element={<SubmitReferral />} />
                   <Route path="/partners/add-resource" element={<AddResource />} />

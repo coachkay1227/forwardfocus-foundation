@@ -127,10 +127,10 @@ const Partners = () => {
       variant: "secondary" as const,
     },
     {
-      title: "View Resource Directory",
-      description: "Browse available community resources",
+      title: "AI Resource Discovery",
+      description: "AI-powered resource finder",
       icon: FileText,
-      href: "/search",
+      href: "/discover",
       variant: "outline" as const,
     },
     {
@@ -186,9 +186,9 @@ const Partners = () => {
 
         <Tabs defaultValue="dashboard" className="space-y-4">
           <TabsList className="flex w-full overflow-x-auto bg-osu-gray/10 border border-osu-gray/20 scrollbar-hide">
-            <TabsTrigger value="dashboard" className="flex-shrink-0 min-w-[120px] data-[state=active]:bg-osu-scarlet data-[state=active]:text-white text-osu-gray">Dashboard</TabsTrigger>
-            <TabsTrigger value="actions" className="flex-shrink-0 min-w-[120px] data-[state=active]:bg-osu-scarlet data-[state=active]:text-white text-osu-gray">Quick Actions</TabsTrigger>
-            <TabsTrigger value="network" className="flex-shrink-0 min-w-[120px] data-[state=active]:bg-osu-scarlet data-[state=active]:text-white text-osu-gray">Partner Network</TabsTrigger>
+            <TabsTrigger value="dashboard" className="flex-shrink-0 min-w-[100px] sm:min-w-[120px] whitespace-nowrap px-3 sm:px-4 text-xs sm:text-sm data-[state=active]:bg-osu-scarlet data-[state=active]:text-white text-osu-gray">Dashboard</TabsTrigger>
+            <TabsTrigger value="actions" className="flex-shrink-0 min-w-[100px] sm:min-w-[120px] whitespace-nowrap px-3 sm:px-4 text-xs sm:text-sm data-[state=active]:bg-osu-scarlet data-[state=active]:text-white text-osu-gray">Quick Actions</TabsTrigger>
+            <TabsTrigger value="network" className="flex-shrink-0 min-w-[100px] sm:min-w-[120px] whitespace-nowrap px-3 sm:px-4 text-xs sm:text-sm data-[state=active]:bg-osu-scarlet data-[state=active]:text-white text-osu-gray">Partner Network</TabsTrigger>
           </TabsList>
 
           {/* Dashboard Tab */}
