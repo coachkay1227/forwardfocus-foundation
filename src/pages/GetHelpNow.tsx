@@ -100,23 +100,28 @@ export default function GetHelpNow() {
               <h2 className="font-heading text-4xl md:text-5xl font-bold text-foreground mb-6">
                 Immediate Crisis Support
               </h2>
-              <p className="text-xl text-foreground/70 max-w-3xl mx-auto leading-relaxed">
+              <p className="text-xl text-foreground/70 max-w-3xl mx-auto leading-relaxed mb-8">
                 If you're in immediate danger or experiencing a crisis, these resources are available right now
               </p>
+              <div className="bg-muted/50 rounded-lg p-4 max-w-2xl mx-auto">
+                <p className="text-sm text-muted-foreground">
+                  <strong>Need to exit quickly?</strong> Use the "Exit" button in the top right corner or press Ctrl+Shift+Q to go to a safe website
+                </p>
+              </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              <div className="bg-background rounded-xl p-6 md:p-8 border shadow-lg hover:shadow-xl transition-all">
-                <div className="flex items-center gap-6 mb-8 justify-center">
-                  <div className="w-12 h-12 md:w-16 md:h-16 bg-destructive rounded-xl flex items-center justify-center shadow-md">
-                    <Phone className="h-6 w-6 md:h-8 md:w-8 text-destructive-foreground" />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto px-4">
+              <div className="bg-background rounded-xl p-6 border shadow-lg hover:shadow-xl transition-all">
+                <div className="flex items-center gap-4 mb-6 justify-center">
+                  <div className="w-12 h-12 bg-destructive rounded-xl flex items-center justify-center shadow-md">
+                    <Phone className="h-6 w-6 text-destructive-foreground" />
                   </div>
                 </div>
-                <h3 className="text-xl md:text-2xl font-semibold text-foreground text-center mb-4">Emergency Services</h3>
-                <p className="text-foreground/70 text-base md:text-lg leading-relaxed text-center mb-6">For immediate life-threatening emergencies</p>
+                <h3 className="text-xl font-semibold text-foreground text-center mb-4">Emergency Services</h3>
+                <p className="text-foreground/70 text-base leading-relaxed text-center mb-6">For immediate life-threatening emergencies</p>
                 <Button 
                   size="lg" 
-                  className="w-full bg-destructive hover:bg-destructive/90 text-destructive-foreground h-11 md:h-12"
+                  className="w-full bg-destructive hover:bg-destructive/90 text-destructive-foreground h-12"
                   onClick={() => window.location.href = 'tel:911'}
                 >
                   <Phone className="h-5 w-5 mr-2" />
@@ -124,40 +129,21 @@ export default function GetHelpNow() {
                 </Button>
               </div>
 
-              <div className="bg-background rounded-xl p-6 md:p-8 border shadow-lg hover:shadow-xl transition-all">
-                <div className="flex items-center gap-6 mb-8 justify-center">
-                  <div className="w-12 h-12 md:w-16 md:h-16 bg-primary rounded-xl flex items-center justify-center shadow-md">
-                    <Heart className="h-6 w-6 md:h-8 md:w-8 text-primary-foreground" />
+              <div className="bg-background rounded-xl p-6 border shadow-lg hover:shadow-xl transition-all">
+                <div className="flex items-center gap-4 mb-6 justify-center">
+                  <div className="w-12 h-12 bg-primary rounded-xl flex items-center justify-center shadow-md">
+                    <Heart className="h-6 w-6 text-primary-foreground" />
                   </div>
                 </div>
-                <h3 className="text-xl md:text-2xl font-semibold text-foreground text-center mb-4">Mental Health Crisis</h3>
-                <p className="text-foreground/70 text-base md:text-lg leading-relaxed text-center mb-6">24/7 suicide & crisis lifeline support</p>
+                <h3 className="text-xl font-semibold text-foreground text-center mb-4">Mental Health Crisis</h3>
+                <p className="text-foreground/70 text-base leading-relaxed text-center mb-6">24/7 suicide & crisis lifeline support</p>
                 <Button 
                   size="lg" 
-                  className="w-full bg-primary hover:bg-primary/90 h-11 md:h-12"
+                  className="w-full bg-primary hover:bg-primary/90 h-12"
                   onClick={() => window.location.href = 'tel:988'}
                 >
                   <Heart className="h-5 w-5 mr-2" />
                   Call or Text 988
-                </Button>
-              </div>
-
-              <div className="bg-background rounded-xl p-6 md:p-8 border shadow-lg hover:shadow-xl transition-all">
-                <div className="flex items-center gap-6 mb-8 justify-center">
-                  <div className="w-12 h-12 md:w-16 md:h-16 bg-secondary rounded-xl flex items-center justify-center shadow-md">
-                    <Users className="h-6 w-6 md:h-8 md:w-8 text-secondary-foreground" />
-                  </div>
-                </div>
-                <h3 className="text-xl md:text-2xl font-semibold text-foreground text-center mb-4">General Support</h3>
-                <p className="text-foreground/70 text-base md:text-lg leading-relaxed text-center mb-6">Information & referral services</p>
-                <Button 
-                  size="lg" 
-                  variant="outline" 
-                  className="w-full border-secondary text-secondary hover:bg-secondary/10 h-11 md:h-12"
-                  onClick={() => window.location.href = 'tel:211'}
-                >
-                  <Users className="h-5 w-5 mr-2" />
-                  Call 211
                 </Button>
               </div>
             </div>

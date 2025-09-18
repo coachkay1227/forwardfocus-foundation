@@ -306,46 +306,6 @@ export default function CommunityLearning() {
             </div>
           </section>
 
-          {/* Emergency Help Section */}
-          <section className="bg-gradient-to-r from-osu-gray/10 via-osu-gray/5 to-osu-gray/10 rounded-2xl p-12 shadow-xl text-center">
-            <h2 className="font-heading text-3xl md:text-4xl font-semibold text-foreground mb-8">
-              Need Help Right Now?
-            </h2>
-            
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 max-w-full md:max-w-3xl mx-auto mb-8">
-              <Button asChild variant="outline" size="lg" className="h-auto p-6 flex flex-col gap-3 border-osu-gray hover:bg-osu-gray hover:text-white transition-all duration-300 shadow-lg">
-                <a href="tel:911">
-                  <Phone className="h-6 w-6 text-osu-scarlet" />
-                  <div>
-                    <div className="font-bold text-lg">911</div>
-                    <div className="text-xs text-muted-foreground">Emergency</div>
-                  </div>
-                </a>
-              </Button>
-              
-              <Button asChild variant="outline" size="lg" className="h-auto p-6 flex flex-col gap-3 border-osu-gray hover:bg-osu-gray hover:text-white transition-all duration-300 shadow-lg">
-                <a href="tel:988">
-                  <MessageSquare className="h-6 w-6 text-osu-scarlet" />
-                  <div>
-                    <div className="font-bold text-lg">988</div>
-                    <div className="text-xs text-muted-foreground">Mental Health Support</div>
-                  </div>
-                </a>
-              </Button>
-              
-              <Button variant="outline" size="lg" className="h-auto p-6 flex flex-col gap-3 border-osu-gray hover:bg-osu-gray hover:text-white transition-all duration-300 shadow-lg">
-                <Users className="h-6 w-6 text-osu-scarlet" />
-                <div>
-                  <div className="font-bold text-lg">Quick Exit</div>
-                  <div className="text-xs text-muted-foreground">Top Corner</div>
-                </div>
-              </Button>
-            </div>
-            
-            <p className="text-sm text-muted-foreground italic bg-white/50 backdrop-blur-sm rounded-lg p-4 inline-block">
-              You're safe here. Take what you need, when you're ready.
-            </p>
-          </section>
 
         </div>
       </main>

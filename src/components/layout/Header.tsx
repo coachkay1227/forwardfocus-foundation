@@ -1,6 +1,6 @@
 import { NavLink, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { Menu, User, LogOut, Search, Globe, Phone, ChevronDown } from "lucide-react";
+import { Menu, User, LogOut, Search, Globe, Phone, ChevronDown, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
@@ -52,8 +52,22 @@ const Header = ({
     const handleScroll = () => {
       setHasScrolled(window.scrollY > 0);
     };
+    
+    // Quick Exit keyboard shortcut
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key === 'Q') {
+        e.preventDefault();
+        window.location.href = 'https://weather.com';
+      }
+    };
+    
     window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    document.addEventListener('keydown', handleKeyDown);
+    
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      document.removeEventListener('keydown', handleKeyDown);
+    };
   }, [user]);
 
   // Hide header on auth pages
@@ -228,6 +242,18 @@ const Header = ({
                     <NavLink to="/partners">Partner Portal</NavLink>
                   </Button>
                 </>}
+
+              {/* Quick Exit Button */}
+              <Button 
+                size="sm" 
+                variant="ghost" 
+                className="text-muted-foreground hover:text-destructive text-xs px-2 h-8"
+                onClick={() => window.location.href = 'https://weather.com'}
+                title="Quick Exit - Ctrl+Shift+Q or click to go to weather.com"
+              >
+                <X className="h-3 w-3 mr-1" />
+                Exit
+              </Button>
 
               {/* Get Involved CTA */}
               <Button size="sm" asChild className="support-link bg-[hsl(var(--osu-scarlet))] hover:bg-[hsl(var(--osu-scarlet-dark))] text-white font-medium px-4 h-9">

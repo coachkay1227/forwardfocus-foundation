@@ -108,7 +108,7 @@ export const EmergencySafetySystem = () => {
         setShowAIDiscovery(true);
         break;
       case "exit":
-        window.location.assign("https://www.google.com");
+        window.location.href = "https://weather.com";
         break;
     }
     setIsSheetOpen(false);
