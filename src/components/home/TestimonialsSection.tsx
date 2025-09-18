@@ -1,28 +1,28 @@
 import { Heart } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
-import testimonialSarah from "@/assets/testimonial-sarah.jpg";
-import testimonialMichael from "@/assets/testimonial-michael.jpg";
-import testimonialJessica from "@/assets/testimonial-jessica.jpg";
+import testimonialSarah from "@/assets/testimonial-sarah-diverse.jpg";
+import testimonialMichael from "@/assets/testimonial-michael-diverse.jpg";
+import testimonialJessica from "@/assets/testimonial-jessica-diverse.jpg";
 
 const testimonials = [
   {
-    quote: "The trauma-informed approach made all the difference in my healing.",
+    quote: "The trauma-informed approach made all the difference in my healing journey.",
     name: "Sarah M.",
-    location: "Columbus, OH",
+    location: "Atlanta, GA",
     avatar: testimonialSarah,
     stars: 5
   },
   {
-    quote: "Finally found a community that understands what I'm going through.",
-    name: "Michael R.",
-    location: "Cleveland, OH", 
+    quote: "Finally found a community that truly understands my family's experience.",
+    name: "Carlos R.",
+    location: "Phoenix, AZ", 
     avatar: testimonialMichael,
     stars: 5
   },
   {
-    quote: "The AI assistant helped me find resources I didn't know existed.",
-    name: "Jessica T.",
-    location: "Cincinnati, OH",
+    quote: "The personalized resources helped us navigate reentry with confidence.",
+    name: "Jessica L.",
+    location: "Detroit, MI",
     avatar: testimonialJessica,
     stars: 5
   }
@@ -30,12 +30,12 @@ const testimonials = [
 
 export const TestimonialsSection = () => {
   return (
-    <section className="py-10 md:py-14 bg-gradient-to-b from-osu-gray/5 via-muted/20 to-osu-gray/8 relative overflow-hidden">
+    <section className="py-8 md:py-12 bg-gradient-to-b from-osu-gray/5 via-muted/20 to-osu-gray/8 relative overflow-hidden">
       {/* Subtle background pattern */}
       <div className="absolute inset-0 bg-gradient-to-br from-osu-scarlet/2 via-transparent to-osu-gray/3" aria-hidden />
       
       <div className="container px-4 relative">
-        <div className="text-center mb-8">
+        <div className="text-center mb-6">
           <h2 className="font-heading text-2xl md:text-3xl font-bold mb-3 text-foreground">
             Real Stories, Real Progress
           </h2>
@@ -44,7 +44,7 @@ export const TestimonialsSection = () => {
           </p>
         </div>
 
-        <div className="grid gap-5 md:grid-cols-3 max-w-5xl mx-auto">
+        <div className="grid gap-4 md:grid-cols-3 max-w-4xl mx-auto">
           {testimonials.map((testimonial, index) => (
             <Card 
               key={index} 
@@ -53,7 +53,7 @@ export const TestimonialsSection = () => {
               {/* Subtle OSU accent */}
               <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-osu-scarlet via-osu-scarlet-dark to-osu-gray" aria-hidden />
               
-              <CardContent className="pt-5 pb-5">
+              <CardContent className="pt-4 pb-4">
                 <div className="flex items-center gap-3 mb-3">
                   <img 
                     src={testimonial.avatar} 

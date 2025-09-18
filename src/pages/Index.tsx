@@ -45,8 +45,8 @@ const Index = () => {
       
       <HowItWorksSection />
       <CoachKaySection />
-      <TestimonialsSection />
       <PathwaysSection />
+      <TestimonialsSection />
       <CallToActionSection />
 
       <AIResourceDiscovery 
