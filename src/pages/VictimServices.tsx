@@ -219,11 +219,11 @@ export default function VictimServices() {
                 Comprehensive support for crime victims and survivors. Crisis intervention, advocacy, 
                 legal aid, and trauma-informed healing resources available 24/7.
               </p>
-              <div className="flex flex-col sm:flex-row gap-4 max-w-lg mx-auto">
+              <div className="flex flex-col sm:flex-row gap-4 max-w-sm sm:max-w-lg mx-auto px-4">
                 <Button 
                   size="lg" 
                   variant="secondary"
-                  className="bg-white text-osu-scarlet hover:bg-white/90"
+                  className="bg-white text-osu-scarlet hover:bg-white/90 w-full sm:flex-1"
                   onClick={() => setShowVictimAI(true)}
                 >
                   <Bot className="h-5 w-5 mr-2" />
@@ -232,6 +232,7 @@ export default function VictimServices() {
                 <Button 
                   size="lg" 
                   variant="hero"
+                  className="w-full sm:flex-1"
                   onClick={() => window.location.href = 'tel:988'}
                 >
                   <Phone className="h-5 w-5 mr-2" />
@@ -342,10 +343,10 @@ export default function VictimServices() {
                 </div>
               </div>
               
-              <div className="text-center mt-16">
+              <div className="text-center mt-16 px-4">
                 <Button 
                   size="lg" 
-                  className="text-lg px-10 py-6 shadow-lg hover:shadow-xl transition-all duration-300 bg-osu-scarlet hover:bg-osu-scarlet-dark"
+                  className="text-lg px-6 sm:px-10 py-6 shadow-lg hover:shadow-xl transition-all duration-300 bg-osu-scarlet hover:bg-osu-scarlet-dark w-full max-w-sm sm:max-w-none sm:w-auto"
                   onClick={() => setShowSignupModal(true)}
                 >
                   Choose Your Support Path
@@ -369,11 +370,11 @@ export default function VictimServices() {
                   resources, or connect with a real person who understands your journey.
                 </p>
               </div>
-              <div className="flex flex-col sm:flex-row gap-4 max-w-lg mx-auto mt-12">
+              <div className="flex flex-col sm:flex-row gap-4 max-w-sm sm:max-w-lg mx-auto mt-12 px-4">
                 <Button 
                   size="lg" 
                   variant="secondary"
-                  className="flex-1 bg-white text-osu-scarlet hover:bg-white/90"
+                  className="bg-white text-osu-scarlet hover:bg-white/90 w-full sm:flex-1"
                   onClick={() => setShowVictimAI(true)}
                 >
                   <Bot className="h-5 w-5 mr-2" />
@@ -381,7 +382,7 @@ export default function VictimServices() {
                 </Button>
                 <Button 
                   size="lg" 
-                  className="bg-osu-gray hover:bg-osu-gray-dark text-white flex-1"
+                  className="bg-osu-gray hover:bg-osu-gray-dark text-white w-full sm:flex-1"
                   onClick={() => setShowSignupModal(true)}
                 >
                   <Users className="h-5 w-5 mr-2" />
