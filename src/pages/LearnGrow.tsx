@@ -293,12 +293,12 @@ export default function CommunityLearning() {
               </div>
             </div>
 
-            <div className="text-center bg-gradient-to-r from-osu-scarlet/5 via-osu-scarlet/10 to-osu-scarlet/5 rounded-2xl p-12">
+            <div className="text-center bg-gradient-to-r from-osu-scarlet/5 via-osu-scarlet/10 to-osu-scarlet/5 rounded-2xl p-6 sm:p-12 px-4">
               <Button 
                 onClick={() => setShowApplication(true)} 
                 size="lg"
                 variant="osu-gradient"
-                className="text-lg px-12 py-6 shadow-xl hover:shadow-2xl transition-all duration-300"
+                className="text-lg px-6 sm:px-12 py-6 shadow-xl hover:shadow-2xl transition-all duration-300 w-full max-w-sm sm:max-w-none sm:w-auto"
               >
                 <Users className="h-6 w-6 mr-3" />
                 Join the Collective Now
