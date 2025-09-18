@@ -4,18 +4,101 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/contexts/AuthContext";
+import { sanitizeInput } from "@/lib/security";
 
 const AddResource = () => {
+  const { user } = useAuth();
   const [loading, setLoading] = useState(false);
-  useEffect(()=>{ document.title = "Add Resource | Partner Portal"; },[]);
+  const [formData, setFormData] = useState({
+    organization: '',
+    name: '',
+    category: 'Housing',
+    website: '',
+    phone: '',
+    description: ''
+  });
 
-  const onSubmit = (e: React.FormEvent) => {
+  useEffect(() => { 
+    document.title = "Add Resource | Partner Portal"; 
+  }, []);
+
+  const handleInputChange = (field: string, value: string) => {
+    setFormData(prev => ({ ...prev, [field]: value }));
+  };
+
+  const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (!user) {
+      toast({
+        title: "Authentication Required",
+        description: "Please sign in to add resources.",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    // Validate required fields
+    if (!formData.organization || !formData.name || !formData.description) {
+      toast({
+        title: "Missing Information",
+        description: "Please fill in all required fields.",
+        variant: "destructive"
+      });
+      return;
+    }
+
     setLoading(true);
-    setTimeout(()=>{
+    
+    try {
+      // Sanitize inputs
+      const sanitizedData = {
+        name: sanitizeInput(formData.organization),
+        description: sanitizeInput(formData.description),
+        website: formData.website ? sanitizeInput(formData.website) : null,
+        phone: formData.phone ? sanitizeInput(formData.phone) : null,
+        city: '', // Would need to add city field or default
+        state_code: 'OH', // Default to Ohio, could be made dynamic
+        verified: false,
+        owner_id: user.id
+      };
+
+      const { error } = await supabase
+        .from('organizations')
+        .insert(sanitizedData);
+
+      if (error) {
+        console.error('Error adding resource:', error);
+        throw error;
+      }
+
+      toast({ 
+        title: "Resource submitted", 
+        description: "Thanks! Our team will review and publish shortly." 
+      });
+      
+      // Clear form
+      setFormData({
+        organization: '',
+        name: '',
+        category: 'Housing',
+        website: '',
+        phone: '',
+        description: ''
+      });
+
+    } catch (error) {
+      console.error('Error submitting resource:', error);
+      toast({
+        title: "Submission Failed",
+        description: "There was an error submitting your resource. Please try again.",
+        variant: "destructive"
+      });
+    } finally {
       setLoading(false);
-      toast({ title: "Resource submitted", description: "Thanks! Our team will review and publish shortly." });
-    }, 700);
+    }
   };
 
   return (
@@ -38,6 +121,8 @@ const AddResource = () => {
                 <Input 
                   required 
                   placeholder="Organization" 
+                  value={formData.organization}
+                  onChange={(e) => handleInputChange('organization', e.target.value)}
                   className="h-12 text-lg border-osu-gray/30 focus:border-osu-scarlet focus:ring-osu-scarlet/20" 
                 />
               </div>
@@ -46,12 +131,14 @@ const AddResource = () => {
                 <Input 
                   required 
                   placeholder="Program or service" 
+                  value={formData.name}
+                  onChange={(e) => handleInputChange('name', e.target.value)}
                   className="h-12 text-lg border-osu-gray/30 focus:border-osu-scarlet focus:ring-osu-scarlet/20" 
                 />
               </div>
               <div>
                 <label className="block text-lg font-semibold mb-2 text-osu-scarlet">Category</label>
-                <Select defaultValue="Housing">
+                <Select value={formData.category} onValueChange={(value) => handleInputChange('category', value)}>
                   <SelectTrigger className="h-12 text-lg border-osu-gray/30 focus:border-osu-scarlet focus:ring-osu-scarlet/20">
                     <SelectValue />
                   </SelectTrigger>
@@ -67,6 +154,8 @@ const AddResource = () => {
                 <Input 
                   type="url" 
                   placeholder="https://" 
+                  value={formData.website}
+                  onChange={(e) => handleInputChange('website', e.target.value)}
                   className="h-12 text-lg border-osu-gray/30 focus:border-osu-scarlet focus:ring-osu-scarlet/20" 
                 />
               </div>
@@ -75,6 +164,8 @@ const AddResource = () => {
                 <Input 
                   type="tel" 
                   placeholder="(555) 555-5555" 
+                  value={formData.phone}
+                  onChange={(e) => handleInputChange('phone', e.target.value)}
                   className="h-12 text-lg border-osu-gray/30 focus:border-osu-scarlet focus:ring-osu-scarlet/20" 
                 />
               </div>
@@ -83,6 +174,8 @@ const AddResource = () => {
                 <Textarea 
                   required 
                   placeholder="What support is provided? Who qualifies?" 
+                  value={formData.description}
+                  onChange={(e) => handleInputChange('description', e.target.value)}
                   className="min-h-32 text-lg border-osu-gray/30 focus:border-osu-scarlet focus:ring-osu-scarlet/20" 
                 />
               </div>

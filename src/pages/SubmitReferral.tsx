@@ -82,13 +82,12 @@ const SubmitReferral = () => {
     }
     setLoading(true);
     try {
-      const {
-        error
-      } = await supabase.from('partner_referrals').insert({
+      const { data, error } = await supabase.from('partner_referrals').insert({
         name: sanitizedName,
         contact_info: sanitizedContactInfo,
         notes: sanitizedNotes
-      });
+      }).select().single();
+
       if (error) {
         console.error('Error submitting referral:', error);
         toast({
@@ -96,16 +95,35 @@ const SubmitReferral = () => {
           description: "Failed to submit referral. Please try again.",
           variant: "destructive"
         });
-      } else {
-        toast({
-          title: "Referral submitted",
-          description: "We'll follow up with the individual promptly."
-        });
-        // Clear form
-        setName("");
-        setContactInfo("");
-        setNotes("");
+        return;
       }
+
+      // Send notification emails
+      try {
+        await supabase.functions.invoke('send-referral-notification', {
+          body: {
+            referralId: data.id,
+            name: sanitizedName,
+            contactInfo: sanitizedContactInfo,
+            notes: sanitizedNotes,
+            partnerEmail: 'partner@example.com' // TODO: Get actual partner email from auth
+          }
+        });
+      } catch (emailError) {
+        console.error('Error sending notification emails:', emailError);
+        // Don't fail the referral submission if email fails
+      }
+
+      toast({
+        title: "Referral submitted",
+        description: "We'll follow up with the individual promptly. You'll receive a confirmation email shortly."
+      });
+      
+      // Clear form
+      setName("");
+      setContactInfo("");
+      setNotes("");
+      
     } catch (error) {
       console.error('Error submitting referral:', error);
       toast({

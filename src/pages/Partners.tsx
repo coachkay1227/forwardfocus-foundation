@@ -24,6 +24,7 @@ import {
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
+import { PartnerVerificationStatus } from "@/components/partner/PartnerVerificationStatus";
 
 // Import hero image
 import partnershipCollaboration from "@/assets/partnership-collaboration.jpg";
@@ -58,19 +59,27 @@ const Partners = () => {
 
   const fetchPartnerStats = async () => {
     try {
-      // Simulate fetching partner statistics
-      // In a real app, you'd fetch based on the user's partner organization
-      setStats({
-        totalReferrals: 24,
-        activeReferrals: 7,
-        completedReferrals: 17,
-        resourcesAdded: 12,
-        impactScore: 89,
-      });
+      const { data, error } = await supabase.rpc('get_partner_stats');
+      
+      if (error) {
+        console.error("Error fetching partner stats:", error);
+        throw error;
+      }
+      
+      if (data && typeof data === 'object') {
+        const statsData = data as any; // Cast to any to access properties
+        setStats({
+          totalReferrals: statsData.totalReferrals || 0,
+          activeReferrals: statsData.activeReferrals || 0,
+          completedReferrals: statsData.completedReferrals || 0,
+          resourcesAdded: statsData.resourcesAdded || 0,
+          impactScore: statsData.impactScore || 0,
+        });
+      }
     } catch (error) {
       console.error("Error fetching partner stats:", error);
       toast({
-        title: "Error",
+        title: "Error", 
         description: "Failed to load partner statistics.",
         variant: "destructive",
       });
@@ -176,16 +185,19 @@ const Partners = () => {
         </div>
 
         <Tabs defaultValue="dashboard" className="space-y-4">
-          <TabsList className="grid w-full grid-cols-1 md:grid-cols-3 bg-osu-gray/10 border border-osu-gray/20">
-            <TabsTrigger value="dashboard" className="data-[state=active]:bg-osu-scarlet data-[state=active]:text-white text-osu-gray">Dashboard</TabsTrigger>
-            <TabsTrigger value="actions" className="data-[state=active]:bg-osu-scarlet data-[state=active]:text-white text-osu-gray">Quick Actions</TabsTrigger>
-            <TabsTrigger value="network" className="data-[state=active]:bg-osu-scarlet data-[state=active]:text-white text-osu-gray">Partner Network</TabsTrigger>
+          <TabsList className="flex w-full overflow-x-auto bg-osu-gray/10 border border-osu-gray/20 scrollbar-hide">
+            <TabsTrigger value="dashboard" className="flex-shrink-0 min-w-[120px] data-[state=active]:bg-osu-scarlet data-[state=active]:text-white text-osu-gray">Dashboard</TabsTrigger>
+            <TabsTrigger value="actions" className="flex-shrink-0 min-w-[120px] data-[state=active]:bg-osu-scarlet data-[state=active]:text-white text-osu-gray">Quick Actions</TabsTrigger>
+            <TabsTrigger value="network" className="flex-shrink-0 min-w-[120px] data-[state=active]:bg-osu-scarlet data-[state=active]:text-white text-osu-gray">Partner Network</TabsTrigger>
           </TabsList>
 
           {/* Dashboard Tab */}
           <TabsContent value="dashboard" className="space-y-4">
             {user ? (
               <>
+                {/* Verification Status */}
+                <PartnerVerificationStatus />
+                
                 {/* Stats Overview */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                   <Card className="hover:shadow-lg transition-all duration-300 border-osu-gray/20 shadow-md">

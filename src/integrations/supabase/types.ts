@@ -305,6 +305,8 @@ export type Database = {
       }
       partner_referrals: {
         Row: {
+          assigned_to: string | null
+          completed_at: string | null
           contact_info: string
           created_at: string
           id: string
@@ -314,6 +316,8 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          assigned_to?: string | null
+          completed_at?: string | null
           contact_info: string
           created_at?: string
           id?: string
@@ -323,6 +327,8 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          assigned_to?: string | null
+          completed_at?: string | null
           contact_info?: string
           created_at?: string
           id?: string
@@ -830,6 +836,10 @@ export type Database = {
           verified: boolean
           website: string
         }[]
+      }
+      get_partner_stats: {
+        Args: { partner_user_id?: string }
+        Returns: Json
       }
       get_safe_organizations_public: {
         Args: Record<PropertyKey, never>
