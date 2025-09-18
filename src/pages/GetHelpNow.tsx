@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Phone, AlertTriangle, Heart, Users, BookOpen, Shield, ArrowDown, MessageCircle, ChevronRight, ExternalLink, Bot, CheckCircle, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -10,6 +10,12 @@ import diverseWomenSupport from "@/assets/diverse-women-support.jpg";
 export default function GetHelpNow() {
   const [activeSection, setActiveSection] = useState<string>("crisis");
   const [showCrisisAI, setShowCrisisAI] = useState(false);
+  const location = useLocation();
+
+  // Scroll to top on route change
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location.pathname]);
 
   useEffect(() => {
     document.title = "Get Personalized Support & Resources | Forward Focus";
@@ -176,7 +182,7 @@ export default function GetHelpNow() {
               </p>
             </div>
 
-            <div className="grid md:grid-cols-2 gap-8">
+            <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
               <div className="bg-background rounded-xl p-10 border shadow-lg hover:shadow-xl transition-all">
                 <div className="flex items-center gap-6 mb-8 justify-center">
                   <div className="w-16 h-16 bg-primary rounded-xl flex items-center justify-center shadow-md">
