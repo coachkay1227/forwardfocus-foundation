@@ -176,8 +176,8 @@ export default function GetHelpNow() {
               </p>
             </div>
 
-            <div className="grid md:grid-cols-3 gap-8">
-              <div className="bg-background rounded-xl p-10 border shadow-lg hover:shadow-xl transition-all">
+            <div className="grid md:grid-cols-3 gap-8 md:auto-rows-fr items-stretch">
+              <div className="bg-background rounded-xl p-10 border shadow-lg hover:shadow-xl transition-all h-full flex flex-col">
                 <div className="flex items-center gap-6 mb-8 justify-center">
                   <div className="w-16 h-16 bg-primary rounded-xl flex items-center justify-center shadow-md">
                     <BookOpen className="h-8 w-8 text-primary-foreground" />
@@ -188,7 +188,7 @@ export default function GetHelpNow() {
                   Access educational resources, skill-building programs, and personal development tools 
                   designed for justice-impacted individuals and families.
                 </p>
-                <Button asChild size="lg" className="w-full">
+                <Button asChild size="lg" className="w-full mt-auto">
                   <Link to="/learn">
                     <BookOpen className="h-5 w-5 mr-2" />
                     Explore Learning Resources
@@ -197,7 +197,7 @@ export default function GetHelpNow() {
                 </Button>
               </div>
 
-              <div className="bg-background rounded-xl p-10 border shadow-lg hover:shadow-xl transition-all">
+              <div className="bg-background rounded-xl p-10 border shadow-lg hover:shadow-xl transition-all h-full flex flex-col">
                 <div className="flex items-center gap-6 mb-8 justify-center">
                   <div className="w-16 h-16 bg-secondary rounded-xl flex items-center justify-center shadow-md">
                     <Shield className="h-8 w-8 text-secondary-foreground" />
@@ -208,7 +208,7 @@ export default function GetHelpNow() {
                   Find trauma-informed support services, safety resources, and healing-centered 
                   approaches for survivors and their families.
                 </p>
-                <Button asChild size="lg" variant="outline" className="w-full border-secondary text-secondary hover:bg-secondary/10">
+                <Button asChild size="lg" variant="outline" className="w-full mt-auto border-secondary text-secondary hover:bg-secondary/10">
                   <Link to="/victim-services">
                     <Shield className="h-5 w-5 mr-2" />
                     Access Healing Hub
