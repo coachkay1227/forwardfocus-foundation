@@ -105,18 +105,18 @@ export default function GetHelpNow() {
               </p>
             </div>
 
-            <div className="grid md:grid-cols-3 gap-8">
-              <div className="bg-background rounded-xl p-10 border shadow-lg hover:shadow-xl transition-all">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              <div className="bg-background rounded-xl p-6 md:p-8 border shadow-lg hover:shadow-xl transition-all">
                 <div className="flex items-center gap-6 mb-8 justify-center">
-                  <div className="w-16 h-16 bg-destructive rounded-xl flex items-center justify-center shadow-md">
-                    <Phone className="h-8 w-8 text-destructive-foreground" />
+                  <div className="w-12 h-12 md:w-16 md:h-16 bg-destructive rounded-xl flex items-center justify-center shadow-md">
+                    <Phone className="h-6 w-6 md:h-8 md:w-8 text-destructive-foreground" />
                   </div>
                 </div>
-                <h3 className="text-2xl font-semibold text-foreground text-center mb-4">Emergency Services</h3>
-                <p className="text-foreground/70 text-lg leading-relaxed text-center mb-6">For immediate life-threatening emergencies</p>
+                <h3 className="text-xl md:text-2xl font-semibold text-foreground text-center mb-4">Emergency Services</h3>
+                <p className="text-foreground/70 text-base md:text-lg leading-relaxed text-center mb-6">For immediate life-threatening emergencies</p>
                 <Button 
                   size="lg" 
-                  className="w-full bg-destructive hover:bg-destructive/90 text-destructive-foreground"
+                  className="w-full bg-destructive hover:bg-destructive/90 text-destructive-foreground h-11 md:h-12"
                   onClick={() => window.location.href = 'tel:911'}
                 >
                   <Phone className="h-5 w-5 mr-2" />
@@ -124,17 +124,17 @@ export default function GetHelpNow() {
                 </Button>
               </div>
 
-              <div className="bg-background rounded-xl p-10 border shadow-lg hover:shadow-xl transition-all">
+              <div className="bg-background rounded-xl p-6 md:p-8 border shadow-lg hover:shadow-xl transition-all">
                 <div className="flex items-center gap-6 mb-8 justify-center">
-                  <div className="w-16 h-16 bg-primary rounded-xl flex items-center justify-center shadow-md">
-                    <Heart className="h-8 w-8 text-primary-foreground" />
+                  <div className="w-12 h-12 md:w-16 md:h-16 bg-primary rounded-xl flex items-center justify-center shadow-md">
+                    <Heart className="h-6 w-6 md:h-8 md:w-8 text-primary-foreground" />
                   </div>
                 </div>
-                <h3 className="text-2xl font-semibold text-foreground text-center mb-4">Mental Health Crisis</h3>
-                <p className="text-foreground/70 text-lg leading-relaxed text-center mb-6">24/7 suicide & crisis lifeline support</p>
+                <h3 className="text-xl md:text-2xl font-semibold text-foreground text-center mb-4">Mental Health Crisis</h3>
+                <p className="text-foreground/70 text-base md:text-lg leading-relaxed text-center mb-6">24/7 suicide & crisis lifeline support</p>
                 <Button 
                   size="lg" 
-                  className="w-full bg-primary hover:bg-primary/90"
+                  className="w-full bg-primary hover:bg-primary/90 h-11 md:h-12"
                   onClick={() => window.location.href = 'tel:988'}
                 >
                   <Heart className="h-5 w-5 mr-2" />
@@ -142,18 +142,18 @@ export default function GetHelpNow() {
                 </Button>
               </div>
 
-              <div className="bg-background rounded-xl p-10 border shadow-lg hover:shadow-xl transition-all">
+              <div className="bg-background rounded-xl p-6 md:p-8 border shadow-lg hover:shadow-xl transition-all">
                 <div className="flex items-center gap-6 mb-8 justify-center">
-                  <div className="w-16 h-16 bg-secondary rounded-xl flex items-center justify-center shadow-md">
-                    <Users className="h-8 w-8 text-secondary-foreground" />
+                  <div className="w-12 h-12 md:w-16 md:h-16 bg-secondary rounded-xl flex items-center justify-center shadow-md">
+                    <Users className="h-6 w-6 md:h-8 md:w-8 text-secondary-foreground" />
                   </div>
                 </div>
-                <h3 className="text-2xl font-semibold text-foreground text-center mb-4">General Support</h3>
-                <p className="text-foreground/70 text-lg leading-relaxed text-center mb-6">Information & referral services</p>
+                <h3 className="text-xl md:text-2xl font-semibold text-foreground text-center mb-4">General Support</h3>
+                <p className="text-foreground/70 text-base md:text-lg leading-relaxed text-center mb-6">Information & referral services</p>
                 <Button 
                   size="lg" 
                   variant="outline" 
-                  className="w-full border-secondary text-secondary hover:bg-secondary/10"
+                  className="w-full border-secondary text-secondary hover:bg-secondary/10 h-11 md:h-12"
                   onClick={() => window.location.href = 'tel:211'}
                 >
                   <Users className="h-5 w-5 mr-2" />
@@ -176,19 +176,19 @@ export default function GetHelpNow() {
               </p>
             </div>
 
-            <div className="grid md:grid-cols-3 gap-8 md:auto-rows-fr items-stretch">
-              <div className="bg-background rounded-xl p-10 border shadow-lg hover:shadow-xl transition-all h-full flex flex-col">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:auto-rows-fr items-stretch">
+              <div className="bg-background rounded-xl p-6 md:p-10 border shadow-lg hover:shadow-xl transition-all h-full flex flex-col">
                 <div className="flex items-center gap-6 mb-8 justify-center">
-                  <div className="w-16 h-16 bg-primary rounded-xl flex items-center justify-center shadow-md">
-                    <BookOpen className="h-8 w-8 text-primary-foreground" />
+                  <div className="w-12 h-12 md:w-16 md:h-16 bg-primary rounded-xl flex items-center justify-center shadow-md">
+                    <BookOpen className="h-6 w-6 md:h-8 md:w-8 text-primary-foreground" />
                   </div>
                 </div>
-                <h3 className="text-2xl font-semibold text-foreground text-center mb-4">Learning & Growth</h3>
-                <p className="text-foreground/70 text-lg leading-relaxed text-center mb-8">
+                <h3 className="text-xl md:text-2xl font-semibold text-foreground text-center mb-4">Learning & Growth</h3>
+                <p className="text-foreground/70 text-base md:text-lg leading-relaxed text-center mb-8">
                   Access educational resources, skill-building programs, and personal development tools 
                   designed for justice-impacted individuals and families.
                 </p>
-                <Button asChild size="lg" className="w-full mt-auto">
+                <Button asChild size="lg" className="w-full mt-auto h-11 md:h-12">
                   <Link to="/learn">
                     <BookOpen className="h-5 w-5 mr-2" />
                     Explore Learning Resources
@@ -197,18 +197,18 @@ export default function GetHelpNow() {
                 </Button>
               </div>
 
-              <div className="bg-background rounded-xl p-10 border shadow-lg hover:shadow-xl transition-all h-full flex flex-col">
+              <div className="bg-background rounded-xl p-6 md:p-10 border shadow-lg hover:shadow-xl transition-all h-full flex flex-col">
                 <div className="flex items-center gap-6 mb-8 justify-center">
-                  <div className="w-16 h-16 bg-secondary rounded-xl flex items-center justify-center shadow-md">
-                    <Shield className="h-8 w-8 text-secondary-foreground" />
+                  <div className="w-12 h-12 md:w-16 md:h-16 bg-secondary rounded-xl flex items-center justify-center shadow-md">
+                    <Shield className="h-6 w-6 md:h-8 md:w-8 text-secondary-foreground" />
                   </div>
                 </div>
-                <h3 className="text-2xl font-semibold text-foreground text-center mb-4">Healing & Safety</h3>
-                <p className="text-foreground/70 text-lg leading-relaxed text-center mb-8">
+                <h3 className="text-xl md:text-2xl font-semibold text-foreground text-center mb-4">Healing & Safety</h3>
+                <p className="text-foreground/70 text-base md:text-lg leading-relaxed text-center mb-8">
                   Find trauma-informed support services, safety resources, and healing-centered 
                   approaches for survivors and their families.
                 </p>
-                <Button asChild size="lg" variant="outline" className="w-full mt-auto border-secondary text-secondary hover:bg-secondary/10">
+                <Button asChild size="lg" variant="outline" className="w-full mt-auto border-secondary text-secondary hover:bg-secondary/10 h-11 md:h-12">
                   <Link to="/victim-services">
                     <Shield className="h-5 w-5 mr-2" />
                     Access Healing Hub

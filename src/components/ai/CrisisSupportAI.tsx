@@ -228,7 +228,7 @@ const CrisisSupportAI: React.FC<CrisisSupportAIProps> = ({ isOpen, onClose, init
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-3xl max-h-[85vh] p-0 flex flex-col" aria-describedby="crisis-support-description">
+      <DialogContent className="w-[92vw] sm:w-full sm:max-w-3xl max-h-[85vh] p-0 flex flex-col" aria-describedby="crisis-support-description">
         {/* Header */}
         <div className="flex items-center justify-between bg-destructive p-4 text-destructive-foreground shrink-0">
           <div className="flex items-center gap-3">
@@ -261,7 +261,7 @@ const CrisisSupportAI: React.FC<CrisisSupportAIProps> = ({ isOpen, onClose, init
         </div>
 
         {/* Messages */}
-        <ScrollArea className="flex-1 p-4">
+        <ScrollArea className="flex-1 p-3 sm:p-4">
           <div className="space-y-4">
             {messages.map((message) => (
               <div key={message.id} className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}>
@@ -375,9 +375,9 @@ const CrisisSupportAI: React.FC<CrisisSupportAIProps> = ({ isOpen, onClose, init
               placeholder="Tell Alex what's on your mind..."
               onKeyDown={(e) => e.key === 'Enter' && !e.shiftKey && handleSend()}
               disabled={isLoading}
-              className="flex-1"
+              className="flex-1 h-11 sm:h-12"
             />
-            <Button onClick={handleSend} disabled={isLoading || !input.trim()} className="shrink-0">
+            <Button onClick={handleSend} disabled={isLoading || !input.trim()} className="shrink-0 h-11 w-11 sm:h-12 sm:w-12">
               <Send className="h-4 w-4" />
             </Button>
           </div>
