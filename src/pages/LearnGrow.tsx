@@ -156,7 +156,7 @@ export default function CommunityLearning() {
           </section>
 
           {/* Reentry Navigator Section */}
-          <section className="bg-gradient-to-r from-osu-gray/10 via-cream/20 to-osu-gray/10 rounded-2xl p-12 shadow-xl">
+          <section className="bg-gradient-to-r from-osu-gray/10 via-cream/20 to-osu-gray/10 rounded-2xl p-6 md:p-12 shadow-xl">
             <div className="text-center space-y-8">
               <div className="space-y-4">
                 <h2 className="font-heading text-4xl md:text-5xl font-bold text-foreground">
@@ -167,13 +167,13 @@ export default function CommunityLearning() {
                 </p>
               </div>
               
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 max-w-full md:max-w-6xl mx-auto">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 place-items-center max-w-full md:max-w-6xl mx-auto">
                 {supportCoaches.map((coach, index) => {
                   const Icon = coach.icon;
                   return (
                     <Card 
                       key={index} 
-                      className="text-left hover:shadow-xl transition-all duration-300 border-l-4 border-l-osu-scarlet cursor-pointer md:hover:scale-105 bg-white/80 backdrop-blur-sm"
+                      className="w-full max-w-md md:max-w-full mx-auto text-left hover:shadow-xl transition-all duration-300 border-l-4 border-l-osu-scarlet cursor-pointer md:hover:scale-105 bg-white/80 backdrop-blur-sm"
                       onClick={() => {
                         setSelectedCoach({
                           name: coach.name,
@@ -183,7 +183,7 @@ export default function CommunityLearning() {
                         setShowReentryAI(true);
                       }}
                     >
-                      <CardContent className="p-6">
+                      <CardContent className="p-5 md:p-6">
                         <div className="flex items-start gap-4">
                           <div className="w-12 h-12 bg-osu-scarlet rounded-xl flex items-center justify-center flex-shrink-0 mt-1 shadow-lg">
                             <Icon className="h-6 w-6 text-osu-scarlet-foreground" />
