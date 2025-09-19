@@ -11,15 +11,18 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { CrisisEmergencyBot } from "@/components/ai/CrisisEmergencyBot";
+
 const linkCls = ({
   isActive
 }: {
   isActive?: boolean;
 } | any) => isActive ? "text-foreground font-medium" : "text-foreground hover:text-foreground/80";
+
 interface HeaderProps {
   showUtility?: boolean;
   showCrisis?: boolean;
 }
+
 const Header = ({
   showUtility = true,
   showCrisis = true
@@ -33,6 +36,7 @@ const Header = ({
   const [isAdmin, setIsAdmin] = useState(false);
   const [hasScrolled, setHasScrolled] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+
   useEffect(() => {
     const checkAdminStatus = async () => {
       if (!user) return setIsAdmin(false);
@@ -67,6 +71,7 @@ const Header = ({
   if (location.pathname === '/auth' || location.pathname === '/register') {
     return null;
   }
+
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchQuery.trim()) {
@@ -74,20 +79,22 @@ const Header = ({
       window.location.href = `/search?q=${encodeURIComponent(searchQuery)}`;
     }
   };
-  return <header className="sticky top-0 z-50 bg-gradient-to-r from-osu-gray-light/30 via-cream/50 to-osu-gray-light/20 border-b">
+
+  return (
+    <header className="sticky top-0 z-50 bg-gradient-to-r from-osu-gray-light/30 via-cream/50 to-osu-gray-light/20 border-b">
       {/* Crisis Ribbon - removed */}
 
       {/* Top Utility Bar - removed, replaced with crisis popup */}
 
       {/* Main Navigation */}
       <div className="bg-gradient-to-r from-osu-gray-light/30 via-cream/50 to-osu-gray-light/20 backdrop-blur-sm border-b border-border/50 shadow-sm">
-        <div className="container mx-auto px-4">
-          <div className="flex items-center justify-between h-18">
-            {/* Mobile menu button */}
-            <div className="md:hidden">
+        <div className="container mx-auto px-6">
+          <div className="grid grid-cols-12 gap-4 items-center h-16 max-w-full">
+            {/* Mobile menu button - Column 1 */}
+            <div className="col-span-1 md:hidden">
               <Sheet open={open} onOpenChange={setOpen}>
                 <SheetTrigger asChild>
-                  <Button variant="ghost" size="sm" className="p-2">
+                  <Button variant="ghost" size="sm" className="p-2 hover:bg-white/10">
                     <Menu className="h-5 w-5 text-foreground" />
                   </Button>
                 </SheetTrigger>
@@ -155,97 +162,109 @@ const Header = ({
               </Sheet>
             </div>
 
-            {/* Logo */}
-            <div className="logo flex-1 md:flex-none">
+            {/* Logo - Columns 2-4 on mobile, 1-3 on desktop */}
+            <div className="col-span-10 md:col-span-3 flex justify-center md:justify-start">
               <NavLink to="/" className="flex items-center md:hover:scale-105 transition-all duration-300 group">
                 <img 
                   src="/logo-new.png" 
                   alt="Forward Focus Elevation" 
-                  className="h-14 w-auto drop-shadow-lg filter brightness-110 contrast-110 group-hover:drop-shadow-xl transition-all duration-300" 
+                  className="h-12 w-auto drop-shadow-lg filter brightness-110 contrast-110 group-hover:drop-shadow-xl transition-all duration-300" 
                 />
               </NavLink>
             </div>
 
-            {/* Main Navigation - Desktop */}
-            <nav className="hidden md:flex main-nav items-center space-x-1 lg:space-x-2 xl:space-x-4 text-sm lg:text-base font-medium">
-              <NavLink to="/" className={linkCls}>Home</NavLink>
-              <NavLink to="/help" className={linkCls}>Get Help Now</NavLink>
-              <NavLink to="/victim-services" className={linkCls}>Healing Hub</NavLink>
-              <NavLink to="/learn" className={linkCls}>The Collective</NavLink>
-              <NavLink to="/about" className={linkCls}>About</NavLink>
+            {/* Main Navigation - Desktop - Columns 4-8 */}
+            <nav className="hidden md:flex col-span-5 items-center justify-center">
+              <div className="flex items-center space-x-8 text-sm font-medium">
+                <NavLink to="/" className={linkCls}>Home</NavLink>
+                <NavLink to="/help" className={linkCls}>Get Help Now</NavLink>
+                <NavLink to="/victim-services" className={linkCls}>Healing Hub</NavLink>
+                <NavLink to="/learn" className={linkCls}>The Collective</NavLink>
+                <NavLink to="/about" className={linkCls}>About</NavLink>
+              </div>
             </nav>
 
-            {/* Auth Links */}
-            <div className="auth-links flex items-center gap-3">
-              {user ? <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" size="sm" className="text-foreground font-medium">
-                      <User className="mr-2 h-4 w-4" />
-                      <span className="max-w-[120px] truncate">{user.email}</span>
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end" className="z-[60]">
-                    {isAdmin && <DropdownMenuItem asChild>
-                        <NavLink to="/admin">Admin Dashboard</NavLink>
-                      </DropdownMenuItem>}
-                    <DropdownMenuItem onClick={signOut}>
-                      <LogOut className="mr-2 h-4 w-4" />
-                      Sign Out
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu> : <>
-                  {/* Client Portal with Tabs */}
-                  <Popover>
-                    <PopoverTrigger asChild>
-                      <Button variant="ghost" size="sm" className="hidden md:flex text-foreground font-medium h-9 px-3">
-                        Client Portal
-                        <ChevronDown className="ml-1 h-3 w-3" />
+            {/* Auth Links - Columns 9-12 */}
+            <div className="hidden md:flex col-span-4 items-center justify-end">
+              <div className="flex items-center gap-2">
+                {user ? <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant="ghost" size="sm" className="text-foreground font-medium">
+                        <User className="mr-2 h-4 w-4" />
+                        <span className="max-w-[120px] truncate">{user.email}</span>
                       </Button>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-80 p-0" align="end">
-                      <Tabs defaultValue="signin" className="w-full">
-                        <TabsList className="grid w-full grid-cols-2">
-                          <TabsTrigger value="signin">Sign In</TabsTrigger>
-                          <TabsTrigger value="register">Register</TabsTrigger>
-                        </TabsList>
-                        <TabsContent value="signin" className="p-4">
-                          <div className="text-center">
-                            <h3 className="text-lg font-semibold mb-2">Sign In</h3>
-                            <p className="text-sm text-muted-foreground mb-4">Access your client account</p>
-                            <Button asChild className="w-full">
-                              <NavLink to="/auth">Continue to Sign In</NavLink>
-                            </Button>
-                          </div>
-                        </TabsContent>
-                        <TabsContent value="register" className="p-4">
-                          <div className="text-center">
-                            <h3 className="text-lg font-semibold mb-2">Register</h3>
-                            <p className="text-sm text-muted-foreground mb-4">Create your client account</p>
-                            <Button asChild className="w-full">
-                              <NavLink to="/register">Continue to Register</NavLink>
-                            </Button>
-                          </div>
-                        </TabsContent>
-                      </Tabs>
-                    </PopoverContent>
-                  </Popover>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end" className="z-[60] bg-background border border-border shadow-lg">
+                      {isAdmin && <DropdownMenuItem asChild>
+                          <NavLink to="/admin">Admin Dashboard</NavLink>
+                        </DropdownMenuItem>}
+                      <DropdownMenuItem onClick={signOut}>
+                        <LogOut className="mr-2 h-4 w-4" />
+                        Sign Out
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu> : <>
+                    {/* Client Portal with Tabs */}
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <Button variant="ghost" size="sm" className="text-foreground font-medium h-9 px-3">
+                          Client Portal
+                          <ChevronDown className="ml-1 h-3 w-3" />
+                        </Button>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-80 p-0 bg-background border border-border shadow-lg z-[60]" align="end">
+                        <Tabs defaultValue="signin" className="w-full">
+                          <TabsList className="grid w-full grid-cols-2">
+                            <TabsTrigger value="signin">Sign In</TabsTrigger>
+                            <TabsTrigger value="register">Register</TabsTrigger>
+                          </TabsList>
+                          <TabsContent value="signin" className="p-4">
+                            <div className="text-center">
+                              <h3 className="text-lg font-semibold mb-2">Sign In</h3>
+                              <p className="text-sm text-muted-foreground mb-4">Access your client account</p>
+                              <Button asChild className="w-full">
+                                <NavLink to="/auth">Continue to Sign In</NavLink>
+                              </Button>
+                            </div>
+                          </TabsContent>
+                          <TabsContent value="register" className="p-4">
+                            <div className="text-center">
+                              <h3 className="text-lg font-semibold mb-2">Register</h3>
+                              <p className="text-sm text-muted-foreground mb-4">Create your client account</p>
+                              <Button asChild className="w-full">
+                                <NavLink to="/register">Continue to Register</NavLink>
+                              </Button>
+                            </div>
+                          </TabsContent>
+                        </Tabs>
+                      </PopoverContent>
+                    </Popover>
 
-                  {/* Partner Portal Link */}
-                  <Button variant="ghost" size="sm" asChild className="hidden md:flex text-foreground font-medium h-9 px-3">
-                    <NavLink to="/partners">Partner Portal</NavLink>
+                    {/* Partner Portal Link */}
+                    <Button variant="ghost" size="sm" asChild className="text-foreground font-medium h-9 px-3">
+                      <NavLink to="/partners">Partner Portal</NavLink>
+                    </Button>
+                  </>}
+
+                  {/* Get Involved CTA */}
+                  <Button size="sm" asChild className="bg-[hsl(var(--osu-scarlet))] hover:bg-[hsl(var(--osu-scarlet-dark))] text-white font-medium px-4 py-2 rounded-lg shadow-sm hover:shadow-md transition-all duration-200">
+                    <NavLink to="/support">Get Involved</NavLink>
                   </Button>
-                </>}
+                </div>
+            </div>
 
-
-              {/* Get Involved CTA */}
-              <Button size="sm" asChild className="support-link bg-[hsl(var(--osu-scarlet))] hover:bg-[hsl(var(--osu-scarlet-dark))] text-white font-medium px-4 h-9">
-                <NavLink to="/support">Get Involved</NavLink>
+            {/* Mobile Get Involved - Column 12 */}
+            <div className="col-span-1 md:hidden flex justify-end">
+              <Button size="sm" asChild className="bg-[hsl(var(--osu-scarlet))] hover:bg-[hsl(var(--osu-scarlet-dark))] text-white font-medium px-3 py-2 rounded-lg">
+                <NavLink to="/support">Join</NavLink>
               </Button>
             </div>
           </div>
         </div>
       </div>
 
-    </header>;
+    </header>
+  );
 };
+
 export default Header;
