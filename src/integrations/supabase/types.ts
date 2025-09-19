@@ -53,6 +53,42 @@ export type Database = {
         }
         Relationships: []
       }
+      anonymous_sessions: {
+        Row: {
+          ai_usage_count: number | null
+          ai_usage_start_time: string | null
+          conversation_history: Json | null
+          created_at: string | null
+          expires_at: string | null
+          id: string
+          session_token: string
+          trial_expired: boolean | null
+          updated_at: string | null
+        }
+        Insert: {
+          ai_usage_count?: number | null
+          ai_usage_start_time?: string | null
+          conversation_history?: Json | null
+          created_at?: string | null
+          expires_at?: string | null
+          id?: string
+          session_token: string
+          trial_expired?: boolean | null
+          updated_at?: string | null
+        }
+        Update: {
+          ai_usage_count?: number | null
+          ai_usage_start_time?: string | null
+          conversation_history?: Json | null
+          created_at?: string | null
+          expires_at?: string | null
+          id?: string
+          session_token?: string
+          trial_expired?: boolean | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       audit_log: {
         Row: {
           action: string
@@ -807,6 +843,10 @@ export type Database = {
         Args: { admin_email: string }
         Returns: undefined
       }
+      create_first_admin_user: {
+        Args: { admin_email: string }
+        Returns: undefined
+      }
       create_payment_secure: {
         Args: { p_amount: number; p_status?: string; p_user_id: string }
         Returns: string
@@ -1035,6 +1075,10 @@ export type Database = {
           website: string
         }[]
       }
+      has_any_admin: {
+        Args: Record<PropertyKey, never>
+        Returns: boolean
+      }
       has_approved_admin_access: {
         Args: { p_admin_user_id: string; p_organization_id: string }
         Returns: boolean
@@ -1119,6 +1163,18 @@ export type Database = {
           status: string | null
           user_id: string
         }[]
+      }
+      track_anonymous_ai_usage: {
+        Args: {
+          p_ai_endpoint: string
+          p_conversation_data?: Json
+          p_session_token: string
+        }
+        Returns: Json
+      }
+      transfer_anonymous_session_to_user: {
+        Args: { p_session_token: string; p_user_id: string }
+        Returns: Json
       }
       update_partnership_request: {
         Args: { _id: string; _notes?: string; _status?: string }
