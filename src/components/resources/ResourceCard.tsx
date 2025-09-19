@@ -40,10 +40,10 @@ const ResourceCard = ({ resource }: { resource: Resource }) => {
             </Button>
           )}
           {resource.address && (
-            <Button asChild variant="outline" className="shadow-sm">
-              <a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(resource.address)}`} target="_blank" rel="noopener">
-                <MapPin className="h-4 w-4" /> Directions
-              </a>
+            <Button variant="outline" className="shadow-sm">
+              <span className="text-muted-foreground text-sm flex items-center gap-1">
+                <MapPin className="h-4 w-4" /> Address: {resource.address} (Maps offline)
+              </span>
             </Button>
           )}
           <Button variant="ghost" onClick={onSave} className="hover:bg-primary/10">

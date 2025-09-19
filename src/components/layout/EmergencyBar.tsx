@@ -42,7 +42,7 @@ const EmergencyBar = () => {
               <a href="tel:211" aria-label="Call 211 now">Call 211</a>
             </Button>
             <Button asChild size="sm" variant="outline" className="bg-transparent border-osu-scarlet text-osu-scarlet hover:bg-osu-scarlet hover:text-white h-7 px-3 text-xs">
-              <a href="https://www.211.org/" target="_blank" rel="noreferrer">Find Services</a>
+              <span className="text-muted-foreground">Offline Mode - External services unavailable</span>
             </Button>
           </div>
           <Button

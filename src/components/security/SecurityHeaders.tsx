@@ -11,7 +11,7 @@ export const SecurityHeaders = () => {
 
     const cspMeta = document.createElement('meta');
     cspMeta.httpEquiv = 'Content-Security-Policy';
-    cspMeta.content = "default-src 'self'; script-src 'self' 'unsafe-inline' https://gzukhsqgkwljfvwkfuno.supabase.co; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; connect-src 'self' https://gzukhsqgkwljfvwkfuno.supabase.co wss://gzukhsqgkwljfvwkfuno.supabase.co;";
+    cspMeta.content = "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self';";
     document.head.appendChild(cspMeta);
 
     return () => {

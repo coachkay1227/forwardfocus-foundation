@@ -63,44 +63,26 @@ const USMap = ({ className = "", currentState = "Ohio" }: Props) => {
 
   return (
     <div className={`relative ${className}`}>
-      {/* Base US Map using Google Maps iframe */}
+      {/* Offline US Map representation */}
       <div className="relative w-full" style={{ paddingTop: "60%" }}>
-        <iframe
-          title="United States Map"
-          src="https://www.google.com/maps?hl=en&q=United+States&z=4&output=embed"
-          className="absolute inset-0 h-full w-full border-0 rounded-lg"
-          loading="lazy"
-          referrerPolicy="no-referrer-when-downgrade"
-          allowFullScreen
-        />
-        
-        {/* Custom markers overlay */}
-        <div className="absolute inset-0 pointer-events-none">
-          {Object.entries(statePositions).map(([state, position]) => {
-            const isCurrentState = state === currentState;
-            
-            return (
-              <div
-                key={state}
-                className="absolute transform -translate-x-1/2 -translate-y-1/2"
-                style={{ top: position.top, left: position.left }}
-              >
-                {isCurrentState ? (
-                  <div className="relative">
-                    <Star 
-                      className="h-6 w-6 text-red-600 fill-red-600 animate-pulse drop-shadow-lg" 
-                      aria-label={`Currently serving ${state}`}
-                    />
-                  </div>
-                ) : (
+        <div className="absolute inset-0 flex items-center justify-center bg-muted rounded-lg">
+          <div className="text-center p-6">
+            <h3 className="text-lg font-semibold mb-2">United States Coverage Map</h3>
+            <p className="text-muted-foreground mb-4">Currently serving Ohio, expanding nationwide</p>
+            <div className="grid grid-cols-10 gap-1 max-w-md mx-auto">
+              {Object.entries(statePositions).map(([state, position]) => {
+                const isCurrentState = state === currentState;
+                return (
                   <div 
-                    className="w-3 h-3 bg-red-500 rounded-full border-2 border-white shadow-md opacity-80"
-                    aria-label={`Coming soon to ${state}`}
+                    key={state} 
+                    className={`w-3 h-3 rounded-sm ${isCurrentState ? 'bg-primary' : 'bg-muted-foreground/30'}`}
+                    title={state}
                   />
-                )}
-              </div>
-            );
-          })}
+                );
+              })}
+            </div>
+            <small className="text-muted-foreground/70 block mt-4">Interactive map requires internet connection</small>
+          </div>
         </div>
       </div>
       

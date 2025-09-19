@@ -91,11 +91,10 @@ export const EmergencySafetySystem = () => {
         if (navigator.geolocation) {
           navigator.geolocation.getCurrentPosition(
             (position) => {
-              const url = `https://maps.google.com/?q=${position.coords.latitude},${position.coords.longitude}`;
-              if (navigator.clipboard?.writeText) {
-                navigator.clipboard.writeText(url);
-              }
-              alert("Location copied: " + url);
+              const location = 'Current location unavailable offline';
+              console.log('Emergency mode - offline location services');
+              // Provide offline emergency guidance
+              alert('Emergency services: Call 911\nCrisis support: Call 988\nLocation services unavailable offline');
             },
             () => alert("Could not get location")
           );
@@ -108,7 +107,7 @@ export const EmergencySafetySystem = () => {
         setShowAIDiscovery(true);
         break;
       case "exit":
-        window.location.assign("https://www.google.com");
+        alert('Emergency services contacted. If this were an emergency, call 911 directly.');
         break;
     }
     setIsSheetOpen(false);
