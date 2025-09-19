@@ -4,12 +4,16 @@ import { Phone, AlertTriangle, Heart, Users, BookOpen, Shield, ArrowDown, Messag
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import CrisisSupportAI from "@/components/ai/CrisisSupportAI";
+import AIResourceDiscovery from "@/components/ai/AIResourceDiscovery";
+import { CommunityApplication } from "@/components/learn/CommunityApplication";
 import diverseWomenSupport from "@/assets/diverse-women-support.jpg";
 
 
 export default function GetHelpNow() {
   const [activeSection, setActiveSection] = useState<string>("crisis");
   const [showCrisisAI, setShowCrisisAI] = useState(false);
+  const [showAIDiscovery, setShowAIDiscovery] = useState(false);
+  const [showCommunityApplication, setShowCommunityApplication] = useState(false);
 
   useEffect(() => {
     document.title = "Get Personalized Support & Resources | Forward Focus";
@@ -162,96 +166,103 @@ export default function GetHelpNow() {
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:auto-rows-fr items-stretch">
-              <div className="bg-background rounded-xl p-6 md:p-10 border shadow-lg hover:shadow-xl transition-all h-full flex flex-col">
-                <div className="flex items-center gap-6 mb-8 justify-center">
-                  <div className="w-12 h-12 md:w-16 md:h-16 bg-primary rounded-xl flex items-center justify-center shadow-md">
-                    <BookOpen className="h-6 w-6 md:h-8 md:w-8 text-primary-foreground" />
+            {/* Unified 4-Box Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 max-w-6xl mx-auto">
+              {/* Learning & Growth */}
+              <div className="bg-background rounded-xl p-6 md:p-8 border shadow-lg hover:shadow-xl transition-all h-full flex flex-col min-h-[320px] md:min-h-[350px]">
+                <div className="flex items-center gap-4 mb-6 justify-center">
+                  <div className="w-12 h-12 md:w-14 md:h-14 bg-primary rounded-xl flex items-center justify-center shadow-md">
+                    <BookOpen className="h-6 w-6 md:h-7 md:w-7 text-primary-foreground" />
                   </div>
                 </div>
-                <h3 className="text-xl md:text-2xl font-semibold text-foreground text-center mb-4">Learning & Growth</h3>
-                <p className="text-foreground/70 text-base md:text-lg leading-relaxed text-center mb-8">
+                <h3 className="text-lg md:text-xl font-semibold text-foreground text-center mb-3">Learning & Growth</h3>
+                <p className="text-foreground/70 text-sm md:text-base leading-relaxed text-center mb-6 flex-grow">
                   Access educational resources, skill-building programs, and personal development tools 
                   designed for justice-impacted individuals and families.
                 </p>
                 <Button asChild size="lg" className="w-full mt-auto h-11 md:h-12">
                   <Link to="/learn">
-                    <BookOpen className="h-5 w-5 mr-2" />
+                    <BookOpen className="h-4 w-4 mr-2" />
                     Explore Learning Resources
                     <ChevronRight className="h-4 w-4 ml-2" />
                   </Link>
                 </Button>
               </div>
 
-              <div className="bg-background rounded-xl p-6 md:p-10 border shadow-lg hover:shadow-xl transition-all h-full flex flex-col">
-                <div className="flex items-center gap-6 mb-8 justify-center">
-                  <div className="w-12 h-12 md:w-16 md:h-16 bg-secondary rounded-xl flex items-center justify-center shadow-md">
-                    <Shield className="h-6 w-6 md:h-8 md:w-8 text-secondary-foreground" />
+              {/* Healing & Safety */}
+              <div className="bg-background rounded-xl p-6 md:p-8 border shadow-lg hover:shadow-xl transition-all h-full flex flex-col min-h-[320px] md:min-h-[350px]">
+                <div className="flex items-center gap-4 mb-6 justify-center">
+                  <div className="w-12 h-12 md:w-14 md:h-14 bg-secondary rounded-xl flex items-center justify-center shadow-md">
+                    <Shield className="h-6 w-6 md:h-7 md:w-7 text-secondary-foreground" />
                   </div>
                 </div>
-                <h3 className="text-xl md:text-2xl font-semibold text-foreground text-center mb-4">Healing & Safety</h3>
-                <p className="text-foreground/70 text-base md:text-lg leading-relaxed text-center mb-8">
+                <h3 className="text-lg md:text-xl font-semibold text-foreground text-center mb-3">Healing & Safety</h3>
+                <p className="text-foreground/70 text-sm md:text-base leading-relaxed text-center mb-6 flex-grow">
                   Find trauma-informed support services, safety resources, and healing-centered 
                   approaches for survivors and their families.
                 </p>
                 <Button asChild size="lg" variant="outline" className="w-full mt-auto border-secondary text-secondary hover:bg-secondary/10 h-11 md:h-12">
                   <Link to="/victim-services">
-                    <Shield className="h-5 w-5 mr-2" />
+                    <Shield className="h-4 w-4 mr-2" />
                     Access Healing Hub
                     <ChevronRight className="h-4 w-4 ml-2" />
                   </Link>
                 </Button>
-            </div>
+              </div>
 
-            {/* Additional Support Options */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:auto-rows-fr items-stretch mt-16">
-              <div className="bg-background rounded-xl p-6 md:p-10 border shadow-lg hover:shadow-xl transition-all h-full flex flex-col">
-                <div className="flex items-center gap-6 mb-8 justify-center">
-                  <div className="w-12 h-12 md:w-16 md:h-16 bg-primary rounded-xl flex items-center justify-center shadow-md">
-                    <Bot className="h-6 w-6 md:h-8 md:w-8 text-primary-foreground" />
+              {/* 24/7 AI + Human-Powered Guidance */}
+              <div className="bg-background rounded-xl p-6 md:p-8 border shadow-lg hover:shadow-xl transition-all h-full flex flex-col min-h-[320px] md:min-h-[350px]">
+                <div className="flex items-center gap-4 mb-6 justify-center">
+                  <div className="w-12 h-12 md:w-14 md:h-14 bg-primary rounded-xl flex items-center justify-center shadow-md">
+                    <Bot className="h-6 w-6 md:h-7 md:w-7 text-primary-foreground" />
                   </div>
                 </div>
-                <h3 className="text-xl md:text-2xl font-semibold text-foreground text-center mb-4">
+                <h3 className="text-lg md:text-xl font-semibold text-foreground text-center mb-3">
                   24/7 AI + Human-Powered Guidance
                 </h3>
-                <p className="text-foreground/70 text-base md:text-lg leading-relaxed text-center mb-8 flex-grow">
+                <p className="text-foreground/70 text-sm md:text-base leading-relaxed text-center mb-6 flex-grow">
                   Trauma recovery, reentry support, and growth resources available whenever you need them. 
                   Technology enhances support, it never replaces human connection.
                 </p>
-                <Button asChild size="lg" className="w-full mt-auto h-11 md:h-12">
-                  <Link to="/victim-services">
-                    <Bot className="h-5 w-5 mr-2" />
-                    Access AI Support Tools
-                    <ChevronRight className="h-4 w-4 ml-2" />
-                  </Link>
+                <Button 
+                  size="lg" 
+                  className="w-full mt-auto h-11 md:h-12"
+                  onClick={() => setShowAIDiscovery(true)}
+                >
+                  <Bot className="h-4 w-4 mr-2" />
+                  AI Resource Navigator
+                  <ChevronRight className="h-4 w-4 ml-2" />
                 </Button>
               </div>
 
-              <div className="bg-background rounded-xl p-6 md:p-10 border shadow-lg hover:shadow-xl transition-all h-full flex flex-col">
-                <div className="flex items-center gap-6 mb-8 justify-center">
-                  <div className="w-12 h-12 md:w-16 md:h-16 bg-secondary rounded-xl flex items-center justify-center shadow-md">
-                    <Users className="h-6 w-6 md:h-8 md:w-8 text-secondary-foreground" />
+              {/* Safe, Judgment-Free Community */}
+              <div className="bg-background rounded-xl p-6 md:p-8 border shadow-lg hover:shadow-xl transition-all h-full flex flex-col min-h-[320px] md:min-h-[350px]">
+                <div className="flex items-center gap-4 mb-6 justify-center">
+                  <div className="w-12 h-12 md:w-14 md:h-14 bg-secondary rounded-xl flex items-center justify-center shadow-md">
+                    <Users className="h-6 w-6 md:h-7 md:w-7 text-secondary-foreground" />
                   </div>
                 </div>
-                <h3 className="text-xl md:text-2xl font-semibold text-foreground text-center mb-4">
+                <h3 className="text-lg md:text-xl font-semibold text-foreground text-center mb-3">
                   Safe, Judgment-Free Community
                 </h3>
-                <p className="text-foreground/70 text-base md:text-lg leading-relaxed text-center mb-8 flex-grow">
+                <p className="text-foreground/70 text-sm md:text-base leading-relaxed text-center mb-6 flex-grow">
                   Peer and professional support in an environment where you're understood, 
                   valued, and empowered to thrive on your own terms.
                 </p>
-                <Button asChild size="lg" variant="outline" className="w-full mt-auto border-secondary text-secondary hover:bg-secondary/10 h-11 md:h-12">
-                  <Link to="/organizations">
-                    <Users className="h-5 w-5 mr-2" />
-                    Join Our Community
-                    <ChevronRight className="h-4 w-4 ml-2" />
-                  </Link>
+                <Button 
+                  size="lg" 
+                  variant="outline" 
+                  className="w-full mt-auto border-secondary text-secondary hover:bg-secondary/10 h-11 md:h-12"
+                  onClick={() => setShowCommunityApplication(true)}
+                >
+                  <Users className="h-4 w-4 mr-2" />
+                  Join Our Community
+                  <ChevronRight className="h-4 w-4 ml-2" />
                 </Button>
-              </div>
-            </div>
-            </div>
-          </div>
-        </section>
+               </div>
+             </div>
+           </div>
+         </section>
 
         {/* Call to Action */}
         <section className="scroll-mt-16 bg-gradient-to-br from-primary via-accent to-secondary text-primary-foreground rounded-2xl overflow-hidden shadow-2xl">
@@ -293,6 +304,18 @@ export default function GetHelpNow() {
     <CrisisSupportAI 
       isOpen={showCrisisAI} 
       onClose={() => setShowCrisisAI(false)} 
+    />
+
+    {/* AI Resource Discovery */}
+    <AIResourceDiscovery 
+      isOpen={showAIDiscovery} 
+      onClose={() => setShowAIDiscovery(false)} 
+    />
+
+    {/* Community Application */}
+    <CommunityApplication 
+      isOpen={showCommunityApplication} 
+      onClose={() => setShowCommunityApplication(false)} 
     />
     </>
   );
