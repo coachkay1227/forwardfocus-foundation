@@ -76,15 +76,6 @@ export const AIWithTrial = ({ children, aiEndpoint, className = "" }: AIWithTria
 
   return (
     <div className={className}>
-      {/* Trial Timer for anonymous users */}
-      {trialActive && (
-        <TrialTimer
-          timeRemaining={timeRemaining}
-          onTimeUp={handleTrialExpired}
-          className="mb-4"
-        />
-      )}
-
       {/* AI Component */}
       {children({
         canUseAI,

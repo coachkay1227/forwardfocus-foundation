@@ -21,12 +21,13 @@ export const CoachKaySection = () => {
                 </p>
               </div>
               
-              <div className="flex flex-col sm:flex-row gap-4 mt-8">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-8 max-w-md">
                 <AskCoachKay />
                 <Button 
                   size="lg" 
                   variant="outline" 
                   onClick={() => window.open('https://calendly.com/ffe_coach_kay', '_blank')}
+                  className="w-full"
                 >
                   <Calendar className="h-5 w-5 mr-2" />
                   Book Consultation
