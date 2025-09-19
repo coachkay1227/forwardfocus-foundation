@@ -83,7 +83,10 @@ export const CommunityApplication = ({ isOpen, onClose }: CommunityApplicationPr
           </div>
 
           <div className="bg-white border border-gray-200 rounded-lg p-4 mb-6">
-            <h4 className="font-semibold text-foreground mb-2">✨ What's Included (Always Free):</h4>
+            <h4 className="font-semibold text-foreground mb-2 flex items-center gap-2">
+              <CheckCircle className="h-4 w-4 text-primary" />
+              What's Included (Always Free):
+            </h4>
             <div className="grid md:grid-cols-2 gap-2 text-sm text-foreground">
               <div className="flex items-center gap-2">
                 <CheckCircle className="h-3 w-3 text-primary" />

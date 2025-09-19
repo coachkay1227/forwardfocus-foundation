@@ -158,7 +158,7 @@ const ChatbotPopup = () => {
           className="w-full bg-primary hover:bg-primary/90 text-primary-foreground"
         >
           <MessageCircle className="h-5 w-5 mr-2" />
-          Connect with Coach K
+          Connect with Coach Kay
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-md">

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
+import { useAnonymousSession } from "@/hooks/useAnonymousSession";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -18,6 +19,26 @@ const Auth = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [authLoading, setAuthLoading] = useState(false);
+  const { transferToUser } = useAnonymousSession();
+
+  useEffect(() => {
+    document.title = isLogin ? "Sign In | Forward Focus Elevation" : "Sign Up | Forward Focus Elevation";
+  }, [isLogin]);
+
+  // Redirect if already authenticated and transfer anonymous session if exists
+  useEffect(() => {
+    if (user && !loading) {
+      // Transfer anonymous session to user account
+      transferToUser(user.id).then((result) => {
+        if (result.success && result.conversationHistory) {
+          toast({
+            title: "Welcome back!",
+            description: "Your trial progress has been restored.",
+          });
+        }
+      });
+    }
+  }, [user, loading, transferToUser]);
 
   useEffect(() => {
     document.title = isLogin ? "Sign In | Forward Focus Elevation" : "Sign Up | Forward Focus Elevation";

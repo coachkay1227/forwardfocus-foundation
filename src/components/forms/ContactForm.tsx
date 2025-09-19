@@ -69,9 +69,23 @@ export default function ContactForm({
     }
     setIsSubmitting(true);
     try {
-      const {
-        error
-      } = await supabase.functions.invoke('send-contact-email', {
+      // Save to database first
+      const { error: dbError } = await supabase.from('contact_submissions').insert({
+        name: sanitizedData.name,
+        email: sanitizedData.email,
+        subject: sanitizedData.subject || getDefaultSubject(),
+        message: sanitizedData.message,
+        form_type: type,
+        status: 'new'
+      });
+
+      if (dbError) {
+        console.error('Error saving to database:', dbError);
+        // Continue with email even if database fails
+      }
+
+      // Send email notification
+      const { error } = await supabase.functions.invoke('send-contact-email', {
         body: {
           ...sanitizedData,
           type,
@@ -79,6 +93,7 @@ export default function ContactForm({
           csrfToken
         }
       });
+      
       if (error) {
         console.error('Error sending email:', error);
         toast.error("Failed to send message. Please try again.");

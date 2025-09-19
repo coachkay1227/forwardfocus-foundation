@@ -1,10 +1,11 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { X, Send, Bot, Heart, Shield, Scale, DollarSign } from 'lucide-react';
+import { X, Send, Bot, Heart, Shield, Scale, DollarSign, Mail } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { Badge } from '@/components/ui/badge';
 import { supabase } from '@/integrations/supabase/client';
+import EmailChatHistoryModal from './EmailChatHistoryModal';
 
 interface Message {
   id: string;
@@ -43,6 +44,7 @@ const VictimSupportAI: React.FC<VictimSupportAIProps> = ({ isOpen, onClose, init
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [conversationContext, setConversationContext] = useState<Array<{role: string, content: string}>>([]);
+  const [showEmailModal, setShowEmailModal] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
@@ -61,15 +63,17 @@ const VictimSupportAI: React.FC<VictimSupportAIProps> = ({ isOpen, onClose, init
 
   const sendMessage = async (messages: {role: string, content: string}[]) => {
     try {
-      const response = await fetch(`https://gzukhsqgkwljfvwkfuno.supabase.co/functions/v1/chat`, {
+      const response = await fetch(`https://gzukhsqgkwljfvwkfuno.supabase.co/functions/v1/victim-support-ai`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd6dWtoc3Fna3dsamZ2d2tmdW5vIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU3MjQyOTMsImV4cCI6MjA3MTMwMDI5M30.Skon84aKH5K5TjW9pVnCI2A-6Z-9KrTYiNknpiqeCpk`
         },
         body: JSON.stringify({
-          messages,
-          topic: "victim-support"
+          query: messages[messages.length - 1].content,
+          victimType: 'general',
+          traumaLevel: 'ongoing',
+          previousContext: messages.slice(0, -1)
         })
       });
 
@@ -77,47 +81,18 @@ const VictimSupportAI: React.FC<VictimSupportAIProps> = ({ isOpen, onClose, init
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
-      const reader = response.body?.getReader();
-      if (!reader) {
-        throw new Error('No response body');
-      }
-
-      const decoder = new TextDecoder();
-      let buffer = '';
-
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) break;
-
-        buffer += decoder.decode(value, { stream: true });
-        const lines = buffer.split('\n');
-        buffer = lines.pop() || '';
-
-        for (const line of lines) {
-          if (line.startsWith('data: ')) {
-            const data = line.slice(6);
-            if (data === '[DONE]') continue;
-            
-            try {
-              const parsed = JSON.parse(data);
-              const content = parsed.choices?.[0]?.delta?.content;
-              if (content) {
-                setMessages(prev => {
-                  const newMessages = [...prev];
-                  const lastMessage = newMessages[newMessages.length - 1];
-                  if (lastMessage.type === 'ai') {
-                    lastMessage.content += content;
-                  }
-                  return newMessages;
-                });
-                scrollToBottom();
-              }
-            } catch (e) {
-              // Skip invalid JSON
-            }
-          }
+      const data = await response.json();
+      
+      // Update AI message with the response
+      setMessages(prev => {
+        const newMessages = [...prev];
+        const lastMessage = newMessages[newMessages.length - 1];
+        if (lastMessage.type === 'ai') {
+          lastMessage.content = data.response;
+          lastMessage.resources = data.resources;
         }
-      }
+        return newMessages;
+      });
     } catch (error) {
       console.error('Victim Support AI error:', error);
       // Fallback: client-side victim services lookup so users still get help
@@ -143,7 +118,7 @@ const VictimSupportAI: React.FC<VictimSupportAIProps> = ({ isOpen, onClose, init
         const errorMessage: Message = {
           id: (Date.now() + 1).toString(),
           type: 'ai',
-          content: "I apologize for the technical difficulty. For immediate support: National Domestic Violence Hotline 1-800-799-7233, RAINN Sexual Assault Hotline 1-800-656-4673, or Crisis Support 988.",
+          content: "I apologize for the technical difficulty. Let me connect you with local victim services that can provide direct support. Please visit your nearest family justice center or contact local law enforcement victim advocacy services.",
           timestamp: new Date(),
         };
         setMessages(prev => [...prev, errorMessage]);
@@ -203,7 +178,7 @@ const VictimSupportAI: React.FC<VictimSupportAIProps> = ({ isOpen, onClose, init
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-2xl h-[700px] p-0 overflow-hidden">
+      <DialogContent className="max-w-2xl h-[700px] p-0 overflow-hidden" aria-describedby="victim-support-description">
         {/* Header */}
         <div className="flex items-center justify-between bg-primary p-4 text-primary-foreground">
           <div className="flex items-center gap-3">
@@ -211,8 +186,8 @@ const VictimSupportAI: React.FC<VictimSupportAIProps> = ({ isOpen, onClose, init
               <Heart className="h-5 w-5" />
             </div>
             <div>
-              <h3 className="font-bold text-lg">Healing & Support Navigator</h3>
-              <p className="text-sm opacity-90">Trauma-informed victim services</p>
+              <h3 className="font-bold text-lg" id="victim-support-title">Healing & Support Navigator</h3>
+              <p className="text-sm opacity-90" id="victim-support-description">Trauma-informed victim services and healing resources</p>
             </div>
           </div>
           <Button
@@ -309,7 +284,37 @@ const VictimSupportAI: React.FC<VictimSupportAIProps> = ({ isOpen, onClose, init
 
         {/* Quick Actions */}
         <div className="border-t p-4">
-          <p className="text-sm font-medium mb-3">Common support areas:</p>
+          <div className="flex items-center justify-between mb-3">
+            <p className="text-sm font-medium">Common support areas:</p>
+            <div className="flex gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => {
+                  setMessages([{
+                    id: '1',
+                    type: 'ai',
+                    content: "I'm here to support you on your healing journey. What happened to you was not your fault, and seeking help shows tremendous strength. I'm trained to understand the unique challenges faced by crime victims and can help you find trauma-informed resources, legal advocacy, compensation programs, and emotional support. How can I help you today?",
+                    timestamp: new Date(),
+                  }]);
+                  setConversationContext([]);
+                  setInput('');
+                }}
+                className="text-xs"
+              >
+                New Chat
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setShowEmailModal(true)}
+                className="text-xs"
+              >
+                <Mail className="h-3 w-3 mr-1" />
+                Email History
+              </Button>
+            </div>
+          </div>
           <div className="grid grid-cols-2 gap-2 mb-4">
             {quickActions.map((action, index) => (
               <Button
@@ -342,6 +347,14 @@ const VictimSupportAI: React.FC<VictimSupportAIProps> = ({ isOpen, onClose, init
           </p>
         </div>
       </DialogContent>
+
+      {/* Email Chat History Modal */}
+      <EmailChatHistoryModal
+        isOpen={showEmailModal}
+        onClose={() => setShowEmailModal(false)}
+        messages={messages}
+        coachName="Healing & Support Navigator"
+      />
     </Dialog>
   );
 };

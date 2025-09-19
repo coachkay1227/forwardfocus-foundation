@@ -53,6 +53,42 @@ export type Database = {
         }
         Relationships: []
       }
+      anonymous_sessions: {
+        Row: {
+          ai_usage_count: number | null
+          ai_usage_start_time: string | null
+          conversation_history: Json | null
+          created_at: string | null
+          expires_at: string | null
+          id: string
+          session_token: string
+          trial_expired: boolean | null
+          updated_at: string | null
+        }
+        Insert: {
+          ai_usage_count?: number | null
+          ai_usage_start_time?: string | null
+          conversation_history?: Json | null
+          created_at?: string | null
+          expires_at?: string | null
+          id?: string
+          session_token: string
+          trial_expired?: boolean | null
+          updated_at?: string | null
+        }
+        Update: {
+          ai_usage_count?: number | null
+          ai_usage_start_time?: string | null
+          conversation_history?: Json | null
+          created_at?: string | null
+          expires_at?: string | null
+          id?: string
+          session_token?: string
+          trial_expired?: boolean | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       audit_log: {
         Row: {
           action: string
@@ -88,6 +124,104 @@ export type Database = {
           user_id?: string | null
         }
         Relationships: []
+      }
+      booking_requests: {
+        Row: {
+          booking_date: string
+          booking_time: string
+          created_at: string
+          email: string
+          id: string
+          ip_address: unknown | null
+          message: string | null
+          name: string
+          phone: string | null
+          status: string
+          updated_at: string
+          user_agent: string | null
+          user_id: string | null
+        }
+        Insert: {
+          booking_date: string
+          booking_time: string
+          created_at?: string
+          email: string
+          id?: string
+          ip_address?: unknown | null
+          message?: string | null
+          name: string
+          phone?: string | null
+          status?: string
+          updated_at?: string
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          booking_date?: string
+          booking_time?: string
+          created_at?: string
+          email?: string
+          id?: string
+          ip_address?: unknown | null
+          message?: string | null
+          name?: string
+          phone?: string | null
+          status?: string
+          updated_at?: string
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      contact_access_justifications: {
+        Row: {
+          access_purpose: string
+          admin_user_id: string
+          approved_at: string | null
+          approved_by: string | null
+          business_justification: string
+          created_at: string
+          expires_at: string
+          id: string
+          organization_id: string | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          access_purpose: string
+          admin_user_id: string
+          approved_at?: string | null
+          approved_by?: string | null
+          business_justification: string
+          created_at?: string
+          expires_at?: string
+          id?: string
+          organization_id?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          access_purpose?: string
+          admin_user_id?: string
+          approved_at?: string | null
+          approved_by?: string | null
+          business_justification?: string
+          created_at?: string
+          expires_at?: string
+          id?: string
+          organization_id?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "contact_access_justifications_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       contact_access_permissions: {
         Row: {
@@ -138,6 +272,51 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      contact_submissions: {
+        Row: {
+          created_at: string
+          email: string
+          form_type: string
+          id: string
+          ip_address: unknown | null
+          message: string
+          name: string
+          status: string
+          subject: string
+          updated_at: string
+          user_agent: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          form_type?: string
+          id?: string
+          ip_address?: unknown | null
+          message: string
+          name: string
+          status?: string
+          subject: string
+          updated_at?: string
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          form_type?: string
+          id?: string
+          ip_address?: unknown | null
+          message?: string
+          name?: string
+          status?: string
+          subject?: string
+          updated_at?: string
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
       }
       learning_modules: {
         Row: {
@@ -305,6 +484,8 @@ export type Database = {
       }
       partner_referrals: {
         Row: {
+          assigned_to: string | null
+          completed_at: string | null
           contact_info: string
           created_at: string
           id: string
@@ -314,6 +495,8 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          assigned_to?: string | null
+          completed_at?: string | null
           contact_info: string
           created_at?: string
           id?: string
@@ -323,6 +506,8 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          assigned_to?: string | null
+          completed_at?: string | null
           contact_info?: string
           created_at?: string
           id?: string
@@ -588,6 +773,60 @@ export type Database = {
         }
         Relationships: []
       }
+      support_requests: {
+        Row: {
+          additional_data: Json | null
+          created_at: string
+          email: string
+          id: string
+          ip_address: unknown | null
+          message: string
+          name: string
+          organization: string | null
+          phone: string | null
+          request_type: string
+          status: string
+          subject: string
+          updated_at: string
+          user_agent: string | null
+          user_id: string | null
+        }
+        Insert: {
+          additional_data?: Json | null
+          created_at?: string
+          email: string
+          id?: string
+          ip_address?: unknown | null
+          message: string
+          name: string
+          organization?: string | null
+          phone?: string | null
+          request_type: string
+          status?: string
+          subject: string
+          updated_at?: string
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          additional_data?: Json | null
+          created_at?: string
+          email?: string
+          id?: string
+          ip_address?: unknown | null
+          message?: string
+          name?: string
+          organization?: string | null
+          phone?: string | null
+          request_type?: string
+          status?: string
+          subject?: string
+          updated_at?: string
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       system_metrics: {
         Row: {
           id: string
@@ -674,6 +913,45 @@ export type Database = {
         }
         Relationships: []
       }
+      website_analytics: {
+        Row: {
+          action_type: string
+          additional_data: Json | null
+          created_at: string
+          id: string
+          ip_address: unknown | null
+          page_path: string
+          referrer: string | null
+          session_id: string | null
+          user_agent: string | null
+          user_id: string | null
+        }
+        Insert: {
+          action_type?: string
+          additional_data?: Json | null
+          created_at?: string
+          id?: string
+          ip_address?: unknown | null
+          page_path: string
+          referrer?: string | null
+          session_id?: string | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          action_type?: string
+          additional_data?: Json | null
+          created_at?: string
+          id?: string
+          ip_address?: unknown | null
+          page_path?: string
+          referrer?: string | null
+          session_id?: string | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -686,6 +964,14 @@ export type Database = {
           email: string
           phone: string
         }[]
+      }
+      approve_admin_contact_access: {
+        Args: {
+          p_decision: string
+          p_hours_valid?: number
+          p_justification_id: string
+        }
+        Returns: undefined
       }
       can_view_org_contacts: {
         Args: Record<PropertyKey, never>
@@ -707,6 +993,10 @@ export type Database = {
         }
         Returns: boolean
       }
+      check_ip_rate_limit: {
+        Args: Record<PropertyKey, never>
+        Returns: boolean
+      }
       check_rate_limit: {
         Args: {
           p_limit_per_hour?: number
@@ -723,9 +1013,29 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: undefined
       }
+      cleanup_expired_justifications: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
+      cleanup_expired_permissions: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
+      cleanup_expired_referral_data: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
       create_admin_user: {
         Args: { admin_email: string }
         Returns: undefined
+      }
+      create_first_admin_user: {
+        Args: { admin_email: string }
+        Returns: undefined
+      }
+      create_payment_secure: {
+        Args: { p_amount: number; p_status?: string; p_user_id: string }
+        Returns: string
       }
       create_security_alert: {
         Args: {
@@ -746,9 +1056,21 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: undefined
       }
+      detect_data_scraping: {
+        Args: { table_name_param: string }
+        Returns: undefined
+      }
+      detect_organization_access_abuse: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
       detect_suspicious_activity: {
         Args: Record<PropertyKey, never>
         Returns: undefined
+      }
+      emergency_data_access_check: {
+        Args: Record<PropertyKey, never>
+        Returns: boolean
       }
       get_masked_contact_info: {
         Args: { contact_text: string; user_id?: string }
@@ -793,6 +1115,23 @@ export type Database = {
           website: string
         }[]
       }
+      get_organizations_secure: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          address: string
+          city: string
+          created_at: string
+          description: string
+          email: string
+          id: string
+          name: string
+          phone: string
+          state_code: string
+          updated_at: string
+          verified: boolean
+          website: string
+        }[]
+      }
       get_organizations_with_contacts: {
         Args: Record<PropertyKey, never>
         Returns: {
@@ -827,6 +1166,50 @@ export type Database = {
           website: string
         }[]
       }
+      get_partner_stats: {
+        Args: { partner_user_id?: string }
+        Returns: Json
+      }
+      get_resources_public: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          city: string
+          county: string
+          created_at: string
+          description: string
+          id: string
+          justice_friendly: boolean
+          name: string
+          organization: string
+          rating: number
+          state_code: string
+          type: string
+          updated_at: string
+          verified: string
+          website: string
+        }[]
+      }
+      get_resources_secure: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          address: string
+          city: string
+          county: string
+          created_at: string
+          description: string
+          id: string
+          justice_friendly: boolean
+          name: string
+          organization: string
+          phone: string
+          rating: number
+          state_code: string
+          type: string
+          updated_at: string
+          verified: string
+          website: string
+        }[]
+      }
       get_safe_organizations_public: {
         Args: Record<PropertyKey, never>
         Returns: {
@@ -853,6 +1236,17 @@ export type Database = {
           unresolved_alerts: number
         }[]
       }
+      get_states_with_protection: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          active: boolean
+          code: string
+          coming_soon: boolean
+          created_at: string
+          id: string
+          name: string
+        }[]
+      }
       get_verified_organizations: {
         Args: Record<PropertyKey, never>
         Returns: {
@@ -866,6 +1260,14 @@ export type Database = {
           verified: boolean
           website: string
         }[]
+      }
+      has_any_admin: {
+        Args: Record<PropertyKey, never>
+        Returns: boolean
+      }
+      has_approved_admin_access: {
+        Args: { p_admin_user_id: string; p_organization_id: string }
+        Returns: boolean
       }
       has_contact_access_permission: {
         Args: { org_id: string; user_id: string }
@@ -918,6 +1320,14 @@ export type Database = {
         Args: { contact_data: string }
         Returns: string
       }
+      request_admin_contact_access: {
+        Args: {
+          p_access_purpose: string
+          p_business_justification: string
+          p_organization_id: string
+        }
+        Returns: string
+      }
       request_contact_access: {
         Args: { justification?: string; org_id: string; reason: string }
         Returns: string
@@ -940,6 +1350,18 @@ export type Database = {
           user_id: string
         }[]
       }
+      track_anonymous_ai_usage: {
+        Args: {
+          p_ai_endpoint: string
+          p_conversation_data?: Json
+          p_session_token: string
+        }
+        Returns: Json
+      }
+      transfer_anonymous_session_to_user: {
+        Args: { p_session_token: string; p_user_id: string }
+        Returns: Json
+      }
       update_partnership_request: {
         Args: { _id: string; _notes?: string; _status?: string }
         Returns: {
@@ -953,8 +1375,16 @@ export type Database = {
           updated_at: string
         }
       }
+      update_payment_status_secure: {
+        Args: { p_new_status: string; p_payment_id: string }
+        Returns: undefined
+      }
       validate_admin_access_pattern: {
         Args: Record<PropertyKey, never>
+        Returns: boolean
+      }
+      validate_contact_access_permission: {
+        Args: { org_id: string; user_id: string }
         Returns: boolean
       }
       validate_contact_input: {
@@ -963,6 +1393,10 @@ export type Database = {
       }
       validate_password_strength: {
         Args: { password: string }
+        Returns: boolean
+      }
+      verify_admin_contact_access: {
+        Args: { admin_user_id: string; operation_type: string }
         Returns: boolean
       }
     }
