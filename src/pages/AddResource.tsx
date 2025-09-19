@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { NavLink } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -7,6 +8,7 @@ import { toast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { sanitizeInput } from "@/lib/security";
+import { ArrowLeft } from "lucide-react";
 
 const AddResource = () => {
   const { user } = useAuth();
@@ -114,6 +116,16 @@ const AddResource = () => {
       
       <div className="container py-12">
         <div className="max-w-2xl mx-auto">
+          {/* Back to Quick Actions Button */}
+          <div className="mb-6">
+            <Button asChild variant="outline" className="border-osu-gray/30 text-osu-gray hover:bg-osu-scarlet hover:text-white">
+              <NavLink to="/partners?tab=actions" className="flex items-center gap-2">
+                <ArrowLeft className="h-4 w-4" />
+                Back to Quick Actions
+              </NavLink>
+            </Button>
+          </div>
+          
           <div className="bg-card rounded-xl shadow-lg border border-osu-scarlet/10 p-8">
             <form onSubmit={onSubmit} className="grid gap-6">
               <div>

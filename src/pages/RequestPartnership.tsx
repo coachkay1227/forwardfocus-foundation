@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { NavLink } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -7,7 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { toast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { sanitizeInput, isValidEmail, RateLimiter, generateCSRFToken } from "@/lib/security";
-import { Building2, Mail, FileText, Users } from "lucide-react";
+import { Building2, Mail, FileText, Users, ArrowLeft } from "lucide-react";
 
 const RequestPartnership = () => {
   const [loading, setLoading] = useState(false);
@@ -134,6 +135,16 @@ const RequestPartnership = () => {
   return (
     <main id="main" className="min-h-screen bg-gradient-to-br from-osu-scarlet/5 via-background to-osu-gray/5 flex items-center justify-center py-12 px-4">
       <div className="max-w-2xl w-full mx-auto">
+        {/* Back to Quick Actions Button */}
+        <div className="mb-6 text-left">
+          <Button asChild variant="outline" className="border-osu-gray/30 text-osu-gray hover:bg-osu-scarlet hover:text-white">
+            <NavLink to="/partners?tab=actions" className="flex items-center gap-2">
+              <ArrowLeft className="h-4 w-4" />
+              Back to Quick Actions
+            </NavLink>
+          </Button>
+        </div>
+        
         <div className="text-center mb-8">
           <div className="flex items-center justify-center gap-3 mb-6">
             <div className="p-3 bg-gradient-to-br from-osu-scarlet/20 to-osu-gray/20 rounded-xl">

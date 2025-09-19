@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, NavLink } from "react-router-dom";
 import AIResourceDiscovery from "@/components/ai/AIResourceDiscovery";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Bot, Sparkles } from "lucide-react";
+import { Bot, Sparkles, ArrowLeft } from "lucide-react";
 
 // Import hero image
 import communitySearchResources from "@/assets/community-search-resources.jpg";
@@ -35,6 +35,16 @@ const Discover = () => {
       
       <div className="container">
         <div className="max-w-7xl mx-auto">
+          {/* Back to Quick Actions Button */}
+          <div className="mb-6">
+            <Button asChild variant="outline" className="border-osu-gray/30 text-osu-gray hover:bg-osu-scarlet hover:text-white">
+              <NavLink to="/partners?tab=actions" className="flex items-center gap-2">
+                <ArrowLeft className="h-4 w-4" />
+                Back to Quick Actions
+              </NavLink>
+            </Button>
+          </div>
+          
           {/* AI Resource Discovery Interface */}
           <div className="relative mb-12 bg-card rounded-2xl shadow-xl border border-osu-gray/20 overflow-hidden">
             <img 

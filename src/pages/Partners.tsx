@@ -47,6 +47,10 @@ const Partners = () => {
     impactScore: 0,
   });
   const [loading, setLoading] = useState(true);
+  
+  // Check URL params for active tab
+  const urlParams = new URLSearchParams(window.location.search);
+  const initialTab = urlParams.get('tab') || 'dashboard';
 
   useEffect(() => {
     document.title = "Partner Portal | Forward Focus Elevation";
@@ -184,7 +188,7 @@ const Partners = () => {
           </div>
         </div>
 
-        <Tabs defaultValue="dashboard" className="space-y-4">
+        <Tabs defaultValue={initialTab} className="space-y-4">
           <TabsList className="flex w-full overflow-x-auto bg-osu-gray/10 border border-osu-gray/20 scrollbar-hide">
             <TabsTrigger value="dashboard" className="flex-shrink-0 min-w-[100px] sm:min-w-[120px] whitespace-nowrap px-3 sm:px-4 text-xs sm:text-sm data-[state=active]:bg-osu-scarlet data-[state=active]:text-white text-osu-gray">Dashboard</TabsTrigger>
             <TabsTrigger value="actions" className="flex-shrink-0 min-w-[100px] sm:min-w-[120px] whitespace-nowrap px-3 sm:px-4 text-xs sm:text-sm data-[state=active]:bg-osu-scarlet data-[state=active]:text-white text-osu-gray">Quick Actions</TabsTrigger>
