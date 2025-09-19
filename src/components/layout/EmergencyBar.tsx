@@ -35,17 +35,7 @@ const EmergencyBar = () => {
   return (
     <div className="sticky top-0 z-[70] w-full bg-osu-scarlet-light/10 border-b border-osu-scarlet/20 text-osu-scarlet-dark h-10">
     <div className="container flex items-center justify-center h-full px-6 text-xs relative">
-        <p className="font-medium">
-          Need help now? Call{' '}
-          <a href="tel:211" className="underline hover:text-primary/80 font-semibold">
-            211
-          </a>{' '}
-          for local services or dial{' '}
-          <a href="tel:988" className="underline hover:text-primary/80 font-semibold">
-            988
-          </a>{' '}
-          for the Suicide & Crisis Lifeline.
-        </p>
+        <p className="font-medium">Need help now? Call 211 for local services or dial 988 for the Suicide & Crisis Lifeline.</p>
         <div className="flex items-center gap-2 absolute right-6">
           <div className="hidden sm:flex gap-2">
             <Button asChild size="sm" variant="outline" className="bg-transparent border-osu-scarlet text-osu-scarlet hover:bg-osu-scarlet hover:text-white h-7 px-3 text-xs">

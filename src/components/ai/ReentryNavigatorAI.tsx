@@ -1,12 +1,10 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { X, Send, Bot, Home, Briefcase, GraduationCap, Heart, Scale, DollarSign, User, FileText, Phone } from 'lucide-react';
+import { X, Send, Bot, Home, Briefcase, GraduationCap, Heart, Scale, DollarSign } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
+import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { Badge } from '@/components/ui/badge';
 import { supabase } from '@/integrations/supabase/client';
-import { parseTextForLinks, formatAIResponse, type ParsedTextSegment } from '@/lib/text-parser';
-import EmailChatHistoryModal from './EmailChatHistoryModal';
 
 interface Message {
   id: string;
@@ -18,9 +16,7 @@ interface Message {
     name: string;
     organization: string;
     phone?: string;
-    email?: string;
     website?: string;
-    address?: string;
     type: string;
     description?: string;
     justice_friendly?: boolean;
@@ -34,57 +30,22 @@ interface ReentryNavigatorAIProps {
   isOpen: boolean;
   onClose: () => void;
   initialQuery?: string;
-  selectedCoach?: {
-    name: string;
-    specialty: string;
-    description: string;
-  };
 }
 
-const ReentryNavigatorAI: React.FC<ReentryNavigatorAIProps> = ({ isOpen, onClose, initialQuery, selectedCoach }) => {
-  const prevCoachNameRef = useRef<string | null>(selectedCoach?.name ?? 'Coach Kay');
-  const pendingCloseRef = useRef(false);
-
-  const getInitialMessage = (): Message => ({
-    id: 'initial',
-    type: 'ai',
-    content: selectedCoach
-      ? `Hey there! I'm ${selectedCoach.name.split(' ')[1]}, your ${selectedCoach.specialty} specialist. ${selectedCoach.description}\n\nI'm here to provide personalized support in my area of expertise. What specific challenge can I help you tackle today?`
-      : "Hey there! I'm Coach Kay, your personal Reentry Navigator. I've helped hundreds of people successfully rebuild their lives after incarceration, and I'm here to help you too!\n\nI know this journey takes real courage, and every small step forward is worth celebrating. I can help you with housing, employment, legal matters, education, healthcare, family connections, and financial stability.\n\nWhat's your biggest priority right now? Let's tackle it together!",
-    timestamp: new Date(),
-  });
-
-  const [messages, setMessages] = useState<Message[]>([getInitialMessage()]);
-  const [showEmailModal, setShowEmailModal] = useState(false);
-  const [userEmail, setUserEmail] = useState('');
+const ReentryNavigatorAI: React.FC<ReentryNavigatorAIProps> = ({ isOpen, onClose, initialQuery }) => {
+  const [messages, setMessages] = useState<Message[]>([
+    {
+      id: '1',
+      type: 'ai',
+      content: "Welcome to your Reentry Success Navigator! I'm here to help you build a stable, successful life after incarceration. I understand the unique challenges of reentry and can provide step-by-step guidance for housing, employment, legal matters, education, healthcare, family reunification, and financial stability. What area would you like to focus on first?",
+      timestamp: new Date(),
+    }
+  ]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [conversationContext, setConversationContext] = useState<Array<{role: string, content: string}>>([]);
-  const [reentryStage, setReentryStage] = useState<'preparing' | 'recently_released' | 'long_term' | 'family_member'>('recently_released');
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  const resetConversation = () => {
-    setConversationContext([]);
-    setInput('');
-    setIsLoading(false);
-    setMessages([getInitialMessage()]);
-  };
-
-  const finalizeClose = () => {
-    onClose();
-    // ensure next open starts fresh
-    resetConversation();
-  };
-
-  const handleCloseRequest = () => {
-    const hasUserMessages = messages.some((m) => m.type === 'user');
-    if (hasUserMessages) {
-      pendingCloseRef.current = true;
-      setShowEmailModal(true);
-    } else {
-      finalizeClose();
-    }
-  };
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
@@ -99,52 +60,67 @@ const ReentryNavigatorAI: React.FC<ReentryNavigatorAIProps> = ({ isOpen, onClose
     }
   }, [initialQuery, isOpen]);
 
-  // Reset conversation when switching coaches while open
-  useEffect(() => {
-    const currentCoach = selectedCoach?.name ?? 'Coach Kay';
-    if (isOpen && prevCoachNameRef.current !== currentCoach) {
-      resetConversation();
-      prevCoachNameRef.current = currentCoach;
-    }
-  }, [selectedCoach?.name, isOpen]);
-
-  const sendMessage = async (userQuery: string) => {
+  const sendMessage = async (messages: {role: string, content: string}[]) => {
     try {
-      const { data, error } = await supabase.functions.invoke('reentry-navigator-ai', {
-        body: {
-          query: userQuery,
-          reentryStage,
-          priorityNeeds: [],
-          selectedCoach: selectedCoach,
-          previousContext: conversationContext.slice(-6), // Keep last 6 messages for context
-        }
+      const response = await fetch(`https://gzukhsqgkwljfvwkfuno.supabase.co/functions/v1/chat`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd6dWtoc3Fna3dsamZ2d2tmdW5vIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU3MjQyOTMsImV4cCI6MjA3MTMwMDI5M30.Skon84aKH5K5TjW9pVnCI2A-6Z-9KrTYiNknpiqeCpk`
+        },
+        body: JSON.stringify({
+          messages,
+          topic: "reentry-navigator"
+        })
       });
 
-      if (error) {
-        console.error('Reentry Navigator AI error:', error);
-        throw error;
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
 
-      const formattedResponse = formatAIResponse(data.response);
-      
-      setMessages(prev => {
-        const newMessages = [...prev];
-        const lastMessage = newMessages[newMessages.length - 1];
-        if (lastMessage.type === 'ai') {
-          lastMessage.content = formattedResponse;
-          lastMessage.resources = data.resources || [];
-        }
-        return newMessages;
-      });
+      const reader = response.body?.getReader();
+      if (!reader) {
+        throw new Error('No response body');
+      }
 
-      // Update conversation context
-      setConversationContext(prev => [
-        ...prev,
-        { role: 'user', content: userQuery },
-        { role: 'assistant', content: formattedResponse }
-      ]);
+      const decoder = new TextDecoder();
+      let buffer = '';
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+
+        buffer += decoder.decode(value, { stream: true });
+        const lines = buffer.split('\n');
+        buffer = lines.pop() || '';
+
+        for (const line of lines) {
+          if (line.startsWith('data: ')) {
+            const data = line.slice(6);
+            if (data === '[DONE]') continue;
+            
+            try {
+              const parsed = JSON.parse(data);
+              const content = parsed.choices?.[0]?.delta?.content;
+              if (content) {
+                setMessages(prev => {
+                  const newMessages = [...prev];
+                  const lastMessage = newMessages[newMessages.length - 1];
+                  if (lastMessage.type === 'ai') {
+                    lastMessage.content += content;
+                  }
+                  return newMessages;
+                });
+                scrollToBottom();
+              }
+            } catch (e) {
+              // Skip invalid JSON
+            }
+          }
+        }
+      }
     } catch (error) {
-      console.error(`${selectedCoach ? selectedCoach.name : 'Coach Kay'} (Reentry Navigator) AI error:`, error);
+      console.error('Reentry Navigator AI error:', error);
       // Fallback: client-side reentry resource lookup so users still get help
       try {
         const { data: resources } = await supabase
@@ -154,29 +130,24 @@ const ReentryNavigatorAI: React.FC<ReentryNavigatorAIProps> = ({ isOpen, onClose
           .eq('verified', 'verified')
           .limit(10);
 
-        const coachName = selectedCoach ? selectedCoach.name.split(' ')[1] : 'Coach Kay';
-        const content = `I'm experiencing a technical hiccup right now, but don't worry - I've still got your back! Here are some solid reentry resources that can help with common needs. Your success matters, and there are people ready to support you!`;
-        setMessages(prev => {
-          const newMessages = [...prev];
-          const lastMessage = newMessages[newMessages.length - 1];
-          if (lastMessage.type === 'ai') {
-            lastMessage.content = content;
-            lastMessage.resources = resources || [];
-          }
-          return newMessages;
-        });
+        const content = "I'm having trouble connecting to the AI right now, but here are reentry resources I found that match common needs:";
+        const aiMessage: Message = {
+          id: (Date.now() + 1).toString(),
+          type: 'ai',
+          content,
+          timestamp: new Date(),
+          resources: resources || []
+        };
+        setMessages(prev => [...prev, aiMessage]);
       } catch (fallbackError) {
         console.error('Reentry fallback failed:', fallbackError);
-        const coachName = selectedCoach ? selectedCoach.name.split(' ')[1] : 'Coach Kay';
-        const errorMessage = `I'm having technical difficulties, but your reentry journey is still important to me. For immediate support, call **2-1-1** for comprehensive resource navigation, or visit your local reentry program. You've got this!`;
-        setMessages(prev => {
-          const newMessages = [...prev];
-          const lastMessage = newMessages[newMessages.length - 1];
-          if (lastMessage.type === 'ai') {
-            lastMessage.content = errorMessage;
-          }
-          return newMessages;
-        });
+        const errorMessage: Message = {
+          id: (Date.now() + 1).toString(),
+          type: 'ai',
+          content: "I apologize for the technical issue. Your reentry success is still my priority. For immediate support, call 211 for comprehensive resource navigation, or visit your local reentry program or Ohio Means Jobs center.",
+          timestamp: new Date(),
+        };
+        setMessages(prev => [...prev, errorMessage]);
       }
     }
   };
@@ -196,92 +167,31 @@ const ReentryNavigatorAI: React.FC<ReentryNavigatorAIProps> = ({ isOpen, onClose
     setInput('');
     setIsLoading(true);
 
-    // Add empty AI message for response
+    // Add empty AI message for streaming
     const aiMessage: Message = {
       id: (Date.now() + 1).toString(),
       type: 'ai',
-      content: 'Let me help you with that...',
+      content: '...',
       timestamp: new Date(),
     };
     setMessages(prev => [...prev, aiMessage]);
 
-    // Send message to the selected coach
-    await sendMessage(userInput);
+    // Update conversation context and send message
+    const newContext = [...conversationContext, { role: 'user', content: userInput }];
+    await sendMessage(newContext);
+    
+    setConversationContext([...newContext, { role: 'assistant', content: '' }]);
     setIsLoading(false);
   };
 
-  const getCoachSpecificActions = (coachName: string) => {
-    const coachActions = {
-      'Coach Dana': [
-        "I need transitional housing options",
-        "Help with rental applications with my background",
-        "Understanding tenant rights and protections",
-        "Housing voucher program applications",
-        "Communicating with landlords about my record",
-        "Budget-friendly housing search help"
-      ],
-      'Coach Malik': [
-        "Help me write a strong resume",
-        "Find fair-chance employers in my area",
-        "Interview preparation and confidence building",
-        "Job training program recommendations",
-        "Professional skill development opportunities",
-        "Understanding workplace rights"
-      ],
-      'Coach Rivera': [
-        "Help me understand expungement eligibility",
-        "Managing court obligations and compliance",
-        "Legal documentation assistance",
-        "Understanding probation/parole requirements",
-        "Connecting with legal aid resources",
-        "Rights restoration processes"
-      ],
-      'Coach Taylor': [
-        "Communication strategies with family",
-        "Setting healthy boundaries",
-        "Co-parenting and custody guidance",
-        "Family therapy and mediation resources",
-        "Rebuilding trust after absence",
-        "Supporting children through transitions"
-      ],
-      'Coach Jordan': [
-        "Opening a bank account with my record",
-        "Basic budgeting and money management",
-        "Credit repair and building strategies",
-        "Applying for benefits (SNAP, healthcare, housing)",
-        "Financial literacy and planning",
-        "Avoiding predatory lending and scams"
-      ],
-      'Coach Sam': [
-        "Finding trauma-informed mental health resources",
-        "Coping strategies for stress and anxiety",
-        "Substance abuse recovery support",
-        "Crisis intervention and de-escalation help",
-        "Building healthy routines and self-care",
-        "Community support and peer connections"
-      ]
-    };
-    
-    return coachActions[coachName as keyof typeof coachActions] || [
-      "I need housing options that accept my background",
-      "Help me find employers who hire people with records", 
-      "What documents do I need to get started?",
-      "How can I clear my record?",
-      "I need job training and skills programs",
-      "Help me rebuild relationships with my family"
-    ];
-  };
-
-  const quickActions = selectedCoach 
-    ? getCoachSpecificActions(selectedCoach.name)
-    : [
-        "I need housing options that accept my background",
-        "Help me find employers who hire people with records", 
-        "What documents do I need to get started?",
-        "How can I clear my record?",
-        "I need job training and skills programs",
-        "Help me rebuild relationships with my family"
-      ];
+  const quickActions = [
+    "I need transitional housing",
+    "Help me find fair-chance employers",
+    "What documents do I need?",
+    "How do I expunge my record?",
+    "I need job training programs",
+    "Help me reconnect with my family"
+  ];
 
   const reentryAreas = [
     { icon: Home, label: "Housing", color: "text-primary" },
@@ -295,9 +205,8 @@ const ReentryNavigatorAI: React.FC<ReentryNavigatorAIProps> = ({ isOpen, onClose
   if (!isOpen) return null;
 
   return (
-    <Dialog open={isOpen} onOpenChange={(open) => { if (!open) handleCloseRequest(); }}>
-      <DialogContent className="max-w-2xl max-h-[85vh] p-0 flex flex-col overflow-hidden">
-        <DialogTitle className="sr-only">{selectedCoach ? `${selectedCoach.name} Chat` : 'Coach Kay Chat'}</DialogTitle>
+    <Dialog open={isOpen} onOpenChange={onClose}>
+      <DialogContent className="max-w-2xl h-[700px] p-0 overflow-hidden">
         {/* Header */}
         <div className="flex items-center justify-between bg-secondary p-4 text-secondary-foreground">
           <div className="flex items-center gap-3">
@@ -305,18 +214,14 @@ const ReentryNavigatorAI: React.FC<ReentryNavigatorAIProps> = ({ isOpen, onClose
               <Bot className="h-5 w-5" />
             </div>
             <div>
-              <h3 className="font-bold text-lg">
-                {selectedCoach ? `${selectedCoach.name} - ${selectedCoach.specialty}` : 'Coach Kay - Your Reentry Navigator'}
-              </h3>
-              <p className="text-sm opacity-90">
-                {selectedCoach ? selectedCoach.description : 'Encouraging support for your success journey'}
-              </p>
+              <h3 className="font-bold text-lg">Reentry Success Navigator</h3>
+              <p className="text-sm opacity-90">Comprehensive reentry support & planning</p>
             </div>
           </div>
           <Button
             variant="ghost" 
             size="sm"
-            onClick={handleCloseRequest}
+            onClick={onClose}
             className="text-secondary-foreground hover:bg-secondary-foreground/20"
           >
             <X className="h-4 w-4" />
@@ -339,152 +244,78 @@ const ReentryNavigatorAI: React.FC<ReentryNavigatorAIProps> = ({ isOpen, onClose
         </div>
 
         {/* Messages */}
-        <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-background/50">
+        <div className="flex-1 overflow-y-auto p-4 space-y-4">
           {messages.map((message) => (
-            <div key={message.id}>
-              {message.type === 'ai' ? (
-                <div className="flex gap-3 mb-6">
-                  <div className="flex-shrink-0 w-8 h-8 bg-primary rounded-full flex items-center justify-center">
-                    <Bot className="h-4 w-4 text-primary-foreground" />
-                  </div>
-                  <div className="flex-grow min-w-0">
-                    <div className="bg-muted/30 rounded-2xl px-4 py-3 max-w-[90%] border border-border/40">
-                      <div className="text-sm leading-relaxed space-y-3">
-                        {parseTextForLinks(message.content).map((segment, segIndex) => (
-                          <span key={segIndex} className="inline">
-                            {segment.type === 'text' ? (
-                              <span 
-                                dangerouslySetInnerHTML={{ 
-                                  __html: segment.content
-                                    .replace(/\*\*(.*?)\*\*/g, '<strong class="font-semibold">$1</strong>')
-                                    .replace(/\*(.*?)\*/g, '<em class="italic">$1</em>')
-                                    .replace(/\n/g, '<br />')
-                                }} 
-                              />
-                            ) : (
-                              <a
-                                href={segment.href}
-                                className="text-primary hover:text-primary/80 underline underline-offset-2 font-medium transition-colors"
-                                target={segment.type === 'website' ? '_blank' : undefined}
-                                rel={segment.type === 'website' ? 'noopener noreferrer' : undefined}
-                                onClick={(e) => {
-                                  if (segment.type === 'phone') {
-                                    // Allow default tel: behavior
-                                    console.log(`Calling ${segment.content}`);
-                                  }
-                                }}
-                              >
-                                {segment.content}
-                              </a>
-                            )}
-                          </span>
-                        ))}
-                      </div>
+            <div key={message.id} className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}>
+              <div className={`max-w-[80%] rounded-lg p-3 ${
+                message.type === 'user' 
+                  ? 'bg-secondary text-secondary-foreground' 
+                  : 'bg-muted text-foreground border'
+              }`}>
+                <p className="text-sm leading-relaxed">{message.content}</p>
 
-                      {message.resources && message.resources.length > 0 && (
-                        <div className="mt-4 space-y-3">
-                          <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wider border-b border-border/30 pb-1 flex items-center gap-2">
-                            <FileText className="h-3 w-3" />
-                            Recommended Resources
+                {message.resources && message.resources.length > 0 && (
+                  <div className="mt-3 space-y-2">
+                    <p className="text-xs font-semibold text-foreground/80">Reentry Resources:</p>
+                    {message.resources.map((resource) => (
+                      <div key={resource.id} className="bg-card border rounded-lg p-3 text-xs">
+                        <div className="flex items-start justify-between">
+                          <div className="flex-1">
+                            <div className="font-semibold text-foreground">{resource.name}</div>
+                            <div className="text-muted-foreground">{resource.organization}</div>
+                            {resource.description && (
+                              <p className="text-muted-foreground mt-1">{resource.description}</p>
+                            )}
                           </div>
-                          <div className="space-y-3">
-                            {message.resources.map((resource, resourceIndex) => (
-                              <div 
-                                key={resourceIndex} 
-                                className="bg-background/80 border border-border/60 rounded-xl p-4 text-sm hover:shadow-sm transition-shadow"
-                              >
-                                <div className="font-semibold text-foreground mb-2 text-base">{resource.name}</div>
-                                {resource.organization && (
-                                  <div className="text-muted-foreground mb-3 font-medium">{resource.organization}</div>
-                                )}
-                                {resource.type && (
-                                  <div className="inline-block bg-primary/10 text-primary text-xs font-medium px-2 py-1 rounded-full mb-3">
-                                    {resource.type}
-                                  </div>
-                                )}
-                                {resource.description && (
-                                  <div className="text-muted-foreground mb-3 leading-relaxed">
-                                    {resource.description}
-                                  </div>
-                                )}
-                                <div className="space-y-2 text-sm">
-                                  {resource.phone && (
-                                    <div className="flex items-center gap-2 text-foreground">
-                                      <Phone className="h-3 w-3 text-green-600" />
-                                      <span className="font-medium">Phone:</span>
-                                      <a 
-                                        href={`tel:${resource.phone.replace(/[^\d]/g, '')}`}
-                                        className="text-primary hover:text-primary/80 underline underline-offset-2 font-medium"
-                                      >
-                                        {resource.phone}
-                                      </a>
-                                    </div>
-                                  )}
-                                  {resource.email && (
-                                    <div className="flex items-center gap-2 text-foreground">
-                                      <span className="text-blue-600">✉️</span>
-                                      <span className="font-medium">Email:</span>
-                                      <a 
-                                        href={`mailto:${resource.email}`}
-                                        className="text-primary hover:text-primary/80 underline underline-offset-2 font-medium"
-                                      >
-                                        {resource.email}
-                                      </a>
-                                    </div>
-                                  )}
-                                  {resource.website && (
-                                    <div className="flex items-center gap-2 text-foreground">
-                                      <span className="text-purple-600">🌐</span>
-                                      <span className="font-medium">Website:</span>
-                                      <a 
-                                        href={resource.website.startsWith('http') ? resource.website : `https://${resource.website}`}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="text-primary hover:text-primary/80 underline underline-offset-2 font-medium"
-                                      >
-                                        {resource.website}
-                                      </a>
-                                    </div>
-                                  )}
-                                  {resource.address && (
-                                    <div className="flex items-center gap-2 text-foreground">
-                                      <span className="text-red-600">📍</span>
-                                      <span className="font-medium">Address:</span>
-                                      <span className="text-muted-foreground">{resource.address}</span>
-                                    </div>
-                                  )}
-                                </div>
-                              </div>
-                            ))}
-                          </div>
+                          {resource.justice_friendly && (
+                            <Badge variant="secondary" className="ml-2 text-xs">
+                              Justice-Friendly
+                            </Badge>
+                          )}
                         </div>
-                      )}
-                    </div>
+                        
+                        <div className="flex items-center gap-2 mt-2">
+                          <Badge variant="outline" className="text-xs">
+                            {resource.type}
+                          </Badge>
+                          {resource.city && resource.county && (
+                            <span className="text-xs text-muted-foreground">
+                              {resource.city}, {resource.county} County
+                            </span>
+                          )}
+                        </div>
+                        
+                        <div className="flex gap-2 mt-2">
+                          {resource.phone && (
+                            <Button asChild size="sm" variant="default">
+                              <a href={`tel:${resource.phone}`}>
+                                Call: {resource.phone}
+                              </a>
+                            </Button>
+                          )}
+                          {resource.website && (
+                            <Button asChild size="sm" variant="outline">
+                              <a href={resource.website} target="_blank" rel="noopener noreferrer">
+                                Visit Website
+                              </a>
+                            </Button>
+                          )}
+                        </div>
+                      </div>
+                    ))}
                   </div>
-                </div>
-              ) : (
-                <div className="flex gap-3 mb-6 justify-end">
-                  <div className="bg-primary text-primary-foreground rounded-2xl px-4 py-3 max-w-[80%] shadow-sm">
-                    <div className="text-sm leading-relaxed">{message.content}</div>
-                  </div>
-                  <div className="flex-shrink-0 w-8 h-8 bg-secondary rounded-full flex items-center justify-center">
-                    <User className="h-4 w-4 text-secondary-foreground" />
-                  </div>
-                </div>
-              )}
+                )}
+              </div>
             </div>
           ))}
 
           {isLoading && (
-            <div className="flex gap-3 mb-6">
-              <div className="flex-shrink-0 w-8 h-8 bg-primary rounded-full flex items-center justify-center">
-                <Bot className="h-4 w-4 text-primary-foreground" />
-              </div>
-              <div className="bg-muted/30 rounded-2xl px-4 py-3 border border-border/40">
+            <div className="flex justify-start">
+              <div className="bg-muted rounded-lg p-3 border">
                 <div className="flex space-x-1">
-                  <div className="h-2 w-2 bg-primary rounded-full animate-bounce" />
-                  <div className="h-2 w-2 bg-primary rounded-full animate-bounce" style={{ animationDelay: '0.1s' }} />
-                  <div className="h-2 w-2 bg-primary rounded-full animate-bounce" style={{ animationDelay: '0.2s' }} />
+                  <div className="h-2 w-2 bg-secondary rounded-full animate-bounce" />
+                  <div className="h-2 w-2 bg-secondary rounded-full animate-bounce" style={{ animationDelay: '0.1s' }} />
+                  <div className="h-2 w-2 bg-secondary rounded-full animate-bounce" style={{ animationDelay: '0.2s' }} />
                 </div>
               </div>
             </div>
@@ -493,8 +324,8 @@ const ReentryNavigatorAI: React.FC<ReentryNavigatorAIProps> = ({ isOpen, onClose
         </div>
 
         {/* Quick Actions */}
-        <div className="border-t p-4 bg-background">
-          <p className="text-sm font-medium mb-3">Quick help with common needs:</p>
+        <div className="border-t p-4">
+          <p className="text-sm font-medium mb-3">Common reentry needs:</p>
           <div className="grid grid-cols-2 gap-2 mb-4">
             {quickActions.map((action, index) => (
               <Button
@@ -514,7 +345,7 @@ const ReentryNavigatorAI: React.FC<ReentryNavigatorAIProps> = ({ isOpen, onClose
             <Input
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              placeholder={selectedCoach ? `What can ${selectedCoach.name.split(' ')[1]} help you with today?` : "What can Coach Kay help you with today?"}
+              placeholder="What do you need help with for your reentry?"
               onKeyDown={(e) => e.key === 'Enter' && handleSend()}
               disabled={isLoading}
             />
@@ -522,45 +353,10 @@ const ReentryNavigatorAI: React.FC<ReentryNavigatorAIProps> = ({ isOpen, onClose
               <Send className="h-4 w-4" />
             </Button>
           </div>
-          <div className="flex items-center justify-between mt-3">
-            <p className="text-xs text-muted-foreground">
-              Your success matters • Justice-friendly resources • Encouraging guidance every step
-            </p>
-            <div className="flex items-center gap-2">
-              <Button 
-                variant="outline" 
-                size="sm" 
-                className="text-xs" 
-                onClick={resetConversation}
-              >
-                New Chat
-              </Button>
-              <Button 
-                variant="ghost" 
-                size="sm" 
-                className="text-xs" 
-                onClick={() => setShowEmailModal(true)}
-              >
-                Email Chat History
-              </Button>
-            </div>
-          </div>
-
+          <p className="text-xs text-muted-foreground mt-2">
+            Comprehensive reentry support • Justice-friendly resources • Success-focused guidance
+          </p>
         </div>
-
-        {/* Email Modal */}
-        <EmailChatHistoryModal
-          isOpen={showEmailModal}
-          onClose={() => {
-            setShowEmailModal(false);
-            if (pendingCloseRef.current) {
-              finalizeClose();
-              pendingCloseRef.current = false;
-            }
-          }}
-          messages={messages}
-          coachName={selectedCoach ? selectedCoach.name : 'Coach Kay'}
-        />
       </DialogContent>
     </Dialog>
   );

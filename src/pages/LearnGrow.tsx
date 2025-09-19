@@ -1,295 +1,468 @@
-import { useState } from "react";
-import { BookOpen, CheckCircle, Users, MessageSquare, MapPin, Phone, FileText, DollarSign, Heart, Brain, GraduationCap, Home, Briefcase, Scale, HeartHandshake, PiggyBank, Shield, Bot, Target, ArrowRight } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { ChevronRight, Users, BookOpen, Heart, CheckCircle, GraduationCap, MessageSquare, Shield, Clock, Star, ArrowRight, ArrowDown, Award, UserCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { CommunityApplication } from "@/components/learn/CommunityApplication";
-import { PathwayVisual } from "@/components/learn/PathwayVisual";
-import ReentryNavigatorAI from "@/components/ai/ReentryNavigatorAI";
+import AICompanion from "@/components/learn/AICompanion";
 
+// Import community images  
+import learningCommunityDiverse from "@/assets/learning-community-diverse.jpg";
+import peerSupportCircle from "@/assets/peer-support-circle.jpg";
 export default function CommunityLearning() {
+  const [activeSection, setActiveSection] = useState<string>("overview");
   const [showApplication, setShowApplication] = useState(false);
-  const [showReentryAI, setShowReentryAI] = useState(false);
-  const [selectedCoach, setSelectedCoach] = useState<{
-    name: string;
-    specialty: string;
-    description: string;
-  } | undefined>(undefined);
-
-  const supportCoaches = [
-    {
-      name: "Coach Dana",
-      specialty: "Housing Transition",
-      description: "I help you find safe, stable housing and navigate the rental process with confidence",
-      icon: Home
-    },
-    {
-      name: "Coach Malik", 
-      specialty: "Employment Support",
-      description: "From resume building to interview prep, I'm here to help you land meaningful work",
-      icon: Briefcase
-    },
-    {
-      name: "Coach Rivera",
-      specialty: "Legal Guidance",
-      description: "Let's tackle court obligations, expungement, and legal paperwork together",
-      icon: Scale
-    },
-    {
-      name: "Coach Taylor",
-      specialty: "Family Support",
-      description: "Rebuilding relationships takes time. I'll guide you through every conversation",
-      icon: HeartHandshake
-    },
-    {
-      name: "Coach Jordan",
-      specialty: "Financial Stability",
-      description: "Banking, budgeting, credit repair - we'll build your financial foundation step by step",
-      icon: PiggyBank
-    },
-    {
-      name: "Coach Sam",
-      specialty: "Mental Wellness",
-      description: "Your mental health matters. I'm here to support your healing journey",
-      icon: Brain
+  useEffect(() => {
+    document.title = "Learning & Growth Community | Forward Focus Elevation";
+    const desc = "Free education and peer support for justice-impacted individuals and families. Self-paced learning modules, trauma-informed community, progress tracking.";
+    let meta = document.querySelector('meta[name="description"]') as HTMLMetaElement | null;
+    if (!meta) {
+      meta = document.createElement("meta");
+      meta.setAttribute("name", "description");
+      document.head.appendChild(meta);
     }
-  ];
-
-  const learningGroups = {
-    "Mind & Healing": [
-      {
-        title: "Welcome Rest Your Path",
-        description: "Begin your healing journey with trauma informed practices and community connection",
-        icon: Heart
-      },
-      {
-        title: "Clarity Support & Wellness",
-        description: "Mental health resources, mindfulness practices, and emotional wellness tools", 
-        icon: Brain
-      }
-    ],
-    "Money & Business": [
-      {
-        title: "Financial Foundations", 
-        description: "Banking basics, budgeting strategies, and financial literacy for stability",
-        icon: DollarSign
-      },
-      {
-        title: "Credit Confidence",
-        description: "Build and repair credit, understand credit reports, and establish financial trust",
-        icon: CheckCircle
-      },
-      {
-        title: "Business Essentials", 
-        description: "Entrepreneurship fundamentals, business planning, and creating your own opportunities",
-        icon: Users
-      }
-    ],
-    "Skills for Life After Release": [
-      {
-        title: "AI Basics Training",
-        description: "Learn how AI can support your reentry journey and daily life navigation",
-        icon: GraduationCap
-      },
-      {
-        title: "Reentry & Life Tools Vault",
-        description: "Practical resources for housing, employment, documentation, and system navigation",
-        icon: FileText
-      },
-      {
-        title: "Purpose Planning & Pathways",
-        description: "Goal setting, life planning, and creating sustainable pathways forward",
-        icon: MapPin
-      }
-    ]
+    meta.setAttribute("content", desc);
+    let link = document.querySelector('link[rel="canonical"]') as HTMLLinkElement | null;
+    if (!link) {
+      link = document.createElement("link");
+      link.setAttribute("rel", "canonical");
+      document.head.appendChild(link);
+    }
+    link.setAttribute("href", `${window.location.origin}/learn`);
+  }, []);
+  const scrollToSection = (sectionId: string) => {
+    setActiveSection(sectionId);
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
+      });
+    }
   };
-
-  return (
-    <div className="min-h-screen bg-background font-sans">
-      {/* Hero Section with Premium Branding */}
-      <header className="relative bg-gradient-osu-primary text-white overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-muted/90 via-osu-scarlet/80 to-osu-scarlet-dark/70"></div>
-        <div className="relative container py-24 md:py-32">
-          <div className="max-w-full px-4 md:max-w-5xl mx-auto text-center">
-            <div className="flex items-center justify-center gap-3 mb-8">
-              <Users className="h-8 w-8 text-white" />
-              <span className="text-sm uppercase tracking-wider font-medium bg-white/10 backdrop-blur-sm border border-white/20 px-4 py-2 rounded-full">The Collective</span>
-            </div>
-            <h1 className="font-heading text-5xl md:text-7xl font-bold mb-8 leading-tight">
-              Welcome to the Collective
+  return <>
+      {/* Hero Section */}
+      <header className="bg-gradient-to-b from-primary/5 to-background border-b">
+        <div className="container py-12 md:py-16">
+          <div className="max-w-4xl mx-auto text-center">
+            <h1 className="font-heading text-4xl md:text-5xl font-bold text-foreground mb-4">
+              Your Learning & Growth Community
             </h1>
-            <p className="text-lg md:text-xl mb-12 text-white/90 leading-relaxed max-w-3xl mx-auto">
-              Whether you're rebuilding, reconnecting, or just figuring it out day by day, you don't have to do it alone.
+            <p className="text-xl text-muted-foreground mb-6">
+              Free education, peer support, and guidance designed specifically for justice-impacted individuals and families. 
+              Learn at your pace, connect with others who understand, and build the future you deserve.
             </p>
-            
-            <div className="flex items-center justify-center gap-6 text-sm mb-12 flex-wrap">
-              <span className="flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 px-6 py-3 rounded-full">
-                <Shield className="h-5 w-5" />
-                Safe Space
+            <div className="flex items-center justify-center gap-4 text-sm text-muted-foreground mb-8">
+              <span className="flex items-center gap-2">
+                <CheckCircle className="h-4 w-4 text-primary" />
+                100% Free Education
               </span>
-              <span className="flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 px-6 py-3 rounded-full">
-                <Heart className="h-5 w-5" />
-                Support
+              <span className="flex items-center gap-2">
+                <CheckCircle className="h-4 w-4 text-primary" />
+                Trauma-Informed
               </span>
-              <span className="flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 px-6 py-3 rounded-full">
-                <Users className="h-5 w-5" />
-                Community
+              <span className="flex items-center gap-2">
+                <CheckCircle className="h-4 w-4 text-primary" />
+                Peer Support
               </span>
             </div>
-
-            <div className="flex justify-center">
-              <Button onClick={() => setShowReentryAI(true)} variant="secondary" size="lg" className="bg-white text-osu-scarlet hover:bg-white/90 shadow-lg hover:shadow-xl transition-all duration-300">
-                <Bot className="h-5 w-5 mr-2" />
-                Access Your Reentry Navigator
+            
+            <div className="flex flex-wrap justify-center gap-4">
+              <Button onClick={() => setShowApplication(true)} size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground">
+                <Users className="h-4 w-4 mr-2" />
+                Apply to Join Community
+              </Button>
+              <Button onClick={() => scrollToSection('learning')} variant="outline" size="lg">
+                <BookOpen className="h-4 w-4 mr-2" />
+                Explore Learning Modules
               </Button>
             </div>
           </div>
         </div>
       </header>
 
-      <main className="container py-24 space-y-32 font-body">
-        <div className="max-w-full px-4 md:max-w-6xl mx-auto">
-          
-          {/* Community Visual */}
-          <section className="mb-16">
-            <PathwayVisual pathway="community" />
-          </section>
-
-          {/* Reentry Navigator Section */}
-          <section className="bg-gradient-to-r from-osu-gray/10 via-cream/20 to-osu-gray/10 rounded-2xl p-6 md:p-12 shadow-xl">
-            <div className="text-center space-y-8">
-              <div className="space-y-4">
-                <h2 className="font-heading text-4xl md:text-5xl font-bold text-foreground">
-                  Your Reentry Success Navigator
-                </h2>
-                <p className="text-lg text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-                  Personalized guidance specifically designed for reentry challenges. Get support for housing, employment, legal matters, and family reconnection available 24/7.
-                </p>
-              </div>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 place-items-center max-w-full md:max-w-6xl mx-auto">
-                {supportCoaches.map((coach, index) => {
-                  const Icon = coach.icon;
-                  return (
-                    <Card 
-                      key={index} 
-                      className="w-full max-w-md md:max-w-full mx-auto text-left hover:shadow-xl transition-all duration-300 border-l-4 border-l-osu-scarlet cursor-pointer md:hover:scale-105 bg-white/80 backdrop-blur-sm"
-                      onClick={() => {
-                        setSelectedCoach({
-                          name: coach.name,
-                          specialty: coach.specialty,
-                          description: coach.description
-                        });
-                        setShowReentryAI(true);
-                      }}
-                    >
-                      <CardContent className="p-5 md:p-6">
-                        <div className="flex items-start gap-4">
-                          <div className="w-12 h-12 bg-osu-scarlet rounded-xl flex items-center justify-center flex-shrink-0 mt-1 shadow-lg">
-                            <Icon className="h-6 w-6 text-osu-scarlet-foreground" />
-                          </div>
-                          <div className="flex-1">
-                            <h3 className="font-semibold text-lg text-foreground mb-2">{coach.name}</h3>
-                            <p className="text-sm text-osu-scarlet font-medium mb-3">{coach.specialty}</p>
-                            <p className="text-sm text-muted-foreground leading-relaxed mb-4">
-                              {coach.description}
-                            </p>
-                            <div className="mt-3">
-                              <Button size="sm" variant="outline" className="text-xs border-osu-scarlet text-osu-scarlet hover:bg-osu-scarlet hover:text-white">
-                                Chat with {coach.name.split(' ')[1]}
-                              </Button>
-                            </div>
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  );
-                })}
+      {/* Community Visual Banner */}
+      <section className="py-8 bg-card border-b">
+        <div className="container">
+          <div className="max-w-4xl mx-auto relative rounded-lg overflow-hidden">
+            <img src={learningCommunityDiverse} alt="Diverse community members engaged in collaborative learning activities" className="w-full h-64 md:h-80 object-cover" />
+            <div className="absolute inset-0 bg-gradient-to-r from-primary/90 to-primary/70 flex items-center justify-center">
+              <div className="text-center text-primary-foreground">
+                <h2 className="text-2xl md:text-3xl font-bold mb-2">Building Stronger Families Through Learning</h2>
+                <p className="text-lg text-primary-foreground/90">Real community. Real support. Real results.</p>
               </div>
             </div>
-          </section>
+          </div>
+        </div>
+      </section>
 
-          {/* Tools for Your Journey Section */}
-          <section className="space-y-16">
-            <div className="text-center space-y-6">
-              <div className="bg-gradient-to-r from-osu-gray/5 via-cream/10 to-osu-gray/5 rounded-2xl p-8">
-                <h2 className="font-heading text-4xl md:text-5xl font-bold text-foreground flex items-center justify-center gap-4 mb-6">
-                  <BookOpen className="h-10 w-10 text-osu-scarlet" />
-                  Tools for Your Journey
-                </h2>
-                <p className="text-lg text-muted-foreground mb-8 leading-relaxed">
-                  8 guided learning modules to help you rebuild your life at your pace
-                </p>
-                <div className="flex items-center justify-center gap-4">
-                  <Badge variant="secondary" className="text-sm bg-osu-gray text-osu-gray-foreground px-4 py-2">100% Free</Badge>
-                  <Badge variant="secondary" className="text-sm bg-osu-gray text-osu-gray-foreground px-4 py-2">Educational Only</Badge>
+        {/* Smart Navigation Hub */}
+        <nav className="bg-card border-b sticky top-0 z-40 shadow-sm">
+          <div className="container py-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+              {[{
+            id: "overview",
+            label: "Community Overview",
+            icon: Users
+          }, {
+            id: "learning",
+            label: "Learning Modules",
+            icon: BookOpen
+          }, {
+            id: "apply",
+            label: "Join Today",
+            icon: ArrowRight
+          }].map(section => {
+            const Icon = section.icon;
+            return <button key={section.id} onClick={() => scrollToSection(section.id)} className={`flex items-center gap-2 p-4 rounded-lg border-2 transition-all shadow-md hover:shadow-lg ${activeSection === section.id ? 'border-primary bg-gradient-to-r from-primary/20 to-secondary/20 text-primary font-semibold shadow-lg' : 'border-border bg-gradient-to-r from-background to-muted/30 hover:border-primary/50 hover:from-primary/5 hover:to-secondary/5 hover:text-primary'}`}>
+                    <div className={`p-1 rounded-md ${activeSection === section.id ? 'bg-primary/20' : 'bg-muted/50'}`}>
+                      <Icon className="h-4 w-4" />
+                    </div>
+                    <span className="text-sm font-medium">{section.label}</span>
+                    <ChevronRight className="h-3 w-3 ml-auto" />
+                  </button>;
+          })}
+            </div>
+          </div>
+        </nav>
+
+      <main className="bg-muted/30">
+        {/* Community Overview */}
+        <section id="overview" className="py-12 bg-card">
+          <div className="container">
+            <div className="max-w-4xl mx-auto text-center">
+              <div className="flex items-center justify-center gap-3 mb-6">
+                <div className="w-12 h-12 bg-primary rounded-lg flex items-center justify-center">
+                  <Users className="h-6 w-6 text-primary-foreground" />
+                </div>
+                <div>
+                  <h2 className="text-2xl font-bold text-foreground">How Our Community Works</h2>
+                  <p className="text-foreground/80">A safe space for learning, healing, and growth</p>
                 </div>
               </div>
-            </div>
 
-            <div className="space-y-16">
-              {Object.entries(learningGroups).map(([groupName, modules]) => (
-                <div key={groupName} className="bg-gradient-to-r from-cream/20 via-background to-cream/20 rounded-2xl p-8 shadow-lg">
-                  <h3 className="text-2xl md:text-3xl font-heading font-semibold text-osu-scarlet mb-8 text-center">
-                    {groupName}
+              <div className="grid md:grid-cols-3 gap-6">
+                <div className="bg-primary/5 border border-primary/20 rounded-lg p-6">
+                  <h3 className="font-semibold text-foreground mb-3 flex items-center gap-2">
+                    <Shield className="h-5 w-5 text-primary" />
+                    Application-Based Access
                   </h3>
-                  <div className={`grid gap-4 md:gap-6 ${modules.length === 2 ? 'grid-cols-1 md:grid-cols-2 max-w-full md:max-w-3xl mx-auto' : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3 max-w-full md:max-w-5xl mx-auto'}`}>
-                    {modules.map((module, index) => {
-                      const Icon = module.icon;
-                      return (
-                        <Card key={index} className="text-left hover:shadow-xl transition-all duration-300 md:hover:scale-105 bg-white/80 backdrop-blur-sm border border-osu-gray/20">
-                          <CardHeader className="pb-4">
-                            <div className="w-12 h-12 bg-osu-scarlet/10 rounded-xl flex items-center justify-center mb-4 shadow-inner">
-                              <Icon className="h-6 w-6 text-osu-scarlet" />
-                            </div>
-                            <CardTitle className="text-xl leading-tight font-semibold">
-                              {module.title}
-                            </CardTitle>
-                          </CardHeader>
-                          <CardContent>
-                            <p className="text-sm text-muted-foreground leading-relaxed">
-                              {module.description}
-                            </p>
-                          </CardContent>
-                        </Card>
-                      );
-                    })}
+                  <ul className="space-y-2 text-sm text-foreground/90">
+                    <li>• Careful vetting for community safety</li>
+                    <li>• 24-48 hour review process</li>
+                    <li>• Background questions ensure alignment</li>
+                    <li>• Creating a trusted environment</li>
+                  </ul>
+                </div>
+
+                <div className="bg-secondary/5 border border-secondary/20 rounded-lg p-6">
+                  <h3 className="font-semibold text-foreground mb-3 flex items-center gap-2">
+                    <BookOpen className="h-5 w-5 text-secondary" />
+                    Self-Paced Learning
+                  </h3>
+                  <ul className="space-y-2 text-sm text-foreground/90">
+                    <li>• No deadlines or pressure</li>
+                    <li>• Progress at your own speed</li>
+                    <li>• Mobile-optimized content</li>
+                    <li>• Multiple learning formats</li>
+                  </ul>
+                </div>
+
+                <div className="bg-primary/10 border border-primary/20 rounded-lg p-6">
+                  <h3 className="font-semibold text-foreground mb-3 flex items-center gap-2">
+                    <Heart className="h-5 w-5 text-primary" />
+                    Peer Support
+                  </h3>
+                  <ul className="space-y-2 text-sm text-foreground/80">
+                    <li>• Connect with people who understand</li>
+                    <li>• Shared experiences and wisdom</li>
+                    <li>• Mutual encouragement</li>
+                    <li>• Trauma-informed interactions</li>
+                  </ul>
+                </div>
+              </div>
+
+              <div className="mt-8 bg-muted border border-border rounded-lg p-6">
+                <h3 className="font-semibold mb-4 flex items-center gap-2 mx-[250px]">
+                  <Users className="h-5 w-5 text-secondary" />
+                  Who This Community Serves
+                </h3>
+                <div className="grid md:grid-cols-2 gap-4 text-sm">
+                  <div className="flex items-center gap-2">
+                    <CheckCircle className="h-4 w-4 text-primary" />
+                    Formerly incarcerated individuals
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <CheckCircle className="h-4 w-4 text-primary" />
+                    Family members of incarcerated individuals
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <CheckCircle className="h-4 w-4 text-primary" />
+                    People preparing for reentry
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <CheckCircle className="h-4 w-4 text-primary" />
+                    Recently released individuals
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <CheckCircle className="h-4 w-4 text-primary" />
+                    Long-term reentry support seekers
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <CheckCircle className="h-4 w-4 text-primary" />
+                    Supporters and advocates
                   </div>
                 </div>
-              ))}
+              </div>
             </div>
+          </div>
+        </section>
 
-            <div className="text-center bg-gradient-to-r from-osu-scarlet/5 via-osu-scarlet/10 to-osu-scarlet/5 rounded-2xl p-6 sm:p-12 px-4">
-              <Button 
-                onClick={() => setShowApplication(true)} 
-                size="lg"
-                variant="osu-gradient"
-                className="text-lg px-6 sm:px-12 py-6 shadow-xl hover:shadow-2xl transition-all duration-300 w-full max-w-sm sm:max-w-none sm:w-auto"
-              >
-                Start Your Journey Today
-                <ArrowRight className="ml-3 h-6 w-6" />
-              </Button>
-              <p className="text-foreground/70 text-base mt-4">Join our supportive community</p>
+        {/* Learning Topic Previews */}
+        <section id="learning" className="py-12">
+          <div className="container">
+            <div className="max-w-4xl mx-auto text-center">
+              <div className="flex items-center justify-center gap-3 mb-6">
+                <div className="w-12 h-12 bg-primary rounded-lg flex items-center justify-center">
+                  <BookOpen className="h-6 w-6 text-primary-foreground" />
+                </div>
+                <div>
+                  <h2 className="text-2xl font-bold text-foreground">Topics Covered in Our Skool Community</h2>
+                  <p className="text-foreground/80">Preview the key areas we focus on - full modules available after joining</p>
+                </div>
+              </div>
+
+              {/* AI Assistant Integration */}
+              
+
+              {/* 8 Topic Preview Cards */}
+              <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                {[{
+                title: "Welcome Rest Your Path",
+                description: "Begin your healing journey with trauma-informed practices and community connection"
+              }, {
+                title: "Financial Foundations",
+                description: "Banking basics, budgeting strategies, and financial literacy for stability"
+              }, {
+                title: "Clarity Support & Wellness",
+                description: "Mental health resources, mindfulness practices, and emotional wellness tools"
+              }, {
+                title: "AI Basics Training",
+                description: "Learn how AI can support your reentry journey and daily life navigation"
+              }, {
+                title: "Credit Confidence Starter",
+                description: "Build and repair credit, understand credit reports, and establish financial trust"
+              }, {
+                title: "Business Essentials",
+                description: "Entrepreneurship fundamentals, business planning, and creating your own opportunities"
+              }, {
+                title: "Reentry & Life Tools Vault",
+                description: "Practical resources for housing, employment, documentation, and system navigation"
+              }, {
+                title: "Purpose, Planning & Pathways",
+                description: "Goal setting, life planning, and creating sustainable pathways forward"
+              }].map((topic, index) => <div key={index} className="group relative bg-card border border-border rounded-lg p-4 hover:shadow-lg transition-all duration-300 hover:scale-105">
+                    <div className="absolute inset-0 bg-gradient-to-br from-secondary/20 to-accent/20 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    <div className="relative z-10">
+                      <h3 className="font-semibold text-foreground mb-2">{topic.title}</h3>
+                      <p className="text-foreground/80 text-sm group-hover:text-foreground transition-colors duration-300">
+                        {topic.description}
+                      </p>
+                      <div className="mt-3 text-xs text-primary font-medium">Available in Community</div>
+                    </div>
+                  </div>)}
+              </div>
+
+              <div className="bg-primary/5 border border-primary/20 rounded-lg p-6">
+                <h3 className="font-semibold text-foreground mb-3 flex items-center gap-2 mx-[250px]">
+                  <Shield className="h-5 w-5 text-primary" />
+                  Full Access After Community Approval
+                </h3>
+                <p className="text-foreground/80">
+                  These topic previews give you a taste of what's covered in our private Skool community. 
+                  Once approved, you'll get access to full interactive modules, video content, downloadable resources, 
+                  progress tracking, and direct peer discussions with CoachKay and community members.
+                </p>
+              </div>
             </div>
-          </section>
-        </div>
+          </div>
+        </section>
+
+        {/* Peer Support with Visual Enhancement */}
+        <section id="support" className="py-12 bg-card">
+          <div className="container">
+            <div className="max-w-4xl mx-auto text-center">
+              <div className="flex items-center justify-center gap-3 mb-6">
+                <div className="w-12 h-12 bg-primary rounded-lg flex items-center justify-center">
+                  <Heart className="h-6 w-6 text-primary-foreground" />
+                </div>
+                <div>
+                  <h2 className="text-2xl font-bold text-foreground">Peer Support & Connection</h2>
+                  <p className="text-foreground/80">Learn alongside people who understand your journey</p>
+                </div>
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-6">
+                <div className="bg-primary/10 border border-primary/20 rounded-lg p-6">
+                  <h3 className="font-semibold text-foreground mb-4 mx-0 my-0">Discussion Groups</h3>
+                  <ul className="space-y-3 text-sm text-foreground/80">
+                    <li className="flex items-start gap-2">
+                      <MessageSquare className="h-4 w-4 mt-0.5 text-primary" />
+                      Module-specific discussions
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <Users className="h-4 w-4 mt-0.5 text-primary" />
+                      Peer mentorship opportunities
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <Heart className="h-4 w-4 mt-0.5 text-primary" />
+                      Success story sharing
+                    </li>
+                  </ul>
+                </div>
+
+                <div className="bg-muted border border-border rounded-lg p-6">
+                  <h3 className="font-semibold mb-4 text-foreground">Community Guidelines</h3>
+                  <ul className="space-y-2 text-sm text-foreground/80">
+                    <li className="flex items-start gap-2">
+                      <CheckCircle className="h-4 w-4 text-primary mt-0.5" />
+                      Respect and dignity for all members
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <CheckCircle className="h-4 w-4 text-primary mt-0.5" />
+                      Trauma-informed communication
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <CheckCircle className="h-4 w-4 text-primary mt-0.5" />
+                      Supportive, judgment-free zone
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Join Today */}
+        <section id="apply" className="py-12">
+          <div className="container">
+            <div className="max-w-4xl mx-auto text-center">
+              <div className="mb-6">
+                <div className="w-12 h-12 bg-primary rounded-lg flex items-center justify-center mx-auto mb-4">
+                  <ArrowDown className="h-6 w-6 text-primary-foreground" />
+                </div>
+                <div>
+                  <h2 className="text-2xl font-bold text-foreground">Ready to Join Our Community?</h2>
+                  <p className="text-foreground/80">Start your free learning journey today</p>
+                </div>
+              </div>
+
+              <div className="text-center">
+                <div className="bg-primary/5 border border-primary/20 rounded-lg p-6 max-w-2xl mx-auto">
+                  <h3 className="text-xl font-semibold text-foreground mb-4">What You Get (Free Forever)</h3>
+                  <div className="space-y-3">
+                    {["8+ comprehensive learning pathways", "AI Basics for Reentry module", "Peer support and discussion groups", "Progress tracking and recognition", "24/7 community access", "Resource navigation support", "Trauma-informed environment", "Mobile-optimized learning platform", "Success milestone celebrations"].map((benefit, index) => <div key={index} className="flex items-center justify-center gap-2 text-sm text-foreground/90">
+                        <CheckCircle className="h-4 w-4 text-primary" />
+                        {benefit}
+                      </div>)}
+                  </div>
+
+                  <Button onClick={() => setShowApplication(true)} className="w-full mt-6 bg-primary hover:bg-primary/90 text-primary-foreground shadow-md" size="lg">
+                    <Users className="h-4 w-4 mr-2" />
+                    Apply for Community Access
+                  </Button>
+
+                  <p className="text-xs text-foreground/60 text-center mt-3">
+                    No credit card required • Always free • Secure application
+                  </p>
+                </div>
+
+                <div className="mt-8">
+                  <h3 className="text-xl font-semibold mb-6">Application Process</h3>
+                  <div className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+                    <div className="text-center">
+                      <div className="w-12 h-12 bg-primary/20 rounded-full flex items-center justify-center text-primary font-semibold text-lg mx-auto mb-3">1</div>
+                      <h4 className="font-medium text-foreground mb-2">Submit Application</h4>
+                      <p className="text-sm text-muted-foreground">Share basic info about your situation and goals</p>
+                    </div>
+                    <div className="text-center">
+                      <div className="w-12 h-12 bg-primary/20 rounded-full flex items-center justify-center text-primary font-semibold text-lg mx-auto mb-3">2</div>
+                      <h4 className="font-medium text-foreground mb-2">Review Process</h4>
+                      <p className="text-sm text-muted-foreground">We review within 24-48 hours for community safety</p>
+                    </div>
+                    <div className="text-center">
+                      <div className="w-12 h-12 bg-primary/20 rounded-full flex items-center justify-center text-primary font-semibold text-lg mx-auto mb-3">3</div>
+                      <h4 className="font-medium text-foreground mb-2">Welcome & Onboarding</h4>
+                      <p className="text-sm text-muted-foreground">Get access to all modules and community features</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="mt-12 bg-secondary/5 border border-secondary/20 rounded-lg p-6">
+                <h3 className="font-semibold text-primary mb-3 text-center">Not Ready to Apply Yet?</h3>
+                <p className="text-muted-foreground mb-4 text-center">
+                  That's completely okay. Everyone moves at their own pace. Here are other ways to get support:
+                </p>
+                <div className="grid md:grid-cols-3 gap-4">
+                  <Link to="/help" className="block p-3 bg-card border border-border rounded hover:bg-primary/5 transition-colors">
+                    <div className="font-medium text-foreground">Get Immediate Help</div>
+                    <div className="text-sm text-muted-foreground">Crisis resources and immediate support</div>
+                  </Link>
+                  <Link to="/help#ohio-resources" className="block p-3 bg-card border border-border rounded hover:bg-primary/5 transition-colors">
+                    <div className="font-medium text-foreground">Browse Resources</div>
+                    <div className="text-sm text-muted-foreground">Ohio resource directory</div>
+                  </Link>
+                  <Link to="/support" className="block p-3 bg-card border border-border rounded hover:bg-primary/5 transition-colors">
+                    <div className="font-medium text-foreground">Contact Us</div>
+                    <div className="text-sm text-muted-foreground">Questions about our community</div>
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Call to Action */}
+        <section className="py-16 bg-gradient-to-r from-primary to-accent text-primary-foreground">
+          <div className="container">
+            <div className="max-w-3xl mx-auto text-center">
+              <h2 className="text-3xl font-bold mb-4">Your Journey of Growth Starts Here</h2>
+              <p className="text-xl mb-8 opacity-90">
+                Join a community that believes in your potential, supports your healing, and celebrates your progress. 
+                Every step forward is a victory worth celebrating.
+              </p>
+              
+              <div className="flex flex-wrap justify-center gap-4">
+                <Button onClick={() => setShowApplication(true)} className="bg-secondary hover:bg-secondary/90 text-secondary-foreground" size="lg">
+                  <Users className="h-4 w-4 mr-2" />
+                  Join Our Community
+                </Button>
+                 <Button onClick={() => scrollToSection('learning')} variant="outline" className="border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10" size="lg">
+                  <BookOpen className="h-4 w-4 mr-2" />
+                  Explore Learning Modules
+                </Button>
+              </div>
+
+              <div className="mt-8 grid md:grid-cols-3 gap-6 text-center">
+                <div className="flex items-center justify-center gap-2 text-sm opacity-90">
+                  <Shield className="h-4 w-4" />
+                  Safe learning environment
+                </div>
+                <div className="flex items-center justify-center gap-2 text-sm opacity-90">
+                  <Heart className="h-4 w-4" />
+                  Peer support included
+                </div>
+                <div className="flex items-center justify-center gap-2 text-sm opacity-90">
+                  <CheckCircle className="h-4 w-4" />
+                  Always free education
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
       </main>
 
-      {/* Application Modal */}
-      <CommunityApplication 
-        isOpen={showApplication} 
-        onClose={() => setShowApplication(false)} 
-      />
-      
-      {/* Reentry Navigator AI */}
-      <ReentryNavigatorAI 
-        isOpen={showReentryAI} 
-        onClose={() => {
-          setShowReentryAI(false);
-          setSelectedCoach(undefined);
-        }}
-        selectedCoach={selectedCoach}
-      />
-    </div>
-  );
+      {/* Community Application Modal */}
+      <CommunityApplication isOpen={showApplication} onClose={() => setShowApplication(false)} />
+    </>;
 }
