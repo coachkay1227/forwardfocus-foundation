@@ -729,6 +729,10 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: undefined
       }
+      cleanup_expired_permissions: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
       cleanup_expired_referral_data: {
         Args: Record<PropertyKey, never>
         Returns: undefined
@@ -753,6 +757,10 @@ export type Database = {
         Returns: undefined
       }
       detect_advanced_suspicious_activity: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
+      detect_organization_access_abuse: {
         Args: Record<PropertyKey, never>
         Returns: undefined
       }
@@ -797,6 +805,23 @@ export type Database = {
           description: string
           id: string
           name: string
+          state_code: string
+          updated_at: string
+          verified: boolean
+          website: string
+        }[]
+      }
+      get_organizations_secure: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          address: string
+          city: string
+          created_at: string
+          description: string
+          email: string
+          id: string
+          name: string
+          phone: string
           state_code: string
           updated_at: string
           verified: boolean
@@ -969,6 +994,10 @@ export type Database = {
       }
       validate_admin_access_pattern: {
         Args: Record<PropertyKey, never>
+        Returns: boolean
+      }
+      validate_contact_access_permission: {
+        Args: { org_id: string; user_id: string }
         Returns: boolean
       }
       validate_contact_input: {

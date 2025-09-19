@@ -86,19 +86,28 @@ const Organizations = () => {
     try {
       let data, error;
       
-      if (user && isAdmin) {
-        // Admin users get full access with contact information via secure function
-        ({ data, error } = await supabase.rpc('get_organizations_with_contacts_secure'));
-      } else if (user) {
-        // Authenticated non-admin users get masked contact info via secure function
-        ({ data, error } = await supabase.rpc('get_organizations_with_contacts_secure'));
+      if (user) {
+        // All authenticated users use the new secure function with field-level access control
+        ({ data, error } = await supabase.rpc('get_organizations_secure'));
       } else {
         // Anonymous users get only public data (no contact info)
-        ({ data, error } = await supabase.rpc('get_organizations_public_safe'));
+        ({ data, error } = await supabase.rpc('get_safe_organizations_public'));
       }
 
-      if (error) throw error;
-      setOrganizations(data || []);
+      if (error) {
+        // Handle rate limit errors gracefully
+        if (error.message.includes('rate limit')) {
+          toast({
+            title: "Rate Limit",
+            description: "Too many requests. Please wait a moment before trying again.",
+            variant: "destructive",
+          });
+        } else {
+          throw error;
+        }
+      } else {
+        setOrganizations(data || []);
+      }
     } catch (error) {
       console.error("Error fetching organizations:", error);
       toast({
@@ -384,27 +393,47 @@ const Organizations = () => {
 
                   {/* Contact Info - Protected for non-admin users */}
                   <div className="space-y-2">
-                    {org.phone && isAdmin && (
+                    {org.phone && (
                       <div className="flex items-center gap-2 text-sm">
                         <Phone className="h-4 w-4 text-muted-foreground" />
-                        <a 
-                          href={formatPhoneNumber(org.phone) || undefined}
-                          className="text-primary hover:underline"
-                        >
-                          {org.phone}
-                        </a>
+                        {isAdmin ? (
+                          <a 
+                            href={formatPhoneNumber(org.phone) || undefined}
+                            className="text-primary hover:underline"
+                          >
+                            {org.phone}
+                          </a>
+                        ) : (
+                          <span className="text-muted-foreground">
+                            {org.phone === 'Contact access required' ? (
+                              <Badge variant="outline" className="text-xs">Contact Access Required</Badge>
+                            ) : (
+                              org.phone
+                            )}
+                          </span>
+                        )}
                       </div>
                     )}
                     
-                    {org.email && isAdmin && (
+                    {org.email && (
                       <div className="flex items-center gap-2 text-sm">
                         <Mail className="h-4 w-4 text-muted-foreground" />
-                        <a 
-                          href={`mailto:${org.email}`}
-                          className="text-primary hover:underline"
-                        >
-                          {org.email}
-                        </a>
+                        {isAdmin ? (
+                          <a 
+                            href={`mailto:${org.email}`}
+                            className="text-primary hover:underline"
+                          >
+                            {org.email}
+                          </a>
+                        ) : (
+                          <span className="text-muted-foreground">
+                            {org.email === 'Contact access required' ? (
+                              <Badge variant="outline" className="text-xs">Contact Access Required</Badge>
+                            ) : (
+                              org.email
+                            )}
+                          </span>
+                        )}
                       </div>
                     )}
                     
