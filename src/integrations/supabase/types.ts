@@ -830,6 +830,10 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: undefined
       }
+      emergency_data_access_check: {
+        Args: Record<PropertyKey, never>
+        Returns: boolean
+      }
       get_masked_contact_info: {
         Args: { contact_text: string; user_id?: string }
         Returns: string
