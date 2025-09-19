@@ -348,19 +348,6 @@ export default function VictimServices() {
                   Join Our Community
                 </Button>
               </div>
-              
-              {/* Additional Get Personalized Help Button */}
-              <div className="flex justify-center mt-8">
-                <Button 
-                  size="lg" 
-                  variant="secondary"
-                  className="bg-white text-osu-scarlet hover:bg-white/90 w-full max-w-sm"
-                  onClick={() => setShowVictimAI(true)}
-                >
-                  <Bot className="h-5 w-5 mr-2" />
-                  Get Personalized Help
-                </Button>
-              </div>
             </div>
           </div>
         </section>
