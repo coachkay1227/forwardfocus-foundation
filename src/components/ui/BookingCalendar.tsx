@@ -22,10 +22,27 @@ const BookingCalendar = () => {
       setIsBooked(true);
       
       try {
+        const { supabase } = await import("@/integrations/supabase/client");
+        
+        // Save to database first
+        const { error: dbError } = await supabase.from('booking_requests').insert({
+          name: "Valued Community Member", // Enhanced later with form
+          email: "user@example.com", // From auth context or form
+          booking_date: selectedDate.toISOString(),
+          booking_time: selectedTime,
+          message: `Consultation booked for ${format(selectedDate, "EEEE, MMMM do, yyyy")} at ${selectedTime}. Duration: 30 minutes. Format: Video call.`,
+          status: 'confirmed'
+        });
+
+        if (dbError) {
+          console.error('Error saving booking to database:', dbError);
+          // Continue with email even if database fails
+        }
+
         // Send booking confirmation email
         const bookingData = {
-          name: "Valued Community Member", // Could be enhanced to collect name
-          email: "user@example.com", // This would need to come from auth context or form
+          name: "Valued Community Member",
+          email: "user@example.com",
           subject: `Consultation Booking Confirmation - ${format(selectedDate, "MMMM do, yyyy")} at ${selectedTime}`,
           message: `Consultation booked for ${format(selectedDate, "EEEE, MMMM do, yyyy")} at ${selectedTime}. Duration: 30 minutes. Format: Video call.`,
           type: 'booking'
@@ -37,7 +54,7 @@ const BookingCalendar = () => {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
-              'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd6dWtoc3Fna3dsamZ2d2tmdW5vIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU3MjQyOTMsImV4cCI6MjA3MTMwMDI5M30.Skon84aKH5K5TjW9pVnCI2A-6Z-9KrTYiNknpiqeCpk'}`,
+              'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd6dWtoc3Fna3dsamZ2d2tmdW5vIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU3MjQyOTMsImV4cCI6MjA3MTMwMDI5M30.Skon84aKH5K5TjW9pVnCI2A-6Z-9KrTYiNknpiqeCpk`,
             },
             body: JSON.stringify(bookingData),
           }
@@ -46,8 +63,8 @@ const BookingCalendar = () => {
         const result = await response.json();
         console.log('Booking confirmation email result:', result);
       } catch (error) {
-        console.error('Error sending booking confirmation:', error);
-        // Don't fail the booking if email fails
+        console.error('Error processing booking:', error);
+        // Don't fail the booking if there's an error
       }
       
       setTimeout(() => {
