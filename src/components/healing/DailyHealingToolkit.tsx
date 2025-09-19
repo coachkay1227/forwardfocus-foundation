@@ -101,7 +101,11 @@ const DailyHealingToolkit = () => {
           {/* Crisis Relief Toolkit */}
           <Card className="crisis-toolkit border-2 border-red-200 bg-red-50/50 hover:shadow-xl transition-all duration-300 md:hover:-translate-y-1">
             <CardHeader className="text-center">
-              <div className="text-4xl mb-2">🚨</div>
+              <div className="text-4xl mb-2 transform hover:scale-110 transition-transform duration-300" style={{
+                textShadow: '2px 2px 4px rgba(0,0,0,0.3), 4px 4px 8px rgba(0,0,0,0.2), -1px -1px 2px rgba(255,255,255,0.8)',
+                transform: 'perspective(100px) rotateX(15deg)',
+                filter: 'drop-shadow(0 4px 6px rgba(0, 0, 0, 0.2))'
+              }}>🚨</div>
               <CardTitle className="text-osu-scarlet">Instant Crisis Relief</CardTitle>
               <p className="text-muted-foreground">Immediate tools when you need help right now</p>
             </CardHeader>
