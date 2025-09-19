@@ -5,7 +5,7 @@ export const HelpHeroSection = () => {
     <header className="relative bg-gradient-osu-primary text-white overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-br from-osu-gray/90 via-osu-scarlet/80 to-osu-scarlet-dark/70"></div>
       <div className="relative container py-16 md:py-24">
-        <div className="max-w-4xl mx-auto text-center">
+        <div className="max-w-5xl mx-auto text-center px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-center gap-3 mb-6">
             <AlertTriangle className="h-8 w-8 text-white animate-pulse" />
             <span className="text-sm uppercase tracking-wider font-medium bg-white/20 backdrop-blur-sm border border-white/20 px-4 py-2 rounded-full">
