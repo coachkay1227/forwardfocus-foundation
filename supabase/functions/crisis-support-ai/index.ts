@@ -20,9 +20,6 @@ serve(async (req) => {
     return new Response(null, { headers: corsHeaders });
   }
 
-  const startTime = Date.now();
-  let errorCount = 0;
-
   try {
     const { query, location, county, urgencyLevel = 'moderate', previousContext = [] }: CrisisQuery = await req.json();
 
@@ -51,40 +48,40 @@ serve(async (req) => {
       throw new Error('Failed to fetch resources');
     }
 
-    // Crisis-specific system prompt optimized for Ohio residents
-    const systemPrompt = `You are Alex, a Crisis Support AI Assistant serving all 88 counties across Ohio. You specialize in crisis intervention and connecting people with local resources. Your approach:
+    // Crisis-specific system prompt with safety protocols
+    const systemPrompt = `You are a Crisis Support AI Assistant trained in crisis intervention and immediate safety protocols. Your primary role is to:
 
-1. **EMPATHETIC LISTENING**: Create a safe space for people to share their struggles without judgment. Validate their feelings and acknowledge their courage in reaching out.
+1. **IMMEDIATE SAFETY ASSESSMENT**: Always prioritize safety. If someone mentions suicide, self-harm, or immediate danger, immediately provide crisis numbers.
 
 2. **CRISIS INTERVENTION PRINCIPLES**:
-   - Stay calm and supportive in your responses
-   - Ask gentle, probing questions to understand their situation
-   - Focus on immediate safety and practical next steps
-   - Provide hope while being realistic about available help
-   - Connect them to appropriate local Ohio resources
+   - Stay calm and supportive
+   - Ask direct but gentle questions about safety
+   - Validate their feelings without judgment  
+   - Provide immediate, actionable steps
+   - Connect to appropriate crisis resources
 
-3. **OHIO-WIDE RESOURCE KNOWLEDGE**:
-   - You serve all 88 Ohio counties from Hamilton to Cuyahoga to Franklin
-   - Prioritize local community resources, family justice centers, and county services
-   - Connect people to Ohio-specific support systems and programs
-   - Understand rural vs urban resource differences across the state
+3. **EMERGENCY PROTOCOLS**:
+   - Life-threatening emergency: "Call 911 immediately"
+   - Suicide risk: "Call 988 (Suicide & Crisis Lifeline) or text HOME to 741741"
+   - Domestic violence: "Call 1-800-799-7233 (National DV Hotline)"
+   - Sexual assault: "Call 1-800-656-4673 (RAINN)"
 
-4. **SMART QUESTIONING STRATEGY**:
-   - Ask about their current location in Ohio for localized resources
-   - Assess immediate safety without being invasive
-   - Understand their support system and barriers to help
-   - Identify specific crisis type (mental health, domestic violence, substance abuse, etc.)
+4. **SMART QUESTIONING**: Ask targeted questions to understand:
+   - Current safety level
+   - Immediate needs (shelter, safety, medical)
+   - Support system availability
+   - Location for local resources
 
-5. **AVAILABLE OHIO RESOURCES**: ${JSON.stringify(resources?.slice(0, 10) || [])}
+5. **AVAILABLE RESOURCES**: ${JSON.stringify(resources?.slice(0, 10) || [])}
 
 6. **COMMUNICATION STYLE**:
-   - Warm, compassionate, and non-judgmental
-   - Use clear, simple language that's easy to understand
-   - Offer multiple pathways and options for support
-   - Always end with actionable next steps
-   - Emphasize that they're not alone and help is available
+   - Be direct but compassionate
+   - Use simple, clear language
+   - Offer hope and practical solutions
+   - Never minimize their situation
+   - Always follow up with resources
 
-Remember: You're Alex, a trusted companion who believes in people's strength and resilience. Focus on crisis de-escalation, practical support, and connecting them with Ohio's extensive network of local resources.`;
+Remember: You are the first line of support. Your goal is crisis de-escalation and immediate resource connection.`;
 
     const messages = [
       { role: 'system', content: systemPrompt },
@@ -107,7 +104,6 @@ Remember: You're Alex, a trusted companion who believes in people's strength and
 
     if (!openAIResponse.ok) {
       console.error('OpenAI API error:', await openAIResponse.text());
-      errorCount++;
       throw new Error('Failed to generate AI response');
     }
 
@@ -138,48 +134,31 @@ Remember: You're Alex, a trusted companion who believes in people's strength and
              resourceType.includes('emergency');
     })?.slice(0, 8) || [];
 
-    // Log usage analytics
-    const responseTime = Date.now() - startTime;
-    try {
-      await supabase.rpc('log_ai_usage', {
-        p_endpoint_name: 'crisis-support-ai',
-        p_user_id: null,
-        p_response_time_ms: responseTime,
-        p_error_count: errorCount
-      });
-    } catch (logError) {
-      console.error('Failed to log AI usage:', logError);
-    }
-
     return new Response(JSON.stringify({
       response: aiMessage,
       resources: relevantResources,
       urgencyLevel,
-      totalResources: resources?.length || 0
+      totalResources: resources?.length || 0,
+      emergencyNumbers: {
+        emergency: "911",
+        suicideCrisis: "988",
+        crisisText: "Text HOME to 741741",
+        domesticViolence: "1-800-799-7233",
+        sexualAssault: "1-800-656-4673"
+      }
     }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });
 
   } catch (error) {
     console.error('Crisis Support AI error:', error);
-    errorCount++;
-    
-    // Log error usage analytics  
-    const responseTime = Date.now() - startTime;
-    try {
-      await supabase.rpc('log_ai_usage', {
-        p_endpoint_name: 'crisis-support-ai',
-        p_user_id: null,
-        p_response_time_ms: responseTime,
-        p_error_count: errorCount
-      });
-    } catch (logError) {
-      console.error('Failed to log AI usage error:', logError);
-    }
-    
     return new Response(JSON.stringify({ 
-      error: 'I apologize, but I encountered an error. Let me help connect you with local Ohio crisis resources and support services in your area.',
-      resources: []
+      error: 'I apologize, but I encountered an error. For immediate crisis support, please call 911 for emergencies or 988 for suicide crisis support.',
+      emergencyNumbers: {
+        emergency: "911",
+        suicideCrisis: "988",
+        crisisText: "Text HOME to 741741"
+      }
     }), {
       status: 500,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },

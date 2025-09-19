@@ -22,7 +22,6 @@ import {
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
-import { ContactAccessRequest } from "@/components/security/ContactAccessRequest";
 
 // Import hero image
 import partnerOrgsHero from "@/assets/partner-organizations-hero.jpg";
@@ -86,28 +85,19 @@ const Organizations = () => {
     try {
       let data, error;
       
-      if (user) {
-        // All authenticated users use the new secure function with field-level access control
-        ({ data, error } = await supabase.rpc('get_organizations_secure'));
+      if (user && isAdmin) {
+        // Admin users get full access with contact information via secure function
+        ({ data, error } = await supabase.rpc('get_organizations_with_contacts_secure'));
+      } else if (user) {
+        // Authenticated non-admin users get masked contact info via secure function
+        ({ data, error } = await supabase.rpc('get_organizations_with_contacts_secure'));
       } else {
         // Anonymous users get only public data (no contact info)
-        ({ data, error } = await supabase.rpc('get_safe_organizations_public'));
+        ({ data, error } = await supabase.rpc('get_organizations_public_safe'));
       }
 
-      if (error) {
-        // Handle rate limit errors gracefully
-        if (error.message.includes('rate limit')) {
-          toast({
-            title: "Rate Limit",
-            description: "Too many requests. Please wait a moment before trying again.",
-            variant: "destructive",
-          });
-        } else {
-          throw error;
-        }
-      } else {
-        setOrganizations(data || []);
-      }
+      if (error) throw error;
+      setOrganizations(data || []);
     } catch (error) {
       console.error("Error fetching organizations:", error);
       toast({
@@ -191,6 +181,30 @@ const Organizations = () => {
   return (
     <main id="main" className="container py-8">
       <div className="max-w-7xl mx-auto">
+        {/* Hero Section */}
+        <div className="relative mb-12">
+          <div className="relative rounded-2xl overflow-hidden shadow-xl">
+            <img 
+              src={partnerOrgsHero} 
+              alt="Diverse team of professionals collaborating in a modern office setting"
+              className="w-full h-96 object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-primary/90 to-secondary/80 flex items-center justify-center">
+              <div className="text-center text-primary-foreground max-w-4xl px-8">
+                <div className="inline-flex items-center gap-2 mb-6">
+                  <Building2 className="h-8 w-8" />
+                  <Badge variant="secondary" className="text-lg px-4 py-2">Trusted Partners</Badge>
+                </div>
+                <h1 className="font-heading text-5xl md:text-6xl font-bold mb-6">Our Partner Network</h1>
+                <p className="text-xl leading-relaxed max-w-3xl mx-auto">
+                  A comprehensive directory of organizations committed to supporting justice-impacted 
+                  individuals and families across Ohio. Each partner shares our commitment to dignity, 
+                  respect, and second chances.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
 
         {/* Stats */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
@@ -369,47 +383,27 @@ const Organizations = () => {
 
                   {/* Contact Info - Protected for non-admin users */}
                   <div className="space-y-2">
-                    {org.phone && (
+                    {org.phone && isAdmin && (
                       <div className="flex items-center gap-2 text-sm">
                         <Phone className="h-4 w-4 text-muted-foreground" />
-                        {isAdmin ? (
-                          <a 
-                            href={formatPhoneNumber(org.phone) || undefined}
-                            className="text-primary hover:underline"
-                          >
-                            {org.phone}
-                          </a>
-                        ) : (
-                          <span className="text-muted-foreground">
-                            {org.phone === 'Contact access required' ? (
-                              <Badge variant="outline" className="text-xs">Contact Access Required</Badge>
-                            ) : (
-                              org.phone
-                            )}
-                          </span>
-                        )}
+                        <a 
+                          href={formatPhoneNumber(org.phone) || undefined}
+                          className="text-primary hover:underline"
+                        >
+                          {org.phone}
+                        </a>
                       </div>
                     )}
                     
-                    {org.email && (
+                    {org.email && isAdmin && (
                       <div className="flex items-center gap-2 text-sm">
                         <Mail className="h-4 w-4 text-muted-foreground" />
-                        {isAdmin ? (
-                          <a 
-                            href={`mailto:${org.email}`}
-                            className="text-primary hover:underline"
-                          >
-                            {org.email}
-                          </a>
-                        ) : (
-                          <span className="text-muted-foreground">
-                            {org.email === 'Contact access required' ? (
-                              <Badge variant="outline" className="text-xs">Contact Access Required</Badge>
-                            ) : (
-                              org.email
-                            )}
-                          </span>
-                        )}
+                        <a 
+                          href={`mailto:${org.email}`}
+                          className="text-primary hover:underline"
+                        >
+                          {org.email}
+                        </a>
                       </div>
                     )}
                     
@@ -429,10 +423,11 @@ const Organizations = () => {
                     )}
 
                     {user && !isAdmin && (org.phone || org.email) && (
-                      <ContactAccessRequest
-                        organizationId={org.id}
-                        organizationName={org.name}
-                      />
+                      <div className="bg-muted/50 p-3 rounded-lg text-sm text-center">
+                        <p className="text-muted-foreground">
+                          Contact information is available to verified partners only.
+                        </p>
+                      </div>
                     )}
 
                     {!user && (

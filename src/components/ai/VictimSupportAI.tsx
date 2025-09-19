@@ -59,38 +59,46 @@ const VictimSupportAI: React.FC<VictimSupportAIProps> = ({ isOpen, onClose, init
     }
   }, [initialQuery, isOpen]);
 
-  const sendMessage = async (messages: {role: string, content: string}[]) => {
+  const handleSend = async () => {
+    if (!input.trim() || isLoading) return;
+
+    const userMessage: Message = {
+      id: Date.now().toString(),
+      type: 'user',
+      content: input,
+      timestamp: new Date(),
+    };
+
+    setMessages(prev => [...prev, userMessage]);
+    setInput('');
+    setIsLoading(true);
+
     try {
-      const response = await fetch(`https://gzukhsqgkwljfvwkfuno.supabase.co/functions/v1/victim-support-ai`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd6dWtoc3Fna3dsamZ2d2tmdW5vIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU3MjQyOTMsImV4cCI6MjA3MTMwMDI5M30.Skon84aKH5K5TjW9pVnCI2A-6Z-9KrTYiNknpiqeCpk`
-        },
-        body: JSON.stringify({
-          query: messages[messages.length - 1].content,
-          victimType: 'general',
-          traumaLevel: 'ongoing',
-          previousContext: messages.slice(0, -1)
-        })
-      });
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      const data = await response.json();
+      // Update conversation context
+      const newContext = [...conversationContext, { role: 'user', content: input }];
       
-      // Update AI message with the response
-      setMessages(prev => {
-        const newMessages = [...prev];
-        const lastMessage = newMessages[newMessages.length - 1];
-        if (lastMessage.type === 'ai') {
-          lastMessage.content = data.response;
-          lastMessage.resources = data.resources;
+      const { data, error } = await supabase.functions.invoke('victim-support-ai', {
+        body: {
+          query: input,
+          previousContext: newContext,
+          traumaLevel: 'ongoing'
         }
-        return newMessages;
       });
+
+      if (error) throw error;
+
+      const aiMessage: Message = {
+        id: (Date.now() + 1).toString(),
+        type: 'ai',
+        content: data.response,
+        timestamp: new Date(),
+        resources: data.resources,
+        victimType: data.victimType,
+      };
+
+      setMessages(prev => [...prev, aiMessage]);
+      setConversationContext([...newContext, { role: 'assistant', content: data.response }]);
+
     } catch (error) {
       console.error('Victim Support AI error:', error);
       // Fallback: client-side victim services lookup so users still get help
@@ -116,44 +124,14 @@ const VictimSupportAI: React.FC<VictimSupportAIProps> = ({ isOpen, onClose, init
         const errorMessage: Message = {
           id: (Date.now() + 1).toString(),
           type: 'ai',
-          content: "I apologize for the technical difficulty. Let me connect you with local victim services that can provide direct support. Please visit your nearest family justice center or contact local law enforcement victim advocacy services.",
+          content: "I apologize for the technical difficulty. For immediate support: National Domestic Violence Hotline 1-800-799-7233, RAINN Sexual Assault Hotline 1-800-656-4673, or Crisis Support 988.",
           timestamp: new Date(),
         };
         setMessages(prev => [...prev, errorMessage]);
       }
+    } finally {
+      setIsLoading(false);
     }
-  };
-
-  const handleSend = async () => {
-    if (!input.trim() || isLoading) return;
-
-    const userMessage: Message = {
-      id: Date.now().toString(),
-      type: 'user',
-      content: input,
-      timestamp: new Date(),
-    };
-
-    setMessages(prev => [...prev, userMessage]);
-    const userInput = input;
-    setInput('');
-    setIsLoading(true);
-
-    // Add empty AI message for streaming
-    const aiMessage: Message = {
-      id: (Date.now() + 1).toString(),
-      type: 'ai',
-      content: '...',
-      timestamp: new Date(),
-    };
-    setMessages(prev => [...prev, aiMessage]);
-
-    // Update conversation context and send message
-    const newContext = [...conversationContext, { role: 'user', content: userInput }];
-    await sendMessage(newContext);
-    
-    setConversationContext([...newContext, { role: 'assistant', content: '' }]);
-    setIsLoading(false);
   };
 
   const quickActions = [
@@ -176,7 +154,7 @@ const VictimSupportAI: React.FC<VictimSupportAIProps> = ({ isOpen, onClose, init
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-2xl h-[700px] p-0 overflow-hidden" aria-describedby="victim-support-description">
+      <DialogContent className="max-w-2xl h-[700px] p-0 overflow-hidden">
         {/* Header */}
         <div className="flex items-center justify-between bg-primary p-4 text-primary-foreground">
           <div className="flex items-center gap-3">
@@ -184,8 +162,8 @@ const VictimSupportAI: React.FC<VictimSupportAIProps> = ({ isOpen, onClose, init
               <Heart className="h-5 w-5" />
             </div>
             <div>
-              <h3 className="font-bold text-lg" id="victim-support-title">Healing & Support Navigator</h3>
-              <p className="text-sm opacity-90" id="victim-support-description">Trauma-informed victim services and healing resources</p>
+              <h3 className="font-bold text-lg">Healing & Support Navigator</h3>
+              <p className="text-sm opacity-90">Trauma-informed victim services</p>
             </div>
           </div>
           <Button
@@ -282,28 +260,7 @@ const VictimSupportAI: React.FC<VictimSupportAIProps> = ({ isOpen, onClose, init
 
         {/* Quick Actions */}
         <div className="border-t p-4">
-          <div className="flex items-center justify-between mb-3">
-            <p className="text-sm font-medium">Common support areas:</p>
-            <div className="flex gap-2">
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => {
-                  setMessages([{
-                    id: '1',
-                    type: 'ai',
-                    content: "I'm here to support you on your healing journey. What happened to you was not your fault, and seeking help shows tremendous strength. I'm trained to understand the unique challenges faced by crime victims and can help you find trauma-informed resources, legal advocacy, compensation programs, and emotional support. How can I help you today?",
-                    timestamp: new Date(),
-                  }]);
-                  setConversationContext([]);
-                  setInput('');
-                }}
-                className="text-xs"
-              >
-                New Chat
-              </Button>
-            </div>
-          </div>
+          <p className="text-sm font-medium mb-3">Common support areas:</p>
           <div className="grid grid-cols-2 gap-2 mb-4">
             {quickActions.map((action, index) => (
               <Button

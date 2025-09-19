@@ -1,28 +1,17 @@
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Phone, MessageSquare, X, Send, Mic, MicOff, Bot, HeartHandshake, Heart } from "lucide-react";
+import { Phone, MessageSquare, X, Send, Mic, MicOff, Bot, HeartHandshake, Users } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Badge } from "@/components/ui/badge";
-import EmailChatHistoryModal from '@/components/ai/EmailChatHistoryModal';
 
 interface Message {
   id: string;
   text: string;
   isUser: boolean;
   timestamp: Date;
-  resources?: Array<{
-    id: string;
-    name: string;
-    organization: string;
-    phone?: string;
-    website?: string;
-    type: string;
-    description?: string;
-    city?: string;
-    county?: string;
-  }>;
 }
 
 interface CrisisEmergencyBotProps {
@@ -36,9 +25,8 @@ export const CrisisEmergencyBot = ({ trigger }: CrisisEmergencyBotProps) => {
   const [isConnected, setIsConnected] = useState(false);
   const [isListening, setIsListening] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [showEmailModal, setShowEmailModal] = useState(false);
-  const [conversationContext, setConversationContext] = useState<Array<{role: string, content: string}>>([]);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const wsRef = useRef<WebSocket | null>(null);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -62,23 +50,22 @@ export const CrisisEmergencyBot = ({ trigger }: CrisisEmergencyBotProps) => {
     try {
       setIsLoading(true);
       
-      // Initialize with crisis support greeting focused on Ohio resources
+      // Initialize with crisis support greeting and features
       addMessage(
-        "Hi, I'm your Crisis Emergency Support AI Assistant serving all 88 counties across Ohio.\n\nI'm here to provide immediate, compassionate support with:\n\n🤖 AI-Enhanced Crisis Support - Intelligent guidance tailored to your specific situation\n\n💝 Trauma-Informed Care - Every interaction designed with safety, trust, and empowerment\n\n🏛️ Ohio-Wide Resources - Access to crisis services across all Ohio counties\n\n🤝 Immediate Connection - Direct links to local support in your area\n\nI'm here to listen and help you find the right support. What's bringing you here today?",
+        "🚨 Crisis Support AI Assistant\n\nI'm here to help you through this difficult time with:\n\n🤖 AI-Enhanced Guidance - Smart technology that understands justice-impacted experiences\n\n💝 Trauma-Informed Care - Every interaction designed with safety, trust, and empowerment\n\n👥 Income-Based Support - Accessible life coaching and support regardless of financial situation\n\nIMPORTANT CRISIS NUMBERS:\n• For emergencies: Call 911\n• For crisis support: Call 988\n• For text support: Text HOME to 741741\n\nHow can I support you right now?",
         false
       );
       
       setIsConnected(true);
     } catch (error) {
       console.error('Error connecting to crisis bot:', error);
-      addMessage("I'm sorry, I'm having trouble connecting right now. Let me help you find local Ohio crisis resources.", false);
+      addMessage("I'm sorry, I'm having trouble connecting right now. Please call 988 for immediate crisis support.", false);
     } finally {
       setIsLoading(false);
     }
   };
 
-  // Real AI integration for crisis support
-  const handleSendMessage = useCallback(async () => {
+  const handleSendMessage = async () => {
     if (!inputValue.trim() || !isConnected) return;
 
     const userMessage = inputValue.trim();
@@ -86,58 +73,31 @@ export const CrisisEmergencyBot = ({ trigger }: CrisisEmergencyBotProps) => {
     addMessage(userMessage, true);
     setIsLoading(true);
 
-    try {
-      const response = await fetch(`https://gzukhsqgkwljfvwkfuno.supabase.co/functions/v1/crisis-emergency-ai`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd6dWtoc3Fna3dsamZ2d2tmdW5vIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU3MjQyOTMsImV4cCI6MjA3MTMwMDI5M30.Skon84aKH5K5TjW9pVnCI2A-6Z-9KrTYiNknpiqeCpk`
-        },
-        body: JSON.stringify({
-          query: userMessage,
-          urgencyLevel: 'moderate',
-          previousContext: conversationContext
-        })
-      });
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+    // Simulate AI response for crisis support
+    setTimeout(() => {
+      let response = "";
+      
+      if (userMessage.toLowerCase().includes('emergency') || userMessage.toLowerCase().includes('danger')) {
+        response = "🚨 If you're in immediate danger, please call 911 right now.\n\nIf you're having thoughts of self-harm, please call the Crisis Lifeline at 988 or text HOME to 741741. You don't have to go through this alone.";
+      } else if (userMessage.toLowerCase().includes('suicid') || userMessage.toLowerCase().includes('hurt')) {
+        response = "I'm very concerned about you. Please reach out for immediate help:\n\n• Call 988 (Crisis Lifeline) - available 24/7\n• Text HOME to 741741\n• Go to your nearest emergency room\n\nYou matter, and there are people who want to help you through this.";
+      } else if (userMessage.toLowerCase().includes('help') || userMessage.toLowerCase().includes('support')) {
+        response = "I understand you're looking for help. Here are some resources:\n\n• Crisis support: 988\n• Text support: Text HOME to 741741\n• Local resources: Call 211\n\nWhat specific type of support would be most helpful right now?";
+      } else {
+        response = "Thank you for sharing with me. Remember that you're not alone in this. If you need immediate help, please call 988 or text HOME to 741741.\n\nCan you tell me more about what you're going through?";
       }
+      
+      addMessage(response, false);
+      setIsLoading(false);
+    }, 1000);
+  };
 
-      const data = await response.json();
-      
-      // Add AI response message with resources
-      const aiMessage: Message = {
-        id: (Date.now() + 1).toString(),
-        text: data.response,
-        isUser: false,
-        timestamp: new Date(),
-        resources: data.resources
-      };
-      
-      setMessages(prev => [...prev, aiMessage]);
-      
-      // Update conversation context
-      setConversationContext(prev => [
-        ...prev,
-        { role: 'user', content: userMessage },
-        { role: 'assistant', content: data.response }
-      ]);
-      
-    } catch (error) {
-      console.error('Crisis Emergency AI error:', error);
-      addMessage("I apologize for the technical difficulty. Let me help connect you with local Ohio crisis resources and support services.", false);
-    }
-    
-    setIsLoading(false);
-  }, [inputValue, isConnected, conversationContext]);
-
-  const handleKeyPress = useCallback((e: React.KeyboardEvent) => {
+  const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
       handleSendMessage();
     }
-  }, [handleSendMessage]);
+  };
 
   const handleVoiceToggle = () => {
     setIsListening(!isListening);
@@ -160,16 +120,33 @@ export const CrisisEmergencyBot = ({ trigger }: CrisisEmergencyBotProps) => {
           </Button>
         )}
       </DialogTrigger>
-      <DialogContent className="max-w-2xl max-h-[85vh] p-0 flex flex-col">
-        <DialogHeader className="p-4 pb-2 bg-destructive text-destructive-foreground border-b">
-          <DialogTitle className="flex items-center gap-2">
-            <Heart className="h-5 w-5" />
+      <DialogContent className="max-w-md max-h-[80vh] p-0">
+        <DialogHeader className="p-4 pb-2 bg-red-50 border-b">
+          <DialogTitle className="flex items-center gap-2 text-red-800">
+            <Phone className="h-5 w-5" />
             Crisis Emergency Support
           </DialogTitle>
-          <p className="text-sm opacity-90">Immediate AI-powered crisis support for Ohio residents</p>
+          <div className="text-sm text-red-700 space-y-1">
+            <div className="flex items-center gap-2">
+              <Badge variant="destructive" className="text-xs">Emergency</Badge>
+              <a href="tel:911" className="hover:underline font-medium">Call 911</a>
+            </div>
+            <div className="flex items-center gap-2">
+              <Badge variant="outline" className="text-xs">Crisis</Badge>
+              <a href="tel:988" className="hover:underline font-medium">Call 988</a>
+            </div>
+            <div className="flex items-center gap-2">
+              <Badge variant="outline" className="text-xs">Help</Badge>
+              <a href="tel:211" className="hover:underline font-medium">Call 211</a>
+            </div>
+            <div className="flex items-center gap-2">
+              <Badge variant="outline" className="text-xs">Text</Badge>
+              <a href="sms:741741?body=HOME" className="hover:underline font-medium">Text HOME to 741741</a>
+            </div>
+          </div>
         </DialogHeader>
 
-        <div className="flex flex-col flex-1">
+        <div className="flex flex-col h-96">
           <ScrollArea className="flex-1 p-4">
             <div className="space-y-4">
               {messages.map((message) => (
@@ -178,51 +155,14 @@ export const CrisisEmergencyBot = ({ trigger }: CrisisEmergencyBotProps) => {
                   className={`flex ${message.isUser ? 'justify-end' : 'justify-start'}`}
                 >
                   <div
-                    className={`max-w-[80%] rounded-lg p-3 ${
+                    className={`max-w-xs rounded-lg p-3 ${
                       message.isUser
                         ? 'bg-primary text-primary-foreground'
                         : 'bg-muted text-foreground'
                     }`}
                   >
-                    <p className="text-sm whitespace-pre-line leading-relaxed">{message.text}</p>
-                    
-                    {message.resources && message.resources.length > 0 && (
-                      <div className="mt-3 space-y-2">
-                        <p className="text-xs font-semibold text-foreground/80">Ohio Resources:</p>
-                        {message.resources.map((resource) => (
-                          <div key={resource.id} className="bg-card border rounded-lg p-3 text-xs">
-                            <div className="font-semibold text-foreground">{resource.name}</div>
-                            <div className="text-muted-foreground">{resource.organization}</div>
-                            {resource.description && (
-                              <p className="text-muted-foreground mt-1">{resource.description}</p>
-                            )}
-                            <div className="flex gap-2 mt-2">
-                              {resource.phone && (
-                                <Button asChild size="sm" variant="destructive">
-                                  <a href={`tel:${resource.phone}`}>
-                                    Call: {resource.phone}
-                                  </a>
-                                </Button>
-                              )}
-                              {resource.website && (
-                                <Button asChild size="sm" variant="outline">
-                                  <a href={resource.website} target="_blank" rel="noopener noreferrer">
-                                    Visit Website
-                                  </a>
-                                </Button>
-                              )}
-                            </div>
-                            {resource.city && resource.county && (
-                              <div className="text-xs text-muted-foreground mt-1">
-                                {resource.city}, {resource.county} County
-                              </div>
-                            )}
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                    
-                    <span className="text-xs opacity-70 mt-2 block">
+                    <p className="text-sm whitespace-pre-line">{message.text}</p>
+                    <span className="text-xs opacity-70 mt-1 block">
                       {message.timestamp.toLocaleTimeString()}
                     </span>
                   </div>
@@ -231,14 +171,10 @@ export const CrisisEmergencyBot = ({ trigger }: CrisisEmergencyBotProps) => {
               {isLoading && (
                 <div className="flex justify-start">
                   <div className="bg-muted rounded-lg p-3 max-w-xs">
-                    <div className="flex items-center space-x-2 text-sm text-muted-foreground">
-                      <Heart className="h-4 w-4 text-destructive animate-pulse" />
-                      <span>AI is thinking...</span>
-                      <div className="flex space-x-1">
-                        <div className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce"></div>
-                        <div className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
-                        <div className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
-                      </div>
+                    <div className="flex space-x-1">
+                      <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
+                      <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
+                      <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
                     </div>
                   </div>
                 </div>
@@ -247,40 +183,13 @@ export const CrisisEmergencyBot = ({ trigger }: CrisisEmergencyBotProps) => {
             <div ref={messagesEndRef} />
           </ScrollArea>
 
-          <div className="border-t p-4 space-y-3">
-            <div className="flex items-center justify-between">
-              <p className="text-sm font-medium">Crisis Emergency Support</p>
-              <div className="flex gap-2">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => {
-                    setMessages([]);
-                    setConversationContext([]);
-                    setInputValue('');
-                    connectToCrisisBot();
-                  }}
-                  className="text-xs"
-                >
-                  New Chat
-                </Button>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => setShowEmailModal(true)}
-                  className="text-xs"
-                >
-                  Email History
-                </Button>
-              </div>
-            </div>
-            
+          <div className="border-t p-4">
             <div className="flex gap-2">
               <Input
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)}
                 onKeyPress={handleKeyPress}
-                placeholder="Tell me what's happening..."
+                placeholder="Type your message..."
                 disabled={!isConnected || isLoading}
                 className="flex-1"
               />
@@ -288,7 +197,7 @@ export const CrisisEmergencyBot = ({ trigger }: CrisisEmergencyBotProps) => {
                 onClick={handleVoiceToggle}
                 variant="outline"
                 size="icon"
-                className={isListening ? "bg-destructive/10" : ""}
+                className={isListening ? "bg-red-100" : ""}
               >
                 {isListening ? <MicOff className="h-4 w-4" /> : <Mic className="h-4 w-4" />}
               </Button>
@@ -300,28 +209,8 @@ export const CrisisEmergencyBot = ({ trigger }: CrisisEmergencyBotProps) => {
                 <Send className="h-4 w-4" />
               </Button>
             </div>
-            
-            <div className="flex items-center justify-between text-xs text-muted-foreground">
-              <span>Available 24/7 • Confidential • Ohio-wide support</span>
-              <div className="flex items-center gap-1">
-                <Heart className="h-3 w-3 text-destructive" />
-                <span>You matter</span>
-              </div>
-            </div>
           </div>
         </div>
-        
-        <EmailChatHistoryModal
-          isOpen={showEmailModal}
-          onClose={() => setShowEmailModal(false)}
-          messages={messages.map(msg => ({
-            id: msg.id,
-            type: msg.isUser ? 'user' : 'ai' as const,
-            content: msg.text,
-            timestamp: msg.timestamp
-          }))}
-          coachName="Crisis Emergency Support"
-        />
       </DialogContent>
     </Dialog>
   );

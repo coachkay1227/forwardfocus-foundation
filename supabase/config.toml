@@ -41,9 +41,3 @@ verify_jwt = false
 
 [functions.ai-resource-discovery]
 verify_jwt = false
-
-[functions.coach-k]
-verify_jwt = false
-
-[functions.chat]
-verify_jwt = false

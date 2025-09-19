@@ -1,14 +1,7 @@
-type Resource = {
-  id: string;
-  name: string;
-  organization: string;
-  city: string;
-  verified: string;
-  updated_at: string;
-};
+import type { Resource } from "@/data/resources-ohio";
 
 const CommunityStream = ({ resources }: { resources: Resource[] }) => {
-  const recent = [...resources].sort((a,b)=> new Date(b.updated_at).getTime()-new Date(a.updated_at).getTime()).slice(0,5);
+  const recent = [...resources].sort((a,b)=> new Date(b.updatedAt).getTime()-new Date(a.updatedAt).getTime()).slice(0,5);
   const partnerAdds = resources.filter(r=>r.verified==='partner').slice(0,5);
 
   return (
@@ -17,7 +10,7 @@ const CommunityStream = ({ resources }: { resources: Resource[] }) => {
         <h3 className="font-semibold">Recently Added by Partners</h3>
         <ul className="mt-3 space-y-2 text-sm">
           {partnerAdds.map(r=> (
-            <li key={r.id} className="flex justify-between gap-2"><span>{r.name}</span><span className="text-muted-foreground">{new Date(r.updated_at).toLocaleDateString()}</span></li>
+            <li key={r.id} className="flex justify-between gap-2"><span>{r.name}</span><span className="text-muted-foreground">{new Date(r.updatedAt).toLocaleDateString()}</span></li>
           ))}
         </ul>
       </article>
@@ -25,7 +18,7 @@ const CommunityStream = ({ resources }: { resources: Resource[] }) => {
         <h3 className="font-semibold">Community Updates</h3>
         <ul className="mt-3 space-y-2 text-sm">
           {recent.map(r=> (
-            <li key={r.id} className="flex justify-between gap-2"><span>{r.organization}</span><span className="text-muted-foreground">{r.city}</span></li>
+            <li key={r.id} className="flex justify-between gap-2"><span>{r.org}</span><span className="text-muted-foreground">{r.city}</span></li>
           ))}
         </ul>
       </article>

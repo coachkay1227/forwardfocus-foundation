@@ -2,14 +2,12 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Badge } from '@/components/ui/badge';
-import { Loader2, Send, Bot, User, Phone, Globe, MapPin, Star, Shield, Mail, RotateCcw, History } from 'lucide-react';
+import { Loader2, Send, Bot, User, Phone, Globe, MapPin, Star, Shield } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
-import { parseTextForLinks, formatAIResponse } from '@/lib/text-parser';
-import EmailChatHistoryModal from './EmailChatHistoryModal';
 
 interface Message {
   id: string;
@@ -29,7 +27,6 @@ interface Resource {
   description?: string;
   phone?: string;
   website?: string;
-  email?: string;
   verified: string;
   justice_friendly: boolean;
   rating?: number;
@@ -54,7 +51,6 @@ const AIResourceDiscovery: React.FC<AIResourceDiscoveryProps> = ({
   const [inputValue, setInputValue] = useState(initialQuery);
   const [isLoading, setIsLoading] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
-  const [showEmailModal, setShowEmailModal] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
 
@@ -71,43 +67,6 @@ const AIResourceDiscovery: React.FC<AIResourceDiscoveryProps> = ({
       handleSend(initialQuery);
     }
   }, [isOpen, initialQuery]);
-
-  const sendMessage = async (query: string) => {
-    try {
-      const { data, error } = await supabase.functions.invoke('ai-resource-discovery', {
-        body: {
-          query,
-          location: location,
-          county: county,
-          resourceType: undefined,
-          limit: 10
-        }
-      });
-
-      if (error) {
-        throw new Error(`Function error: ${error.message}`);
-      }
-
-      if (!data) {
-        throw new Error('No response data');
-      }
-
-      // Create AI message with the response
-      const aiMessage: Message = {
-        id: (Date.now() + 1).toString(),
-        type: 'ai',
-        content: formatAIResponse(data.response || 'I found some resources for you.'),
-        timestamp: new Date(),
-        resources: data.resources || []
-      };
-
-      setMessages(prev => [...prev, aiMessage]);
-      setIsTyping(false);
-    } catch (error) {
-      console.error('AI Resource Discovery error:', error);
-      throw error;
-    }
-  };
 
   const handleSend = async (queryText?: string) => {
     const query = queryText || inputValue.trim();
@@ -126,17 +85,38 @@ const AIResourceDiscovery: React.FC<AIResourceDiscoveryProps> = ({
     setIsTyping(true);
 
     try {
-      await sendMessage(query);
-    } catch (error) {
-      console.error('Error getting AI response:', error);
-      
-      toast({
-        title: "AI Assistant Temporarily Unavailable", 
-        description: "I'm searching our database directly for you instead.",
-        variant: "default",
+      const { data, error } = await supabase.functions.invoke('ai-resource-discovery', {
+        body: {
+          query,
+          location,
+          county,
+          limit: 8
+        }
       });
 
-      // Fallback: client-side resource lookup
+      if (error) {
+        throw error;
+      }
+
+      const aiMessage: Message = {
+        id: (Date.now() + 1).toString(),
+        type: 'ai',
+        content: data.response,
+        timestamp: new Date(),
+        resources: data.resources
+      };
+
+      setMessages(prev => [...prev, aiMessage]);
+
+    } catch (error) {
+      console.error('Error getting AI response:', error);
+      toast({
+        title: "Error",
+        description: "Unable to get AI response. Please try again.",
+        variant: "destructive",
+      });
+
+      // Fallback: client-side resource lookup so users still get help
       try {
         const tokens = query.toLowerCase().split(/\s+/).slice(0, 3);
         let orFilter = tokens.map(t => `name.ilike.%${t}%,description.ilike.%${t}%,type.ilike.%${t}%`).join(',');
@@ -153,9 +133,9 @@ const AIResourceDiscovery: React.FC<AIResourceDiscoveryProps> = ({
 
         const { data: fallbackResources } = await resourceQuery;
 
-        const content = fallbackResources && fallbackResources.length > 0
-          ? `I found ${fallbackResources.length} Ohio resources that match your search. While the AI is unavailable, these resources should help:`
-          : "I'm having trouble connecting to our AI service right now. Please try again in a moment, or browse resources manually.";
+        const content = fallbackResources && fallbackResources.length
+          ? "I couldn't reach the AI right now, but here are relevant Ohio resources I found:"
+          : "I'm having trouble connecting right now. Please try again in a moment.";
 
         const aiMessage: Message = {
           id: (Date.now() + 1).toString(),
@@ -171,7 +151,7 @@ const AIResourceDiscovery: React.FC<AIResourceDiscoveryProps> = ({
         setMessages(prev => [...prev, {
           id: (Date.now() + 1).toString(),
           type: 'ai',
-          content: "I'm experiencing technical difficulties. Please try refreshing the page or contact support for assistance with finding resources.",
+          content: "I'm sorry, I'm having trouble connecting right now. Please try again in a moment or contact our support team for assistance.",
           timestamp: new Date()
         }]);
       }
@@ -181,34 +161,15 @@ const AIResourceDiscovery: React.FC<AIResourceDiscoveryProps> = ({
     }
   };
 
-  const handleNewChat = () => {
-    setMessages([]);
-    setInputValue('');
-    setIsLoading(false);
-    setIsTyping(false);
-  };
-
-  const handleEmailHistory = () => {
-    if (messages.length === 0) {
-      toast({
-        title: "No chat history",
-        description: "Start a conversation to save your chat history.",
-        variant: "default",
-      });
-      return;
-    }
-    setShowEmailModal(true);
-  };
-
   const ResourceCard = ({ resource }: { resource: Resource }) => (
-    <Card className="mb-3 border-l-4 border-l-primary shadow-sm hover:shadow-md transition-shadow">
-      <CardHeader className="pb-3">
+    <Card className="mb-3 border-l-4 border-l-primary">
+      <CardHeader className="pb-2">
         <div className="flex items-start justify-between">
           <div>
-            <CardTitle className="text-base font-semibold text-foreground">{resource.name}</CardTitle>
-            <p className="text-sm text-muted-foreground">{resource.organization}</p>
+            <CardTitle className="text-sm font-semibold text-foreground">{resource.name}</CardTitle>
+            <p className="text-xs text-muted-foreground">{resource.organization}</p>
           </div>
-          <div className="flex gap-1 flex-wrap">
+          <div className="flex gap-1">
             {resource.verified === 'partner' && (
               <Badge variant="default" className="text-xs">
                 <Shield className="h-3 w-3 mr-1" />
@@ -222,39 +183,31 @@ const AIResourceDiscovery: React.FC<AIResourceDiscoveryProps> = ({
         </div>
       </CardHeader>
       <CardContent className="pt-0">
-        <div className="space-y-3">
-          <div className="flex items-center gap-2 text-sm text-muted-foreground">
-            <MapPin className="h-4 w-4" />
+        <div className="space-y-2">
+          <div className="flex items-center gap-2 text-xs text-muted-foreground">
+            <MapPin className="h-3 w-3" />
             <span>{resource.city}, {resource.county} County</span>
             <Badge variant="outline" className="text-xs">{resource.type}</Badge>
           </div>
           
           {resource.description && (
-            <p className="text-sm text-foreground leading-relaxed">{resource.description}</p>
+            <p className="text-xs text-foreground line-clamp-2">{resource.description}</p>
           )}
           
-          <div className="flex gap-2 pt-2 flex-wrap">
+          <div className="flex gap-2 pt-1">
             {resource.phone && (
-              <Button size="sm" variant="outline" className="h-8 px-3 text-sm" asChild>
-                <a href={`tel:${resource.phone.replace(/[^\d]/g, '')}`}>
-                  <Phone className="h-3 w-3 mr-2" />
+              <Button size="sm" variant="outline" className="h-7 px-2 text-xs" asChild>
+                <a href={`tel:${resource.phone}`}>
+                  <Phone className="h-3 w-3 mr-1" />
                   Call
                 </a>
               </Button>
             )}
-            {resource.email && (
-              <Button size="sm" variant="outline" className="h-8 px-3 text-sm" asChild>
-                <a href={`mailto:${resource.email}`}>
-                  <Mail className="h-3 w-3 mr-2" />
-                  Email
-                </a>
-              </Button>
-            )}
             {resource.website && (
-              <Button size="sm" variant="outline" className="h-8 px-3 text-sm" asChild>
-                <a href={resource.website.startsWith('http') ? resource.website : `https://${resource.website}`} target="_blank" rel="noopener noreferrer">
-                  <Globe className="h-3 w-3 mr-2" />
-                  Website
+              <Button size="sm" variant="outline" className="h-7 px-2 text-xs" asChild>
+                <a href={resource.website} target="_blank" rel="noopener noreferrer">
+                  <Globe className="h-3 w-3 mr-1" />
+                  Visit
                 </a>
               </Button>
             )}
@@ -263,36 +216,6 @@ const AIResourceDiscovery: React.FC<AIResourceDiscoveryProps> = ({
       </CardContent>
     </Card>
   );
-
-  const ParsedMessage = ({ content }: { content: string }) => {
-    const segments = parseTextForLinks(content);
-    
-    return (
-      <div className="text-sm leading-relaxed">
-        {segments.map((segment, index) => {
-          if (segment.type === 'text') {
-            return (
-              <span key={index} className="whitespace-pre-wrap">
-                {segment.content}
-              </span>
-            );
-          }
-          
-          return (
-            <a
-              key={index}
-              href={segment.href}
-              target={segment.type === 'website' ? '_blank' : undefined}
-              rel={segment.type === 'website' ? 'noopener noreferrer' : undefined}
-              className="text-primary hover:text-primary/80 underline underline-offset-2 font-medium transition-colors"
-            >
-              {segment.content}
-            </a>
-          );
-        })}
-      </div>
-    );
-  };
 
   const suggestedQueries = [
     "Find housing assistance in my area",
@@ -305,28 +228,25 @@ const AIResourceDiscovery: React.FC<AIResourceDiscoveryProps> = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-4xl max-h-[85vh] h-[85vh] p-0 flex flex-col" aria-describedby="ai-discovery-description">
+      <DialogContent className="max-w-4xl h-[80vh] p-0">
         <DialogHeader className="p-6 pb-0">
           <DialogTitle className="flex items-center gap-2">
-            <Bot className="h-5 w-5 text-osu-scarlet" />
+            <Bot className="h-5 w-5 text-primary" />
             AI Resource Discovery
             {(location || county) && (
-              <Badge variant="outline" className="ml-2 border-osu-scarlet/30 text-osu-scarlet bg-osu-scarlet/5">
+              <Badge variant="outline" className="ml-2">
                 {location || county}
               </Badge>
             )}
           </DialogTitle>
-          <DialogDescription id="ai-discovery-description">
-            Get personalized resource recommendations using AI based on your specific needs and location
-          </DialogDescription>
         </DialogHeader>
         
-        <div className="flex flex-col flex-1 min-h-0">
-          <ScrollArea className="flex-1 p-6 pt-2 bg-gradient-subtle">
+        <div className="flex flex-col h-full">
+          <ScrollArea className="flex-1 p-6 pt-2">
             {messages.length === 0 ? (
               <div className="space-y-4">
                 <div className="text-center py-8">
-                  <Bot className="h-12 w-12 text-osu-scarlet mx-auto mb-4" />
+                  <Bot className="h-12 w-12 text-primary mx-auto mb-4" />
                   <h3 className="text-lg font-semibold mb-2">Hi! I'm your AI Resource Navigator</h3>
                   <p className="text-muted-foreground mb-6">
                     I can help you find resources and support services across all 88 Ohio counties. 
@@ -342,7 +262,7 @@ const AIResourceDiscovery: React.FC<AIResourceDiscoveryProps> = ({
                         key={index}
                         variant="outline"
                         size="sm"
-                        className="text-left justify-start h-auto p-3 text-sm hover:bg-primary/10"
+                        className="text-left justify-start h-auto p-3 text-sm"
                         onClick={() => handleSend(query)}
                       >
                         {query}
@@ -356,42 +276,33 @@ const AIResourceDiscovery: React.FC<AIResourceDiscoveryProps> = ({
                 {messages.map((message) => (
                   <div key={message.id} className={`flex gap-3 ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}>
                     {message.type === 'ai' && (
-                      <div className="flex-shrink-0 w-8 h-8 bg-osu-scarlet rounded-full flex items-center justify-center">
-                        <Bot className="h-4 w-4 text-osu-scarlet-foreground" />
+                      <div className="flex-shrink-0 w-8 h-8 bg-primary rounded-full flex items-center justify-center">
+                        <Bot className="h-4 w-4 text-primary-foreground" />
                       </div>
                     )}
                     
-                  <div className={`max-w-[75%] space-y-3 ${message.type === 'user' ? 'order-first' : ''}`}>
-                      <div className={`p-4 rounded-lg ${
+                    <div className={`max-w-[70%] space-y-2 ${message.type === 'user' ? 'order-first' : ''}`}>
+                      <div className={`p-3 rounded-lg ${
                         message.type === 'user' 
                           ? 'bg-primary text-primary-foreground ml-auto' 
-                          : 'bg-muted/50 border border-border'
+                          : 'bg-muted'
                       }`}>
-                        {message.type === 'ai' ? (
-                          <ParsedMessage content={message.content} />
-                        ) : (
-                          <p className="text-sm whitespace-pre-wrap">{message.content}</p>
-                        )}
+                        <p className="text-sm whitespace-pre-wrap">{message.content}</p>
                       </div>
                       
                       {message.resources && message.resources.length > 0 && (
-                        <div className="space-y-3">
-                          <h4 className="text-base font-semibold text-foreground flex items-center gap-2">
-                            <MapPin className="h-4 w-4" />
-                            Recommended Resources ({message.resources.length})
-                          </h4>
-                          <div className="space-y-3">
-                            {message.resources.map((resource) => (
-                              <ResourceCard key={resource.id} resource={resource} />
-                            ))}
-                          </div>
+                        <div className="space-y-2">
+                          <h4 className="text-sm font-semibold text-foreground">Relevant Resources:</h4>
+                          {message.resources.map((resource) => (
+                            <ResourceCard key={resource.id} resource={resource} />
+                          ))}
                         </div>
                       )}
                     </div>
                     
                     {message.type === 'user' && (
-                      <div className="flex-shrink-0 w-8 h-8 bg-primary/20 rounded-full flex items-center justify-center">
-                        <User className="h-4 w-4 text-primary" />
+                      <div className="flex-shrink-0 w-8 h-8 bg-muted rounded-full flex items-center justify-center">
+                        <User className="h-4 w-4 text-muted-foreground" />
                       </div>
                     )}
                   </div>
@@ -402,14 +313,14 @@ const AIResourceDiscovery: React.FC<AIResourceDiscoveryProps> = ({
                     <div className="flex-shrink-0 w-8 h-8 bg-primary rounded-full flex items-center justify-center">
                       <Bot className="h-4 w-4 text-primary-foreground" />
                     </div>
-                    <div className="bg-muted/50 border border-border p-4 rounded-lg">
-                      <div className="flex items-center gap-2">
+                    <div className="bg-muted p-3 rounded-lg">
+                      <div className="flex items-center gap-1">
                         <div className="flex space-x-1">
-                          <div className="w-2 h-2 bg-primary rounded-full animate-bounce"></div>
-                          <div className="w-2 h-2 bg-primary rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
-                          <div className="w-2 h-2 bg-primary rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+                          <div className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce"></div>
+                          <div className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
+                          <div className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
                         </div>
-                        <span className="text-sm text-muted-foreground">Searching for resources...</span>
+                        <span className="text-xs text-muted-foreground ml-2">AI is thinking...</span>
                       </div>
                     </div>
                   </div>
@@ -419,7 +330,7 @@ const AIResourceDiscovery: React.FC<AIResourceDiscoveryProps> = ({
             <div ref={messagesEndRef} />
           </ScrollArea>
           
-          <div className="p-4 border-t border-border bg-background/95 backdrop-blur-sm flex-shrink-0 space-y-3">
+          <div className="p-4 border-t">
             <div className="flex gap-2">
               <Input
                 value={inputValue}
@@ -433,7 +344,6 @@ const AIResourceDiscovery: React.FC<AIResourceDiscoveryProps> = ({
                 onClick={() => handleSend()} 
                 disabled={isLoading || !inputValue.trim()}
                 size="sm"
-                className="bg-primary hover:bg-primary/90 text-primary-foreground px-4"
               >
                 {isLoading ? (
                   <Loader2 className="h-4 w-4 animate-spin" />
@@ -442,39 +352,9 @@ const AIResourceDiscovery: React.FC<AIResourceDiscoveryProps> = ({
                 )}
               </Button>
             </div>
-            
-            {/* Bottom Action Buttons */}
-            <div className="flex gap-2 justify-center">
-              <Button 
-                variant="outline" 
-                size="sm" 
-                onClick={handleNewChat}
-                className="flex items-center gap-2 text-sm"
-              >
-                <RotateCcw className="h-4 w-4" />
-                New Chat
-              </Button>
-              <Button 
-                variant="outline" 
-                size="sm" 
-                onClick={handleEmailHistory}
-                className="flex items-center gap-2 text-sm"
-              >
-                <History className="h-4 w-4" />
-                Email History
-              </Button>
-            </div>
           </div>
         </div>
       </DialogContent>
-
-      {/* Email History Modal */}
-      <EmailChatHistoryModal
-        isOpen={showEmailModal}
-        onClose={() => setShowEmailModal(false)}
-        messages={messages}
-        coachName="AI Resource Navigator"
-      />
     </Dialog>
   );
 };

@@ -1,10 +1,12 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { Phone, AlertTriangle, Heart, Users, BookOpen, Shield, ArrowDown, MessageCircle, ChevronRight, ExternalLink, Bot, CheckCircle, ArrowRight } from "lucide-react";
+import { 
+  Phone, Bot, AlertTriangle, CheckCircle, ArrowRight, 
+  Shield, Heart, BookOpen, Users, GraduationCap
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import CrisisSupportAI from "@/components/ai/CrisisSupportAI";
-import diverseWomenSupport from "@/assets/diverse-women-support.jpg";
 
 
 export default function GetHelpNow() {
@@ -34,6 +36,7 @@ export default function GetHelpNow() {
 
   const navigationSections = [
     { id: "crisis", label: "Crisis Support", icon: Phone },
+    { id: "ai-guide", label: "AI Guidance", icon: Bot },
     { id: "pathways", label: "Growth Pathways", icon: ArrowRight }
   ];
 
@@ -47,253 +50,341 @@ export default function GetHelpNow() {
 
   return (
     <>
-      <main id="main">
       {/* Hero Section */}
-      <header className="relative bg-gradient-osu-primary text-white overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-muted/90 via-osu-scarlet/80 to-osu-scarlet-dark/70"></div>
-        <div className="relative container py-24 md:py-32">
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
-            <div className="text-center lg:text-left">
-              <div className="flex items-center justify-center lg:justify-start gap-3 mb-8">
-                <AlertTriangle className="h-8 w-8 text-white" />
-                <span className="text-sm uppercase tracking-wider font-medium bg-white/10 backdrop-blur-sm border border-white/20 px-4 py-2 rounded-full">Crisis Support Available</span>
-              </div>
-              <h1 className="font-heading text-5xl md:text-7xl font-bold mb-8 leading-tight">
-                You Are Not Alone.<br />
-                <span className="text-white/80">Help Is Here Now.</span>
-              </h1>
-              <p className="text-lg md:text-xl text-white/90 mb-12 leading-relaxed">
-                Immediate crisis support, trauma-informed guidance, and pathways to healing. 
-                Our AI-powered tools and human support are available 24/7.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 max-w-lg mx-auto lg:mx-0">
-                <Button 
-                  size="lg" 
-                  variant="secondary" 
-                  className="bg-white text-osu-scarlet hover:bg-white/90"
-                  onClick={() => setShowCrisisAI(true)}
-                >
-                  <MessageCircle className="h-5 w-5 mr-2" />
-                  Get Immediate AI Support
-                </Button>
-              </div>
+      <header className="bg-gradient-to-br from-primary/5 via-background to-secondary/5 border-b">
+        <div className="container py-16 md:py-20">
+          <div className="max-w-4xl mx-auto text-center">
+            <h1 className="font-heading text-5xl md:text-6xl font-bold text-foreground mb-6">
+              Get Personalized Support
+            </h1>
+            <p className="text-2xl text-muted-foreground mb-8 leading-relaxed">
+              Access intelligent AI guidance for crisis support, reentry services, mental health resources, 
+              educational opportunities, and employment assistance across all 88 Ohio counties.
+            </p>
+            <div className="flex items-center justify-center gap-6 text-lg text-muted-foreground mb-10">
+              <span className="flex items-center gap-2">
+                <CheckCircle className="h-5 w-5 text-secondary" />
+                24/7 AI Guidance
+              </span>
+              <span className="flex items-center gap-2">
+                <CheckCircle className="h-5 w-5 text-secondary" />
+                Statewide Coverage
+              </span>
+              <span className="flex items-center gap-2">
+                <CheckCircle className="h-5 w-5 text-secondary" />
+                Confidential Support
+              </span>
             </div>
-            <div className="relative rounded-2xl overflow-hidden shadow-xl">
-              <img src={diverseWomenSupport} alt="Diverse women supporting each other in crisis" className="w-full h-80 object-cover" />
-              <div className="absolute inset-0 bg-gradient-to-t from-accent/90 to-transparent flex items-end">
-                <div className="p-8 text-accent-foreground w-full text-center">
-                  <p className="text-2xl font-semibold">
-                    Strength in community, healing in connection
-                  </p>
-                </div>
-              </div>
+            
+            <div className="flex justify-center">
+              <Button 
+                onClick={() => setShowCrisisAI(true)}
+                size="lg"
+                variant="premium"
+                className="h-16 px-12 text-xl"
+              >
+                <Bot className="h-6 w-6 mr-3" />
+                Get Crisis Support Now
+              </Button>
             </div>
           </div>
         </div>
       </header>
 
-      <div className="container py-24 space-y-32">
+      {/* Clean Navigation */}
+      <nav className="bg-card border-b sticky top-[64px] z-40 shadow-sm">
+        <div className="container py-4">
+          <div className="grid grid-cols-3 gap-4">
+            {navigationSections.map((section) => {
+              const Icon = section.icon;
+              return (
+                <button
+                  key={section.id}
+                  onClick={() => scrollToSection(section.id)}
+                  className={`flex items-center gap-3 p-4 rounded-lg border transition-all ${
+                    activeSection === section.id 
+                      ? 'border-primary bg-primary/10 text-primary' 
+                      : 'border-border hover:border-primary/30 hover:bg-primary/5'
+                  }`}
+                >
+                  <Icon className="h-5 w-5" />
+                  <span className="font-medium">{section.label}</span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      </nav>
+
+      <main className="bg-muted/30">
         {/* Crisis Support Section */}
-        <section id="crisis-support" className="scroll-mt-16 bg-secondary/5 py-24 rounded-2xl">
-          <div className="max-w-6xl mx-auto">
-            <div className="text-center mb-16">
-              <h2 className="font-heading text-4xl md:text-5xl font-bold text-foreground mb-6">
-                Immediate Crisis Support
-              </h2>
-              <p className="text-xl text-foreground/70 max-w-3xl mx-auto leading-relaxed mb-8">
-                If you're in immediate danger or experiencing a crisis, these resources are available right now
-              </p>
-              <div className="bg-muted/50 rounded-lg p-4 max-w-2xl mx-auto">
-                <p className="text-sm text-muted-foreground">
-                  <strong>Need to exit quickly?</strong> Use the "Exit" button in the top right corner or press Ctrl+Shift+Q to go to a safe website
-                </p>
+        <section id="crisis" className="py-16 bg-card">
+          <div className="container">
+            <div className="max-w-4xl mx-auto">
+              <div className="flex items-center gap-4 mb-8">
+                <div className="w-16 h-16 bg-destructive rounded-xl flex items-center justify-center">
+                  <Phone className="h-8 w-8 text-destructive-foreground" />
+                </div>
+                <div>
+                  <h2 className="font-heading text-3xl font-bold text-foreground">Crisis Support</h2>
+                  <p className="text-xl text-muted-foreground">Immediate help when you need it most</p>
+                </div>
+              </div>
+
+              <div className="grid md:grid-cols-3 gap-6">
+                <Card className="border-2 border-destructive">
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2 text-destructive">
+                      <AlertTriangle className="h-5 w-5" />
+                      Emergency
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="mb-4 text-muted-foreground">Life-threatening emergency</p>
+                    <Button asChild variant="destructive" size="lg" className="w-full">
+                      <a href="tel:911">Call 911 Now</a>
+                    </Button>
+                  </CardContent>
+                </Card>
+
+                <Card className="border-2 border-primary">
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2 text-primary">
+                      <Heart className="h-5 w-5" />
+                      Crisis Support
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="mb-4 text-muted-foreground">24/7 suicide & crisis lifeline</p>
+                    <Button asChild variant="premium" size="lg" className="w-full">
+                      <a href="tel:988">Call 988</a>
+                    </Button>
+                  </CardContent>
+                </Card>
+
+                <Card className="border-2 border-secondary">
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2 text-secondary">
+                      <Shield className="h-5 w-5" />
+                      Local Resources
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="mb-4 text-muted-foreground">Find local services & support</p>
+                    <Button asChild variant="secondary" size="lg" className="w-full">
+                      <a href="tel:211">Call 211</a>
+                    </Button>
+                  </CardContent>
+                </Card>
               </div>
             </div>
+          </div>
+        </section>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto px-4">
-              <div className="bg-background rounded-xl p-6 border shadow-lg hover:shadow-xl transition-all">
-                <div className="flex items-center gap-4 mb-6 justify-center">
-                  <div className="w-12 h-12 bg-destructive rounded-xl flex items-center justify-center shadow-md">
-                    <Phone className="h-6 w-6 text-destructive-foreground" />
-                  </div>
+        {/* AI Guidance Section */}
+        <section id="ai-guide" className="py-16 bg-gradient-to-br from-primary/5 via-background to-secondary/5">
+          <div className="container">
+            <div className="max-w-4xl mx-auto text-center">
+              <div className="w-24 h-24 bg-primary rounded-full flex items-center justify-center mx-auto mb-8">
+                <Bot className="h-12 w-12 text-primary-foreground" />
+              </div>
+              <h2 className="font-heading text-4xl font-bold text-foreground mb-6">
+                AI-Powered Resource Navigation
+              </h2>
+              <p className="text-xl text-muted-foreground mb-8 leading-relaxed max-w-3xl mx-auto">
+                Our intelligent AI assistant knows about resources across all 88 Ohio counties. Get personalized guidance 
+                for reentry support, mental health services, educational opportunities, employment assistance, victim services, 
+                and crisis intervention - all through simple conversation.
+              </p>
+
+              <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+                <div className="p-6 rounded-lg border bg-card">
+                  <Shield className="h-8 w-8 text-primary mb-4 mx-auto" />
+                  <h3 className="font-semibold text-foreground mb-2">Crisis Response</h3>
+                  <p className="text-sm text-muted-foreground">Immediate crisis resources and emergency support</p>
                 </div>
-                <h3 className="text-xl font-semibold text-foreground text-center mb-4">Emergency Services</h3>
-                <p className="text-foreground/70 text-base leading-relaxed text-center mb-6">For immediate life-threatening emergencies</p>
-                <Button 
-                  size="lg" 
-                  className="w-full bg-destructive hover:bg-destructive/90 text-destructive-foreground h-12"
-                  onClick={() => window.location.href = 'tel:911'}
-                >
-                  <Phone className="h-5 w-5 mr-2" />
-                  Call 911
-                </Button>
+                <div className="p-6 rounded-lg border bg-card">
+                  <ArrowRight className="h-8 w-8 text-primary mb-4 mx-auto" />
+                  <h3 className="font-semibold text-foreground mb-2">Reentry Support</h3>
+                  <p className="text-sm text-muted-foreground">Housing, employment, and reintegration assistance</p>
+                </div>
+                <div className="p-6 rounded-lg border bg-card">
+                  <Heart className="h-8 w-8 text-primary mb-4 mx-auto" />
+                  <h3 className="font-semibold text-foreground mb-2">Mental Health</h3>
+                  <p className="text-sm text-muted-foreground">Trauma-informed care and counseling services</p>
+                </div>
+                <div className="p-6 rounded-lg border bg-card">
+                  <GraduationCap className="h-8 w-8 text-primary mb-4 mx-auto" />
+                  <h3 className="font-semibold text-foreground mb-2">Education & Jobs</h3>
+                  <p className="text-sm text-muted-foreground">Scholarships, training, and fair-chance employment</p>
+                </div>
               </div>
 
-              <div className="bg-background rounded-xl p-6 border shadow-lg hover:shadow-xl transition-all">
-                <div className="flex items-center gap-4 mb-6 justify-center">
-                  <div className="w-12 h-12 bg-primary rounded-xl flex items-center justify-center shadow-md">
-                    <Heart className="h-6 w-6 text-primary-foreground" />
+              <div className="bg-card border rounded-lg p-8 mb-8">
+                <h3 className="font-heading text-2xl font-semibold text-foreground mb-4">
+                  How It Works
+                </h3>
+                <div className="grid md:grid-cols-3 gap-6 text-left">
+                  <div className="flex gap-4">
+                    <div className="w-8 h-8 bg-primary text-primary-foreground rounded-full flex items-center justify-center font-bold text-sm">1</div>
+                    <div>
+                      <h4 className="font-semibold text-foreground mb-2">Describe Your Situation</h4>
+                      <p className="text-muted-foreground text-sm">Tell our AI what type of support you need</p>
+                    </div>
+                  </div>
+                  <div className="flex gap-4">
+                    <div className="w-8 h-8 bg-primary text-primary-foreground rounded-full flex items-center justify-center font-bold text-sm">2</div>
+                    <div>
+                      <h4 className="font-semibold text-foreground mb-2">Get Personalized Resources</h4>
+                      <p className="text-muted-foreground text-sm">Receive targeted recommendations for your location</p>
+                    </div>
+                  </div>
+                  <div className="flex gap-4">
+                    <div className="w-8 h-8 bg-primary text-primary-foreground rounded-full flex items-center justify-center font-bold text-sm">3</div>
+                    <div>
+                      <h4 className="font-semibold text-foreground mb-2">Take Action</h4>
+                      <p className="text-muted-foreground text-sm">Connect directly with services and next steps</p>
+                    </div>
                   </div>
                 </div>
-                <h3 className="text-xl font-semibold text-foreground text-center mb-4">Mental Health Crisis</h3>
-                <p className="text-foreground/70 text-base leading-relaxed text-center mb-6">24/7 suicide & crisis lifeline support</p>
-                <Button 
-                  size="lg" 
-                  className="w-full bg-primary hover:bg-primary/90 h-12"
-                  onClick={() => window.location.href = 'tel:988'}
-                >
-                  <Heart className="h-5 w-5 mr-2" />
-                  Call or Text 988
-                </Button>
               </div>
+
+              <Button 
+                onClick={() => setShowCrisisAI(true)}
+                size="lg"
+                variant="premium"
+                className="h-14 px-8 text-lg"
+              >
+                <Bot className="h-5 w-5 mr-2" />
+                Start AI Guidance
+              </Button>
+              <p className="mt-4 text-sm text-muted-foreground">Free to use • Available 24/7 • Completely confidential</p>
             </div>
           </div>
         </section>
 
         {/* Growth Pathways Section */}
-        <section id="growth-pathways" className="scroll-mt-16">
-          <div className="max-w-6xl mx-auto">
-            <div className="text-center mb-16">
-              <h2 className="font-heading text-4xl md:text-5xl font-bold text-foreground mb-6">
-                Pathways to Growth & Healing
-              </h2>
-              <p className="text-xl text-foreground/70 max-w-3xl mx-auto leading-relaxed">
-                Beyond crisis support, we offer long-term resources and community for your journey forward
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:auto-rows-fr items-stretch">
-              <div className="bg-background rounded-xl p-6 md:p-10 border shadow-lg hover:shadow-xl transition-all h-full flex flex-col">
-                <div className="flex items-center gap-6 mb-8 justify-center">
-                  <div className="w-12 h-12 md:w-16 md:h-16 bg-primary rounded-xl flex items-center justify-center shadow-md">
-                    <BookOpen className="h-6 w-6 md:h-8 md:w-8 text-primary-foreground" />
-                  </div>
-                </div>
-                <h3 className="text-xl md:text-2xl font-semibold text-foreground text-center mb-4">Learning & Growth</h3>
-                <p className="text-foreground/70 text-base md:text-lg leading-relaxed text-center mb-8">
-                  Access educational resources, skill-building programs, and personal development tools 
-                  designed for justice-impacted individuals and families.
+        <section id="pathways" className="py-16 bg-card">
+          <div className="container">
+            <div className="max-w-4xl mx-auto">
+              <div className="text-center mb-12">
+                <h2 className="font-heading text-4xl font-bold text-foreground mb-6">
+                  Your Growth Pathways
+                </h2>
+                <p className="text-xl text-muted-foreground">
+                  Explore specialized programs designed for your journey forward
                 </p>
-                <Button asChild size="lg" className="w-full mt-auto h-11 md:h-12">
-                  <Link to="/learn">
-                    <BookOpen className="h-5 w-5 mr-2" />
-                    Explore Learning Resources
-                    <ChevronRight className="h-4 w-4 ml-2" />
-                  </Link>
-                </Button>
               </div>
 
-              <div className="bg-background rounded-xl p-6 md:p-10 border shadow-lg hover:shadow-xl transition-all h-full flex flex-col">
-                <div className="flex items-center gap-6 mb-8 justify-center">
-                  <div className="w-12 h-12 md:w-16 md:h-16 bg-secondary rounded-xl flex items-center justify-center shadow-md">
-                    <Shield className="h-6 w-6 md:h-8 md:w-8 text-secondary-foreground" />
-                  </div>
-                </div>
-                <h3 className="text-xl md:text-2xl font-semibold text-foreground text-center mb-4">Healing & Safety</h3>
-                <p className="text-foreground/70 text-base md:text-lg leading-relaxed text-center mb-8">
-                  Find trauma-informed support services, safety resources, and healing-centered 
-                  approaches for survivors and their families.
-                </p>
-                <Button asChild size="lg" variant="outline" className="w-full mt-auto border-secondary text-secondary hover:bg-secondary/10 h-11 md:h-12">
-                  <Link to="/victim-services">
-                    <Shield className="h-5 w-5 mr-2" />
-                    Access Healing Hub
-                    <ChevronRight className="h-4 w-4 ml-2" />
-                  </Link>
-                </Button>
-            </div>
+              <div className="grid md:grid-cols-2 gap-8">
+                <Card className="border-2 hover:border-primary/50 transition-all">
+                  <CardHeader>
+                    <div className="w-16 h-16 bg-gradient-to-br from-primary to-primary/80 rounded-xl flex items-center justify-center mb-4">
+                      <BookOpen className="h-8 w-8 text-primary-foreground" />
+                    </div>
+                    <CardTitle className="text-2xl text-foreground">Learning & Growth</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-muted-foreground mb-6">
+                      Access educational programs, skill development, career training, and personal growth 
+                      opportunities with supportive community and AI learning companion.
+                    </p>
+                    <div className="space-y-2 mb-6">
+                      <div className="flex items-center gap-2 text-sm">
+                        <CheckCircle className="h-4 w-4 text-secondary" />
+                        <span>Educational scholarships and funding</span>
+                      </div>
+                      <div className="flex items-center gap-2 text-sm">
+                        <CheckCircle className="h-4 w-4 text-secondary" />
+                        <span>Career certification programs</span>
+                      </div>
+                      <div className="flex items-center gap-2 text-sm">
+                        <CheckCircle className="h-4 w-4 text-secondary" />
+                        <span>AI learning companion</span>
+                      </div>
+                    </div>
+                    <Button asChild variant="premium" className="w-full">
+                      <Link to="/learn">Explore Learning Programs</Link>
+                    </Button>
+                  </CardContent>
+                </Card>
 
-            {/* Additional Support Options */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:auto-rows-fr items-stretch mt-16">
-              <div className="bg-background rounded-xl p-6 md:p-10 border shadow-lg hover:shadow-xl transition-all h-full flex flex-col">
-                <div className="flex items-center gap-6 mb-8 justify-center">
-                  <div className="w-12 h-12 md:w-16 md:h-16 bg-primary rounded-xl flex items-center justify-center shadow-md">
-                    <Bot className="h-6 w-6 md:h-8 md:w-8 text-primary-foreground" />
-                  </div>
-                </div>
-                <h3 className="text-xl md:text-2xl font-semibold text-foreground text-center mb-4">
-                  24/7 AI + Human-Powered Guidance
-                </h3>
-                <p className="text-foreground/70 text-base md:text-lg leading-relaxed text-center mb-8 flex-grow">
-                  Trauma recovery, reentry support, and growth resources available whenever you need them. 
-                  Technology enhances support, it never replaces human connection.
-                </p>
-                <Button asChild size="lg" className="w-full mt-auto h-11 md:h-12">
-                  <Link to="/victim-services">
-                    <Bot className="h-5 w-5 mr-2" />
-                    Access AI Support Tools
-                    <ChevronRight className="h-4 w-4 ml-2" />
-                  </Link>
-                </Button>
+                <Card className="border-2 hover:border-primary/50 transition-all">
+                  <CardHeader>
+                    <div className="w-16 h-16 bg-gradient-to-br from-secondary to-secondary/80 rounded-xl flex items-center justify-center mb-4">
+                      <Heart className="h-8 w-8 text-secondary-foreground" />
+                    </div>
+                    <CardTitle className="text-2xl text-foreground">Healing & Safety</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-muted-foreground mb-6">
+                      Specialized trauma-informed support for crime victims, including compensation programs, 
+                      counseling services, and safety planning with dignity and respect.
+                    </p>
+                    <div className="space-y-2 mb-6">
+                      <div className="flex items-center gap-2 text-sm">
+                        <CheckCircle className="h-4 w-4 text-secondary" />
+                        <span>Victim compensation programs</span>
+                      </div>
+                      <div className="flex items-center gap-2 text-sm">
+                        <CheckCircle className="h-4 w-4 text-secondary" />
+                        <span>Trauma-informed counseling</span>
+                      </div>
+                      <div className="flex items-center gap-2 text-sm">
+                        <CheckCircle className="h-4 w-4 text-secondary" />
+                        <span>Safety planning support</span>
+                      </div>
+                    </div>
+                    <Button asChild variant="secondary" className="w-full">
+                      <Link to="/victim-services">Access Healing Hub</Link>
+                    </Button>
+                  </CardContent>
+                </Card>
               </div>
-
-              <div className="bg-background rounded-xl p-6 md:p-10 border shadow-lg hover:shadow-xl transition-all h-full flex flex-col">
-                <div className="flex items-center gap-6 mb-8 justify-center">
-                  <div className="w-12 h-12 md:w-16 md:h-16 bg-secondary rounded-xl flex items-center justify-center shadow-md">
-                    <Users className="h-6 w-6 md:h-8 md:w-8 text-secondary-foreground" />
-                  </div>
-                </div>
-                <h3 className="text-xl md:text-2xl font-semibold text-foreground text-center mb-4">
-                  Safe, Judgment-Free Community
-                </h3>
-                <p className="text-foreground/70 text-base md:text-lg leading-relaxed text-center mb-8 flex-grow">
-                  Peer and professional support in an environment where you're understood, 
-                  valued, and empowered to thrive on your own terms.
-                </p>
-                <Button asChild size="lg" variant="outline" className="w-full mt-auto border-secondary text-secondary hover:bg-secondary/10 h-11 md:h-12">
-                  <Link to="/organizations">
-                    <Users className="h-5 w-5 mr-2" />
-                    Join Our Community
-                    <ChevronRight className="h-4 w-4 ml-2" />
-                  </Link>
-                </Button>
-              </div>
-            </div>
             </div>
           </div>
         </section>
 
         {/* Call to Action */}
-        <section className="scroll-mt-16 bg-gradient-to-br from-primary via-accent to-secondary text-primary-foreground rounded-2xl overflow-hidden shadow-2xl">
-          <div className="px-8 py-24 md:py-32">
+        <section className="py-16 bg-gradient-to-br from-primary/10 via-background to-secondary/10">
+          <div className="container">
             <div className="max-w-4xl mx-auto text-center">
-              <h2 className="font-heading text-4xl md:text-6xl font-bold mb-12">
-                Don't Wait. Take the Next Step Today.
+              <h2 className="font-heading text-3xl font-bold text-foreground mb-6">
+                Ready to Start Your Journey?
               </h2>
-              <div className="space-y-8 text-lg md:text-xl leading-relaxed">
-                <p className="text-primary-foreground/95 max-w-2xl mx-auto">
-                  Whether you need immediate crisis support or are ready to begin your growth journey, 
-                  we're here to help you move forward.
-                </p>
-              </div>
-              <div className="flex flex-col sm:flex-row gap-4 max-w-lg mx-auto mt-12">
+              <p className="text-xl text-muted-foreground mb-8">
+                Get personalized guidance and support tailored to your unique situation and goals.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Button 
-                  size="lg" 
-                  variant="secondary" 
-                  className="flex-1 bg-white text-osu-scarlet hover:bg-white/90"
                   onClick={() => setShowCrisisAI(true)}
+                  size="lg"
+                  variant="premium"
+                  className="h-14 px-8 text-lg"
                 >
-                  <MessageCircle className="h-5 w-5 mr-2" />
-                  Get Help Now
+                  <Bot className="h-5 w-5 mr-2" />
+                  Get AI Guidance
                 </Button>
-                <Button asChild size="lg" className="bg-osu-gray hover:bg-osu-gray-dark text-white flex-1">
-                  <Link to="/learn">
+                <Button asChild size="lg" variant="secondary" className="h-14 px-8 text-lg">
+                  <Link to="/auth">
                     <Users className="h-5 w-5 mr-2" />
-                    Join Our Community
+                    Join Community
                   </Link>
                 </Button>
               </div>
+              <p className="mt-6 text-sm text-muted-foreground">
+                All services are free, confidential, and provided with dignity and respect.
+              </p>
             </div>
           </div>
         </section>
-      </div>
-    </main>
+      </main>
 
-    {/* Crisis Support AI */}
-    <CrisisSupportAI 
-      isOpen={showCrisisAI} 
-      onClose={() => setShowCrisisAI(false)} 
-    />
+      {/* Crisis Support AI */}
+      <CrisisSupportAI 
+        isOpen={showCrisisAI} 
+        onClose={() => setShowCrisisAI(false)} 
+      />
     </>
   );
 }

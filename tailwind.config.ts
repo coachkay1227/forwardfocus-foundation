@@ -95,8 +95,7 @@ export default {
 				fontFamily: {
 					sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
 					heading: ['Poppins', 'Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
-					body: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
-					serif: ['Source Serif Pro', 'Georgia', 'Times New Roman', 'serif']
+					body: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif']
 				},
 				keyframes: {
 					'accordion-down': {

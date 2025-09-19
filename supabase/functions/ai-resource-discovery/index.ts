@@ -25,9 +25,6 @@ serve(async (req) => {
     return new Response(null, { headers: corsHeaders });
   }
 
-  const startTime = Date.now();
-  let errorCount = 0;
-
   try {
     const { query, location, county, resourceType, limit = 10 }: ResourceQuery = await req.json();
     
@@ -102,19 +99,19 @@ Guidelines:
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: 'gpt-4.1-2025-04-14',
+        model: 'gpt-4o-mini',
         messages: [
           { role: 'system', content: systemPrompt },
           { role: 'user', content: query }
         ],
-        max_completion_tokens: 800,
+        max_tokens: 800,
+        temperature: 0.7,
       }),
     });
 
     if (!openAIResponse.ok) {
       const errorData = await openAIResponse.text();
       console.error('OpenAI API error:', errorData);
-      errorCount++;
       return new Response(JSON.stringify({ error: 'AI service temporarily unavailable' }), {
         status: 500,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
@@ -129,19 +126,6 @@ Guidelines:
 
     console.log('AI Response generated successfully');
 
-    // Log usage analytics
-    const responseTime = Date.now() - startTime;
-    try {
-      await supabase.rpc('log_ai_usage', {
-        p_endpoint_name: 'ai-resource-discovery',
-        p_user_id: null,
-        p_response_time_ms: responseTime,
-        p_error_count: errorCount
-      });
-    } catch (logError) {
-      console.error('Failed to log AI usage:', logError);
-    }
-
     return new Response(JSON.stringify({
       response: aiResponse,
       resources: relevantResources,
@@ -152,21 +136,6 @@ Guidelines:
 
   } catch (error) {
     console.error('Error in AI resource discovery:', error);
-    errorCount++;
-    
-    // Log error usage analytics
-    const responseTime = Date.now() - startTime;
-    try {
-      await supabase.rpc('log_ai_usage', {
-        p_endpoint_name: 'ai-resource-discovery',
-        p_user_id: null,
-        p_response_time_ms: responseTime,
-        p_error_count: errorCount
-      });
-    } catch (logError) {
-      console.error('Failed to log AI usage error:', logError);
-    }
-    
     return new Response(JSON.stringify({ 
       error: 'An error occurred processing your request',
       details: error.message 

@@ -1,5 +1,3 @@
-import { Link } from "react-router-dom";
-
 const Footer = () => {
   return <footer className="border-t bg-gradient-osu-subtle">
       <div className="container py-16 grid gap-16 md:grid-cols-3 md:gap-8 justify-items-center text-center md:text-left">
@@ -13,14 +11,14 @@ const Footer = () => {
           <div className="font-bold text-lg mb-4 mx-[5px] text-osu-gray">Explore</div>
           <ul className="space-y-3 text-base">
             <li>
-              <Link to="/help" className="text-foreground/80 hover:text-osu-scarlet transition-colors duration-200 focus:text-osu-scarlet focus:outline-none focus:ring-2 focus:ring-osu-scarlet/20 rounded px-1">
+              <a href="/help" className="text-foreground/80 hover:text-osu-scarlet transition-colors duration-200 focus:text-osu-scarlet focus:outline-none focus:ring-2 focus:ring-osu-scarlet/20 rounded px-1">
                 Get Help Now
-              </Link>
+              </a>
             </li>
             <li>
-              <Link to="/learn" className="text-foreground/80 hover:text-osu-scarlet transition-colors duration-200 focus:text-osu-scarlet focus:outline-none focus:ring-2 focus:ring-osu-scarlet/20 rounded px-1">
+              <a href="/learn" className="text-foreground/80 hover:text-osu-scarlet transition-colors duration-200 focus:text-osu-scarlet focus:outline-none focus:ring-2 focus:ring-osu-scarlet/20 rounded px-1">
                 Reentry Community
-              </Link>
+              </a>
             </li>
           </ul>
         </nav>
@@ -51,12 +49,12 @@ const Footer = () => {
             © {new Date().getFullYear()} Forward Focus Elevation. All rights reserved.
           </div>
           <div className="flex gap-6">
-            <Link to="/privacy" className="text-foreground/80 hover:text-osu-scarlet transition-colors duration-200 focus:text-osu-scarlet focus:outline-none focus:ring-2 focus:ring-osu-scarlet/20 rounded px-1">
+            <a href="/privacy" className="text-foreground/80 hover:text-osu-scarlet transition-colors duration-200 focus:text-osu-scarlet focus:outline-none focus:ring-2 focus:ring-osu-scarlet/20 rounded px-1">
               Privacy Policy
-            </Link>
-            <Link to="/terms" className="text-foreground/80 hover:text-osu-scarlet transition-colors duration-200 focus:text-osu-scarlet focus:outline-none focus:ring-2 focus:ring-osu-scarlet/20 rounded px-1">
+            </a>
+            <a href="/terms" className="text-foreground/80 hover:text-osu-scarlet transition-colors duration-200 focus:text-osu-scarlet focus:outline-none focus:ring-2 focus:ring-osu-scarlet/20 rounded px-1">
               Terms of Service
-            </Link>
+            </a>
           </div>
         </div>
       </div>
