@@ -1,148 +1,100 @@
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Shield, Users, BookOpen, Heart, Phone, Search } from "lucide-react";
-import { Link } from "react-router-dom";
-
+import { useEffect, useMemo, useState } from "react";
+import { useStateContext } from "@/contexts/StateContext";
+import AIResourceDiscovery from "@/components/ai/AIResourceDiscovery";
+import StateModal from "@/components/ui/StateModal";
+import { HeroSection } from "@/components/home/HeroSection";
+import { TestimonialsSection } from "@/components/home/TestimonialsSection";
+import { PathwaysSection } from "@/components/home/PathwaysSection";
+import { CallToActionSection } from "@/components/home/CallToActionSection";
+import { CoachKaySection } from "@/components/home/CoachKaySection";
+import { STATES } from "@/data/states";
+import diverseCommunityMeeting from "@/assets/diverse-community-meeting.jpg";
 const Index = () => {
+  const [showAIDiscovery, setShowAIDiscovery] = useState(false);
+  const [showStateModal, setShowStateModal] = useState(false);
+  const { selectedState, setSelectedState } = useStateContext();
+
+  // SEO setup
+  useEffect(() => {
+    document.title = "Forward Focus Elevation | Empowering Justice-Impacted Families";
+    const desc = "Empowering justice-impacted families with the tools to rebuild and thrive. AI-enhanced guidance and comprehensive resources for justice-impacted individuals, families, and crime victims.";
+    let meta = document.querySelector('meta[name="description"]');
+    if (!meta) {
+      meta = document.createElement("meta");
+      meta.setAttribute("name", "description");
+      document.head.appendChild(meta);
+    }
+    meta.setAttribute("content", desc);
+    let canonical = document.querySelector('link[rel="canonical"]') as HTMLLinkElement | null;
+    if (!canonical) {
+      canonical = document.createElement("link");
+      canonical.setAttribute("rel", "canonical");
+      canonical.href = window.location.href;
+      document.head.appendChild(canonical);
+    }
+  }, []);
+
+  const stateForAI = selectedState?.name ?? "Ohio";
   return (
-    <main id="main" className="min-h-screen">
-      {/* Hero Section */}
-      <section className="bg-gradient-to-br from-primary/10 via-background to-secondary/5 py-20 px-4">
-        <div className="container mx-auto text-center">
-          <h1 className="text-4xl md:text-6xl font-bold text-foreground mb-6">
-            Building Stronger Communities Together
-          </h1>
-          <p className="text-xl text-muted-foreground mb-8 max-w-3xl mx-auto">
-            Connect with resources, support services, and learning opportunities to help you and your community thrive.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button asChild size="lg" className="text-lg">
-              <Link to="/help">Get Help Now</Link>
-            </Button>
-            <Button asChild variant="outline" size="lg" className="text-lg">
-              <Link to="/learn">Learn & Grow</Link>
-            </Button>
+    <main id="main" className="min-h-screen bg-background">
+      <HeroSection 
+        selectedState={selectedState}
+        onShowStateModal={() => setShowStateModal(true)}
+        onShowAIDiscovery={() => setShowAIDiscovery(true)}
+      />
+      
+      <CoachKaySection />
+      <PathwaysSection />
+      <TestimonialsSection />
+      <CallToActionSection />
+      
+      {/* Community Image Section */}
+      <section className="py-16 bg-gradient-to-b from-background to-muted/20">
+        <div className="container px-4">
+          <div className="relative rounded-2xl overflow-hidden shadow-xl max-w-5xl mx-auto">
+            <img 
+              src={diverseCommunityMeeting} 
+              alt="Diverse community members meeting and supporting each other"
+              className="w-full h-80 object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-primary/60 to-secondary/60 flex items-center justify-center">
+              <div className="text-center text-primary-foreground max-w-3xl px-8">
+                <h2 className="font-heading text-4xl md:text-5xl font-bold mb-4">Building Stronger Communities Together</h2>
+                <p className="text-lg leading-relaxed">
+                  Join our network of support, healing, and empowerment as we create pathways to brighter futures.
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Services Grid */}
-      <section className="py-16 px-4">
-        <div className="container mx-auto">
-          <h2 className="text-3xl font-bold text-center mb-12">How We Can Help</h2>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <Card className="hover:shadow-lg transition-shadow">
-              <CardHeader>
-                <Shield className="h-8 w-8 text-primary mb-2" />
-                <CardTitle>Crisis Support</CardTitle>
-                <CardDescription>
-                  24/7 emergency resources and immediate assistance for those in crisis situations.
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <Button asChild variant="outline" className="w-full">
-                  <Link to="/help">Access Resources</Link>
-                </Button>
-              </CardContent>
-            </Card>
-
-            <Card className="hover:shadow-lg transition-shadow">
-              <CardHeader>
-                <Heart className="h-8 w-8 text-primary mb-2" />
-                <CardTitle>Victim Services</CardTitle>
-                <CardDescription>
-                  Comprehensive support services for victims of crime and their families.
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <Button asChild variant="outline" className="w-full">
-                  <Link to="/victim-services">Learn More</Link>
-                </Button>
-              </CardContent>
-            </Card>
-
-            <Card className="hover:shadow-lg transition-shadow">
-              <CardHeader>
-                <BookOpen className="h-8 w-8 text-primary mb-2" />
-                <CardTitle>Learning Programs</CardTitle>
-                <CardDescription>
-                  Educational resources and personal development opportunities for growth.
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <Button asChild variant="outline" className="w-full">
-                  <Link to="/learn">Start Learning</Link>
-                </Button>
-              </CardContent>
-            </Card>
-
-            <Card className="hover:shadow-lg transition-shadow">
-              <CardHeader>
-                <Users className="h-8 w-8 text-primary mb-2" />
-                <CardTitle>Community Partners</CardTitle>
-                <CardDescription>
-                  Connect with local organizations and community partners in your area.
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <Button asChild variant="outline" className="w-full">
-                  <Link to="/organizations">Find Partners</Link>
-                </Button>
-              </CardContent>
-            </Card>
-
-            <Card className="hover:shadow-lg transition-shadow">
-              <CardHeader>
-                <Search className="h-8 w-8 text-primary mb-2" />
-                <CardTitle>Resource Search</CardTitle>
-                <CardDescription>
-                  Search our comprehensive database of local and national resources.
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <Button asChild variant="outline" className="w-full">
-                  <Link to="/search">Search Resources</Link>
-                </Button>
-              </CardContent>
-            </Card>
-
-            <Card className="hover:shadow-lg transition-shadow">
-              <CardHeader>
-                <Phone className="h-8 w-8 text-primary mb-2" />
-                <CardTitle>Support & Contact</CardTitle>
-                <CardDescription>
-                  Get in touch with our team for personalized assistance and guidance.
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <Button asChild variant="outline" className="w-full">
-                  <Link to="/support">Contact Us</Link>
-                </Button>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-      </section>
-
-      {/* Call to Action */}
-      <section className="bg-muted py-16 px-4">
-        <div className="container mx-auto text-center">
-          <h2 className="text-3xl font-bold mb-6">Ready to Get Started?</h2>
-          <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-            Whether you need immediate help or want to learn more about our services, we're here to support you every step of the way.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button asChild size="lg">
-              <Link to="/help">Find Resources</Link>
-            </Button>
-            <Button asChild variant="outline" size="lg">
-              <Link to="/about">About Us</Link>
-            </Button>
-          </div>
-        </div>
-      </section>
+      <AIResourceDiscovery 
+        isOpen={showAIDiscovery} 
+        onClose={() => setShowAIDiscovery(false)} 
+        initialQuery="" 
+        location={stateForAI} 
+      />
+      
+      <StateModal 
+        isOpen={showStateModal} 
+        onClose={() => setShowStateModal(false)} 
+        currentState={selectedState?.name ?? "Ohio"} 
+        onStateChange={stateName => {
+          const foundState = STATES.find(s => s.name === stateName);
+          if (foundState) {
+            setSelectedState(foundState);
+          } else {
+            setSelectedState({
+              code: stateName.substring(0, 2).toUpperCase(),
+              name: stateName,
+              active: false,
+              comingSoon: true
+            });
+          }
+        }} 
+      />
     </main>
   );
 };
-
 export default Index;

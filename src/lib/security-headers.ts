@@ -3,16 +3,17 @@ export const setupSecurityHeaders = () => {
   // Enhanced Content Security Policy
   const csp = [
     "default-src 'self'",
-    "script-src 'self' 'unsafe-inline'",
-    "style-src 'self' 'unsafe-inline'",
-    "font-src 'self' data:",
-    "img-src 'self' data: blob:",
-    "connect-src 'self'",
+    "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://unpkg.com https://js.stripe.com",
+    "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+    "font-src 'self' https://fonts.gstatic.com data:",
+    "img-src 'self' data: blob: https: https://*.supabase.co",
+    "connect-src 'self' https://*.supabase.co wss://*.supabase.co https://api.openai.com https://api.stripe.com",
     "frame-src 'none'",
     "object-src 'none'",
     "base-uri 'self'",
     "form-action 'self'",
-    "frame-ancestors 'none'"
+    "frame-ancestors 'none'",
+    "upgrade-insecure-requests"
   ].join('; ');
 
   // Enhanced security headers

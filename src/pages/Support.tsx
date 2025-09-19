@@ -1,233 +1,294 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { Heart, Mail, Phone, MapPin, Clock, Users, BookOpen, HandHeart, DollarSign } from "lucide-react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Mail, Phone, MapPin, Clock, Heart, Building2, Presentation, Landmark, GraduationCap, BookOpenCheck } from "lucide-react";
+import DonationBoxes from "@/components/support/DonationBoxes";
+import SpeakerApplicationForm from "@/components/support/SpeakerApplicationForm";
+import GrantInquiryForm from "@/components/support/GrantInquiryForm";
+import AIConsultationForm from "@/components/support/AIConsultationForm";
+import CorporateTrainingForm from "@/components/support/CorporateTrainingForm";
 import ContactForm from "@/components/forms/ContactForm";
-
 const Support = () => {
+  const [activeDialog, setActiveDialog] = useState<string | null>(null);
+
   useEffect(() => {
-    document.title = "Support Forward Focus Elevation | Make an Impact";
+    document.title = "Get Involved | Forward Focus Elevation";
   }, []);
 
-  const supportMethods = [
-    {
-      icon: DollarSign,
-      title: "Financial Donations",
-      description: "Every dollar directly supports resources, programs, and community growth.",
-      action: "Donate Now",
-      highlight: "100% goes to programs",
-    },
-    {
-      icon: Users,
-      title: "Volunteer Your Time",
-      description: "Join our community of mentors, program facilitators, and resource coordinators.",
-      action: "Get Involved",
-      highlight: "Flexible schedules",
-    },
-    {
-      icon: BookOpen,
-      title: "Share Your Expertise",
-      description: "Contribute to our learning modules, workshops, or resource directory.",
-      action: "Contribute",
-      highlight: "Remote opportunities",
-    },
-    {
-      icon: HandHeart,
-      title: "Corporate Partnerships",
-      description: "Partner with us to provide employment opportunities and program funding.",
-      action: "Partner With Us",
-      highlight: "Tax benefits available",
-    },
-  ];
-
-  const faqs = [
-    {
-      question: "How do donations support the community?",
-      answer: "100% of donations go directly to expanding our resource directory, developing new learning modules, and supporting community programs. We maintain full transparency with quarterly impact reports.",
-    },
-    {
-      question: "What volunteer opportunities are available?",
-      answer: "We have opportunities for mentors, program facilitators, content creators, resource researchers, and community outreach coordinators. Most roles offer flexible, remote options.",
-    },
-    {
-      question: "Can I contribute if I've been justice-impacted?",
-      answer: "Absolutely! We especially value contributions from those with lived experience. Many of our most impactful programs are led by community members who've walked this path.",
-    },
-    {
-      question: "How can my organization become a partner?",
-      answer: "We partner with nonprofits, employers, educational institutions, and service providers. Contact us to discuss partnership opportunities that align with your mission and our community needs.",
-    },
-    {
-      question: "Is Forward Focus Elevation a nonprofit?",
-      answer: "Yes, we're a registered 501(c)(3) nonprofit organization. All donations are tax-deductible, and we provide receipts for your records.",
-    },
-  ];
-
+  const sponsorshipUrl = "https://collect.crowded.me/collection/219ea37a-28de-4930-b00f-dceb78a90e10";
   return (
-    <main id="main" className="container py-8">
-      <div className="max-w-6xl mx-auto">
-        {/* Hero Section */}
-        <div className="text-center mb-16">
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4 mb-8">
-            <div className="p-2 sm:p-3 bg-primary/10 rounded-lg sm:rounded-xl">
-              <Heart className="h-6 w-6 sm:h-8 sm:w-8 text-primary" />
+    <main id="main">
+      {/* Hero Section */}
+      <header className="relative bg-gradient-osu-primary text-white overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-osu-scarlet/90 via-osu-gray/85 to-osu-scarlet-dark/80"></div>
+        <div className="relative container py-24 md:py-32">
+          <div className="max-w-5xl mx-auto text-center">
+            <h1 className="font-heading text-4xl md:text-5xl font-bold mb-8 leading-tight">
+              Multiple Ways to Invest in Second Chances
+            </h1>
+            <p className="text-lg md:text-xl mb-12 text-white/90 leading-relaxed max-w-3xl mx-auto">
+              Choose how you want to support our AI-powered digital education hub that transforms lives and builds stronger communities
+            </p>
+            <div className="flex flex-col sm:flex-row justify-center gap-4">
+              <Button size="lg" variant="secondary" className="bg-white text-osu-scarlet hover:bg-white/90">
+                Donate
+              </Button>
+              <Button size="lg" className="bg-osu-gray hover:bg-osu-gray-dark text-white">
+                Sponsor
+              </Button>
             </div>
-            <Badge variant="secondary" className="text-sm sm:text-lg px-3 py-1 sm:px-4 sm:py-2">
-              Community-Powered Impact
-            </Badge>
           </div>
-          <h1 className="font-heading text-5xl md:text-6xl font-bold mb-6">
-            Support Our Mission
-          </h1>
-          <p className="text-2xl text-muted-foreground max-w-4xl mx-auto leading-relaxed">
-            Your contribution helps us expand resources, build community connections, 
-            and create lasting change for justice-impacted individuals and families across Ohio.
-          </p>
         </div>
+      </header>
 
-        {/* Impact Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-16">
-          <Card className="bg-card shadow-lg border-0 hover:shadow-xl transition-shadow">
-            <CardContent className="p-8 text-center">
-              <div className="text-4xl font-bold text-primary mb-2">2,500+</div>
-              <div className="text-lg text-muted-foreground">People Served</div>
-            </CardContent>
-          </Card>
-          <Card className="bg-card shadow-lg border-0 hover:shadow-xl transition-shadow">
-            <CardContent className="p-8 text-center">
-              <div className="text-4xl font-bold text-primary mb-2">150+</div>
-              <div className="text-lg text-muted-foreground">Partner Organizations</div>
-            </CardContent>
-          </Card>
-          <Card className="bg-card shadow-lg border-0 hover:shadow-xl transition-shadow">
-            <CardContent className="p-8 text-center">
-              <div className="text-4xl font-bold text-primary mb-2">85%</div>
-              <div className="text-lg text-muted-foreground">Success Rate</div>
-            </CardContent>
-          </Card>
-          <Card className="bg-card shadow-lg border-0 hover:shadow-xl transition-shadow">
-            <CardContent className="p-8 text-center">
-              <div className="text-4xl font-bold text-primary mb-2">12</div>
-              <div className="text-lg text-muted-foreground">Counties Served</div>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Support Methods */}
-        <section className="mb-12">
-          <h2 className="font-heading text-2xl font-semibold mb-6 text-center">
-            Ways to Support Our Community
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {supportMethods.map((method, index) => {
-              const IconComponent = method.icon;
-              return (
-                <Card key={index} className="relative overflow-hidden">
-                  <CardHeader>
-                    <div className="flex items-start gap-4">
-                      <div className="p-3 bg-primary/10 rounded-lg">
-                        <IconComponent className="h-6 w-6 text-primary" />
-                      </div>
-                      <div className="flex-1">
-                        <CardTitle className="text-lg mb-2">{method.title}</CardTitle>
-                        <Badge variant="outline" className="mb-3">
-                          {method.highlight}
-                        </Badge>
-                        <CardDescription>{method.description}</CardDescription>
-                      </div>
-                    </div>
-                  </CardHeader>
-                  <CardContent>
-                    <Button className="w-full">{method.action}</Button>
-                  </CardContent>
-                </Card>
-              );
-            })}
-          </div>
-        </section>
-
-        <Separator className="mb-12" />
-
-        {/* Contact and FAQ Section */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start lg:items-stretch">
-          {/* Contact Form */}
-          <section>
-            <ContactForm 
-              type="contact"
-              title="Get In Touch"
-              description="Have questions about supporting our community? We're here to help connect you with the right opportunities."
-            />
-            
-            <Card className="mt-6">
-              <CardContent className="p-6">
-                <h3 className="font-semibold">Other Ways to Reach Us</h3>
-                <div className="space-y-3">
-                  <div className="flex items-center gap-3 text-sm">
-                    <Mail className="h-4 w-4 text-muted-foreground" />
-                    <span>support@forwardfocuselevation.org</span>
+      <div className="container py-16 md:py-20">
+        <div className="max-w-6xl mx-auto space-y-24">
+        {/* Ways to Support Grid */}
+        <section className="bg-secondary/5 py-16 rounded-2xl border-2 border-osu-scarlet/20 overflow-hidden">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <Card className="bg-background rounded-xl p-6 h-full border-2 border-osu-scarlet/30 shadow-lg hover:shadow-xl hover:shadow-osu-scarlet/20 transition-all duration-300 md:hover:scale-105 md:hover:-translate-y-1 active:scale-95 cursor-pointer">
+              <CardHeader className="pb-4">
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="p-3 bg-osu-scarlet/10 rounded-full">
+                    <Heart className="h-6 w-6 text-osu-scarlet" />
                   </div>
-                  <div className="flex items-center gap-3 text-sm">
-                    <Phone className="h-4 w-4 text-muted-foreground" />
-                    <span>(614) 555-0123</span>
+                  <CardTitle className="text-xl font-semibold text-foreground">Start Small, Think Big</CardTitle>
+                </div>
+                <CardDescription className="text-foreground/70 text-base leading-relaxed">
+                  Every dollar powers our AI digital hub providing free mental health, reentry, business, and credit education courses to justice-impacted families.
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="pt-0 flex-1 flex flex-col justify-between">
+                <Dialog open={activeDialog === 'donate'} onOpenChange={(open) => setActiveDialog(open ? 'donate' : null)}>
+                  <DialogTrigger asChild>
+                    <Button variant="link" className="p-0 text-primary font-medium text-lg justify-start">
+                      Donate Now →
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+                    <DialogHeader>
+                      <DialogTitle className="text-2xl">Choose Your Donation Amount</DialogTitle>
+                    </DialogHeader>
+                    <DonationBoxes />
+                  </DialogContent>
+                </Dialog>
+              </CardContent>
+            </Card>
+
+            <Card className="bg-background rounded-xl p-6 h-full border-2 border-osu-scarlet/30 shadow-lg hover:shadow-xl hover:shadow-osu-scarlet/20 transition-all duration-300 md:hover:scale-105 md:hover:-translate-y-1 active:scale-95 cursor-pointer">
+              <CardHeader className="pb-4">
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="p-3 bg-osu-scarlet/10 rounded-full">
+                    <Building2 className="h-6 w-6 text-osu-scarlet" />
                   </div>
-                  <div className="flex items-center gap-3 text-sm">
-                    <MapPin className="h-4 w-4 text-muted-foreground" />
-                    <span>Columbus, Ohio</span>
-                  </div>
-                  <div className="flex items-center gap-3 text-sm">
-                    <Clock className="h-4 w-4 text-muted-foreground" />
-                    <span>Mon-Fri, 9AM-5PM EST</span>
+                  <CardTitle className="text-xl font-semibold text-foreground">Sponsor Success Stories</CardTitle>
+                </div>
+                <CardDescription className="text-foreground/70 text-base leading-relaxed">
+                  Sponsor accelerator cohorts, youth AI workshops, or our entire platform. Join us in breaking cycles and creating lasting pathways to success.
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="pt-0 flex-1 flex flex-col justify-between">
+                <div className="space-y-4">
+                  <div className="bg-osu-scarlet/5 p-4 rounded-lg border border-osu-scarlet/20">
+                    <h4 className="font-semibold text-foreground mb-2">Pay Any Amount</h4>
+                    <p className="text-sm text-foreground/70 mb-3">Custom sponsorship levels to match your impact goals</p>
+                    <Button 
+                      onClick={() => window.open(sponsorshipUrl, '_blank')}
+                      className="bg-osu-scarlet hover:bg-osu-scarlet-dark text-osu-scarlet-foreground"
+                      size="sm"
+                    >
+                      Sponsor Now
+                    </Button>
                   </div>
                 </div>
               </CardContent>
             </Card>
-          </section>
 
-          {/* FAQ Section */}
-          <section>
-            <h2 className="font-heading text-2xl font-semibold mb-6">
-              Frequently Asked Questions
+            <Card className="bg-background rounded-xl p-6 h-full border-2 border-osu-scarlet/30 shadow-lg hover:shadow-xl hover:shadow-osu-scarlet/20 transition-all duration-300 md:hover:scale-105 md:hover:-translate-y-1 active:scale-95 cursor-pointer">
+              <CardHeader className="pb-4">
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="p-3 bg-osu-scarlet/10 rounded-full">
+                    <Presentation className="h-6 w-6 text-osu-scarlet" />
+                  </div>
+                  <CardTitle className="text-xl font-semibold text-foreground">Share Your Expertise</CardTitle>
+                </div>
+                <CardDescription className="text-foreground/70 text-base leading-relaxed">
+                  Join our speaker bureau to present to our community and help justice-impacted individuals learn from experienced industry leaders.
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="pt-0 flex-1 flex flex-col justify-between">
+                <Dialog open={activeDialog === 'speaker'} onOpenChange={(open) => setActiveDialog(open ? 'speaker' : null)}>
+                  <DialogTrigger asChild>
+                    <Button variant="link" className="p-0 text-primary font-medium text-lg justify-start">
+                      Apply Now →
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+                    <SpeakerApplicationForm />
+                  </DialogContent>
+                </Dialog>
+              </CardContent>
+            </Card>
+
+            <Card className="bg-background rounded-xl p-6 h-full border-2 border-osu-scarlet/30 shadow-lg hover:shadow-xl hover:shadow-osu-scarlet/20 transition-all duration-300 md:hover:scale-105 md:hover:-translate-y-1 active:scale-95 cursor-pointer">
+              <CardHeader className="pb-4">
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="p-3 bg-osu-scarlet/10 rounded-full">
+                    <Landmark className="h-6 w-6 text-osu-scarlet" />
+                  </div>
+                  <CardTitle className="text-xl font-semibold text-foreground">AI Consultation Services</CardTitle>
+                </div>
+                <CardDescription className="text-foreground/70 text-base leading-relaxed">
+                  Contract our AI expertise to build custom solutions for your organization while directly supporting our community mission.
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="pt-0 flex-1 flex flex-col justify-between">
+                <Dialog open={activeDialog === 'consultation'} onOpenChange={(open) => setActiveDialog(open ? 'consultation' : null)}>
+                  <DialogTrigger asChild>
+                    <Button variant="link" className="p-0 text-primary font-medium text-lg justify-start">
+                      Request Consultation →
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+                    <AIConsultationForm />
+                  </DialogContent>
+                </Dialog>
+              </CardContent>
+            </Card>
+
+            <Card className="bg-background rounded-xl p-6 h-full border-2 border-osu-scarlet/30 shadow-lg hover:shadow-xl hover:shadow-osu-scarlet/20 transition-all duration-300 md:hover:scale-105 md:hover:-translate-y-1 active:scale-95 cursor-pointer">
+              <CardHeader className="pb-4">
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="p-3 bg-osu-scarlet/10 rounded-full">
+                    <GraduationCap className="h-6 w-6 text-osu-scarlet" />
+                  </div>
+                  <CardTitle className="text-xl font-semibold text-foreground">Grant Funding</CardTitle>
+                </div>
+                <CardDescription className="text-foreground/70 text-base leading-relaxed">
+                  Foundations can fund our innovative approach combining AI technology with justice reform and sustainable community building.
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="pt-0 flex-1 flex flex-col justify-between">
+                <Dialog open={activeDialog === 'grant'} onOpenChange={(open) => setActiveDialog(open ? 'grant' : null)}>
+                  <DialogTrigger asChild>
+                    <Button variant="link" className="p-0 text-primary font-medium text-lg justify-start">
+                      Submit Inquiry →
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+                    <GrantInquiryForm />
+                  </DialogContent>
+                </Dialog>
+              </CardContent>
+            </Card>
+
+            <Card className="bg-background rounded-xl p-6 h-full border-2 border-osu-scarlet/30 shadow-lg hover:shadow-xl hover:shadow-osu-scarlet/20 transition-all duration-300 md:hover:scale-105 md:hover:-translate-y-1 active:scale-95 cursor-pointer">
+              <CardHeader className="pb-4">
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="p-3 bg-osu-scarlet/10 rounded-full">
+                    <BookOpenCheck className="h-6 w-6 text-osu-scarlet" />
+                  </div>
+                  <CardTitle className="text-xl font-semibold text-foreground">Corporate AI Training</CardTitle>
+                </div>
+                <CardDescription className="text-foreground/70 text-base leading-relaxed">
+                  Train your team in cutting-edge AI skills while supporting our mission to help justice-impacted communities thrive.
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="pt-0 flex-1 flex flex-col justify-between">
+                <Dialog open={activeDialog === 'training'} onOpenChange={(open) => setActiveDialog(open ? 'training' : null)}>
+                  <DialogTrigger asChild>
+                    <Button variant="link" className="p-0 text-primary font-medium text-lg justify-start">
+                      Request Training →
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+                    <CorporateTrainingForm />
+                  </DialogContent>
+                </Dialog>
+              </CardContent>
+            </Card>
+          </div>
+        </section>
+
+        {/* Why Support Matters */}
+        <section className="text-center">
+          <div className="max-w-4xl mx-auto">
+            <h2 className="font-heading text-4xl md:text-5xl font-bold text-foreground mb-6">
+              Why Your Investment Matters
             </h2>
-            <Accordion type="single" collapsible className="space-y-2">
-              {faqs.map((faq, index) => (
-                <AccordionItem key={index} value={`item-${index}`}>
-                  <AccordionTrigger className="text-left">
-                    {faq.question}
-                  </AccordionTrigger>
-                  <AccordionContent className="text-muted-foreground">
-                    {faq.answer}
-                  </AccordionContent>
-                </AccordionItem>
-              ))}
-            </Accordion>
-          </section>
-        </div>
+            <p className="text-xl text-foreground/70 leading-relaxed">
+              Our AI-powered digital education hub is transforming how justice-impacted families access support, education, and opportunities. 
+              Your investment helps us scale innovative technology that creates lasting systemic change.
+            </p>
+          </div>
+        </section>
+
+        {/* Contact Section */}
+        <section className="bg-secondary/5 py-24 rounded-2xl">
+          <div className="max-w-6xl mx-auto">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
+              {/* Contact Form */}
+              <div>
+                <h2 className="font-heading text-4xl md:text-5xl font-bold text-foreground mb-8">Get In Touch</h2>
+                <ContactForm type="contact" />
+              </div>
+
+              {/* Contact Info */}
+              <div>
+                <h2 className="font-heading text-4xl md:text-5xl font-bold text-foreground mb-8">Other Ways to Reach Us</h2>
+                <Card className="bg-background shadow-lg">
+                  <CardContent className="p-8">
+                    <div className="space-y-6">
+                      <div className="flex items-center gap-4 text-lg">
+                        <Mail className="h-6 w-6 text-muted-foreground" />
+                        <span className="text-foreground">support@ffeservices.net</span>
+                      </div>
+                      <div className="flex items-center gap-4 text-lg">
+                        <Phone className="h-6 w-6 text-muted-foreground" />
+                        <span className="text-foreground">(380) 287-4505</span>
+                      </div>
+                      <div className="flex items-center gap-4 text-lg">
+                        <MapPin className="h-6 w-6 text-muted-foreground" />
+                        <span className="text-foreground">Columbus, Ohio</span>
+                      </div>
+                      <div className="flex items-center gap-4 text-lg">
+                        <Clock className="h-6 w-6 text-muted-foreground" />
+                        <span className="text-foreground">Mon-Fri, 9AM-5PM EST</span>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+            </div>
+          </div>
+        </section>
 
         {/* Final CTA */}
-        <section className="mt-12 text-center">
-          <Card className="bg-primary/5 border-primary/20">
-            <CardContent className="p-8">
-              <h2 className="font-heading text-2xl font-semibold mb-4">
-                Ready to Make a Difference?
+        <section className="bg-gradient-to-br from-primary via-accent to-secondary text-primary-foreground rounded-2xl overflow-hidden shadow-2xl">
+          <div className="px-8 py-24 md:py-32">
+            <div className="max-w-4xl mx-auto text-center">
+              <h2 className="font-heading text-4xl md:text-6xl font-bold mb-12">
+                Not Sure Which Option Fits?
               </h2>
-              <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
-                Join our community of supporters who believe in second chances and the power of 
-                collective action to create lasting change.
+              <p className="text-lg md:text-xl leading-relaxed mb-12 text-primary-foreground/95 max-w-2xl mx-auto">
+                Let's talk! Schedule a 15-minute consultation to explore how you can invest in transforming lives through innovative digital education.
               </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button size="lg" className="px-8">
-                  Start Supporting Today
-                </Button>
-                <Button size="lg" variant="outline" className="px-8">
-                  Learn More About Our Impact
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
+               <div className="flex justify-center">
+                 <Button 
+                   size="lg" 
+                   variant="secondary" 
+                   className="px-8 text-lg bg-white text-primary hover:bg-white/90"
+                   onClick={() => window.open('https://calendly.com/ffe_coach_kay/free-call', '_blank')}
+                 >
+                   Schedule Consultation →
+                 </Button>
+               </div>
+            </div>
+          </div>
         </section>
+        </div>
       </div>
     </main>
   );

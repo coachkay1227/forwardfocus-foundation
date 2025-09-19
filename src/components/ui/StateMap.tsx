@@ -10,17 +10,22 @@ export default function StateMap({
   zoom = 6,
   className = "",
 }: Props) {
-  const mapLabel = `${stateName} - Interactive Map Not Available Offline`;
-  
+  const src = `https://www.google.com/maps?hl=en&q=${encodeURIComponent(
+    stateName
+  )}&z=${zoom}&output=embed`;
+
   return (
     <div className={`overflow-hidden rounded-lg border ${className}`}>
       <div className="relative w-full" style={{ paddingTop: "100%" }}>
-        <div className="absolute inset-0 flex items-center justify-center bg-muted">
-          <div className="text-center p-4">
-            <p className="text-muted-foreground font-medium">{mapLabel}</p>
-            <small className="text-muted-foreground/70">Maps require internet connection</small>
-          </div>
-        </div>
+        {/* 1:1 ratio wrapper (square) */}
+        <iframe
+          title={`Map of ${stateName}`}
+          src={src}
+          className="absolute inset-0 h-full w-full border-0"
+          loading="lazy"
+          referrerPolicy="no-referrer-when-downgrade"
+          allowFullScreen
+        />
       </div>
     </div>
   );

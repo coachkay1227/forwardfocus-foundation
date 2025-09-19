@@ -18,7 +18,8 @@ import {
   ExternalLink,
   LogIn,
   Eye,
-  EyeOff
+  EyeOff,
+  Brain
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -30,6 +31,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, Dialog
 import { Badge } from "@/components/ui/badge";
 import SignupModal from "@/components/healing/SignupModal";
 import VictimSupportAI from "@/components/ai/VictimSupportAI";
+import DailyHealingToolkit from "@/components/healing/DailyHealingToolkit";
 import diverseFamiliesImage from "@/assets/diverse-families-healing.jpg";
 import healingCommunityImage from "@/assets/healing-community.jpg";
 
@@ -201,141 +203,148 @@ export default function VictimServices() {
         </a>
 
         {/* Hero Section */}
-        <section className="relative py-20 bg-gradient-to-b from-primary/5 to-background">
-          <div className="container">
-            <div className="max-w-4xl mx-auto text-center">
-              <h1 className="font-heading text-6xl font-bold mb-8">Healing & Safety Hub</h1>
-              <p className="text-2xl text-foreground/80 mb-12 leading-relaxed">
-                You are not alone. Find immediate crisis support, legal advocacy, financial assistance, 
-                and healing resources designed specifically for crime victims and survivors.
+        <header className="relative bg-gradient-osu-primary text-white overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-br from-muted/90 via-osu-scarlet/80 to-osu-scarlet-dark/70"></div>
+          <div className="relative container py-24 md:py-32">
+            <div className="max-w-5xl mx-auto text-center">
+              <div className="flex items-center justify-center gap-3 mb-8">
+                <Shield className="h-8 w-8 text-white" />
+                <span className="text-sm uppercase tracking-wider font-medium bg-white/10 backdrop-blur-sm border border-white/20 px-4 py-2 rounded-full">Healing & Safety Hub</span>
+              </div>
+              <h1 className="font-heading text-5xl md:text-7xl font-bold mb-8 leading-tight">
+                You Are Not Alone.
+                <span className="block text-white/80">Healing Starts Here.</span>
+              </h1>
+              <p className="text-lg md:text-xl text-white/90 mb-12 leading-relaxed max-w-3xl mx-auto">
+                Comprehensive support for crime victims and survivors. Crisis intervention, advocacy, 
+                legal aid, and trauma-informed healing resources available 24/7.
               </p>
-              <div className="flex flex-col sm:flex-row gap-6 justify-center">
+              <div className="flex flex-col sm:flex-row gap-4 max-w-sm sm:max-w-lg mx-auto px-4">
                 <Button 
                   size="lg" 
-                  className="text-lg px-10 py-6 shadow-lg hover:shadow-xl transition-all duration-300"
+                  variant="secondary"
+                  className="bg-white text-osu-scarlet hover:bg-white/90 w-full sm:flex-1"
                   onClick={() => setShowVictimAI(true)}
                 >
-                  <Bot className="mr-3 h-6 w-6" />
+                  <Bot className="h-5 w-5 mr-2" />
                   Get Personalized Help
                 </Button>
                 <Button 
                   size="lg" 
-                  variant="secondary" 
-                  className="text-lg px-10 py-6 shadow-lg hover:shadow-xl transition-all duration-300"
-                  asChild
+                  variant="hero"
+                  className="w-full sm:flex-1"
+                  onClick={() => window.location.href = 'tel:988'}
                 >
-                  <a href="tel:988">
-                    <Phone className="mr-3 h-6 w-6" />
-                    Crisis Support: 988
-                  </a>
+                  <Phone className="h-5 w-5 mr-2" />
+                  Crisis Support: 988
                 </Button>
               </div>
             </div>
           </div>
-        </section>
+        </header>
 
-        {/* Community Visual Banner */}
-        <section className="py-16">
-          <div className="container">
-            <div className="relative overflow-hidden rounded-2xl shadow-2xl">
-              <img
-                src={diverseFamiliesImage}
-                alt="Diverse families healing together in supportive community environment"
-                className="w-full h-96 object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-r from-primary/90 to-primary/70 flex items-center">
-                <div className="container">
-                  <div className="max-w-2xl">
-                    <h2 className="font-heading text-4xl font-bold text-white mb-4">
-                      Healing happens in community
-                    </h2>
-                    <p className="text-xl text-white/90 leading-relaxed">
-                      Access comprehensive support designed by survivors, for survivors. Every resource 
-                      is trauma-informed and respects your journey to healing.
-                    </p>
+        {/* Daily Healing Toolkit */}
+        <DailyHealingToolkit />
+
+        <div className="container py-24 space-y-32">
+          {/* Community Visual Banner */}
+          <section className="bg-secondary/5 py-24 rounded-2xl">
+            <div className="max-w-6xl mx-auto">
+              <div className="relative overflow-hidden rounded-2xl shadow-2xl">
+                <img
+                  src={healingCommunityImage}
+                  alt="Diverse healing community supporting each other through trauma recovery"
+                  className="w-full h-96 object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-r from-osu-scarlet/90 to-osu-scarlet-dark/70 flex items-center">
+                  <div className="container">
+                    <div className="max-w-2xl">
+                      <h2 className="font-heading text-4xl md:text-5xl font-bold text-white mb-6">
+                        Healing happens in community
+                      </h2>
+                      <p className="text-xl text-white/90 leading-relaxed">
+                        Access comprehensive support designed by survivors, for survivors. Every resource 
+                        is trauma-informed and respects your journey to healing.
+                      </p>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-        </section>
+          </section>
 
         {/* Support Path Cards */}
-        <section id="main-content" className="py-20">
-          <div className="container">
-            <div className="text-center mb-16">
-              <h2 className="font-heading text-5xl font-bold mb-6">Choose Your Support Path</h2>
-              <p className="text-xl text-foreground/80 max-w-3xl mx-auto leading-relaxed">
-                Every survivor's journey is unique. Select the type of support that feels right 
-                for where you are today.
-              </p>
-            </div>
+          <section id="main-content" className="scroll-mt-16">
+            <div className="max-w-6xl mx-auto">
+              <div className="text-center mb-16">
+                <h2 className="font-heading text-4xl md:text-5xl font-bold text-foreground mb-6">How Our AI Can Help You</h2>
+                <p className="text-xl text-foreground/70 max-w-3xl mx-auto leading-relaxed">
+                  Our AI assistant is trained to help with these key areas. When you chat with us, 
+                  we'll provide personalized resources and guidance based on your specific needs.
+                </p>
+              </div>
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-              {supportPaths.map((path, index) => {
-                const IconComponent = path.icon;
-                return (
-                  <Card key={index} className="hover:shadow-xl transition-all duration-300 border-0 shadow-lg group cursor-pointer">
-                    <CardHeader className="text-center pb-4">
-                      <div className={`inline-flex p-6 rounded-2xl ${path.color} mb-6 group-hover:scale-110 transition-transform duration-300`}>
-                        <IconComponent className="h-10 w-10" />
-                      </div>
-                      <CardTitle className="text-2xl font-bold mb-3">{path.title}</CardTitle>
-                      <CardDescription className="text-base leading-relaxed">
-                        {path.description}
-                      </CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="space-y-3">
-                        {path.resources.slice(0, 2).map((resource, resourceIndex) => (
-                          <div key={resourceIndex} className="p-3 rounded-lg bg-muted/50">
-                            <div className="font-semibold text-sm">{resource.title}</div>
-                            <div className="text-xs text-foreground/70">{resource.description}</div>
-                          </div>
-                        ))}
-                        <Button 
-                          variant="outline" 
-                          className="w-full mt-4 group-hover:bg-primary group-hover:text-primary-foreground transition-colors"
-                          onClick={() => setShowSignupModal(true)}
-                        >
-                          View All Resources
-                          <ArrowRight className="ml-2 h-4 w-4" />
-                        </Button>
-                      </div>
-                    </CardContent>
-                  </Card>
-                );
-              })}
+              <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                {supportPaths.map((path, index) => {
+                  const IconComponent = path.icon;
+                  return (
+                    <Card key={index} className="bg-background rounded-xl border shadow-lg hover:shadow-xl transition-all duration-300 group cursor-pointer h-full flex flex-col md:hover:-translate-y-1">
+                      <CardHeader className="text-center pb-4">
+                        <div className={`inline-flex p-6 rounded-2xl ${path.color} mb-6 md:group-hover:scale-110 transition-transform duration-300 shadow-md`}>
+                          <IconComponent className="h-10 w-10" />
+                        </div>
+                        <CardTitle className="text-2xl font-semibold text-foreground mb-3">{path.title}</CardTitle>
+                        <CardDescription className="text-base text-foreground/70 leading-relaxed">
+                          {path.description}
+                        </CardDescription>
+                      </CardHeader>
+                      <CardContent className="flex-1 flex flex-col justify-center">
+                        <div className="space-y-3">
+                          {path.resources.slice(0, 2).map((resource, resourceIndex) => (
+                            <div key={resourceIndex} className="p-4 rounded-lg bg-muted/30 text-center border">
+                              <div className="font-semibold text-sm text-foreground">{resource.title}</div>
+                              <div className="text-xs text-foreground/60 mt-1">{resource.description}</div>
+                            </div>
+                          ))}
+                        </div>
+                      </CardContent>
+                    </Card>
+                  );
+                })}
+              </div>
             </div>
-          </div>
-        </section>
+          </section>
+        </div>
 
         {/* Call to Action */}
-        <section className="py-20 bg-gradient-to-r from-primary to-secondary">
-          <div className="container">
-            <div className="max-w-4xl mx-auto text-center text-white">
-              <h2 className="font-heading text-5xl font-bold mb-8">You deserve support and healing</h2>
-              <p className="text-xl mb-12 opacity-90 leading-relaxed">
-                Take the first step toward recovery. Our AI assistant can help you find the right 
-                resources, or connect with a real person who understands your journey.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-6 justify-center">
+        <section className="scroll-mt-16 bg-gradient-to-br from-osu-scarlet via-accent to-osu-scarlet-dark text-white rounded-2xl overflow-hidden shadow-2xl">
+          <div className="px-8 py-24 md:py-32">
+            <div className="max-w-4xl mx-auto text-center">
+              <h2 className="font-heading text-4xl md:text-6xl font-bold mb-12">
+                You deserve support and healing
+              </h2>
+              <div className="space-y-8 text-lg md:text-xl leading-relaxed">
+                <p className="text-white/95 max-w-2xl mx-auto">
+                  Take the first step toward recovery. Our AI assistant can help you find the right 
+                  resources, or connect with a real person who understands your journey.
+                </p>
+              </div>
+              <div className="flex flex-col sm:flex-row gap-4 max-w-sm sm:max-w-lg mx-auto mt-12 px-4">
                 <Button 
                   size="lg" 
-                  variant="hero"
-                  className="text-lg px-10 py-6 shadow-lg hover:shadow-xl transition-all duration-300"
+                  variant="secondary"
+                  className="bg-white text-osu-scarlet hover:bg-white/90 w-full sm:flex-1"
                   onClick={() => setShowVictimAI(true)}
                 >
-                  <Bot className="mr-3 h-6 w-6" />
+                  <Bot className="h-5 w-5 mr-2" />
                   Open AI Assistant
                 </Button>
                 <Button 
                   size="lg" 
-                  variant="hero"
-                  className="text-lg px-10 py-6 shadow-lg hover:shadow-xl transition-all duration-300"
+                  className="bg-osu-gray hover:bg-osu-gray-dark text-white w-full sm:flex-1"
                   onClick={() => setShowSignupModal(true)}
                 >
-                  <Users className="mr-3 h-6 w-6" />
+                  <Users className="h-5 w-5 mr-2" />
                   Join Our Community
                 </Button>
               </div>

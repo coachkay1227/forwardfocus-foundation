@@ -25,6 +25,9 @@ serve(async (req) => {
     return new Response(null, { headers: corsHeaders });
   }
 
+  const startTime = Date.now();
+  let errorCount = 0;
+
   try {
     const { query, location, county, resourceType, limit = 10 }: ResourceQuery = await req.json();
     
@@ -92,75 +95,52 @@ Guidelines:
 - Be clear about geographic coverage (city/county)
 - Mention if services are free or low-cost when known`;
 
-    const openAIApiKey = Deno.env.get('OPENAI_API_KEY');
-    
-    if (!openAIApiKey) {
-      console.error('OpenAI API key not found');
-      return new Response(JSON.stringify({ 
-        error: 'AI service configuration error',
-        resources: resourceContext.slice(0, limit)
-      }), {
-        status: 500,
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-      });
-    }
-
-    console.log('Calling OpenAI API for query:', query);
-    
     const openAIResponse = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${openAIApiKey}`,
+        'Authorization': `Bearer ${Deno.env.get('OPENAI_API_KEY')}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: 'gpt-4o-mini',
+        model: 'gpt-4.1-2025-04-14',
         messages: [
           { role: 'system', content: systemPrompt },
           { role: 'user', content: query }
         ],
-        max_tokens: 800,
-        temperature: 0.7,
+        max_completion_tokens: 800,
       }),
     });
 
     if (!openAIResponse.ok) {
       const errorData = await openAIResponse.text();
-      console.error('OpenAI API error:', openAIResponse.status, errorData);
-      
-      // Return helpful resources even if AI fails
-      return new Response(JSON.stringify({ 
-        error: 'AI service temporarily unavailable',
-        response: 'I apologize, but I\'m having trouble connecting to my AI service right now. Here are some relevant resources that might help with your request.',
-        resources: resourceContext.slice(0, limit),
-        totalFound: resources?.length || 0
-      }), {
-        status: 200,
+      console.error('OpenAI API error:', errorData);
+      errorCount++;
+      return new Response(JSON.stringify({ error: 'AI service temporarily unavailable' }), {
+        status: 500,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       });
     }
 
     const aiData = await openAIResponse.json();
-    
-    if (!aiData.choices || !aiData.choices[0] || !aiData.choices[0].message) {
-      console.error('Invalid OpenAI response structure:', aiData);
-      return new Response(JSON.stringify({ 
-        error: 'Invalid AI response',
-        response: 'Here are some resources that might help with your request.',
-        resources: resourceContext.slice(0, limit),
-        totalFound: resources?.length || 0
-      }), {
-        status: 200,
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-      });
-    }
-    
     const aiResponse = aiData.choices[0].message.content;
 
-    // Find most relevant resources to return alongside AI response  
+    // Find most relevant resources to return alongside AI response
     const relevantResources = resources?.slice(0, limit) || [];
 
     console.log('AI Response generated successfully');
+
+    // Log usage analytics
+    const responseTime = Date.now() - startTime;
+    try {
+      await supabase.rpc('log_ai_usage', {
+        p_endpoint_name: 'ai-resource-discovery',
+        p_user_id: null,
+        p_response_time_ms: responseTime,
+        p_error_count: errorCount
+      });
+    } catch (logError) {
+      console.error('Failed to log AI usage:', logError);
+    }
 
     return new Response(JSON.stringify({
       response: aiResponse,
@@ -172,6 +152,21 @@ Guidelines:
 
   } catch (error) {
     console.error('Error in AI resource discovery:', error);
+    errorCount++;
+    
+    // Log error usage analytics
+    const responseTime = Date.now() - startTime;
+    try {
+      await supabase.rpc('log_ai_usage', {
+        p_endpoint_name: 'ai-resource-discovery',
+        p_user_id: null,
+        p_response_time_ms: responseTime,
+        p_error_count: errorCount
+      });
+    } catch (logError) {
+      console.error('Failed to log AI usage error:', logError);
+    }
+    
     return new Response(JSON.stringify({ 
       error: 'An error occurred processing your request',
       details: error.message 
