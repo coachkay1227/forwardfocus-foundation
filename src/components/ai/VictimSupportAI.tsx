@@ -1,10 +1,11 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { X, Send, Bot, Heart, Shield, Scale, DollarSign } from 'lucide-react';
+import { X, Send, Bot, Heart, Shield, Scale, DollarSign, Mail } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { Badge } from '@/components/ui/badge';
 import { supabase } from '@/integrations/supabase/client';
+import EmailChatHistoryModal from './EmailChatHistoryModal';
 
 interface Message {
   id: string;
@@ -43,6 +44,7 @@ const VictimSupportAI: React.FC<VictimSupportAIProps> = ({ isOpen, onClose, init
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [conversationContext, setConversationContext] = useState<Array<{role: string, content: string}>>([]);
+  const [showEmailModal, setShowEmailModal] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
@@ -302,6 +304,15 @@ const VictimSupportAI: React.FC<VictimSupportAIProps> = ({ isOpen, onClose, init
               >
                 New Chat
               </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setShowEmailModal(true)}
+                className="text-xs"
+              >
+                <Mail className="h-3 w-3 mr-1" />
+                Email History
+              </Button>
             </div>
           </div>
           <div className="grid grid-cols-2 gap-2 mb-4">
@@ -336,6 +347,14 @@ const VictimSupportAI: React.FC<VictimSupportAIProps> = ({ isOpen, onClose, init
           </p>
         </div>
       </DialogContent>
+
+      {/* Email Chat History Modal */}
+      <EmailChatHistoryModal
+        isOpen={showEmailModal}
+        onClose={() => setShowEmailModal(false)}
+        messages={messages}
+        coachName="Healing & Support Navigator"
+      />
     </Dialog>
   );
 };
