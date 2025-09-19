@@ -7,6 +7,7 @@ import { Eye, Shield, AlertTriangle, Copy, CheckCircle } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useSecurity } from "@/components/security/SecurityProvider";
 import { useToast } from "@/hooks/use-toast";
+import { ContactAccessJustification } from "@/components/admin/ContactAccessJustification";
 
 interface ContactRevealProps {
   organizationId: string;
@@ -31,6 +32,7 @@ export const ContactReveal = ({
   const [fullContact, setFullContact] = useState<ContactData | null>(null);
   const [isRevealing, setIsRevealing] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [hasApprovedAccess, setHasApprovedAccess] = useState(false);
   const { isAdmin } = useAuth();
   const { logSecurityEvent } = useSecurity();
   const { toast } = useToast();
@@ -57,6 +59,12 @@ export const ContactReveal = ({
           toast({
             title: "Rate Limit Exceeded",
             description: "You've reached the limit for contact reveals. Please wait before trying again.",
+            variant: "destructive",
+          });
+        } else if (error.message.includes('Approved business justification required')) {
+          toast({
+            title: "Justification Required",
+            description: "You need approved business justification to access this contact information.",
             variant: "destructive",
           });
         } else {
@@ -122,145 +130,155 @@ export const ContactReveal = ({
   }
 
   return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogTrigger asChild>
-        <Button
-          variant="ghost"
-          size="sm"
-          className="p-0 h-auto text-sm text-primary hover:bg-transparent hover:underline"
-          onClick={() => setIsOpen(true)}
-        >
-          <Eye className="h-3 w-3 mr-1" />
-          {maskedContact}
-        </Button>
-      </DialogTrigger>
-      <DialogContent className="sm:max-w-md" aria-describedby="contact-reveal-description">
-        <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
-            <Shield className="h-5 w-5 text-primary" />
-            Reveal Contact Information
-          </DialogTitle>
-        </DialogHeader>
-        
-        <div className="space-y-4">
-          <div className="bg-amber-50 border border-amber-200 rounded-lg p-4">
-            <div className="flex items-start gap-2">
-              <AlertTriangle className="h-4 w-4 text-amber-600 mt-0.5" />
+    <div className="space-y-2">
+      <Dialog open={isOpen} onOpenChange={setIsOpen}>
+        <DialogTrigger asChild>
+          <Button
+            variant="ghost"
+            size="sm"
+            className="p-0 h-auto text-sm text-primary hover:bg-transparent hover:underline"
+            onClick={() => setIsOpen(true)}
+          >
+            <Eye className="h-3 w-3 mr-1" />
+            {maskedContact}
+          </Button>
+        </DialogTrigger>
+        <DialogContent className="sm:max-w-md" aria-describedby="contact-reveal-description">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <Shield className="h-5 w-5 text-primary" />
+              Reveal Contact Information
+            </DialogTitle>
+          </DialogHeader>
+          
+          <div className="space-y-4">
+            <div className="bg-amber-50 border border-amber-200 rounded-lg p-4">
+              <div className="flex items-start gap-2">
+                <AlertTriangle className="h-4 w-4 text-amber-600 mt-0.5" />
+                <div className="text-sm">
+                  <p className="font-medium text-amber-800 mb-1">Security Warning</p>
+                  <p className="text-amber-700">
+                    This action will reveal sensitive contact information and is logged for audit purposes.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="space-y-2">
               <div className="text-sm">
-                <p className="font-medium text-amber-800 mb-1">Security Warning</p>
-                <p className="text-amber-700">
-                  This action will reveal sensitive contact information and is logged for audit purposes.
-                </p>
+                <span className="font-medium">Organization:</span> {organizationName}
+              </div>
+              <div className="text-sm">
+                <span className="font-medium">Requesting:</span> {contactType} information
               </div>
             </div>
-          </div>
 
-          <div className="space-y-2">
-            <div className="text-sm">
-              <span className="font-medium">Organization:</span> {organizationName}
-            </div>
-            <div className="text-sm">
-              <span className="font-medium">Requesting:</span> {contactType} information
-            </div>
-          </div>
-
-          {!fullContact ? (
-            <div className="space-y-3">
-              <Button 
-                onClick={revealContact} 
-                disabled={isRevealing}
-                className="w-full"
-              >
-                {isRevealing ? (
-                  <>
-                    <div className="animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full mr-2" />
-                    Revealing...
-                  </>
-                ) : (
-                  <>
-                    <Eye className="h-4 w-4 mr-2" />
-                    Reveal Contact Information
-                  </>
-                )}
-              </Button>
-              
-              <div className="text-xs text-muted-foreground text-center">
-                This action is rate limited and fully audited
-              </div>
-            </div>
-          ) : (
-            <div className="space-y-4">
-              <Badge variant="secondary" className="w-full justify-center py-2">
-                <CheckCircle className="h-3 w-3 mr-1" />
-                Contact Information Revealed
-              </Badge>
-              
+            {!fullContact ? (
               <div className="space-y-3">
-                {fullContact.email && fullContact.email !== 'Not available' && (
-                  <div className="space-y-1">
-                    <label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
-                      Email Address
-                    </label>
-                    <div className="flex items-center gap-2 p-2 bg-muted rounded border">
-                      <span className="flex-1 text-sm font-mono">{fullContact.email}</span>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => copyToClipboard(fullContact.email)}
-                        className="h-6 w-6 p-0"
-                      >
-                        {copied ? <CheckCircle className="h-3 w-3" /> : <Copy className="h-3 w-3" />}
-                      </Button>
-                    </div>
-                  </div>
-                )}
-
-                {fullContact.phone && fullContact.phone !== 'Not available' && (
-                  <div className="space-y-1">
-                    <label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
-                      Phone Number
-                    </label>
-                    <div className="flex items-center gap-2 p-2 bg-muted rounded border">
-                      <span className="flex-1 text-sm font-mono">{fullContact.phone}</span>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => copyToClipboard(fullContact.phone)}
-                        className="h-6 w-6 p-0"
-                      >
-                        {copied ? <CheckCircle className="h-3 w-3" /> : <Copy className="h-3 w-3" />}
-                      </Button>
-                    </div>
-                  </div>
-                )}
-
-                {fullContact.address && fullContact.address !== 'Not available' && (
-                  <div className="space-y-1">
-                    <label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
-                      Address
-                    </label>
-                    <div className="flex items-center gap-2 p-2 bg-muted rounded border">
-                      <span className="flex-1 text-sm">{fullContact.address}</span>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => copyToClipboard(fullContact.address)}
-                        className="h-6 w-6 p-0"
-                      >
-                        {copied ? <CheckCircle className="h-3 w-3" /> : <Copy className="h-3 w-3" />}
-                      </Button>
-                    </div>
-                  </div>
-                )}
+                <Button 
+                  onClick={revealContact} 
+                  disabled={isRevealing}
+                  className="w-full"
+                >
+                  {isRevealing ? (
+                    <>
+                      <div className="animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full mr-2" />
+                      Revealing...
+                    </>
+                  ) : (
+                    <>
+                      <Eye className="h-4 w-4 mr-2" />
+                      Reveal Contact Information
+                    </>
+                  )}
+                </Button>
+                
+                <div className="text-xs text-muted-foreground text-center">
+                  This action is rate limited and fully audited
+                </div>
               </div>
+            ) : (
+              <div className="space-y-4">
+                <Badge variant="secondary" className="w-full justify-center py-2">
+                  <CheckCircle className="h-3 w-3 mr-1" />
+                  Contact Information Revealed
+                </Badge>
+                
+                <div className="space-y-3">
+                  {fullContact.email && fullContact.email !== 'Not available' && (
+                    <div className="space-y-1">
+                      <label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
+                        Email Address
+                      </label>
+                      <div className="flex items-center gap-2 p-2 bg-muted rounded border">
+                        <span className="flex-1 text-sm font-mono">{fullContact.email}</span>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => copyToClipboard(fullContact.email)}
+                          className="h-6 w-6 p-0"
+                        >
+                          {copied ? <CheckCircle className="h-3 w-3" /> : <Copy className="h-3 w-3" />}
+                        </Button>
+                      </div>
+                    </div>
+                  )}
 
-              <div className="text-xs text-muted-foreground bg-muted/50 p-2 rounded">
-                ⚠️ This access has been logged and is subject to audit review.
+                  {fullContact.phone && fullContact.phone !== 'Not available' && (
+                    <div className="space-y-1">
+                      <label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
+                        Phone Number
+                      </label>
+                      <div className="flex items-center gap-2 p-2 bg-muted rounded border">
+                        <span className="flex-1 text-sm font-mono">{fullContact.phone}</span>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => copyToClipboard(fullContact.phone)}
+                          className="h-6 w-6 p-0"
+                        >
+                          {copied ? <CheckCircle className="h-3 w-3" /> : <Copy className="h-3 w-3" />}
+                        </Button>
+                      </div>
+                    </div>
+                  )}
+
+                  {fullContact.address && fullContact.address !== 'Not available' && (
+                    <div className="space-y-1">
+                      <label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
+                        Address
+                      </label>
+                      <div className="flex items-center gap-2 p-2 bg-muted rounded border">
+                        <span className="flex-1 text-sm">{fullContact.address}</span>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => copyToClipboard(fullContact.address)}
+                          className="h-6 w-6 p-0"
+                        >
+                          {copied ? <CheckCircle className="h-3 w-3" /> : <Copy className="h-3 w-3" />}
+                        </Button>
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                <div className="text-xs text-muted-foreground bg-muted/50 p-2 rounded">
+                  ⚠️ This access has been logged and is subject to audit review.
+                </div>
               </div>
-            </div>
-          )}
-        </div>
-      </DialogContent>
-    </Dialog>
+            )}
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {!hasApprovedAccess && (
+        <ContactAccessJustification
+          organizationId={organizationId}
+          organizationName={organizationName}
+          onAccessGranted={() => setHasApprovedAccess(true)}
+        />
+      )}
+    </div>
   );
 };
