@@ -212,7 +212,6 @@ export default function CommunityLearning() {
           {/* Tools for Your Journey Section */}
           <section className="space-y-16">
             <div className="text-center space-y-6">
-              <PathwayVisual pathway="learning" />
               <div className="bg-gradient-to-r from-osu-gray/5 via-cream/10 to-osu-gray/5 rounded-2xl p-8">
                 <h2 className="font-heading text-4xl md:text-5xl font-bold text-foreground flex items-center justify-center gap-4 mb-6">
                   <BookOpen className="h-10 w-10 text-osu-scarlet" />
