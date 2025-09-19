@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { BookOpen, CheckCircle, Users, MessageSquare, MapPin, Phone, FileText, DollarSign, Heart, Brain, GraduationCap, Home, Briefcase, Scale, HeartHandshake, PiggyBank, Shield, Bot, Target } from "lucide-react";
+import { BookOpen, CheckCircle, Users, MessageSquare, MapPin, Phone, FileText, DollarSign, Heart, Brain, GraduationCap, Home, Briefcase, Scale, HeartHandshake, PiggyBank, Shield, Bot, Target, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -259,8 +259,6 @@ export default function CommunityLearning() {
               ))}
             </div>
 
-            </div>
-
             <div className="text-center bg-gradient-to-r from-osu-scarlet/5 via-osu-scarlet/10 to-osu-scarlet/5 rounded-2xl p-6 sm:p-12 px-4">
               <Button 
                 onClick={() => setShowApplication(true)} 
@@ -273,9 +271,7 @@ export default function CommunityLearning() {
               </Button>
               <p className="text-foreground/70 text-base mt-4">Join our supportive community</p>
             </div>
-          </div>
-        </section>
-
+          </section>
         </div>
       </main>
 
