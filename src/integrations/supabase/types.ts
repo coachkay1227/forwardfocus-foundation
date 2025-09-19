@@ -771,6 +771,10 @@ export type Database = {
         }
         Returns: boolean
       }
+      check_ip_rate_limit: {
+        Args: Record<PropertyKey, never>
+        Returns: boolean
+      }
       check_rate_limit: {
         Args: {
           p_limit_per_hour?: number
@@ -824,6 +828,10 @@ export type Database = {
       }
       detect_advanced_suspicious_activity: {
         Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
+      detect_data_scraping: {
+        Args: { table_name_param: string }
         Returns: undefined
       }
       detect_organization_access_abuse: {
@@ -1000,6 +1008,17 @@ export type Database = {
           total_alerts: number
           unique_users_24h: number
           unresolved_alerts: number
+        }[]
+      }
+      get_states_with_protection: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          active: boolean
+          code: string
+          coming_soon: boolean
+          created_at: string
+          id: string
+          name: string
         }[]
       }
       get_verified_organizations: {
