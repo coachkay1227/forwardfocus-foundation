@@ -5,7 +5,6 @@ import { Input } from "@/components/ui/input";
 import { MessageCircle, Send, Bot, User, RotateCcw, Mail, Calendar, ExternalLink } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import EmailChatHistoryModal from "@/components/ai/EmailChatHistoryModal";
-import { AIWithTrial } from "@/components/ai/AIWithTrial";
 import { useToast } from "@/hooks/use-toast";
 
 interface Message {
@@ -30,11 +29,6 @@ const AskCoachKay = () => {
   const [showEmailModal, setShowEmailModal] = useState(false);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
-
-  return (
-    <AIWithTrial aiEndpoint="coach-k">
-      {({ canUseAI, checkAccess, trialActive, timeRemaining }) => {
-        const AskCoachKayComponent = () => {
 
   const scrollToBottom = () => {
     setTimeout(() => {
@@ -179,121 +173,113 @@ const AskCoachKay = () => {
     setIsLoading(false);
   };
 
-        return (
-          <>
-            <Dialog open={isOpen} onOpenChange={setIsOpen}>
-              <DialogTrigger asChild>
-                <Button 
-                  size="lg" 
-                  className="w-full bg-primary hover:bg-primary/90 text-primary-foreground"
+  return (
+    <>
+      <Dialog open={isOpen} onOpenChange={setIsOpen}>
+        <DialogTrigger asChild>
+          <Button 
+            size="lg" 
+            className="w-full bg-primary hover:bg-primary/90 text-primary-foreground"
+          >
+            <MessageCircle className="h-5 w-5 mr-2" />
+            Connect with Coach Kay
+          </Button>
+        </DialogTrigger>
+        <DialogContent className="sm:max-w-lg">
+          <DialogHeader>
+            <div className="flex items-center justify-between">
+              <DialogTitle className="flex items-center gap-2">
+                <Bot className="h-5 w-5 text-primary" />
+                Ask Coach Kay
+              </DialogTitle>
+              <div className="flex items-center gap-2">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={openCalendly}
+                  className="text-xs"
                 >
-                  <MessageCircle className="h-5 w-5 mr-2" />
-                  Connect with Coach Kay
-                  {trialActive && <span className="ml-2 text-xs opacity-75">(Trial)</span>}
+                  <Calendar className="h-4 w-4 mr-1" />
+                  Book Free Call
+                  <ExternalLink className="h-3 w-3 ml-1" />
                 </Button>
-              </DialogTrigger>
-              <DialogContent className="sm:max-w-lg">
-                <DialogHeader>
-                  <div className="flex items-center justify-between">
-                    <DialogTitle className="flex items-center gap-2">
-                      <Bot className="h-5 w-5 text-primary" />
-                      Ask Coach Kay
-                      {trialActive && <span className="text-xs text-muted-foreground">(Trial Active)</span>}
-                    </DialogTitle>
-                    <div className="flex items-center gap-2">
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={openCalendly}
-                        className="text-xs"
-                      >
-                        <Calendar className="h-4 w-4 mr-1" />
-                        Book Free Call
-                        <ExternalLink className="h-3 w-3 ml-1" />
-                      </Button>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => setShowEmailModal(true)}
-                        className="text-xs"
-                      >
-                        <Mail className="h-4 w-4" />
-                      </Button>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={startNewChat}
-                        className="text-xs"
-                      >
-                        <RotateCcw className="h-4 w-4" />
-                      </Button>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setShowEmailModal(true)}
+                  className="text-xs"
+                >
+                  <Mail className="h-4 w-4" />
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={startNewChat}
+                  className="text-xs"
+                >
+                  <RotateCcw className="h-4 w-4" />
+                </Button>
+              </div>
+            </div>
+          </DialogHeader>
+          <div className="space-y-4">
+            <ScrollArea className="h-96 pr-4" ref={scrollAreaRef}>
+              <div className="space-y-4">
+                {messages.map((message) => (
+                  <div
+                    key={message.id}
+                    className={`flex gap-2 ${message.type === 'ai' ? 'justify-start' : 'justify-end'}`}
+                  >
+                    {message.type === 'ai' && (
+                      <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                        <Bot className="h-4 w-4 text-primary" />
+                      </div>
+                    )}
+                    <div
+                      className={`max-w-[80%] p-3 rounded-lg text-sm ${
+                        message.type === 'ai'
+                          ? 'bg-secondary text-secondary-foreground'
+                          : 'bg-primary text-primary-foreground'
+                      }`}
+                    >
+                      {message.content}
                     </div>
+                    {message.type === 'user' && (
+                      <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                        <User className="h-4 w-4 text-primary" />
+                      </div>
+                    )}
                   </div>
-                </DialogHeader>
-                <div className="space-y-4">
-                  <ScrollArea className="h-96 pr-4" ref={scrollAreaRef}>
-                    <div className="space-y-4">
-                      {messages.map((message) => (
-                        <div
-                          key={message.id}
-                          className={`flex gap-2 ${message.type === 'ai' ? 'justify-start' : 'justify-end'}`}
-                        >
-                          {message.type === 'ai' && (
-                            <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-                              <Bot className="h-4 w-4 text-primary" />
-                            </div>
-                          )}
-                          <div
-                            className={`max-w-[80%] p-3 rounded-lg text-sm ${
-                              message.type === 'ai'
-                                ? 'bg-secondary text-secondary-foreground'
-                                : 'bg-primary text-primary-foreground'
-                            }`}
-                          >
-                            {message.content}
-                          </div>
-                          {message.type === 'user' && (
-                            <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-                              <User className="h-4 w-4 text-primary" />
-                            </div>
-                          )}
-                        </div>
-                      ))}
-                    </div>
-                  </ScrollArea>
-                  <div className="flex gap-2">
-                    <Input
-                      placeholder={canUseAI ? "What's going on today? How can I help?" : "Sign up to continue chatting..."}
-                      value={inputMessage}
-                      onChange={(e) => setInputMessage(e.target.value)}
-                      onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
-                      className="flex-1"
-                      disabled={isLoading || !canUseAI}
-                    />
-                    <Button onClick={handleSendMessage} size="icon" disabled={isLoading || !canUseAI}>
-                      <Send className="h-4 w-4" />
-                    </Button>
-                  </div>
-                  <div className="text-xs text-muted-foreground text-center">
-                    💙 Emotional Support • 🗺️ Site Navigation • 📋 Programs • 🔍 Resources • 📅 Coaching Consults
-                  </div>
-                </div>
-              </DialogContent>
-            </Dialog>
+                ))}
+              </div>
+            </ScrollArea>
+            <div className="flex gap-2">
+              <Input
+                placeholder="What's going on today? How can I help?"
+                value={inputMessage}
+                onChange={(e) => setInputMessage(e.target.value)}
+                onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
+                className="flex-1"
+                disabled={isLoading}
+              />
+              <Button onClick={handleSendMessage} size="icon" disabled={isLoading}>
+                <Send className="h-4 w-4" />
+              </Button>
+            </div>
+            <div className="text-xs text-muted-foreground text-center">
+              💙 Emotional Support • 🗺️ Site Navigation • 📋 Programs • 🔍 Resources • 📅 Coaching Consults
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
 
-            <EmailChatHistoryModal
-              isOpen={showEmailModal}
-              onClose={() => setShowEmailModal(false)}
-              messages={messages}
-              coachName="Coach Kay"
-            />
-          </>
-        );
-        };
-
-        return <AskCoachKayComponent />;
-      }}
-    </AIWithTrial>
+      <EmailChatHistoryModal
+        isOpen={showEmailModal}
+        onClose={() => setShowEmailModal(false)}
+        messages={messages}
+        coachName="Coach Kay"
+      />
+    </>
   );
 };
 

@@ -194,39 +194,6 @@ export default function AboutUs() {
                 a future where everyone has the opportunity to write their next chapter with hope and dignity.
               </p>
             </div>
-
-            {/* What Makes Us Different */}
-            <div className="mt-16 grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 bg-secondary/5 py-8 md:py-16 px-4 md:px-8 rounded-2xl overflow-hidden">
-              <div className="bg-background rounded-xl p-6 md:p-8 border shadow-lg hover:shadow-xl transition-all overflow-hidden">
-                <div className="flex items-center gap-4 md:gap-6 mb-6 md:mb-8">
-                  <div className="w-12 h-12 md:w-16 md:h-16 bg-secondary rounded-xl flex items-center justify-center shadow-md">
-                    <Users className="h-6 w-6 md:h-8 md:w-8 text-secondary-foreground" />
-                  </div>
-                  <h3 className="text-lg md:text-2xl font-semibold text-foreground">
-                    Built for Diverse Communities
-                  </h3>
-                </div>
-                <p className="text-foreground/70 text-base md:text-lg leading-relaxed">
-                  Accessible, inclusive, and designed for real life. We understand that every 
-                  journey is unique and every person deserves dignity and respect.
-                </p>
-              </div>
-
-              <div className="bg-background rounded-xl p-6 md:p-8 border shadow-lg hover:shadow-xl transition-all overflow-hidden">
-                <div className="flex items-center gap-4 md:gap-6 mb-6 md:mb-8">
-                  <div className="w-12 h-12 md:w-16 md:h-16 bg-primary rounded-xl flex items-center justify-center shadow-md">
-                    <Target className="h-6 w-6 md:h-8 md:w-8 text-primary-foreground" />
-                  </div>
-                  <h3 className="text-lg md:text-2xl font-semibold text-foreground">
-                    Interactive Tools That Create Action
-                  </h3>
-                </div>
-                <p className="text-foreground/70 text-base md:text-lg leading-relaxed">
-                  Move beyond just reading information. Our platform helps you take concrete 
-                  steps toward your goals with personalized guidance and real-world resources.
-                </p>
-              </div>
-            </div>
           </div>
         </section>
 

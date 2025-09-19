@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { BookOpen, CheckCircle, Users, MessageSquare, MapPin, Phone, FileText, DollarSign, Heart, Brain, GraduationCap, Home, Briefcase, Scale, HeartHandshake, PiggyBank, Shield, Bot, Target, ArrowRight } from "lucide-react";
+import { BookOpen, CheckCircle, Users, MessageSquare, MapPin, Phone, FileText, DollarSign, Heart, Brain, GraduationCap, Home, Briefcase, Scale, HeartHandshake, PiggyBank, Shield, Bot, Target } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -212,6 +212,7 @@ export default function CommunityLearning() {
           {/* Tools for Your Journey Section */}
           <section className="space-y-16">
             <div className="text-center space-y-6">
+              <PathwayVisual pathway="learning" />
               <div className="bg-gradient-to-r from-osu-gray/5 via-cream/10 to-osu-gray/5 rounded-2xl p-8">
                 <h2 className="font-heading text-4xl md:text-5xl font-bold text-foreground flex items-center justify-center gap-4 mb-6">
                   <BookOpen className="h-10 w-10 text-osu-scarlet" />
@@ -259,6 +260,39 @@ export default function CommunityLearning() {
               ))}
             </div>
 
+            {/* What Makes Us Different - Learning Community Focus */}
+            <div className="mt-16 grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 bg-secondary/5 py-8 md:py-16 px-4 md:px-8 rounded-2xl overflow-hidden">
+              <div className="bg-background rounded-xl p-6 md:p-10 border shadow-lg hover:shadow-xl transition-all overflow-hidden">
+                <div className="flex items-center gap-6 mb-8">
+                  <div className="w-16 h-16 bg-secondary rounded-xl flex items-center justify-center shadow-md">
+                    <Users className="h-8 w-8 text-secondary-foreground" />
+                  </div>
+                  <h3 className="text-2xl font-semibold text-foreground">
+                    Built for Diverse Communities
+                  </h3>
+                </div>
+                <p className="text-foreground/70 text-lg leading-relaxed">
+                  Accessible, inclusive, and designed for real life. We understand that every 
+                  journey is unique and every person deserves dignity and respect.
+                </p>
+              </div>
+
+              <div className="bg-background rounded-xl p-6 md:p-10 border shadow-lg hover:shadow-xl transition-all overflow-hidden">
+                <div className="flex items-center gap-6 mb-8">
+                  <div className="w-16 h-16 bg-primary rounded-xl flex items-center justify-center shadow-md">
+                    <Target className="h-8 w-8 text-primary-foreground" />
+                  </div>
+                  <h3 className="text-2xl font-semibold text-foreground">
+                    Interactive Tools That Create Action
+                  </h3>
+                </div>
+                <p className="text-foreground/70 text-lg leading-relaxed">
+                  Move beyond just reading information. Our platform helps you take concrete 
+                  steps toward your goals with personalized guidance and real-world resources.
+                </p>
+              </div>
+            </div>
+
             <div className="text-center bg-gradient-to-r from-osu-scarlet/5 via-osu-scarlet/10 to-osu-scarlet/5 rounded-2xl p-6 sm:p-12 px-4">
               <Button 
                 onClick={() => setShowApplication(true)} 
@@ -266,12 +300,13 @@ export default function CommunityLearning() {
                 variant="osu-gradient"
                 className="text-lg px-6 sm:px-12 py-6 shadow-xl hover:shadow-2xl transition-all duration-300 w-full max-w-sm sm:max-w-none sm:w-auto"
               >
-                Start Your Journey Today
-                <ArrowRight className="ml-3 h-6 w-6" />
+                <Users className="h-6 w-6 mr-3" />
+                Join the Collective Now
               </Button>
-              <p className="text-foreground/70 text-base mt-4">Join our supportive community</p>
             </div>
           </section>
+
+
         </div>
       </main>
 

@@ -53,46 +53,6 @@ const Organizations = () => {
   const { user } = useAuth();
   const { toast } = useToast();
 
-  // Redirect non-authenticated users or non-admins
-  if (!user) {
-    return (
-      <main id="main" className="container py-10 flex items-center justify-center min-h-[400px]">
-        <div className="text-center">
-          <h2 className="text-2xl font-bold mb-4">Authentication Required</h2>
-          <p className="text-muted-foreground mb-6">You must be signed in to access partner organizations.</p>
-          <Button asChild>
-            <a href="/auth">Sign In</a>
-          </Button>
-        </div>
-      </main>
-    );
-  }
-
-  if (loading) {
-    return (
-      <main id="main" className="container py-10 flex items-center justify-center min-h-[400px]">
-        <div className="text-center">
-          <div className="animate-spin h-8 w-8 border-4 border-primary border-t-transparent rounded-full mx-auto"></div>
-          <p className="mt-2 text-muted-foreground">Checking permissions...</p>
-        </div>
-      </main>
-    );
-  }
-
-  if (!isAdmin) {
-    return (
-      <main id="main" className="container py-10 flex items-center justify-center min-h-[400px]">
-        <div className="text-center">
-          <h2 className="text-2xl font-bold mb-4">Admin Access Required</h2>
-          <p className="text-muted-foreground mb-6">This page is restricted to administrators only.</p>
-          <Button asChild variant="outline">
-            <a href="/">Return Home</a>
-          </Button>
-        </div>
-      </main>
-    );
-  }
-
   useEffect(() => {
     document.title = "Partner Organizations | Forward Focus Elevation";
     checkAdminStatus();

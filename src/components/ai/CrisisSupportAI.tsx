@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { X, Send, Bot, AlertTriangle, Phone, MessageSquare, Heart, Shield, Mail } from 'lucide-react';
+import { X, Send, Bot, AlertTriangle, Phone, MessageSquare, Heart, Shield } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
@@ -7,7 +7,6 @@ import { Badge } from '@/components/ui/badge';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { supabase } from '@/integrations/supabase/client';
 import { parseTextForLinks, ParsedTextSegment } from '@/lib/text-parser';
-import EmailChatHistoryModal from './EmailChatHistoryModal';
 
 interface Message {
   id: string;
@@ -48,7 +47,6 @@ const CrisisSupportAI: React.FC<CrisisSupportAIProps> = ({ isOpen, onClose, init
   const [conversationContext, setConversationContext] = useState<Array<{role: string, content: string}>>([]);
   const [hasAskedSafety, setHasAskedSafety] = useState(false);
   const [userResponse, setUserResponse] = useState<string[]>([]);
-  const [showEmailModal, setShowEmailModal] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
@@ -403,15 +401,6 @@ const CrisisSupportAI: React.FC<CrisisSupportAIProps> = ({ isOpen, onClose, init
               >
                 New Chat
               </Button>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setShowEmailModal(true)}
-                className="text-xs h-6 px-2"
-              >
-                <Mail className="h-3 w-3 mr-1" />
-                Email History
-              </Button>
               <div className="flex items-center gap-1">
                 <Heart className="h-3 w-3 text-destructive" />
                 <span>You matter</span>
@@ -420,14 +409,6 @@ const CrisisSupportAI: React.FC<CrisisSupportAIProps> = ({ isOpen, onClose, init
           </div>
         </div>
       </DialogContent>
-
-      {/* Email Chat History Modal */}
-      <EmailChatHistoryModal
-        isOpen={showEmailModal}
-        onClose={() => setShowEmailModal(false)}
-        messages={messages}
-        coachName="Alex - Crisis Support"
-      />
     </Dialog>
   );
 };
