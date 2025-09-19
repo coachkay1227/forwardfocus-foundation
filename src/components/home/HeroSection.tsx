@@ -24,7 +24,7 @@ export const HeroSection = ({ selectedState, onShowStateModal, onShowAIDiscovery
             Empowering justice-impacted families with the tools to rebuild and thrive.
           </p>
 
-          <div className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto mb-8">
+          <div className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto mb-8 items-center justify-center">
             <Button size="lg" variant="secondary" className="bg-osu-gray text-white hover:bg-osu-gray-dark" asChild>
               <Link to="/help">Get Help Now</Link>
             </Button>
