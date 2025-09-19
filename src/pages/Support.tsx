@@ -57,7 +57,7 @@ const Support = () => {
                   <CardTitle className="text-xl font-semibold text-foreground">Start Small, Think Big</CardTitle>
                 </div>
                 <CardDescription className="text-foreground/70 text-base leading-relaxed">
-                  Every dollar powers our AI digital hub providing free mental health, reentry, business, and credit education courses.
+                  Every dollar powers our AI digital hub providing free mental health, reentry, business, and credit education courses to justice-impacted families.
                 </CardDescription>
               </CardHeader>
               <CardContent className="pt-0 flex-1 flex flex-col justify-between">
@@ -86,7 +86,7 @@ const Support = () => {
                   <CardTitle className="text-xl font-semibold text-foreground">Sponsor Success Stories</CardTitle>
                 </div>
                 <CardDescription className="text-foreground/70 text-base leading-relaxed">
-                  Sponsor accelerator cohorts, youth AI workshops, or our entire platform. Join us in breaking cycles and creating pathways to success.
+                  Sponsor accelerator cohorts, youth AI workshops, or our entire platform. Join us in breaking cycles and creating lasting pathways to success.
                 </CardDescription>
               </CardHeader>
               <CardContent className="pt-0 flex-1 flex flex-col justify-between">
@@ -115,7 +115,7 @@ const Support = () => {
                   <CardTitle className="text-xl font-semibold text-foreground">Share Your Expertise</CardTitle>
                 </div>
                 <CardDescription className="text-foreground/70 text-base leading-relaxed">
-                  Join our speaker bureau to present to our community and help justice-impacted individuals learn from industry leaders.
+                  Join our speaker bureau to present to our community and help justice-impacted individuals learn from experienced industry leaders.
                 </CardDescription>
               </CardHeader>
               <CardContent className="pt-0 flex-1 flex flex-col justify-between">
@@ -141,7 +141,7 @@ const Support = () => {
                   <CardTitle className="text-xl font-semibold text-foreground">AI Consultation Services</CardTitle>
                 </div>
                 <CardDescription className="text-foreground/70 text-base leading-relaxed">
-                  Contract our AI expertise to build custom solutions for your organization while supporting our mission.
+                  Contract our AI expertise to build custom solutions for your organization while directly supporting our community mission.
                 </CardDescription>
               </CardHeader>
               <CardContent className="pt-0 flex-1 flex flex-col justify-between">
@@ -167,7 +167,7 @@ const Support = () => {
                   <CardTitle className="text-xl font-semibold text-foreground">Grant Funding</CardTitle>
                 </div>
                 <CardDescription className="text-foreground/70 text-base leading-relaxed">
-                  Foundations can fund our innovative approach combining AI technology with justice reform and community building.
+                  Foundations can fund our innovative approach combining AI technology with justice reform and sustainable community building.
                 </CardDescription>
               </CardHeader>
               <CardContent className="pt-0 flex-1 flex flex-col justify-between">
@@ -193,7 +193,7 @@ const Support = () => {
                   <CardTitle className="text-xl font-semibold text-foreground">Corporate AI Training</CardTitle>
                 </div>
                 <CardDescription className="text-foreground/70 text-base leading-relaxed">
-                  Train your team in AI skills while supporting our mission to help justice-impacted communities.
+                  Train your team in cutting-edge AI skills while supporting our mission to help justice-impacted communities thrive.
                 </CardDescription>
               </CardHeader>
               <CardContent className="pt-0 flex-1 flex flex-col justify-between">
@@ -275,11 +275,16 @@ const Support = () => {
               <p className="text-lg md:text-xl leading-relaxed mb-12 text-primary-foreground/95 max-w-2xl mx-auto">
                 Let's talk! Schedule a 15-minute consultation to explore how you can invest in transforming lives through innovative digital education.
               </p>
-              <div className="flex justify-center">
-                <Button size="lg" variant="secondary" className="px-8 text-lg bg-white text-primary hover:bg-white/90">
-                  Schedule Consultation →
-                </Button>
-              </div>
+               <div className="flex justify-center">
+                 <Button 
+                   size="lg" 
+                   variant="secondary" 
+                   className="px-8 text-lg bg-white text-primary hover:bg-white/90"
+                   onClick={() => window.open('https://calendly.com/ffe_coach_kay/free-call', '_blank')}
+                 >
+                   Schedule Consultation →
+                 </Button>
+               </div>
             </div>
           </div>
         </section>
