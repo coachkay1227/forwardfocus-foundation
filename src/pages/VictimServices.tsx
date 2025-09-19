@@ -246,24 +246,24 @@ export default function VictimServices() {
         {/* Daily Healing Toolkit */}
         <DailyHealingToolkit />
 
-        <div className="container py-24 space-y-32">
+        <div className="container py-24 space-y-24">
           {/* Community Visual Banner */}
-          <section className="bg-secondary/5 py-24 rounded-2xl">
+          <section className="bg-secondary/5 py-16 rounded-2xl">
             <div className="max-w-6xl mx-auto">
               <div className="relative overflow-hidden rounded-2xl shadow-2xl">
                 <img
                   src={healingCommunityImage}
                   alt="Diverse healing community supporting each other through trauma recovery"
-                  className="w-full h-96 object-cover"
+                  className="w-full h-80 object-cover"
                 />
-                <div className="absolute inset-0 bg-gradient-to-r from-osu-scarlet/90 to-osu-scarlet-dark/70 flex items-center">
+                <div className="absolute inset-0 bg-gradient-to-r from-osu-gray/90 to-osu-gray-dark/70 flex items-center">
                   <div className="container">
                     <div className="max-w-2xl">
-                      <h2 className="font-heading text-4xl md:text-5xl font-bold text-white mb-6">
+                      <h2 className="font-heading text-3xl md:text-4xl font-bold text-white mb-4">
                         Healing happens in community
                       </h2>
-                      <p className="text-xl text-white/90 leading-relaxed">
-                        Access comprehensive support designed by survivors, for survivors. Every resource 
+                      <p className="text-lg text-white/90 leading-relaxed">
+                        Comprehensive support designed by survivors, for survivors. Every resource 
                         is trauma-informed and respects your journey to healing.
                       </p>
                     </div>
@@ -273,79 +273,103 @@ export default function VictimServices() {
             </div>
           </section>
 
-        {/* Support Path Cards */}
+          {/* Support Path Cards */}
           <section id="main-content" className="scroll-mt-16">
             <div className="max-w-6xl mx-auto">
               <div className="text-center mb-16">
-                <h2 className="font-heading text-4xl md:text-5xl font-bold text-foreground mb-6">How Our AI Can Help You</h2>
-                <p className="text-xl text-foreground/70 max-w-3xl mx-auto leading-relaxed">
-                  Our AI assistant is trained to help with these key areas. When you chat with us, 
-                  we'll provide personalized resources and guidance based on your specific needs.
+                <h2 className="font-heading text-3xl md:text-4xl font-bold text-foreground mb-6">
+                  Comprehensive Support Pathways
+                </h2>
+                <p className="text-lg text-foreground/70 max-w-3xl mx-auto leading-relaxed">
+                  Our AI assistant and human support team can help with these specialized areas. 
+                  Each pathway is designed with trauma-informed care principles.
                 </p>
               </div>
 
-              <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+              <div className="grid md:grid-cols-2 gap-8">
                 {supportPaths.map((path, index) => {
                   const IconComponent = path.icon;
                   return (
-                    <Card key={index} className="bg-background rounded-xl border shadow-lg hover:shadow-xl transition-all duration-300 group cursor-pointer h-full flex flex-col md:hover:-translate-y-1">
-                      <CardHeader className="text-center pb-4">
-                        <div className={`inline-flex p-6 rounded-2xl ${path.color} mb-6 md:group-hover:scale-110 transition-transform duration-300 shadow-md`}>
-                          <IconComponent className="h-10 w-10" />
+                    <Card key={index} className="p-6 hover:shadow-xl transition-all duration-300 border-l-4 border-l-osu-scarlet">
+                      <div className="flex items-start gap-4 mb-6">
+                        <div className={`p-4 rounded-xl ${path.color} flex-shrink-0`}>
+                          <IconComponent className="h-8 w-8" />
                         </div>
-                        <CardTitle className="text-2xl font-semibold text-foreground mb-3">{path.title}</CardTitle>
-                        <CardDescription className="text-base text-foreground/70 leading-relaxed">
-                          {path.description}
-                        </CardDescription>
-                      </CardHeader>
-                      <CardContent className="flex-1 flex flex-col justify-center">
-                        <div className="space-y-3">
-                          {path.resources.slice(0, 2).map((resource, resourceIndex) => (
-                            <div key={resourceIndex} className="p-4 rounded-lg bg-muted/30 text-center border">
-                              <div className="font-semibold text-sm text-foreground">{resource.title}</div>
-                              <div className="text-xs text-foreground/60 mt-1">{resource.description}</div>
-                            </div>
-                          ))}
+                        <div>
+                          <h3 className="text-2xl font-semibold text-foreground mb-2">{path.title}</h3>
+                          <p className="text-foreground/70 leading-relaxed">{path.description}</p>
                         </div>
-                      </CardContent>
+                      </div>
+                      
+                      <div className="space-y-3">
+                        {path.resources.slice(0, 3).map((resource, resourceIndex) => (
+                          <div key={resourceIndex} className="p-3 rounded-lg bg-muted/30 border">
+                            <div className="font-medium text-sm text-foreground">{resource.title}</div>
+                            <div className="text-xs text-foreground/60 mt-1">{resource.description}</div>
+                            {resource.phone && (
+                              <div className="text-xs text-primary font-medium mt-1">{resource.phone}</div>
+                            )}
+                          </div>
+                        ))}
+                      </div>
                     </Card>
                   );
                 })}
               </div>
             </div>
           </section>
+
+          {/* AI Support Section */}
+          <section className="scroll-mt-16 bg-primary/5 py-16 rounded-2xl">
+            <div className="max-w-4xl mx-auto text-center">
+              <h2 className="font-heading text-3xl md:text-4xl font-bold text-foreground mb-6">
+                24/7 AI-Powered Support
+              </h2>
+              <p className="text-lg text-foreground/70 mb-8 max-w-2xl mx-auto">
+                Our specialized AI assistant understands trauma and can provide personalized guidance, 
+                resources, and support based on your specific needs and situation.
+              </p>
+              
+              <Button 
+                size="lg" 
+                className="bg-osu-scarlet hover:bg-osu-scarlet-dark text-white"
+                onClick={() => setShowVictimAI(true)}
+              >
+                <Bot className="h-5 w-5 mr-2" />
+                Start Your Healing Journey
+              </Button>
+            </div>
+          </section>
         </div>
 
         {/* Call to Action */}
-        <section className="scroll-mt-16 bg-gradient-to-br from-osu-scarlet via-accent to-osu-scarlet-dark text-white rounded-2xl overflow-hidden shadow-2xl">
-          <div className="px-8 py-24 md:py-32">
+        <section className="scroll-mt-16 bg-gradient-to-br from-osu-gray via-osu-scarlet to-osu-scarlet-dark text-white overflow-hidden">
+          <div className="px-8 py-20 md:py-24">
             <div className="max-w-4xl mx-auto text-center">
-              <h2 className="font-heading text-4xl md:text-6xl font-bold mb-12">
+              <h2 className="font-heading text-3xl md:text-5xl font-bold mb-8">
                 You deserve support and healing
               </h2>
-              <div className="space-y-8 text-lg md:text-xl leading-relaxed">
-                <p className="text-white/95 max-w-2xl mx-auto">
-                  Take the first step toward recovery. Our AI assistant can help you find the right 
-                  resources, or connect with a real person who understands your journey.
-                </p>
-              </div>
-              <div className="flex flex-col sm:flex-row gap-4 max-w-sm sm:max-w-lg mx-auto mt-12 px-4">
+              <p className="text-lg md:text-xl text-white/90 mb-8 max-w-2xl mx-auto leading-relaxed">
+                Take the first step toward recovery. Our community and resources are here to support you 
+                every step of the way.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
                 <Button 
                   size="lg" 
                   variant="secondary"
-                  className="bg-white text-osu-scarlet hover:bg-white/90 w-full sm:flex-1"
+                  className="bg-white text-osu-scarlet hover:bg-white/90 flex-1"
                   onClick={() => setShowVictimAI(true)}
                 >
                   <Bot className="h-5 w-5 mr-2" />
-                  Open AI Assistant
+                  Get AI Support
                 </Button>
                 <Button 
                   size="lg" 
-                  className="bg-osu-gray hover:bg-osu-gray-dark text-white w-full sm:flex-1"
+                  className="bg-osu-gray hover:bg-osu-gray-dark text-white flex-1"
                   onClick={() => setShowSignupModal(true)}
                 >
                   <Users className="h-5 w-5 mr-2" />
-                  Join Our Community
+                  Join Community
                 </Button>
               </div>
             </div>
