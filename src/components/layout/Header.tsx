@@ -53,20 +53,13 @@ const Header = ({
       setHasScrolled(window.scrollY > 0);
     };
     
-    // Quick Exit keyboard shortcut
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key === 'Q') {
-        e.preventDefault();
-        window.open('https://google.com', '_blank');
-      }
-    };
     
     window.addEventListener('scroll', handleScroll);
-    document.addEventListener('keydown', handleKeyDown);
+    
     
     return () => {
       window.removeEventListener('scroll', handleScroll);
-      document.removeEventListener('keydown', handleKeyDown);
+      
     };
   }, [user]);
 
@@ -243,17 +236,6 @@ const Header = ({
                   </Button>
                 </>}
 
-              {/* Quick Exit Button */}
-              <Button 
-                size="sm" 
-                variant="ghost" 
-                className="text-muted-foreground hover:text-destructive text-xs px-2 h-8"
-                onClick={() => window.open('https://google.com', '_blank')}
-                title="Quick Exit - Ctrl+Shift+Q or click to open Google in new tab"
-              >
-                <X className="h-3 w-3 mr-1" />
-                Exit
-              </Button>
 
               {/* Get Involved CTA */}
               <Button size="sm" asChild className="support-link bg-[hsl(var(--osu-scarlet))] hover:bg-[hsl(var(--osu-scarlet-dark))] text-white font-medium px-4 h-9">
