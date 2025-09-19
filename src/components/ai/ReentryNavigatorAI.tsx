@@ -546,49 +546,6 @@ const ReentryNavigatorAI: React.FC<ReentryNavigatorAIProps> = ({ isOpen, onClose
             </div>
           </div>
 
-          {/* Emergency Help Section */}
-          <div className="border-t border-border/50 mt-4 pt-4 bg-background">
-            <div className="text-center space-y-4">
-              <h3 className="font-semibold text-foreground text-base">
-                Need Help Right Now?
-              </h3>
-              
-              <div className="grid grid-cols-3 gap-3">
-                {/* 911 */}
-                <a href="tel:911" aria-label="Call 911 Emergency"
-                  className="flex flex-col items-center p-4 bg-red-50 dark:bg-red-950/20 border-2 border-red-200 dark:border-red-800 rounded-xl hover:bg-red-100 dark:hover:bg-red-950/40 transition-colors">
-                  <div className="w-8 h-8 bg-red-600 rounded-full flex items-center justify-center mb-2">
-                    <span className="text-white text-lg">📞</span>
-                  </div>
-                  <div className="font-semibold text-red-700 dark:text-red-400 text-sm">911</div>
-                  <div className="text-xs text-red-600 dark:text-red-500 text-center">Emergency</div>
-                </a>
-                {/* 988 */}
-                <a href="tel:988" aria-label="Call 988 Mental Health Support"
-                  className="flex flex-col items-center p-4 bg-blue-50 dark:bg-blue-950/20 border-2 border-blue-200 dark:border-blue-800 rounded-xl hover:bg-blue-100 dark:hover:bg-blue-950/40 transition-colors">
-                  <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center mb-2">
-                    <span className="text-white text-lg">💬</span>
-                  </div>
-                  <div className="font-semibold text-blue-700 dark:text-blue-400 text-sm">988</div>
-                  <div className="text-xs text-blue-600 dark:text-blue-500 text-center">Mental Health Support</div>
-                </a>
-                {/* 211 */}
-                <a href="tel:211" aria-label="Call 211 Local Resources"
-                  className="flex flex-col items-center p-4 bg-green-50 dark:bg-green-950/20 border-2 border-green-200 dark:border-green-800 rounded-xl hover:bg-green-100 dark:hover:bg-green-950/40 transition-colors">
-                  <div className="w-8 h-8 bg-green-600 rounded-full flex items-center justify-center mb-2">
-                    <span className="text-white text-lg">📱</span>
-                  </div>
-                  <div className="font-semibold text-green-700 dark:text-green-400 text-sm">211</div>
-                  <div className="text-xs text-green-600 dark:text-green-500 text-center">Local Resources</div>
-                </a>
-              </div>
-
-              
-              <p className="text-xs text-muted-foreground italic">
-                You're safe here. Take what you need, when you're ready.
-              </p>
-            </div>
-          </div>
         </div>
 
         {/* Email Modal */}
