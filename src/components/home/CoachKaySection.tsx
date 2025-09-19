@@ -1,6 +1,6 @@
 import { Calendar } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import ChatbotPopup from "@/components/ui/ChatbotPopup";
+import AskCoachKay from "@/components/ui/AskCoachKay";
 
 export const CoachKaySection = () => {
   return (
@@ -22,7 +22,7 @@ export const CoachKaySection = () => {
               </div>
               
               <div className="flex flex-col sm:flex-row gap-4 mt-8">
-                <ChatbotPopup />
+                <AskCoachKay />
                 <Button 
                   size="lg" 
                   variant="outline" 
