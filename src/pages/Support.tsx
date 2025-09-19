@@ -17,7 +17,6 @@ const Support = () => {
     document.title = "Get Involved | Forward Focus Elevation";
   }, []);
 
-  const crowdfundingUrl = "https://your-crowdfunding-platform.com"; // Replace with actual URL
   const sponsorshipUrl = "https://your-sponsorship-platform.com"; // Replace with actual URL
   return (
     <main id="main">
@@ -72,7 +71,7 @@ const Support = () => {
                     <DialogHeader>
                       <DialogTitle className="text-2xl">Choose Your Donation Amount</DialogTitle>
                     </DialogHeader>
-                    <DonationBoxes crowdfundingUrl={crowdfundingUrl} />
+                    <DonationBoxes />
                   </DialogContent>
                 </Dialog>
               </CardContent>
