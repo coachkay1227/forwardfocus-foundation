@@ -8,7 +8,7 @@ import { PathwaysSection } from "@/components/home/PathwaysSection";
 import { CallToActionSection } from "@/components/home/CallToActionSection";
 import { CoachKaySection } from "@/components/home/CoachKaySection";
 import { STATES } from "@/data/states";
-import partnerOrgsHero from "@/assets/partner-organizations-hero.jpg";
+import diverseCommunityMeeting from "@/assets/diverse-community-meeting.jpg";
 const Index = () => {
   const [showAIDiscovery, setShowAIDiscovery] = useState(false);
   const [showStateModal, setShowStateModal] = useState(false);
@@ -43,31 +43,31 @@ const Index = () => {
         onShowAIDiscovery={() => setShowAIDiscovery(true)}
       />
       
-      {/* Partner Network Section */}
+      <CoachKaySection />
+      <PathwaysSection />
+      <TestimonialsSection />
+      <CallToActionSection />
+      
+      {/* Community Image Section */}
       <section className="py-16 bg-gradient-to-b from-background to-muted/20">
         <div className="container px-4">
           <div className="relative rounded-2xl overflow-hidden shadow-xl max-w-5xl mx-auto">
             <img 
-              src={partnerOrgsHero} 
-              alt="Diverse team of professionals collaborating in a modern office setting"
+              src={diverseCommunityMeeting} 
+              alt="Diverse community members meeting and supporting each other"
               className="w-full h-80 object-cover"
             />
-            <div className="absolute inset-0 bg-gradient-to-r from-primary/80 to-secondary/70 flex items-center justify-center">
+            <div className="absolute inset-0 bg-gradient-to-r from-primary/60 to-secondary/60 flex items-center justify-center">
               <div className="text-center text-primary-foreground max-w-3xl px-8">
-                <h2 className="font-heading text-4xl md:text-5xl font-bold mb-4">Trusted Partner Network</h2>
-                <p className="text-lg leading-relaxed mb-6">
-                  Working with verified organizations across Ohio to provide comprehensive support for your journey forward.
+                <h2 className="font-heading text-4xl md:text-5xl font-bold mb-4">Building Stronger Communities Together</h2>
+                <p className="text-lg leading-relaxed">
+                  Join our network of support, healing, and empowerment as we create pathways to brighter futures.
                 </p>
               </div>
             </div>
           </div>
         </div>
       </section>
-      
-      <CoachKaySection />
-      <PathwaysSection />
-      <TestimonialsSection />
-      <CallToActionSection />
 
       <AIResourceDiscovery 
         isOpen={showAIDiscovery} 
