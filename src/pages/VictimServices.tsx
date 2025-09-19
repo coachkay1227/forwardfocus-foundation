@@ -211,9 +211,9 @@ export default function VictimServices() {
                 <Shield className="h-8 w-8 text-white" />
                 <span className="text-sm uppercase tracking-wider font-medium bg-white/10 backdrop-blur-sm border border-white/20 px-4 py-2 rounded-full">Healing & Safety Hub</span>
               </div>
-              <h1 className="font-heading text-5xl md:text-7xl font-bold mb-8 leading-tight">
+              <h1 className="font-heading text-4xl md:text-6xl font-bold mb-6 leading-tight text-center">
                 You Are Not Alone.
-                <span className="block text-white/80">Healing Starts Here.</span>
+                <span className="block text-white/80 mt-2">Healing Starts Here.</span>
               </h1>
               <p className="text-lg md:text-xl text-white/90 mb-12 leading-relaxed max-w-3xl mx-auto">
                 Comprehensive support for crime victims and survivors. Crisis intervention, advocacy, 
