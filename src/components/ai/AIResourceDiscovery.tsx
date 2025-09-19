@@ -5,10 +5,11 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Badge } from '@/components/ui/badge';
-import { Loader2, Send, Bot, User, Phone, Globe, MapPin, Star, Shield, Mail } from 'lucide-react';
+import { Loader2, Send, Bot, User, Phone, Globe, MapPin, Star, Shield, Mail, RotateCcw, History } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { parseTextForLinks, formatAIResponse } from '@/lib/text-parser';
+import EmailChatHistoryModal from './EmailChatHistoryModal';
 
 interface Message {
   id: string;
@@ -53,6 +54,7 @@ const AIResourceDiscovery: React.FC<AIResourceDiscoveryProps> = ({
   const [inputValue, setInputValue] = useState(initialQuery);
   const [isLoading, setIsLoading] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
+  const [showEmailModal, setShowEmailModal] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
 
@@ -177,6 +179,25 @@ const AIResourceDiscovery: React.FC<AIResourceDiscoveryProps> = ({
       setIsLoading(false);
       setIsTyping(false);
     }
+  };
+
+  const handleNewChat = () => {
+    setMessages([]);
+    setInputValue('');
+    setIsLoading(false);
+    setIsTyping(false);
+  };
+
+  const handleEmailHistory = () => {
+    if (messages.length === 0) {
+      toast({
+        title: "No chat history",
+        description: "Start a conversation to save your chat history.",
+        variant: "default",
+      });
+      return;
+    }
+    setShowEmailModal(true);
   };
 
   const ResourceCard = ({ resource }: { resource: Resource }) => (
@@ -398,7 +419,7 @@ const AIResourceDiscovery: React.FC<AIResourceDiscoveryProps> = ({
             <div ref={messagesEndRef} />
           </ScrollArea>
           
-          <div className="p-4 border-t border-border bg-background/95 backdrop-blur-sm flex-shrink-0">
+          <div className="p-4 border-t border-border bg-background/95 backdrop-blur-sm flex-shrink-0 space-y-3">
             <div className="flex gap-2">
               <Input
                 value={inputValue}
@@ -421,9 +442,39 @@ const AIResourceDiscovery: React.FC<AIResourceDiscoveryProps> = ({
                 )}
               </Button>
             </div>
+            
+            {/* Bottom Action Buttons */}
+            <div className="flex gap-2 justify-center">
+              <Button 
+                variant="outline" 
+                size="sm" 
+                onClick={handleNewChat}
+                className="flex items-center gap-2 text-sm"
+              >
+                <RotateCcw className="h-4 w-4" />
+                New Chat
+              </Button>
+              <Button 
+                variant="outline" 
+                size="sm" 
+                onClick={handleEmailHistory}
+                className="flex items-center gap-2 text-sm"
+              >
+                <History className="h-4 w-4" />
+                Email History
+              </Button>
+            </div>
           </div>
         </div>
       </DialogContent>
+
+      {/* Email History Modal */}
+      <EmailChatHistoryModal
+        isOpen={showEmailModal}
+        onClose={() => setShowEmailModal(false)}
+        messages={messages}
+        coachName="AI Resource Navigator"
+      />
     </Dialog>
   );
 };
