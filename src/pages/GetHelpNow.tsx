@@ -201,7 +201,54 @@ export default function GetHelpNow() {
                     <ChevronRight className="h-4 w-4 ml-2" />
                   </Link>
                 </Button>
+            </div>
+
+            {/* Additional Support Options */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:auto-rows-fr items-stretch mt-16">
+              <div className="bg-background rounded-xl p-6 md:p-10 border shadow-lg hover:shadow-xl transition-all h-full flex flex-col">
+                <div className="flex items-center gap-6 mb-8 justify-center">
+                  <div className="w-12 h-12 md:w-16 md:h-16 bg-primary rounded-xl flex items-center justify-center shadow-md">
+                    <Bot className="h-6 w-6 md:h-8 md:w-8 text-primary-foreground" />
+                  </div>
+                </div>
+                <h3 className="text-xl md:text-2xl font-semibold text-foreground text-center mb-4">
+                  24/7 AI + Human-Powered Guidance
+                </h3>
+                <p className="text-foreground/70 text-base md:text-lg leading-relaxed text-center mb-8 flex-grow">
+                  Trauma recovery, reentry support, and growth resources available whenever you need them. 
+                  Technology enhances support, it never replaces human connection.
+                </p>
+                <Button asChild size="lg" className="w-full mt-auto h-11 md:h-12">
+                  <Link to="/victim-services">
+                    <Bot className="h-5 w-5 mr-2" />
+                    Access AI Support Tools
+                    <ChevronRight className="h-4 w-4 ml-2" />
+                  </Link>
+                </Button>
               </div>
+
+              <div className="bg-background rounded-xl p-6 md:p-10 border shadow-lg hover:shadow-xl transition-all h-full flex flex-col">
+                <div className="flex items-center gap-6 mb-8 justify-center">
+                  <div className="w-12 h-12 md:w-16 md:h-16 bg-secondary rounded-xl flex items-center justify-center shadow-md">
+                    <Users className="h-6 w-6 md:h-8 md:w-8 text-secondary-foreground" />
+                  </div>
+                </div>
+                <h3 className="text-xl md:text-2xl font-semibold text-foreground text-center mb-4">
+                  Safe, Judgment-Free Community
+                </h3>
+                <p className="text-foreground/70 text-base md:text-lg leading-relaxed text-center mb-8 flex-grow">
+                  Peer and professional support in an environment where you're understood, 
+                  valued, and empowered to thrive on your own terms.
+                </p>
+                <Button asChild size="lg" variant="outline" className="w-full mt-auto border-secondary text-secondary hover:bg-secondary/10 h-11 md:h-12">
+                  <Link to="/organizations">
+                    <Users className="h-5 w-5 mr-2" />
+                    Join Our Community
+                    <ChevronRight className="h-4 w-4 ml-2" />
+                  </Link>
+                </Button>
+              </div>
+            </div>
             </div>
           </div>
         </section>

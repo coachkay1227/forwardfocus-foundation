@@ -312,36 +312,6 @@ export default function VictimServices() {
                   );
                 })}
               </div>
-
-              {/* What Makes Us Different - Victim Services Focus */}
-              <div className="mt-16 grid md:grid-cols-2 gap-8">
-                <div className="bg-background rounded-xl p-10 border shadow-lg hover:shadow-xl transition-all">
-                  <div className="flex items-center gap-6 mb-8">
-                    <div className="w-16 h-16 bg-primary rounded-xl flex items-center justify-center shadow-md">
-                      <Brain className="h-8 w-8 text-primary-foreground" />
-                    </div>
-                    <h3 className="text-2xl font-semibold text-foreground">
-                      24/7 AI + Human-Powered Guidance
-                    </h3>
-                  </div>
-                  <p className="text-foreground/70 text-lg leading-relaxed">Trauma recovery, reentry support, and growth resources available whenever you need them. Technology enhances support, it never replaces human connection.</p>
-                </div>
-
-                <div className="bg-background rounded-xl p-10 border shadow-lg hover:shadow-xl transition-all">
-                  <div className="flex items-center gap-6 mb-8">
-                    <div className="w-16 h-16 bg-accent rounded-xl flex items-center justify-center shadow-md">
-                      <Shield className="h-8 w-8 text-accent-foreground" />
-                    </div>
-                    <h3 className="text-2xl font-semibold text-foreground">
-                      Safe, Judgment-Free Community
-                    </h3>
-                  </div>
-                  <p className="text-foreground/70 text-lg leading-relaxed">
-                    Peer and professional support in an environment where you're understood, 
-                    valued, and empowered to thrive on your own terms.
-                  </p>
-                </div>
-              </div>
             </div>
           </section>
         </div>
