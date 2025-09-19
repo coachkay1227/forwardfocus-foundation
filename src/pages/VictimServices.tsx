@@ -342,17 +342,6 @@ export default function VictimServices() {
                   </p>
                 </div>
               </div>
-              
-              <div className="text-center mt-16 px-4">
-                <Button 
-                  size="lg" 
-                  className="text-lg px-6 sm:px-10 py-6 shadow-lg hover:shadow-xl transition-all duration-300 bg-osu-scarlet hover:bg-osu-scarlet-dark w-full max-w-sm sm:max-w-none sm:w-auto"
-                  onClick={() => setShowSignupModal(true)}
-                >
-                  Start Getting Help Now
-                  <ArrowRight className="ml-3 h-6 w-6" />
-                </Button>
-              </div>
             </div>
           </section>
         </div>
