@@ -32,7 +32,12 @@ const Support = () => {
               Choose how you want to support our AI-powered digital education hub that transforms lives and builds stronger communities
             </p>
             <div className="flex flex-col sm:flex-row justify-center gap-4">
-              <Button size="lg" variant="secondary" className="bg-white text-osu-scarlet hover:bg-white/90">
+              <Button 
+                size="lg" 
+                variant="secondary" 
+                className="bg-white text-osu-scarlet hover:bg-white/90"
+                onClick={() => setActiveDialog('donate')}
+              >
                 Donate
               </Button>
               <Button size="lg" className="bg-osu-gray hover:bg-osu-gray-dark text-white">
