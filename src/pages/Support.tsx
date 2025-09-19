@@ -17,7 +17,7 @@ const Support = () => {
     document.title = "Get Involved | Forward Focus Elevation";
   }, []);
 
-  const sponsorshipUrl = "https://your-sponsorship-platform.com"; // Replace with actual URL
+  const sponsorshipUrl = "https://collect.crowded.me/collection/219ea37a-28de-4930-b00f-dceb78a90e10";
   return (
     <main id="main">
       {/* Hero Section */}
@@ -86,7 +86,7 @@ const Support = () => {
                   <CardTitle className="text-xl font-semibold text-foreground">Sponsor Success Stories</CardTitle>
                 </div>
                 <CardDescription className="text-foreground/70 text-base leading-relaxed">
-                  Sponsor accelerator cohorts, youth AI workshops, or our entire platform. Get hiring pipeline access and measurable ROI.
+                  Sponsor accelerator cohorts, youth AI workshops, or our entire platform. Join us in breaking cycles and creating pathways to success.
                 </CardDescription>
               </CardHeader>
               <CardContent className="pt-0 flex-1 flex flex-col justify-between">
