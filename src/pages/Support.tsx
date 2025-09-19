@@ -2,10 +2,10 @@ import { useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { Mail, Phone, MapPin, Clock, DollarSign, Users, BookOpen, Handshake } from "lucide-react";
+import { Mail, Phone, MapPin, Clock, Heart, Building2, Presentation, Landmark, GraduationCap, BookOpenCheck } from "lucide-react";
 const Support = () => {
   useEffect(() => {
-    document.title = "Support Forward Focus Elevation | Make an Impact";
+    document.title = "Get Involved | Forward Focus Elevation";
   }, []);
   return (
     <main id="main">
@@ -15,11 +15,10 @@ const Support = () => {
         <div className="relative container py-24 md:py-32">
           <div className="max-w-5xl mx-auto text-center">
             <h1 className="font-heading text-4xl md:text-5xl font-bold mb-8 leading-tight">
-              Support Second Chances. Build Lasting Change.
+              Multiple Ways to Invest in Second Chances
             </h1>
             <p className="text-lg md:text-xl mb-12 text-white/90 leading-relaxed max-w-3xl mx-auto">
-              Forward Focus Elevation is a new nonprofit committed to empowering justice-impacted families. 
-              Your support helps us lay the foundation for stronger communities across Ohio.
+              Choose how you want to support our AI-powered digital education hub that transforms lives and builds stronger communities
             </p>
             <div className="flex flex-col sm:flex-row justify-center gap-4">
               <Button size="lg" variant="secondary" className="bg-white text-osu-scarlet hover:bg-white/90">
@@ -37,31 +36,32 @@ const Support = () => {
         <div className="max-w-6xl mx-auto space-y-24">
         {/* Ways to Support Grid */}
         <section className="bg-secondary/5 py-16 rounded-2xl border-2 border-osu-scarlet/20 overflow-hidden">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             <Card className="bg-background rounded-xl p-10 border-2 border-osu-scarlet/30 shadow-lg hover:shadow-xl hover:shadow-osu-scarlet/20 transition-all duration-300 md:hover:scale-105 md:hover:-translate-y-1 active:scale-95 cursor-pointer">
               <CardHeader className="pb-6">
                 <div className="flex items-center gap-3 mb-4">
                   <div className="p-3 bg-osu-scarlet/10 rounded-full">
-                    <DollarSign className="h-6 w-6 text-osu-scarlet" />
+                    <Heart className="h-6 w-6 text-osu-scarlet" />
                   </div>
-                  <CardTitle className="text-2xl font-semibold text-foreground">Donate</CardTitle>
+                  <CardTitle className="text-2xl font-semibold text-foreground">Start Small, Think Big</CardTitle>
                 </div>
                 <CardDescription className="text-foreground/70 text-lg leading-relaxed">
-                  Every gift directly funds programs and resources that help justice-impacted families rebuild their lives. 
-                  Your donation supports housing assistance, job training, mental health services, and educational opportunities.
+                  Every dollar powers our AI digital hub providing free mental health, reentry, business, and credit education courses. From $5 monthly to major gifts - all donations create impact.
                 </CardDescription>
               </CardHeader>
               <CardContent className="pt-0">
                 <div className="space-y-3">
                   <div className="text-sm text-foreground/60">
-                    • Childcare support programs
+                    • Monthly sustainers starting at $5
                     <br />
-                    • Job training and materials
+                    • Scholarship fund for 30-day accelerators
                     <br />
-                    • Housing assistance programs
+                    • Platform development and new courses
+                    <br />
+                    • Emergency assistance for participants
                   </div>
-                  <Button variant="link" className="p-0 text-primary font-medium text-lg">
-                    Donate Now →
+                  <Button variant="link" className="p-0 text-primary font-medium text-lg" asChild>
+                    <a href="#" target="_blank" rel="noopener noreferrer">Donate Now →</a>
                   </Button>
                 </div>
               </CardContent>
@@ -71,26 +71,27 @@ const Support = () => {
               <CardHeader className="pb-6">
                 <div className="flex items-center gap-3 mb-4">
                   <div className="p-3 bg-osu-scarlet/10 rounded-full">
-                    <Users className="h-6 w-6 text-osu-scarlet" />
+                    <Building2 className="h-6 w-6 text-osu-scarlet" />
                   </div>
-                  <CardTitle className="text-2xl font-semibold text-foreground">Volunteer</CardTitle>
+                  <CardTitle className="text-2xl font-semibold text-foreground">Sponsor Success Stories</CardTitle>
                 </div>
                 <CardDescription className="text-foreground/70 text-lg leading-relaxed">
-                  Flexible volunteer opportunities to mentor individuals, facilitate support groups, assist with events, 
-                  or provide administrative support. Choose from weekly, monthly, or project-based commitments.
+                  Sponsor accelerator cohorts, youth AI workshops, or our entire platform. Get hiring pipeline access, CSR impact, and measurable community investment ROI.
                 </CardDescription>
               </CardHeader>
               <CardContent className="pt-0">
                 <div className="space-y-3">
                   <div className="text-sm text-foreground/60">
-                    • Mentorship programs (2-4 hours/week)
+                    • Cohort sponsorships ($5K-$25K)
                     <br />
-                    • Event assistance (flexible schedule)
+                    • Youth seasonal program sponsorships
                     <br />
-                    • Administrative support (remote available)
+                    • Platform partnerships and tech donations
+                    <br />
+                    • Talent pipeline access to graduates
                   </div>
                   <Button variant="link" className="p-0 text-primary font-medium text-lg">
-                    Get Involved →
+                    Explore Sponsorship →
                   </Button>
                 </div>
               </CardContent>
@@ -100,26 +101,27 @@ const Support = () => {
               <CardHeader className="pb-6">
                 <div className="flex items-center gap-3 mb-4">
                   <div className="p-3 bg-osu-scarlet/10 rounded-full">
-                    <BookOpen className="h-6 w-6 text-osu-scarlet" />
+                    <Presentation className="h-6 w-6 text-osu-scarlet" />
                   </div>
-                  <CardTitle className="text-2xl font-semibold text-foreground">Share Skills</CardTitle>
+                  <CardTitle className="text-2xl font-semibold text-foreground">Share Your Expertise</CardTitle>
                 </div>
                 <CardDescription className="text-foreground/70 text-lg leading-relaxed">
-                  Offer your professional expertise through training workshops, skill-building sessions, career coaching, 
-                  or specialized mentorship in your field of expertise.
+                  Join our speaker bureau to present to our community, lead workshops, or facilitate Q&A sessions. Help justice-impacted individuals learn from industry leaders.
                 </CardDescription>
               </CardHeader>
               <CardContent className="pt-0">
                 <div className="space-y-3">
                   <div className="text-sm text-foreground/60">
-                    • Professional skills workshops
+                    • Virtual presentations to our community
                     <br />
-                    • Career coaching and resume help
+                    • Industry-specific workshops and panels
                     <br />
-                    • Industry-specific mentorship
+                    • 30-day accelerator guest speaking
+                    <br />
+                    • Youth mentorship and career guidance
                   </div>
                   <Button variant="link" className="p-0 text-primary font-medium text-lg">
-                    Contribute →
+                    Join Network →
                   </Button>
                 </div>
               </CardContent>
@@ -129,26 +131,87 @@ const Support = () => {
               <CardHeader className="pb-6">
                 <div className="flex items-center gap-3 mb-4">
                   <div className="p-3 bg-osu-scarlet/10 rounded-full">
-                    <Handshake className="h-6 w-6 text-osu-scarlet" />
+                    <Landmark className="h-6 w-6 text-osu-scarlet" />
                   </div>
-                  <CardTitle className="text-2xl font-semibold text-foreground">Partner With Us</CardTitle>
+                  <CardTitle className="text-2xl font-semibold text-foreground">Contract Our Services</CardTitle>
                 </div>
                 <CardDescription className="text-foreground/70 text-lg leading-relaxed">
-                  Organizations can co-create programs, provide funding, offer employment opportunities, 
-                  or collaborate on community initiatives that create lasting change for justice-impacted families.
+                  Government agencies can contract our proven AI-integrated digital education model for reentry programs, juvenile justice, or workforce development initiatives.
                 </CardDescription>
               </CardHeader>
               <CardContent className="pt-0">
                 <div className="space-y-3">
                   <div className="text-sm text-foreground/60">
-                    • Corporate sponsorship opportunities
+                    • Reentry education service contracts
                     <br />
-                    • Employment partnership programs
+                    • Juvenile justice digital programming
                     <br />
-                    • Community collaboration initiatives
+                    • Workforce development board partnerships
+                    <br />
+                    • Research and pilot program collaborations
                   </div>
                   <Button variant="link" className="p-0 text-primary font-medium text-lg">
-                    Partner Today →
+                    Request Proposal →
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="bg-background rounded-xl p-10 border-2 border-osu-scarlet/30 shadow-lg hover:shadow-xl hover:shadow-osu-scarlet/20 transition-all duration-300 md:hover:scale-105 md:hover:-translate-y-1 active:scale-95 cursor-pointer">
+              <CardHeader className="pb-6">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="p-3 bg-osu-scarlet/10 rounded-full">
+                    <GraduationCap className="h-6 w-6 text-osu-scarlet" />
+                  </div>
+                  <CardTitle className="text-2xl font-semibold text-foreground">Grant Funding</CardTitle>
+                </div>
+                <CardDescription className="text-foreground/70 text-lg leading-relaxed">
+                  Foundations can fund our innovative approach combining AI technology with justice reform, education access, and community building for scalable impact.
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="pt-0">
+                <div className="space-y-3">
+                  <div className="text-sm text-foreground/60">
+                    • Program expansion grants
+                    <br />
+                    • Technology development funding
+                    <br />
+                    • Research partnership opportunities
+                    <br />
+                    • National replication pilot funding
+                  </div>
+                  <Button variant="link" className="p-0 text-primary font-medium text-lg">
+                    Discuss Grants →
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="bg-background rounded-xl p-10 border-2 border-osu-scarlet/30 shadow-lg hover:shadow-xl hover:shadow-osu-scarlet/20 transition-all duration-300 md:hover:scale-105 md:hover:-translate-y-1 active:scale-95 cursor-pointer">
+              <CardHeader className="pb-6">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="p-3 bg-osu-scarlet/10 rounded-full">
+                    <BookOpenCheck className="h-6 w-6 text-osu-scarlet" />
+                  </div>
+                  <CardTitle className="text-2xl font-semibold text-foreground">License Our Model</CardTitle>
+                </div>
+                <CardDescription className="text-foreground/70 text-lg leading-relaxed">
+                  Organizations can license our curriculum, platform, or train-the-trainer programs to implement our proven digital education approach in their communities.
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="pt-0">
+                <div className="space-y-3">
+                  <div className="text-sm text-foreground/60">
+                    • Curriculum licensing for nonprofits
+                    <br />
+                    • White-label platform partnerships
+                    <br />
+                    • Train-the-trainer certifications
+                    <br />
+                    • Consultation for program replication
+                  </div>
+                  <Button variant="link" className="p-0 text-primary font-medium text-lg">
+                    Learn Licensing →
                   </Button>
                 </div>
               </CardContent>
@@ -160,11 +223,11 @@ const Support = () => {
         <section className="text-center">
           <div className="max-w-4xl mx-auto">
             <h2 className="font-heading text-4xl md:text-5xl font-bold text-foreground mb-6">
-              Why Your Support Matters
+              Why Your Investment Matters
             </h2>
             <p className="text-xl text-foreground/70 leading-relaxed">
-              We are just beginning, but with your support we aim to expand reentry resources, create community-based learning hubs, 
-              and build partnerships that open doors to jobs and healing.
+              Our AI-powered digital education hub is transforming how justice-impacted families access support, education, and opportunities. 
+              Your investment helps us scale innovative technology that creates lasting systemic change.
             </p>
           </div>
         </section>
@@ -237,17 +300,14 @@ const Support = () => {
           <div className="px-8 py-24 md:py-32">
             <div className="max-w-4xl mx-auto text-center">
               <h2 className="font-heading text-4xl md:text-6xl font-bold mb-12">
-                Be Part of the Beginning.
+                Not Sure Which Option Fits?
               </h2>
               <p className="text-lg md:text-xl leading-relaxed mb-12 text-primary-foreground/95 max-w-2xl mx-auto">
-                Your donation or sponsorship today builds the foundation for second-chance families tomorrow.
+                Let's talk! Schedule a 15-minute consultation to explore how you can invest in transforming lives through innovative digital education.
               </p>
-              <div className="flex flex-col sm:flex-row gap-6 justify-center">
+              <div className="flex justify-center">
                 <Button size="lg" variant="secondary" className="px-8 text-lg bg-white text-primary hover:bg-white/90">
-                  Give Now
-                </Button>
-                <Button size="lg" className="px-8 text-lg bg-primary/20 hover:bg-primary/30 text-white border border-white/20">
-                  Partner With Us
+                  Schedule Consultation →
                 </Button>
               </div>
             </div>
