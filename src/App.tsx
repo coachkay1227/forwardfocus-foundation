@@ -27,6 +27,7 @@ import Partners from "./pages/Partners";
 import SubmitReferral from "./pages/SubmitReferral";
 import AddResource from "./pages/AddResource";
 import RequestPartnership from "./pages/RequestPartnership";
+import RequestPartnerVerification from "./pages/RequestPartnerVerification";
 import Organizations from "./pages/Organizations";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsOfService from "./pages/TermsOfService";
@@ -67,6 +68,7 @@ const App = () => (
                   <Route path="/partners/submit-referral" element={<SubmitReferral />} />
                   <Route path="/partners/add-resource" element={<AddResource />} />
                   <Route path="/partners/request" element={<RequestPartnership />} />
+                  <Route path="/partners/request-verification" element={<RequestPartnerVerification />} />
                   <Route path="/RequestPartnership" element={<RequestPartnership />} />
                   <Route path="/organizations" element={<Organizations />} />
                   <Route path="/privacy" element={<PrivacyPolicy />} />
