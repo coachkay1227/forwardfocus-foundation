@@ -61,15 +61,15 @@ export default function AboutUs() {
             </h1>
             <p className="text-lg md:text-xl mb-12 text-white/90 leading-relaxed max-w-3xl mx-auto">Real Healing. Smart Tools. Second Chances for Every Story. AI-powered transformation for justice-impacted individuals and families because your next chapter deserves more than survival.</p>
             <div className="flex items-center justify-center gap-6 text-sm mb-12 flex-wrap">
-              <span className="flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 px-6 py-3 rounded-full">
+              <span className="flex items-center gap-2 bg-osu-scarlet/20 backdrop-blur-sm border border-osu-scarlet/30 px-6 py-3 rounded-full text-white">
                 <Shield className="h-5 w-5" />
                 Dignity
               </span>
-              <span className="flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 px-6 py-3 rounded-full">
+              <span className="flex items-center gap-2 bg-osu-gray/20 backdrop-blur-sm border border-osu-gray/30 px-6 py-3 rounded-full text-white">
                 <Heart className="h-5 w-5" />
                 Hope
               </span>
-              <span className="flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 px-6 py-3 rounded-full">
+              <span className="flex items-center gap-2 bg-white/20 backdrop-blur-sm border border-white/30 px-6 py-3 rounded-full text-white">
                 <Users className="h-5 w-5" />
                 Community
               </span>
