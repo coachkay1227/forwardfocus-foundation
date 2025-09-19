@@ -25,8 +25,14 @@ export const HeroSection = ({ selectedState, onShowStateModal, onShowAIDiscovery
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto mb-8 items-center justify-center">
-            <Button size="lg" variant="secondary" className="bg-osu-gray text-white hover:bg-osu-gray-dark" asChild>
-              <Link to="/help">Get Help Now</Link>
+            <Button size="lg" variant="osu-gray" asChild>
+              <Link 
+                to="/help" 
+                aria-label="Get immediate help and support services"
+                className="font-semibold"
+              >
+                Get Help Now
+              </Link>
             </Button>
 
             <Button 
