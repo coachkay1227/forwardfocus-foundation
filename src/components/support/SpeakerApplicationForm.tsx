@@ -101,34 +101,6 @@ export default function SpeakerApplicationForm() {
     setIsSubmitting(true);
 
     try {
-      // Save to database first
-      const { error: dbError } = await supabase.from('support_requests').insert({
-        request_type: 'speaker',
-        name: sanitizedData.name,
-        email: sanitizedData.email,
-        organization: sanitizedData.organization,
-        phone: sanitizedData.phone,
-        subject: 'Speaker Application',
-        message: sanitizedData.bio,
-        additional_data: {
-          title: sanitizedData.title,
-          expertise: sanitizedData.expertise,
-          topics: sanitizedData.topics,
-          availability: sanitizedData.availability,
-          presentation_type: sanitizedData.presentation_type,
-          linkedin: sanitizedData.linkedin,
-          previous_speaking: sanitizedData.previous_speaking,
-          tech_requirements: sanitizedData.tech_requirements
-        },
-        status: 'new'
-      });
-
-      if (dbError) {
-        console.error('Error saving to database:', dbError);
-        // Continue with email even if database fails
-      }
-
-      // Send email notification
       const { error } = await supabase.functions.invoke('send-support-email', {
         body: {
           type: 'speaker_application',

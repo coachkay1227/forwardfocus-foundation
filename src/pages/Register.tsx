@@ -97,36 +97,9 @@ const Register = () => {
           });
         }
       } else {
-        // Send welcome email
-        try {
-          const welcomeResponse = await fetch(
-            'https://gzukhsqgkwljfvwkfuno.supabase.co/functions/v1/send-auth-email',
-            {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd6dWtoc3Fna3dsamZ2d2tmdW5vIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU3MjQyOTMsImV4cCI6MjA3MTMwMDI5M30.Skon84aKH5K5TjW9pVnCI2A-6Z-9KrTYiNknpiqeCpk`,
-              },
-              body: JSON.stringify({
-                email: email.trim().toLowerCase(),
-                type: 'welcome',
-                userData: {
-                  name: email.split('@')[0] // Use email prefix as name
-                }
-              }),
-            }
-          );
-
-          const welcomeResult = await welcomeResponse.json();
-          console.log('Welcome email result:', welcomeResult);
-        } catch (error) {
-          console.error('Error sending welcome email:', error);
-          // Don't fail registration if welcome email fails
-        }
-
         toast({
           title: "Registration Successful!",
-          description: "Welcome! Check your email for a welcome message and important next steps.",
+          description: "Please check your email to verify your account before signing in.",
         });
         // Clear form
         setEmail("");

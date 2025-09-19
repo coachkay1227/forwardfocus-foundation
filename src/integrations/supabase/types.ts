@@ -125,54 +125,6 @@ export type Database = {
         }
         Relationships: []
       }
-      booking_requests: {
-        Row: {
-          booking_date: string
-          booking_time: string
-          created_at: string
-          email: string
-          id: string
-          ip_address: unknown | null
-          message: string | null
-          name: string
-          phone: string | null
-          status: string
-          updated_at: string
-          user_agent: string | null
-          user_id: string | null
-        }
-        Insert: {
-          booking_date: string
-          booking_time: string
-          created_at?: string
-          email: string
-          id?: string
-          ip_address?: unknown | null
-          message?: string | null
-          name: string
-          phone?: string | null
-          status?: string
-          updated_at?: string
-          user_agent?: string | null
-          user_id?: string | null
-        }
-        Update: {
-          booking_date?: string
-          booking_time?: string
-          created_at?: string
-          email?: string
-          id?: string
-          ip_address?: unknown | null
-          message?: string | null
-          name?: string
-          phone?: string | null
-          status?: string
-          updated_at?: string
-          user_agent?: string | null
-          user_id?: string | null
-        }
-        Relationships: []
-      }
       contact_access_justifications: {
         Row: {
           access_purpose: string
@@ -272,51 +224,6 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
-      }
-      contact_submissions: {
-        Row: {
-          created_at: string
-          email: string
-          form_type: string
-          id: string
-          ip_address: unknown | null
-          message: string
-          name: string
-          status: string
-          subject: string
-          updated_at: string
-          user_agent: string | null
-          user_id: string | null
-        }
-        Insert: {
-          created_at?: string
-          email: string
-          form_type?: string
-          id?: string
-          ip_address?: unknown | null
-          message: string
-          name: string
-          status?: string
-          subject: string
-          updated_at?: string
-          user_agent?: string | null
-          user_id?: string | null
-        }
-        Update: {
-          created_at?: string
-          email?: string
-          form_type?: string
-          id?: string
-          ip_address?: unknown | null
-          message?: string
-          name?: string
-          status?: string
-          subject?: string
-          updated_at?: string
-          user_agent?: string | null
-          user_id?: string | null
-        }
-        Relationships: []
       }
       learning_modules: {
         Row: {
@@ -773,60 +680,6 @@ export type Database = {
         }
         Relationships: []
       }
-      support_requests: {
-        Row: {
-          additional_data: Json | null
-          created_at: string
-          email: string
-          id: string
-          ip_address: unknown | null
-          message: string
-          name: string
-          organization: string | null
-          phone: string | null
-          request_type: string
-          status: string
-          subject: string
-          updated_at: string
-          user_agent: string | null
-          user_id: string | null
-        }
-        Insert: {
-          additional_data?: Json | null
-          created_at?: string
-          email: string
-          id?: string
-          ip_address?: unknown | null
-          message: string
-          name: string
-          organization?: string | null
-          phone?: string | null
-          request_type: string
-          status?: string
-          subject: string
-          updated_at?: string
-          user_agent?: string | null
-          user_id?: string | null
-        }
-        Update: {
-          additional_data?: Json | null
-          created_at?: string
-          email?: string
-          id?: string
-          ip_address?: unknown | null
-          message?: string
-          name?: string
-          organization?: string | null
-          phone?: string | null
-          request_type?: string
-          status?: string
-          subject?: string
-          updated_at?: string
-          user_agent?: string | null
-          user_id?: string | null
-        }
-        Relationships: []
-      }
       system_metrics: {
         Row: {
           id: string
@@ -910,45 +763,6 @@ export type Database = {
           id?: string
           role?: Database["public"]["Enums"]["app_role"]
           user_id?: string
-        }
-        Relationships: []
-      }
-      website_analytics: {
-        Row: {
-          action_type: string
-          additional_data: Json | null
-          created_at: string
-          id: string
-          ip_address: unknown | null
-          page_path: string
-          referrer: string | null
-          session_id: string | null
-          user_agent: string | null
-          user_id: string | null
-        }
-        Insert: {
-          action_type?: string
-          additional_data?: Json | null
-          created_at?: string
-          id?: string
-          ip_address?: unknown | null
-          page_path: string
-          referrer?: string | null
-          session_id?: string | null
-          user_agent?: string | null
-          user_id?: string | null
-        }
-        Update: {
-          action_type?: string
-          additional_data?: Json | null
-          created_at?: string
-          id?: string
-          ip_address?: unknown | null
-          page_path?: string
-          referrer?: string | null
-          session_id?: string | null
-          user_agent?: string | null
-          user_id?: string | null
         }
         Relationships: []
       }
