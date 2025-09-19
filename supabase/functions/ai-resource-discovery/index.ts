@@ -92,10 +92,25 @@ Guidelines:
 - Be clear about geographic coverage (city/county)
 - Mention if services are free or low-cost when known`;
 
+    const openAIApiKey = Deno.env.get('OPENAI_API_KEY');
+    
+    if (!openAIApiKey) {
+      console.error('OpenAI API key not found');
+      return new Response(JSON.stringify({ 
+        error: 'AI service configuration error',
+        resources: resourceContext.slice(0, limit)
+      }), {
+        status: 500,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
+
+    console.log('Calling OpenAI API for query:', query);
+    
     const openAIResponse = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${Deno.env.get('OPENAI_API_KEY')}`,
+        'Authorization': `Bearer ${openAIApiKey}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
@@ -111,17 +126,38 @@ Guidelines:
 
     if (!openAIResponse.ok) {
       const errorData = await openAIResponse.text();
-      console.error('OpenAI API error:', errorData);
-      return new Response(JSON.stringify({ error: 'AI service temporarily unavailable' }), {
-        status: 500,
+      console.error('OpenAI API error:', openAIResponse.status, errorData);
+      
+      // Return helpful resources even if AI fails
+      return new Response(JSON.stringify({ 
+        error: 'AI service temporarily unavailable',
+        response: 'I apologize, but I\'m having trouble connecting to my AI service right now. Here are some relevant resources that might help with your request.',
+        resources: resourceContext.slice(0, limit),
+        totalFound: resources?.length || 0
+      }), {
+        status: 200,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       });
     }
 
     const aiData = await openAIResponse.json();
+    
+    if (!aiData.choices || !aiData.choices[0] || !aiData.choices[0].message) {
+      console.error('Invalid OpenAI response structure:', aiData);
+      return new Response(JSON.stringify({ 
+        error: 'Invalid AI response',
+        response: 'Here are some resources that might help with your request.',
+        resources: resourceContext.slice(0, limit),
+        totalFound: resources?.length || 0
+      }), {
+        status: 200,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
+    
     const aiResponse = aiData.choices[0].message.content;
 
-    // Find most relevant resources to return alongside AI response
+    // Find most relevant resources to return alongside AI response  
     const relevantResources = resources?.slice(0, limit) || [];
 
     console.log('AI Response generated successfully');
