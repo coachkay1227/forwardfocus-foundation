@@ -320,6 +320,7 @@ export const CrisisEmergencyBot = ({ trigger }: CrisisEmergencyBotProps) => {
             content: msg.text,
             timestamp: msg.timestamp
           }))}
+          coachName="Crisis Emergency Support"
         />
       </DialogContent>
     </Dialog>
