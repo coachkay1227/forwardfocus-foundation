@@ -11,7 +11,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { CrisisEmergencyBot } from "@/components/ai/CrisisEmergencyBot";
-import { ProcessedLogo } from "@/components/ui/ProcessedLogo";
 const linkCls = ({
   isActive
 }: {
@@ -159,11 +158,10 @@ const Header = ({
             {/* Logo */}
             <div className="logo flex-1 md:flex-none">
               <NavLink to="/" className="flex items-center md:hover:scale-105 transition-all duration-300 group">
-                <ProcessedLogo 
+                <img 
                   src="/logo-new.png" 
                   alt="Forward Focus Elevation" 
-                  className="h-14 w-auto drop-shadow-lg group-hover:drop-shadow-xl transition-all duration-300" 
-                  fallbackClassName="h-14 w-auto drop-shadow-lg filter brightness-0 invert group-hover:drop-shadow-xl transition-all duration-300"
+                  className="h-14 w-auto drop-shadow-lg filter brightness-110 contrast-110 group-hover:drop-shadow-xl transition-all duration-300" 
                 />
               </NavLink>
             </div>
