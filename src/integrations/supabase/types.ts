@@ -803,6 +803,10 @@ export type Database = {
         Args: { admin_email: string }
         Returns: undefined
       }
+      create_payment_secure: {
+        Args: { p_amount: number; p_status?: string; p_user_id: string }
+        Returns: string
+      }
       create_security_alert: {
         Args: {
           p_alert_type: string
@@ -1109,6 +1113,10 @@ export type Database = {
           team_id: string | null
           updated_at: string
         }
+      }
+      update_payment_status_secure: {
+        Args: { p_new_status: string; p_payment_id: string }
+        Returns: undefined
       }
       validate_admin_access_pattern: {
         Args: Record<PropertyKey, never>
