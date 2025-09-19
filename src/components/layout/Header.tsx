@@ -101,7 +101,7 @@ const Header = ({
                 <SheetContent side="left" className="w-[300px]">
                   <SheetTitle className="font-heading text-foreground">Menu</SheetTitle>
                   <div className="py-4 space-y-3">
-                    {/* Mobile Navigation */}
+                     {/* Mobile Navigation */}
                     <nav className="space-y-2">
                       <Button variant="ghost" size="sm" asChild className="justify-start w-full">
                         <NavLink to="/" onClick={() => setOpen(false)}>Home</NavLink>
@@ -117,9 +117,6 @@ const Header = ({
                       </Button>
                       <Button variant="ghost" size="sm" asChild className="justify-start w-full">
                         <NavLink to="/about" onClick={() => setOpen(false)}>About</NavLink>
-                      </Button>
-                      <Button variant="ghost" size="sm" asChild className="justify-start w-full">
-                        <NavLink to="/partners" onClick={() => setOpen(false)}>Partner Portal</NavLink>
                       </Button>
                     </nav>
 
