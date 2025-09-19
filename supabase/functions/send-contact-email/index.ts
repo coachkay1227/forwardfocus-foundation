@@ -30,7 +30,7 @@ const handler = async (req: Request): Promise<Response> => {
 
     // Send confirmation to user
     const userEmailResponse = await resend.emails.send({
-      from: "Forward Focus Elevation <support@forwardfocus.dev>",
+      from: "Forward Focus Elevation <support@ffeservices.net>",
       to: [email],
       subject: "Thank you for reaching out to Forward Focus Elevation",
       html: `
@@ -58,8 +58,8 @@ const handler = async (req: Request): Promise<Response> => {
           
           <div style="background: linear-gradient(135deg, #8B5CF6, #06B6D4); padding: 20px; border-radius: 8px; margin: 30px 0; text-align: center;">
             <p style="color: white; margin: 0 0 15px 0;">While you wait, explore our community resources:</p>
-            <a href="https://forwardfocus.dev/learn" style="background: white; color: #8B5CF6; padding: 12px 24px; text-decoration: none; border-radius: 6px; display: inline-block; font-weight: bold; margin-right: 10px;">Learning Community</a>
-            <a href="https://forwardfocus.dev/victim-services" style="background: rgba(255,255,255,0.2); color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; display: inline-block; font-weight: bold;">Healing Hub</a>
+            <a href="https://ffeservices.net/learn" style="background: white; color: #8B5CF6; padding: 12px 24px; text-decoration: none; border-radius: 6px; display: inline-block; font-weight: bold; margin-right: 10px;">Learning Community</a>
+            <a href="https://ffeservices.net/victim-services" style="background: rgba(255,255,255,0.2); color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; display: inline-block; font-weight: bold;">Healing Hub</a>
           </div>
           
           <p style="color: #6B7280; font-size: 14px; margin-top: 30px;">
@@ -72,8 +72,8 @@ const handler = async (req: Request): Promise<Response> => {
 
     // Send notification to admin/Coach Kay
     const adminEmailResponse = await resend.emails.send({
-      from: "Forward Focus Contact <noreply@forwardfocus.dev>",
-      to: ["admin@forwardfocus.dev"], // Replace with actual admin email
+      from: "Forward Focus Contact <noreply@ffeservices.net>",
+      to: ["support@ffeservices.net"], // Updated to match your domain
       subject: `New ${type} inquiry from ${name}`,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
