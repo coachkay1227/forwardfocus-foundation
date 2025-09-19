@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { X, Send, Bot, AlertTriangle, Phone, MessageSquare, Heart } from 'lucide-react';
+import { X, Send, Bot, AlertTriangle, Phone, MessageSquare, Heart, Shield } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
@@ -242,21 +242,21 @@ const CrisisSupportAI: React.FC<CrisisSupportAIProps> = ({ isOpen, onClose, init
           </div>
         </div>
 
-        {/* Emergency Banner */}
-        <div className="bg-destructive/10 border-b p-3 shrink-0">
-          <div className="flex items-center gap-4 text-sm flex-wrap">
-            <a href="tel:911" className="flex items-center gap-2 font-medium text-destructive hover:underline">
-              <Phone className="h-4 w-4" />
-              Emergency: 911
-            </a>
-            <a href="tel:988" className="flex items-center gap-2 font-medium text-primary hover:underline">
-              <Phone className="h-4 w-4" />
-              Crisis: 988
-            </a>
-            <a href="sms:741741?body=HOME" className="flex items-center gap-2 font-medium text-secondary hover:underline">
-              <MessageSquare className="h-4 w-4" />
-              Text HOME to 741741
-            </a>
+        {/* Support Categories */}
+        <div className="bg-muted/50 border-b p-3 shrink-0">
+          <div className="flex items-center justify-around text-xs">
+            <div className="flex items-center gap-1">
+              <Heart className="h-3 w-3 text-destructive" />
+              <span className="font-medium">Crisis Support</span>
+            </div>
+            <div className="flex items-center gap-1">
+              <Shield className="h-3 w-3 text-primary" />
+              <span className="font-medium">Safety Planning</span>
+            </div>
+            <div className="flex items-center gap-1">
+              <MessageSquare className="h-3 w-3 text-secondary" />
+              <span className="font-medium">Ohio Resources</span>
+            </div>
           </div>
         </div>
 
@@ -383,9 +383,28 @@ const CrisisSupportAI: React.FC<CrisisSupportAIProps> = ({ isOpen, onClose, init
           </div>
           <div className="flex items-center justify-between text-xs text-muted-foreground">
             <span>Alex is here 24/7 • Confidential • Trauma-informed support</span>
-            <div className="flex items-center gap-1">
-              <Heart className="h-3 w-3 text-destructive" />
-              <span>You matter</span>
+            <div className="flex gap-2">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => {
+                  setMessages([{
+                    id: '1',
+                    type: 'ai',
+                    content: "Hi, I'm Alex, your crisis support companion. I'm here to listen and help you find immediate support. Your safety matters deeply to me. Can you tell me what's bringing you here today? I want to understand so I can help you best.",
+                    timestamp: new Date(),
+                  }]);
+                  setConversationContext([]);
+                  setInput('');
+                }}
+                className="text-xs h-6 px-2"
+              >
+                New Chat
+              </Button>
+              <div className="flex items-center gap-1">
+                <Heart className="h-3 w-3 text-destructive" />
+                <span>You matter</span>
+              </div>
             </div>
           </div>
         </div>

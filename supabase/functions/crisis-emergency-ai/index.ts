@@ -7,7 +7,7 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
-interface CrisisQuery {
+interface EmergencyQuery {
   query: string;
   location?: string;
   county?: string;
@@ -24,17 +24,17 @@ serve(async (req) => {
   let errorCount = 0;
 
   try {
-    const { query, location, county, urgencyLevel = 'moderate', previousContext = [] }: CrisisQuery = await req.json();
+    const { query, location, county, urgencyLevel = 'moderate', previousContext = [] }: EmergencyQuery = await req.json();
 
     const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
     const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
     const supabase = createClient(supabaseUrl, supabaseKey);
 
-    // Enhanced resource filtering for crisis situations
+    // Enhanced resource filtering for emergency situations
     let resourceQuery = supabase
       .from('resources')
       .select('*')
-      .or('type.ilike.%crisis%,type.ilike.%emergency%,type.ilike.%mental health%,type.ilike.%suicide%,type.ilike.%domestic violence%,type.ilike.%substance abuse%')
+      .or('type.ilike.%crisis%,type.ilike.%emergency%,type.ilike.%mental health%,type.ilike.%support%,type.ilike.%advocacy%')
       .eq('verified', 'verified')
       .limit(15);
 
@@ -51,40 +51,40 @@ serve(async (req) => {
       throw new Error('Failed to fetch resources');
     }
 
-    // Crisis-specific system prompt optimized for Ohio residents
-    const systemPrompt = `You are Alex, a Crisis Support AI Assistant serving all 88 counties across Ohio. You specialize in crisis intervention and connecting people with local resources. Your approach:
+    // Emergency-specific system prompt optimized for Ohio
+    const systemPrompt = `You are a Crisis Emergency Support AI Assistant serving all 88 counties across Ohio. Your role is to provide immediate, compassionate support during crisis situations. Your approach:
 
-1. **EMPATHETIC LISTENING**: Create a safe space for people to share their struggles without judgment. Validate their feelings and acknowledge their courage in reaching out.
+1. **IMMEDIATE ASSESSMENT & SUPPORT**: Quickly assess the person's current situation and provide immediate emotional support and practical guidance.
 
-2. **CRISIS INTERVENTION PRINCIPLES**:
-   - Stay calm and supportive in your responses
-   - Ask gentle, probing questions to understand their situation
-   - Focus on immediate safety and practical next steps
-   - Provide hope while being realistic about available help
-   - Connect them to appropriate local Ohio resources
+2. **OHIO-FOCUSED CRISIS INTERVENTION**:
+   - Serve all Ohio residents from rural counties to major cities
+   - Provide trauma-informed, compassionate responses
+   - Focus on immediate safety and stabilization
+   - Connect to local Ohio resources and support systems
+   - Understand county-specific resources across all 88 Ohio counties
 
-3. **OHIO-WIDE RESOURCE KNOWLEDGE**:
-   - You serve all 88 Ohio counties from Hamilton to Cuyahoga to Franklin
-   - Prioritize local community resources, family justice centers, and county services
-   - Connect people to Ohio-specific support systems and programs
-   - Understand rural vs urban resource differences across the state
+3. **SMART CRISIS QUESTIONING**:
+   - Ask about their immediate safety and current location in Ohio
+   - Assess their support system and immediate needs
+   - Identify the type of crisis (mental health, domestic situation, etc.)
+   - Determine what kind of immediate help would be most beneficial
 
-4. **SMART QUESTIONING STRATEGY**:
-   - Ask about their current location in Ohio for localized resources
-   - Assess immediate safety without being invasive
-   - Understand their support system and barriers to help
-   - Identify specific crisis type (mental health, domestic violence, substance abuse, etc.)
+4. **AVAILABLE OHIO RESOURCES**: ${JSON.stringify(resources?.slice(0, 10) || [])}
 
-5. **AVAILABLE OHIO RESOURCES**: ${JSON.stringify(resources?.slice(0, 10) || [])}
+5. **COMMUNICATION APPROACH**:
+   - Be immediately supportive and non-judgmental
+   - Use calm, clear, and reassuring language
+   - Provide hope and practical next steps
+   - Emphasize that they made the right choice reaching out
+   - Focus on their strength and resilience
 
-6. **COMMUNICATION STYLE**:
-   - Warm, compassionate, and non-judgmental
-   - Use clear, simple language that's easy to understand
-   - Offer multiple pathways and options for support
-   - Always end with actionable next steps
-   - Emphasize that they're not alone and help is available
+6. **CRISIS DE-ESCALATION TECHNIQUES**:
+   - Validate their feelings and experiences
+   - Break down overwhelming situations into manageable steps
+   - Provide grounding techniques when appropriate
+   - Connect them with ongoing support resources
 
-Remember: You're Alex, a trusted companion who believes in people's strength and resilience. Focus on crisis de-escalation, practical support, and connecting them with Ohio's extensive network of local resources.`;
+Remember: You're here to provide immediate emotional support and connect people with the right Ohio resources for their specific situation. Focus on safety, hope, and practical next steps.`;
 
     const messages = [
       { role: 'system', content: systemPrompt },
@@ -114,35 +114,32 @@ Remember: You're Alex, a trusted companion who believes in people's strength and
     const aiData = await openAIResponse.json();
     const aiMessage = aiData.choices[0].message.content;
 
-    // Filter resources based on query context and urgency
+    // Filter resources based on query context
     const relevantResources = resources?.filter(resource => {
       const queryLower = query.toLowerCase();
       const resourceName = resource.name?.toLowerCase() || '';
       const resourceDesc = resource.description?.toLowerCase() || '';
       const resourceType = resource.type?.toLowerCase() || '';
       
-      // Crisis-specific resource matching
-      if (queryLower.includes('suicide') || queryLower.includes('self-harm')) {
-        return resourceType.includes('crisis') || resourceType.includes('mental health');
+      // Emergency-specific resource matching
+      if (queryLower.includes('crisis') || queryLower.includes('emergency') || queryLower.includes('help')) {
+        return resourceType.includes('crisis') || resourceType.includes('emergency') || resourceType.includes('support');
       }
-      if (queryLower.includes('domestic violence') || queryLower.includes('abuse')) {
-        return resourceType.includes('domestic violence') || resourceType.includes('crisis');
-      }
-      if (queryLower.includes('addiction') || queryLower.includes('substance')) {
-        return resourceType.includes('substance abuse') || resourceType.includes('mental health');
+      if (queryLower.includes('mental health') || queryLower.includes('depression') || queryLower.includes('anxiety')) {
+        return resourceType.includes('mental health') || resourceType.includes('counseling');
       }
       
       return resourceName.includes(queryLower) || 
              resourceDesc.includes(queryLower) || 
              resourceType.includes('crisis') ||
-             resourceType.includes('emergency');
+             resourceType.includes('support');
     })?.slice(0, 8) || [];
 
     // Log usage analytics
     const responseTime = Date.now() - startTime;
     try {
       await supabase.rpc('log_ai_usage', {
-        p_endpoint_name: 'crisis-support-ai',
+        p_endpoint_name: 'crisis-emergency-ai',
         p_user_id: null,
         p_response_time_ms: responseTime,
         p_error_count: errorCount
@@ -161,14 +158,18 @@ Remember: You're Alex, a trusted companion who believes in people's strength and
     });
 
   } catch (error) {
-    console.error('Crisis Support AI error:', error);
+    console.error('Crisis Emergency AI error:', error);
     errorCount++;
     
     // Log error usage analytics  
     const responseTime = Date.now() - startTime;
     try {
+      const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
+      const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
+      const supabase = createClient(supabaseUrl, supabaseKey);
+      
       await supabase.rpc('log_ai_usage', {
-        p_endpoint_name: 'crisis-support-ai',
+        p_endpoint_name: 'crisis-emergency-ai',
         p_user_id: null,
         p_response_time_ms: responseTime,
         p_error_count: errorCount
@@ -178,7 +179,7 @@ Remember: You're Alex, a trusted companion who believes in people's strength and
     }
     
     return new Response(JSON.stringify({ 
-      error: 'I apologize, but I encountered an error. Let me help connect you with local Ohio crisis resources and support services in your area.',
+      error: 'I apologize for the technical difficulty. Let me connect you with local Ohio crisis support resources in your area.',
       resources: []
     }), {
       status: 500,
