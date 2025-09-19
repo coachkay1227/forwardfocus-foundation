@@ -6,7 +6,7 @@ import { HeroSection } from "@/components/home/HeroSection";
 import { TestimonialsSection } from "@/components/home/TestimonialsSection";
 import { PathwaysSection } from "@/components/home/PathwaysSection";
 import { CallToActionSection } from "@/components/home/CallToActionSection";
-import { CoachKaySection } from "@/components/home/CoachKaySection";
+
 import { STATES } from "@/data/states";
 import diverseCommunityMeeting from "@/assets/diverse-community-meeting.jpg";
 const Index = () => {
@@ -43,7 +43,7 @@ const Index = () => {
         onShowAIDiscovery={() => setShowAIDiscovery(true)}
       />
       
-      <CoachKaySection />
+      
       <PathwaysSection />
       <TestimonialsSection />
       <CallToActionSection />

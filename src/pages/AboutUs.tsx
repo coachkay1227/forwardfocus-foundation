@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import ContactForm from "@/components/forms/ContactForm";
 import ChatbotPopup from "@/components/ui/ChatbotPopup";
+import { CoachKaySection } from "@/components/home/CoachKaySection";
 
 
 // Import images
@@ -129,6 +130,7 @@ export default function AboutUs() {
           </div>
         </section>
 
+        <CoachKaySection />
 
         {/* Our Values & Mission */}
         <section aria-labelledby="values" className="scroll-mt-16">
