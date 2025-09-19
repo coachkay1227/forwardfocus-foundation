@@ -204,12 +204,12 @@ const Header = ({
                     {/* Client Portal with Tabs */}
                     <Popover>
                       <PopoverTrigger asChild>
-                        <Button variant="ghost" size="sm" className="text-foreground font-medium h-9 px-3">
+                        <Button variant="ghost" size="sm" className="text-foreground font-medium h-8 px-2 text-sm">
                           Client Portal
                           <ChevronDown className="ml-1 h-3 w-3" />
                         </Button>
                       </PopoverTrigger>
-                      <PopoverContent className="w-80 p-0 bg-background border border-border shadow-lg z-[60]" align="end">
+                      <PopoverContent className="w-64 p-0 bg-background border border-border shadow-lg z-[60]" align="end">
                         <Tabs defaultValue="signin" className="w-full">
                           <TabsList className="grid w-full grid-cols-2">
                             <TabsTrigger value="signin">Sign In</TabsTrigger>
