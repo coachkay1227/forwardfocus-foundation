@@ -1,12 +1,24 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Mail, Phone, MapPin, Clock, Heart, Building2, Presentation, Landmark, GraduationCap, BookOpenCheck } from "lucide-react";
+import DonationBoxes from "@/components/support/DonationBoxes";
+import SpeakerApplicationForm from "@/components/support/SpeakerApplicationForm";
+import GrantInquiryForm from "@/components/support/GrantInquiryForm";
+import AIConsultationForm from "@/components/support/AIConsultationForm";
+import CorporateTrainingForm from "@/components/support/CorporateTrainingForm";
+import ContactForm from "@/components/forms/ContactForm";
 const Support = () => {
+  const [activeDialog, setActiveDialog] = useState<string | null>(null);
+
   useEffect(() => {
     document.title = "Get Involved | Forward Focus Elevation";
   }, []);
+
+  const crowdfundingUrl = "https://your-crowdfunding-platform.com"; // Replace with actual URL
+  const sponsorshipUrl = "https://your-sponsorship-platform.com"; // Replace with actual URL
   return (
     <main id="main">
       {/* Hero Section */}
@@ -36,184 +48,166 @@ const Support = () => {
         <div className="max-w-6xl mx-auto space-y-24">
         {/* Ways to Support Grid */}
         <section className="bg-secondary/5 py-16 rounded-2xl border-2 border-osu-scarlet/20 overflow-hidden">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <Card className="bg-background rounded-xl p-10 border-2 border-osu-scarlet/30 shadow-lg hover:shadow-xl hover:shadow-osu-scarlet/20 transition-all duration-300 md:hover:scale-105 md:hover:-translate-y-1 active:scale-95 cursor-pointer">
-              <CardHeader className="pb-6">
-                <div className="flex items-center gap-3 mb-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <Card className="bg-background rounded-xl p-6 h-full border-2 border-osu-scarlet/30 shadow-lg hover:shadow-xl hover:shadow-osu-scarlet/20 transition-all duration-300 md:hover:scale-105 md:hover:-translate-y-1 active:scale-95 cursor-pointer">
+              <CardHeader className="pb-4">
+                <div className="flex items-center gap-3 mb-3">
                   <div className="p-3 bg-osu-scarlet/10 rounded-full">
                     <Heart className="h-6 w-6 text-osu-scarlet" />
                   </div>
-                  <CardTitle className="text-2xl font-semibold text-foreground">Start Small, Think Big</CardTitle>
+                  <CardTitle className="text-xl font-semibold text-foreground">Start Small, Think Big</CardTitle>
                 </div>
-                <CardDescription className="text-foreground/70 text-lg leading-relaxed">
-                  Every dollar powers our AI digital hub providing free mental health, reentry, business, and credit education courses. From $5 monthly to major gifts - all donations create impact.
+                <CardDescription className="text-foreground/70 text-base leading-relaxed">
+                  Every dollar powers our AI digital hub providing free mental health, reentry, business, and credit education courses.
                 </CardDescription>
               </CardHeader>
-              <CardContent className="pt-0">
-                <div className="space-y-3">
-                  <div className="text-sm text-foreground/60">
-                    • Monthly sustainers starting at $5
-                    <br />
-                    • Scholarship fund for 30-day accelerators
-                    <br />
-                    • Platform development and new courses
-                    <br />
-                    • Emergency assistance for participants
-                  </div>
-                  <Button variant="link" className="p-0 text-primary font-medium text-lg" asChild>
-                    <a href="#" target="_blank" rel="noopener noreferrer">Donate Now →</a>
-                  </Button>
-                </div>
+              <CardContent className="pt-0 flex-1 flex flex-col justify-between">
+                <Dialog open={activeDialog === 'donate'} onOpenChange={(open) => setActiveDialog(open ? 'donate' : null)}>
+                  <DialogTrigger asChild>
+                    <Button variant="link" className="p-0 text-primary font-medium text-lg justify-start">
+                      Donate Now →
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+                    <DialogHeader>
+                      <DialogTitle className="text-2xl">Choose Your Donation Amount</DialogTitle>
+                    </DialogHeader>
+                    <DonationBoxes crowdfundingUrl={crowdfundingUrl} />
+                  </DialogContent>
+                </Dialog>
               </CardContent>
             </Card>
 
-            <Card className="bg-background rounded-xl p-10 border-2 border-osu-scarlet/30 shadow-lg hover:shadow-xl hover:shadow-osu-scarlet/20 transition-all duration-300 md:hover:scale-105 md:hover:-translate-y-1 active:scale-95 cursor-pointer">
-              <CardHeader className="pb-6">
-                <div className="flex items-center gap-3 mb-4">
+            <Card className="bg-background rounded-xl p-6 h-full border-2 border-osu-scarlet/30 shadow-lg hover:shadow-xl hover:shadow-osu-scarlet/20 transition-all duration-300 md:hover:scale-105 md:hover:-translate-y-1 active:scale-95 cursor-pointer">
+              <CardHeader className="pb-4">
+                <div className="flex items-center gap-3 mb-3">
                   <div className="p-3 bg-osu-scarlet/10 rounded-full">
                     <Building2 className="h-6 w-6 text-osu-scarlet" />
                   </div>
-                  <CardTitle className="text-2xl font-semibold text-foreground">Sponsor Success Stories</CardTitle>
+                  <CardTitle className="text-xl font-semibold text-foreground">Sponsor Success Stories</CardTitle>
                 </div>
-                <CardDescription className="text-foreground/70 text-lg leading-relaxed">
-                  Sponsor accelerator cohorts, youth AI workshops, or our entire platform. Get hiring pipeline access, CSR impact, and measurable community investment ROI.
+                <CardDescription className="text-foreground/70 text-base leading-relaxed">
+                  Sponsor accelerator cohorts, youth AI workshops, or our entire platform. Get hiring pipeline access and measurable ROI.
                 </CardDescription>
               </CardHeader>
-              <CardContent className="pt-0">
-                <div className="space-y-3">
-                  <div className="text-sm text-foreground/60">
-                    • Cohort sponsorships ($5K-$25K)
-                    <br />
-                    • Youth seasonal program sponsorships
-                    <br />
-                    • Platform partnerships and tech donations
-                    <br />
-                    • Talent pipeline access to graduates
+              <CardContent className="pt-0 flex-1 flex flex-col justify-between">
+                <div className="space-y-4">
+                  <div className="bg-osu-scarlet/5 p-4 rounded-lg border border-osu-scarlet/20">
+                    <h4 className="font-semibold text-foreground mb-2">Pay Any Amount</h4>
+                    <p className="text-sm text-foreground/70 mb-3">Custom sponsorship levels to match your impact goals</p>
+                    <Button 
+                      onClick={() => window.open(sponsorshipUrl, '_blank')}
+                      className="bg-osu-scarlet hover:bg-osu-scarlet-dark text-osu-scarlet-foreground"
+                      size="sm"
+                    >
+                      Sponsor Now
+                    </Button>
                   </div>
-                  <Button variant="link" className="p-0 text-primary font-medium text-lg">
-                    Explore Sponsorship →
-                  </Button>
                 </div>
               </CardContent>
             </Card>
 
-            <Card className="bg-background rounded-xl p-10 border-2 border-osu-scarlet/30 shadow-lg hover:shadow-xl hover:shadow-osu-scarlet/20 transition-all duration-300 md:hover:scale-105 md:hover:-translate-y-1 active:scale-95 cursor-pointer">
-              <CardHeader className="pb-6">
-                <div className="flex items-center gap-3 mb-4">
+            <Card className="bg-background rounded-xl p-6 h-full border-2 border-osu-scarlet/30 shadow-lg hover:shadow-xl hover:shadow-osu-scarlet/20 transition-all duration-300 md:hover:scale-105 md:hover:-translate-y-1 active:scale-95 cursor-pointer">
+              <CardHeader className="pb-4">
+                <div className="flex items-center gap-3 mb-3">
                   <div className="p-3 bg-osu-scarlet/10 rounded-full">
                     <Presentation className="h-6 w-6 text-osu-scarlet" />
                   </div>
-                  <CardTitle className="text-2xl font-semibold text-foreground">Share Your Expertise</CardTitle>
+                  <CardTitle className="text-xl font-semibold text-foreground">Share Your Expertise</CardTitle>
                 </div>
-                <CardDescription className="text-foreground/70 text-lg leading-relaxed">
-                  Join our speaker bureau to present to our community, lead workshops, or facilitate Q&A sessions. Help justice-impacted individuals learn from industry leaders.
+                <CardDescription className="text-foreground/70 text-base leading-relaxed">
+                  Join our speaker bureau to present to our community and help justice-impacted individuals learn from industry leaders.
                 </CardDescription>
               </CardHeader>
-              <CardContent className="pt-0">
-                <div className="space-y-3">
-                  <div className="text-sm text-foreground/60">
-                    • Virtual presentations to our community
-                    <br />
-                    • Industry-specific workshops and panels
-                    <br />
-                    • 30-day accelerator guest speaking
-                    <br />
-                    • Youth mentorship and career guidance
-                  </div>
-                  <Button variant="link" className="p-0 text-primary font-medium text-lg">
-                    Join Network →
-                  </Button>
-                </div>
+              <CardContent className="pt-0 flex-1 flex flex-col justify-between">
+                <Dialog open={activeDialog === 'speaker'} onOpenChange={(open) => setActiveDialog(open ? 'speaker' : null)}>
+                  <DialogTrigger asChild>
+                    <Button variant="link" className="p-0 text-primary font-medium text-lg justify-start">
+                      Apply Now →
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+                    <SpeakerApplicationForm />
+                  </DialogContent>
+                </Dialog>
               </CardContent>
             </Card>
 
-            <Card className="bg-background rounded-xl p-10 border-2 border-osu-scarlet/30 shadow-lg hover:shadow-xl hover:shadow-osu-scarlet/20 transition-all duration-300 md:hover:scale-105 md:hover:-translate-y-1 active:scale-95 cursor-pointer">
-              <CardHeader className="pb-6">
-                <div className="flex items-center gap-3 mb-4">
+            <Card className="bg-background rounded-xl p-6 h-full border-2 border-osu-scarlet/30 shadow-lg hover:shadow-xl hover:shadow-osu-scarlet/20 transition-all duration-300 md:hover:scale-105 md:hover:-translate-y-1 active:scale-95 cursor-pointer">
+              <CardHeader className="pb-4">
+                <div className="flex items-center gap-3 mb-3">
                   <div className="p-3 bg-osu-scarlet/10 rounded-full">
                     <Landmark className="h-6 w-6 text-osu-scarlet" />
                   </div>
-                  <CardTitle className="text-2xl font-semibold text-foreground">Contract Our Services</CardTitle>
+                  <CardTitle className="text-xl font-semibold text-foreground">AI Consultation Services</CardTitle>
                 </div>
-                <CardDescription className="text-foreground/70 text-lg leading-relaxed">
-                  Government agencies can contract our proven AI-integrated digital education model for reentry programs, juvenile justice, or workforce development initiatives.
+                <CardDescription className="text-foreground/70 text-base leading-relaxed">
+                  Contract our AI expertise to build custom solutions for your organization while supporting our mission.
                 </CardDescription>
               </CardHeader>
-              <CardContent className="pt-0">
-                <div className="space-y-3">
-                  <div className="text-sm text-foreground/60">
-                    • Reentry education service contracts
-                    <br />
-                    • Juvenile justice digital programming
-                    <br />
-                    • Workforce development board partnerships
-                    <br />
-                    • Research and pilot program collaborations
-                  </div>
-                  <Button variant="link" className="p-0 text-primary font-medium text-lg">
-                    Request Proposal →
-                  </Button>
-                </div>
+              <CardContent className="pt-0 flex-1 flex flex-col justify-between">
+                <Dialog open={activeDialog === 'consultation'} onOpenChange={(open) => setActiveDialog(open ? 'consultation' : null)}>
+                  <DialogTrigger asChild>
+                    <Button variant="link" className="p-0 text-primary font-medium text-lg justify-start">
+                      Request Consultation →
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+                    <AIConsultationForm />
+                  </DialogContent>
+                </Dialog>
               </CardContent>
             </Card>
 
-            <Card className="bg-background rounded-xl p-10 border-2 border-osu-scarlet/30 shadow-lg hover:shadow-xl hover:shadow-osu-scarlet/20 transition-all duration-300 md:hover:scale-105 md:hover:-translate-y-1 active:scale-95 cursor-pointer">
-              <CardHeader className="pb-6">
-                <div className="flex items-center gap-3 mb-4">
+            <Card className="bg-background rounded-xl p-6 h-full border-2 border-osu-scarlet/30 shadow-lg hover:shadow-xl hover:shadow-osu-scarlet/20 transition-all duration-300 md:hover:scale-105 md:hover:-translate-y-1 active:scale-95 cursor-pointer">
+              <CardHeader className="pb-4">
+                <div className="flex items-center gap-3 mb-3">
                   <div className="p-3 bg-osu-scarlet/10 rounded-full">
                     <GraduationCap className="h-6 w-6 text-osu-scarlet" />
                   </div>
-                  <CardTitle className="text-2xl font-semibold text-foreground">Grant Funding</CardTitle>
+                  <CardTitle className="text-xl font-semibold text-foreground">Grant Funding</CardTitle>
                 </div>
-                <CardDescription className="text-foreground/70 text-lg leading-relaxed">
-                  Foundations can fund our innovative approach combining AI technology with justice reform, education access, and community building for scalable impact.
+                <CardDescription className="text-foreground/70 text-base leading-relaxed">
+                  Foundations can fund our innovative approach combining AI technology with justice reform and community building.
                 </CardDescription>
               </CardHeader>
-              <CardContent className="pt-0">
-                <div className="space-y-3">
-                  <div className="text-sm text-foreground/60">
-                    • Program expansion grants
-                    <br />
-                    • Technology development funding
-                    <br />
-                    • Research partnership opportunities
-                    <br />
-                    • National replication pilot funding
-                  </div>
-                  <Button variant="link" className="p-0 text-primary font-medium text-lg">
-                    Discuss Grants →
-                  </Button>
-                </div>
+              <CardContent className="pt-0 flex-1 flex flex-col justify-between">
+                <Dialog open={activeDialog === 'grant'} onOpenChange={(open) => setActiveDialog(open ? 'grant' : null)}>
+                  <DialogTrigger asChild>
+                    <Button variant="link" className="p-0 text-primary font-medium text-lg justify-start">
+                      Submit Inquiry →
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+                    <GrantInquiryForm />
+                  </DialogContent>
+                </Dialog>
               </CardContent>
             </Card>
 
-            <Card className="bg-background rounded-xl p-10 border-2 border-osu-scarlet/30 shadow-lg hover:shadow-xl hover:shadow-osu-scarlet/20 transition-all duration-300 md:hover:scale-105 md:hover:-translate-y-1 active:scale-95 cursor-pointer">
-              <CardHeader className="pb-6">
-                <div className="flex items-center gap-3 mb-4">
+            <Card className="bg-background rounded-xl p-6 h-full border-2 border-osu-scarlet/30 shadow-lg hover:shadow-xl hover:shadow-osu-scarlet/20 transition-all duration-300 md:hover:scale-105 md:hover:-translate-y-1 active:scale-95 cursor-pointer">
+              <CardHeader className="pb-4">
+                <div className="flex items-center gap-3 mb-3">
                   <div className="p-3 bg-osu-scarlet/10 rounded-full">
                     <BookOpenCheck className="h-6 w-6 text-osu-scarlet" />
                   </div>
-                  <CardTitle className="text-2xl font-semibold text-foreground">License Our Model</CardTitle>
+                  <CardTitle className="text-xl font-semibold text-foreground">Corporate AI Training</CardTitle>
                 </div>
-                <CardDescription className="text-foreground/70 text-lg leading-relaxed">
-                  Organizations can license our curriculum, platform, or train-the-trainer programs to implement our proven digital education approach in their communities.
+                <CardDescription className="text-foreground/70 text-base leading-relaxed">
+                  Train your team in AI skills while supporting our mission to help justice-impacted communities.
                 </CardDescription>
               </CardHeader>
-              <CardContent className="pt-0">
-                <div className="space-y-3">
-                  <div className="text-sm text-foreground/60">
-                    • Curriculum licensing for nonprofits
-                    <br />
-                    • White-label platform partnerships
-                    <br />
-                    • Train-the-trainer certifications
-                    <br />
-                    • Consultation for program replication
-                  </div>
-                  <Button variant="link" className="p-0 text-primary font-medium text-lg">
-                    Learn Licensing →
-                  </Button>
-                </div>
+              <CardContent className="pt-0 flex-1 flex flex-col justify-between">
+                <Dialog open={activeDialog === 'training'} onOpenChange={(open) => setActiveDialog(open ? 'training' : null)}>
+                  <DialogTrigger asChild>
+                    <Button variant="link" className="p-0 text-primary font-medium text-lg justify-start">
+                      Request Training →
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+                    <CorporateTrainingForm />
+                  </DialogContent>
+                </Dialog>
               </CardContent>
             </Card>
           </div>
@@ -239,30 +233,7 @@ const Support = () => {
               {/* Contact Form */}
               <div>
                 <h2 className="font-heading text-4xl md:text-5xl font-bold text-foreground mb-8">Get In Touch</h2>
-                <Card className="bg-background shadow-lg">
-                  <CardContent className="p-8">
-                    <form className="space-y-6">
-                      <input 
-                        type="text" 
-                        placeholder="Your Name" 
-                        className="w-full p-4 border border-border rounded-lg bg-background text-foreground text-lg"
-                      />
-                      <input 
-                        type="email" 
-                        placeholder="Your Email" 
-                        className="w-full p-4 border border-border rounded-lg bg-background text-foreground text-lg"
-                      />
-                      <textarea 
-                        placeholder="Message" 
-                        rows={5} 
-                        className="w-full p-4 border border-border rounded-lg bg-background text-foreground text-lg"
-                      />
-                      <Button size="lg" className="w-full text-lg bg-primary hover:bg-primary/90 text-primary-foreground">
-                        Send Message
-                      </Button>
-                    </form>
-                  </CardContent>
-                </Card>
+                <ContactForm type="contact" />
               </div>
 
               {/* Contact Info */}
