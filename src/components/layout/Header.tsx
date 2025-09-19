@@ -57,11 +57,7 @@ const Header = ({
     const handleKeyDown = (e: KeyboardEvent) => {
       if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key === 'Q') {
         e.preventDefault();
-        try {
-          window.location.href = 'https://google.com';
-        } catch (error) {
-          window.open('https://google.com', '_self');
-        }
+        window.open('https://google.com', '_blank');
       }
     };
     
@@ -252,14 +248,8 @@ const Header = ({
                 size="sm" 
                 variant="ghost" 
                 className="text-muted-foreground hover:text-destructive text-xs px-2 h-8"
-                onClick={() => {
-                  try {
-                    window.location.href = 'https://google.com';
-                  } catch (error) {
-                    window.open('https://google.com', '_self');
-                  }
-                }}
-                title="Quick Exit - Ctrl+Shift+Q or click to go to Google"
+                onClick={() => window.open('https://google.com', '_blank')}
+                title="Quick Exit - Ctrl+Shift+Q or click to open Google in new tab"
               >
                 <X className="h-3 w-3 mr-1" />
                 Exit
