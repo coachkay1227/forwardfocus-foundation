@@ -866,6 +866,46 @@ export type Database = {
         Args: { partner_user_id?: string }
         Returns: Json
       }
+      get_resources_public: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          city: string
+          county: string
+          created_at: string
+          description: string
+          id: string
+          justice_friendly: boolean
+          name: string
+          organization: string
+          rating: number
+          state_code: string
+          type: string
+          updated_at: string
+          verified: string
+          website: string
+        }[]
+      }
+      get_resources_secure: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          address: string
+          city: string
+          county: string
+          created_at: string
+          description: string
+          id: string
+          justice_friendly: boolean
+          name: string
+          organization: string
+          phone: string
+          rating: number
+          state_code: string
+          type: string
+          updated_at: string
+          verified: string
+          website: string
+        }[]
+      }
       get_safe_organizations_public: {
         Args: Record<PropertyKey, never>
         Returns: {
