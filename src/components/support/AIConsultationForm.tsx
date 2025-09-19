@@ -317,11 +317,12 @@ export default function AIConsultationForm() {
                   <SelectValue placeholder="Select budget range" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="under_50k">Under $50,000</SelectItem>
-                  <SelectItem value="50k_100k">$50,000 - $100,000</SelectItem>
-                  <SelectItem value="100k_250k">$100,000 - $250,000</SelectItem>
-                  <SelectItem value="250k_500k">$250,000 - $500,000</SelectItem>
-                  <SelectItem value="over_500k">Over $500,000</SelectItem>
+                  <SelectItem value="2.5k_5k">$2,500 - $5,000</SelectItem>
+                  <SelectItem value="5k_10k">$5,000 - $10,000</SelectItem>
+                  <SelectItem value="10k_15k">$10,000 - $15,000</SelectItem>
+                  <SelectItem value="15k_25k">$15,000 - $25,000</SelectItem>
+                  <SelectItem value="25k_35k">$25,000 - $35,000</SelectItem>
+                  <SelectItem value="35k_50k">$35,000 - $50,000</SelectItem>
                   <SelectItem value="tbd">To be determined</SelectItem>
                 </SelectContent>
               </Select>
