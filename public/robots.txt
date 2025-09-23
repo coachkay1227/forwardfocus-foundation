@@ -1,14 +1,18 @@
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://ffeservices.net/sitemap.xml
+
+# Specific directives for search engines
 User-agent: Googlebot
 Allow: /
 
-User-agent: Bingbot
+User-agent: Bingbot  
 Allow: /
 
 User-agent: Twitterbot
 Allow: /
 
 User-agent: facebookexternalhit
-Allow: /
-
-User-agent: *
 Allow: /

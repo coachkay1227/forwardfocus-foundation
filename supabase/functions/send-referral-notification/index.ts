@@ -56,8 +56,8 @@ const handler = async (req: Request): Promise<Response> => {
 
     // Send notification to admin team
     await resend.emails.send({
-      from: "Forward Focus <notifications@forwardfocus.org>",
-      to: ["support@forwardfocus.org"], // Replace with actual admin email
+      from: "Forward Focus <notifications@ffeservices.net>",
+      to: ["support@ffeservices.net"], // Standardized domain
       subject: "New Referral Received",
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">

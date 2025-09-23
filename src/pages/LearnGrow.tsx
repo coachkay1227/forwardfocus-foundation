@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { BookOpen, CheckCircle, Users, MessageSquare, MapPin, Phone, FileText, DollarSign, Heart, Brain, GraduationCap, Home, Briefcase, Scale, HeartHandshake, PiggyBank, Shield, Bot, Target, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -15,6 +15,33 @@ export default function CommunityLearning() {
     specialty: string;
     description: string;
   } | undefined>(undefined);
+
+  useEffect(() => {
+    // Set page title and meta description for SEO
+    document.title = "Learn & Grow | Community Learning & Reentry Support | Forward Focus Elevation";
+    
+    // Update meta description
+    const metaDescription = document.querySelector('meta[name="description"]');
+    if (metaDescription) {
+      metaDescription.setAttribute('content', 'Join our supportive community learning collective. Access AI-powered reentry navigation, educational modules, and personalized coaching for justice-impacted individuals and families.');
+    } else {
+      const meta = document.createElement('meta');
+      meta.name = 'description';
+      meta.content = 'Join our supportive community learning collective. Access AI-powered reentry navigation, educational modules, and personalized coaching for justice-impacted individuals and families.';
+      document.head.appendChild(meta);
+    }
+
+    // Update canonical link
+    let canonical = document.querySelector('link[rel="canonical"]');
+    if (canonical) {
+      canonical.setAttribute('href', 'https://ffeservices.net/learn');
+    } else {
+      canonical = document.createElement('link');
+      canonical.setAttribute('rel', 'canonical');
+      canonical.setAttribute('href', 'https://ffeservices.net/learn');
+      document.head.appendChild(canonical);
+    }
+  }, []);
 
   const supportCoaches = [
     {
