@@ -254,10 +254,7 @@ export const SecurityMonitoringDashboard = () => {
         </TabsList>
 
         <TabsContent value="alerts">
-          <SecurityAlerts 
-            alerts={alerts} 
-            onRefresh={fetchSecurityData}
-          />
+          <SecurityAlerts />
         </TabsContent>
 
         <TabsContent value="usage">

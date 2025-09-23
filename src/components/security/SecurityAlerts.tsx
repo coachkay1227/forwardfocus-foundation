@@ -10,7 +10,7 @@ import { toast } from "sonner";
 interface SecurityAlert {
   id: string;
   alert_type: string;
-  severity: 'low' | 'medium' | 'high' | 'critical';
+  severity: string;
   title: string;
   description: string;
   resolved: boolean;
