@@ -11,8 +11,18 @@ interface AnalyticsEvent {
   additional_data?: Record<string, any>;
 }
 
+// Safe hook that won't break if Router is not available
+const useSafeLocation = () => {
+  try {
+    return useLocation();
+  } catch (error) {
+    // Router not available, return null
+    return null;
+  }
+};
+
 export const useAnalytics = () => {
-  const location = useLocation();
+  const location = useSafeLocation();
   const { user } = useAuth();
 
   // Generate or get session ID
@@ -25,22 +35,13 @@ export const useAnalytics = () => {
     return sessionId;
   }, []);
 
-  // Track page view automatically
-  useEffect(() => {
-    trackEvent({
-      action_type: 'page_view',
-      page_path: location.pathname,
-      referrer: document.referrer || undefined,
-    });
-  }, [location.pathname]);
-
   const trackEvent = useCallback(async (event: AnalyticsEvent) => {
     try {
       const sessionId = getSessionId();
       
       const analyticsData = {
         action_type: event.action_type,
-        page_path: event.page_path || location.pathname,
+        page_path: event.page_path || location?.pathname || window.location.pathname,
         referrer: event.referrer,
         session_id: sessionId,
         user_id: user?.id || null,
@@ -61,7 +62,18 @@ export const useAnalytics = () => {
       // Silently fail analytics to not impact user experience
       console.debug('Analytics tracking failed:', error);
     }
-  }, [location.pathname, user?.id, getSessionId]);
+  }, [location?.pathname, user?.id, getSessionId]);
+
+  // Track page view automatically (only if location is available)
+  useEffect(() => {
+    if (location?.pathname) {
+      trackEvent({
+        action_type: 'page_view',
+        page_path: location.pathname,
+        referrer: document.referrer || undefined,
+      });
+    }
+  }, [location?.pathname, trackEvent]);
 
   const trackFormSubmission = useCallback((formType: string, formData?: Record<string, any>) => {
     trackEvent({
