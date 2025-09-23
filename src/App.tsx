@@ -34,6 +34,7 @@ import TermsOfService from "./pages/TermsOfService";
 import DonationSuccess from "./pages/DonationSuccess";
 
 import { StateProvider } from "./contexts/StateContext";
+import { AnalyticsProvider } from "./components/layout/AnalyticsProvider";
 
 const queryClient = new QueryClient();
 
@@ -46,7 +47,8 @@ const App = () => (
           <Toaster />
           <Sonner />
           <BrowserRouter>
-            <StateProvider>
+            <AnalyticsProvider>
+              <StateProvider>
               <Layout>
                 <Routes>
                   <Route path="/" element={<Index />} />
@@ -80,7 +82,8 @@ const App = () => (
                   <Route path="*" element={<NotFound />} />
                 </Routes>
               </Layout>
-            </StateProvider>
+              </StateProvider>
+            </AnalyticsProvider>
           </BrowserRouter>
         </AuthProvider>
       </SecurityProvider>
