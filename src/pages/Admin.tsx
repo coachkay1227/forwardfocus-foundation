@@ -10,6 +10,7 @@ import { toast } from "@/hooks/use-toast";
 import { maskContactInfo } from "@/lib/security";
 import { Eye, EyeOff, Shield } from "lucide-react";
 import { SecurityMonitoringDashboard } from "@/components/security/SecurityMonitoringDashboard";
+import { EmailMarketingDashboard } from "@/components/admin/EmailMarketingDashboard";
 import { ContactAccessManager } from "@/components/security/ContactAccessManager";
 import { JustificationManager } from "@/components/admin/JustificationManager";
 
@@ -301,12 +302,13 @@ const Admin = () => {
       <h1 className="font-heading text-3xl font-semibold mb-8">Admin Dashboard</h1>
       
       <Tabs defaultValue="management" className="space-y-6">
-        <TabsList className="grid w-full grid-cols-6">
+        <TabsList className="grid w-full grid-cols-7 lg:grid-cols-7">
           <TabsTrigger value="management">Partner Mgmt</TabsTrigger>
           <TabsTrigger value="submissions">Contact Forms</TabsTrigger>
           <TabsTrigger value="support">Support Requests</TabsTrigger>
           <TabsTrigger value="bookings">Bookings</TabsTrigger>
           <TabsTrigger value="organizations">Organizations</TabsTrigger>
+          <TabsTrigger value="email">Email</TabsTrigger>
           <TabsTrigger value="security">Security</TabsTrigger>
         </TabsList>
 
@@ -723,6 +725,10 @@ const Admin = () => {
               </CardContent>
             </Card>
           </div>
+        </TabsContent>
+
+        <TabsContent value="email">
+          <EmailMarketingDashboard />
         </TabsContent>
 
         <TabsContent value="security">
