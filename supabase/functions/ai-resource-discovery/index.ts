@@ -115,19 +115,8 @@ Guidelines:
       const errorData = await openAIResponse.text();
       console.error('OpenAI API error:', errorData);
       errorCount++;
-      
-      // Provide helpful fallback response with available resources
-      const relevantResources = resources?.slice(0, limit) || [];
-      const fallbackResponse = resourceContext.length > 0 
-        ? `I found ${resourceContext.length} resources that might help with your request. While I can't provide personalized guidance right now, here are some options to explore:\n\n${resourceContext.slice(0, 3).map(r => `• ${r.name} (${r.organization}) - ${r.type} in ${r.city || r.county}`).join('\n')}\n\nPlease call these organizations directly for current information and availability.`
-        : `I'm having trouble accessing personalized guidance right now, but I can help you search our resource database. Try being more specific about your location (city or county) and the type of help you need (housing, employment, healthcare, etc.).`;
-      
-      return new Response(JSON.stringify({
-        response: fallbackResponse,
-        resources: relevantResources,
-        totalFound: resources?.length || 0,
-        fallback: true
-      }), {
+      return new Response(JSON.stringify({ error: 'AI service temporarily unavailable' }), {
+        status: 500,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       });
     }
@@ -179,10 +168,8 @@ Guidelines:
     }
     
     return new Response(JSON.stringify({ 
-      error: 'We encountered an issue processing your request. Please try again or search our resource database directly.',
-      fallback: true,
-      resources: [],
-      totalFound: 0
+      error: 'An error occurred processing your request',
+      details: error.message 
     }), {
       status: 500,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },

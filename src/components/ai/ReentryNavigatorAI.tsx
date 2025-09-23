@@ -155,7 +155,7 @@ const ReentryNavigatorAI: React.FC<ReentryNavigatorAIProps> = ({ isOpen, onClose
           .limit(10);
 
         const coachName = selectedCoach ? selectedCoach.name.split(' ')[1] : 'Coach Kay';
-        const content = `I'm having some connection issues right now, but don't worry - I've still got your back! I found some solid reentry resources that can help with common needs. Your success matters, and there are people ready to support you - let's get you connected!`;
+        const content = `I'm experiencing a technical hiccup right now, but don't worry - I've still got your back! Here are some solid reentry resources that can help with common needs. Your success matters, and there are people ready to support you!`;
         setMessages(prev => {
           const newMessages = [...prev];
           const lastMessage = newMessages[newMessages.length - 1];

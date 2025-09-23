@@ -4,6 +4,7 @@ import { Heart, Users, Shield, CheckCircle, Target, Brain, MessageSquare, BookOp
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import ContactForm from "@/components/forms/ContactForm";
+import ChatbotPopup from "@/components/ui/ChatbotPopup";
 import { CoachKaySection } from "@/components/home/CoachKaySection";
 
 

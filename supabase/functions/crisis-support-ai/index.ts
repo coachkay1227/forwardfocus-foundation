@@ -108,24 +108,7 @@ Remember: You're Alex, a trusted companion who believes in people's strength and
     if (!openAIResponse.ok) {
       console.error('OpenAI API error:', await openAIResponse.text());
       errorCount++;
-      
-      // Provide helpful crisis-specific fallback response
-      const fallbackResponse = resources && resources.length > 0
-        ? `I'm having trouble connecting to my advanced response system right now, but your safety is my priority. I found ${resources.length} crisis resources in Ohio that can provide immediate support. For immediate emergencies, please call 911. For crisis support, call 988 (Suicide & Crisis Lifeline) or text HOME to 741741.`
-        : `I'm experiencing connection issues, but I want to help. For immediate crisis support in Ohio: Call 911 for emergencies, 988 for suicide & crisis support, or text HOME to 741741. Please reach out to these numbers - you're not alone.`;
-      
-      // Filter resources for fallback
-      const fallbackResources = resources?.slice(0, 8) || [];
-      const urgency = urgencyLevel;
-      
-      return new Response(JSON.stringify({
-        response: fallbackResponse,
-        resources: fallbackResources,
-        urgency: urgency,
-        fallback: true
-      }), {
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-      });
+      throw new Error('Failed to generate AI response');
     }
 
     const aiData = await openAIResponse.json();
