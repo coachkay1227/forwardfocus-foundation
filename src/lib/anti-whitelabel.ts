@@ -11,9 +11,13 @@ interface DomainConfig {
 const AUTHORIZED_CONFIG: DomainConfig = {
   allowedDomains: [
     'localhost',
+    '127.0.0.1',
     'lovable.app',
+    'lovableproject.com',
     'ffeservices.net',
-    'freedomfamilieseducation.com'
+    'www.ffeservices.net',
+    'freedomfamilieseducation.com',
+    'gzukhsqgkwljfvwkfuno.supabase.co'
   ],
   brandName: 'Freedom Families Education',
   copyrightNotice: '© 2025 Freedom Families Education Services. All rights reserved.',

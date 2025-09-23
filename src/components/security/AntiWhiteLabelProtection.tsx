@@ -13,7 +13,8 @@ const config: AntiWhiteLabelConfig = {
     'ffeservices.net',
     'www.ffeservices.net',
     'gzukhsqgkwljfvwkfuno.supabase.co',
-    'lovable.app' // Allow Lovable preview domains
+    'lovable.app', // Allow Lovable preview domains
+    'lovableproject.com' // Allow all Lovable project domains
   ],
   brandName: 'FFE Services',
   copyrightNotice: '© 2025 FFE Services. All rights reserved. Unauthorized use prohibited.'
@@ -25,7 +26,8 @@ export const AntiWhiteLabelProtection = () => {
     const isAllowedDomain = config.allowedDomains.some(domain => 
       currentDomain === domain || 
       currentDomain.endsWith('.' + domain) ||
-      currentDomain.endsWith('.lovable.app')
+      currentDomain.endsWith('.lovable.app') ||
+      currentDomain.endsWith('.lovableproject.com')
     );
 
     if (!isAllowedDomain) {
