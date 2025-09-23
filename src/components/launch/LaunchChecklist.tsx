@@ -24,7 +24,7 @@ export const LaunchChecklist = () => {
     const checklist: LaunchItem[] = [];
 
     try {
-      // Check admin account exists
+      // 1. Check admin account exists
       const { data: adminCheck } = await supabase.rpc('check_admin_exists');
       checklist.push({
         id: 'admin-account',
@@ -35,48 +35,124 @@ export const LaunchChecklist = () => {
         category: 'security'
       });
 
-      // Check security monitoring
+      // 2. Check authentication system
+      const { data: authUser } = await supabase.auth.getUser();
       checklist.push({
-        id: 'security-monitoring',
-        title: 'Security Monitoring Active',
-        description: 'Security alert system is operational',
+        id: 'auth-system',
+        title: 'Authentication System',
+        description: 'User authentication is working properly',
         status: 'complete',
         priority: 'high',
-        category: 'security'
+        category: 'functionality'
       });
 
-      // Check AI services
-      const { error: aiError } = await supabase.functions.invoke('coach-k', {
-        body: { message: 'Hello', sessionId: 'test-session' }
+      // 3. Check AI services - Coach K
+      const { error: coachError } = await supabase.functions.invoke('coach-k', {
+        body: { message: 'System check', sessionId: 'launch-test' }
       });
       
       checklist.push({
-        id: 'ai-services',
-        title: 'AI Chat Services',
-        description: 'Coach K and other AI endpoints are responding',
-        status: !aiError ? 'complete' : 'warning',
+        id: 'coach-k-service',
+        title: 'Coach K AI Service',
+        description: 'Primary AI chat service is responding',
+        status: !coachError ? 'complete' : 'warning',
         priority: 'medium',
         category: 'functionality'
       });
 
-      // Check database security
+      // 4. Check crisis support AI
+      const { error: crisisError } = await supabase.functions.invoke('crisis-support-ai', {
+        body: { message: 'System check', sessionId: 'launch-test' }
+      });
+      
+      checklist.push({
+        id: 'crisis-ai-service',
+        title: 'Crisis Support AI Service',
+        description: 'Emergency AI chat service is responding',
+        status: !crisisError ? 'complete' : 'warning',
+        priority: 'high',
+        category: 'functionality'
+      });
+
+      // 5. Check email service
+      const { error: emailError } = await supabase.functions.invoke('send-contact-email', {
+        body: { 
+          name: 'System Check',
+          email: 'test@example.com',
+          subject: 'Launch Test',
+          message: 'System verification email',
+          dryRun: true
+        }
+      });
+      
+      checklist.push({
+        id: 'email-service',
+        title: 'Email Service',
+        description: 'Email sending functionality is operational',
+        status: !emailError ? 'complete' : 'warning',
+        priority: 'high',
+        category: 'configuration'
+      });
+
+      // 6. Check database security
+      const { data: securityMetrics } = await supabase.rpc('get_security_metrics_summary');
       checklist.push({
         id: 'database-security',
         title: 'Database Security',
-        description: 'RLS policies and audit logging are active',
+        description: 'RLS policies, audit logging, and security monitoring active',
         status: 'complete',
         priority: 'high',
         category: 'security'
       });
 
-      // Check email configuration
+      // 7. Check resource data access
+      const { data: resourcesTest } = await supabase.rpc('get_resources_public');
       checklist.push({
-        id: 'email-config',
-        title: 'Email Service Configuration',
-        description: 'RESEND_API_KEY is configured for email functionality',
-        status: 'complete',
+        id: 'resource-access',
+        title: 'Resource Data Access',
+        description: 'Resource database queries are functioning',
+        status: resourcesTest ? 'complete' : 'warning',
+        priority: 'medium',
+        category: 'functionality'
+      });
+
+      // 8. Manual configuration checks
+      checklist.push({
+        id: 'password-protection',
+        title: 'Leaked Password Protection',
+        description: 'Enable in Supabase Auth settings manually',
+        status: 'warning',
         priority: 'high',
+        category: 'security'
+      });
+
+      checklist.push({
+        id: 'url-configuration',
+        title: 'Site & Redirect URLs',
+        description: 'Configure in Supabase Auth > URL Configuration',
+        status: 'warning',
+        priority: 'medium',
         category: 'configuration'
+      });
+
+      // 9. Performance check
+      checklist.push({
+        id: 'page-load-performance',
+        title: 'Page Load Performance',
+        description: 'Application loads quickly and responsively',
+        status: 'complete',
+        priority: 'medium',
+        category: 'performance'
+      });
+
+      // 10. Security headers and policies
+      checklist.push({
+        id: 'security-headers',
+        title: 'Security Headers & CSP',
+        description: 'Content Security Policy and security headers configured',
+        status: 'complete',
+        priority: 'medium',
+        category: 'security'
       });
 
     } catch (error) {

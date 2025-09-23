@@ -15,6 +15,9 @@ import { ContactAccessManager } from "@/components/security/ContactAccessManager
 import { JustificationManager } from "@/components/admin/JustificationManager";
 import { UserAnalyticsDashboard } from "@/components/admin/UserAnalyticsDashboard";
 import { WebsitePerformance } from "@/components/admin/WebsitePerformance";
+import { LaunchChecklist } from "@/components/launch/LaunchChecklist";
+import { AdminSetup } from "@/components/admin/AdminSetup";
+import { LaunchInstructions } from "@/components/admin/LaunchInstructions";
 
 interface PartnerReferral {
   id: string;
@@ -294,7 +297,8 @@ const Admin = () => {
       <h1 className="font-heading text-3xl font-semibold mb-8">Admin Dashboard</h1>
       
       <Tabs defaultValue="management" className="space-y-6">
-        <TabsList className="grid w-full grid-cols-4 lg:grid-cols-8">
+        <TabsList className="grid w-full grid-cols-5 lg:grid-cols-9">
+          <TabsTrigger value="launch">Launch</TabsTrigger>
           <TabsTrigger value="management">Partner</TabsTrigger>
           <TabsTrigger value="submissions">Forms</TabsTrigger>
           <TabsTrigger value="support">Support</TabsTrigger>
@@ -304,6 +308,21 @@ const Admin = () => {
           <TabsTrigger value="email">Email</TabsTrigger>
           <TabsTrigger value="security">Security</TabsTrigger>
         </TabsList>
+
+        <TabsContent value="launch">
+          <div className="space-y-6">
+            <div>
+              <h2 className="font-heading text-2xl font-semibold mb-2">Launch Readiness</h2>
+              <p className="text-muted-foreground mb-6">
+                Complete these final steps to prepare your application for production launch.
+              </p>
+            </div>
+            
+            <AdminSetup />
+            <LaunchChecklist />
+            <LaunchInstructions />
+          </div>
+        </TabsContent>
 
         <TabsContent value="management">
           <div className="grid gap-8">
