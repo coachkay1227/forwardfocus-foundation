@@ -1413,7 +1413,7 @@ export type Database = {
         Returns: undefined
       }
       mask_contact_info: {
-        Args: { contact_data: string }
+        Args: { contact_value: string }
         Returns: string
       }
       request_admin_contact_access: {
