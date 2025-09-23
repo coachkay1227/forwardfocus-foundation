@@ -318,6 +318,54 @@ export type Database = {
         }
         Relationships: []
       }
+      email_campaigns: {
+        Row: {
+          content: string
+          created_at: string
+          created_by: string | null
+          failure_count: number | null
+          id: string
+          name: string
+          recipient_count: number | null
+          scheduled_at: string | null
+          sent_at: string | null
+          status: string
+          subject: string
+          success_count: number | null
+          updated_at: string
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          created_by?: string | null
+          failure_count?: number | null
+          id?: string
+          name: string
+          recipient_count?: number | null
+          scheduled_at?: string | null
+          sent_at?: string | null
+          status?: string
+          subject: string
+          success_count?: number | null
+          updated_at?: string
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          created_by?: string | null
+          failure_count?: number | null
+          id?: string
+          name?: string
+          recipient_count?: number | null
+          scheduled_at?: string | null
+          sent_at?: string | null
+          status?: string
+          subject?: string
+          success_count?: number | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       learning_modules: {
         Row: {
           compliance_note: string | null
@@ -431,6 +479,54 @@ export type Database = {
           team_id?: string
           updated_at?: string | null
           user_id?: string
+        }
+        Relationships: []
+      }
+      newsletter_subscriptions: {
+        Row: {
+          created_at: string
+          email: string
+          id: string
+          ip_address: unknown | null
+          name: string | null
+          status: string
+          subscribed_at: string
+          subscription_source: string | null
+          tags: string[] | null
+          unsubscribed_at: string | null
+          updated_at: string
+          user_agent: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          id?: string
+          ip_address?: unknown | null
+          name?: string | null
+          status?: string
+          subscribed_at?: string
+          subscription_source?: string | null
+          tags?: string[] | null
+          unsubscribed_at?: string | null
+          updated_at?: string
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          id?: string
+          ip_address?: unknown | null
+          name?: string | null
+          status?: string
+          subscribed_at?: string
+          subscription_source?: string | null
+          tags?: string[] | null
+          unsubscribed_at?: string | null
+          updated_at?: string
+          user_agent?: string | null
+          user_id?: string | null
         }
         Relationships: []
       }
