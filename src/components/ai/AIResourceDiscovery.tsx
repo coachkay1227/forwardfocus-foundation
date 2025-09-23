@@ -60,7 +60,9 @@ const AIResourceDiscovery: React.FC<AIResourceDiscoveryProps> = ({
       const aiMessage: SharedMessage = {
         id: (Date.now() + 1).toString(),
         type: 'ai',
-        content: formatAIResponse(data.response || 'I found some resources for you.'),
+        content: data.fallback 
+          ? data.response || data.error || 'I encountered an issue but found some resources that might help.'
+          : formatAIResponse(data.response || 'I found some resources for you.'),
         timestamp: new Date(),
         resources: data.resources || []
       };

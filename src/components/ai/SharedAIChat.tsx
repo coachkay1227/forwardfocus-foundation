@@ -80,12 +80,12 @@ export const SharedAIChat: React.FC<SharedAIChatProps> = ({
   const scrollToBottom = () => {
     setTimeout(() => {
       if (scrollAreaRef.current) {
-        const scrollContainer = scrollAreaRef.current.querySelector('[data-radix-scroll-area-viewport]');
-        if (scrollContainer) {
-          scrollContainer.scrollTop = scrollContainer.scrollHeight;
+        const viewport = scrollAreaRef.current.querySelector('[data-radix-scroll-area-viewport]') as HTMLElement;
+        if (viewport) {
+          viewport.scrollTo({ top: viewport.scrollHeight, behavior: 'smooth' });
         }
       }
-    }, 100);
+    }, 50);
   };
 
   useEffect(() => {
@@ -128,38 +128,38 @@ export const SharedAIChat: React.FC<SharedAIChatProps> = ({
   };
 
   const ResourceCard = ({ resource }: { resource: SharedMessage['resources'][0] }) => (
-    <Card className="mb-2 border-l-2 border-l-primary">
-      <CardContent className="p-3">
-        <div className="space-y-2">
+    <Card className="mb-3 border-l-4 border-l-primary">
+      <CardContent className="p-4">
+        <div className="space-y-3">
           <div>
-            <h4 className="font-medium text-sm text-foreground">{resource.name}</h4>
-            <p className="text-xs text-muted-foreground">{resource.organization}</p>
+            <h4 className="font-semibold text-base text-foreground">{resource.name}</h4>
+            <p className="text-sm text-muted-foreground">{resource.organization}</p>
           </div>
           
-          <div className="flex items-center gap-1 text-xs text-muted-foreground">
-            <MapPin className="h-3 w-3" />
+          <div className="flex items-center gap-2 text-sm text-muted-foreground">
+            <MapPin className="h-4 w-4" />
             <span>{resource.city ? `${resource.city}, ` : ''}{resource.county || ''}</span>
-            <Badge variant="outline" className="text-xs h-4">{resource.type}</Badge>
+            <Badge variant="outline" className="text-xs">{resource.type}</Badge>
           </div>
           
           {resource.description && (
-            <p className="text-xs text-foreground leading-relaxed line-clamp-2">{resource.description}</p>
+            <p className="text-sm text-foreground leading-relaxed line-clamp-3">{resource.description}</p>
           )}
           
-          <div className="flex gap-1 flex-wrap">
+          <div className="flex gap-2 flex-wrap">
             {resource.phone && (
-              <Button size="sm" variant="outline" className="h-6 px-2 text-xs" asChild>
+              <Button size="sm" variant="outline" className="h-8 px-3 text-sm" asChild>
                 <a href={`tel:${resource.phone.replace(/[^\d]/g, '')}`}>
-                  <Phone className="h-2 w-2 mr-1" />
+                  <Phone className="h-3 w-3 mr-2" />
                   Call
                 </a>
               </Button>
             )}
             {resource.website && (
-              <Button size="sm" variant="outline" className="h-6 px-2 text-xs" asChild>
+              <Button size="sm" variant="outline" className="h-8 px-3 text-sm" asChild>
                 <a href={resource.website.startsWith('http') ? resource.website : `https://${resource.website}`} target="_blank" rel="noopener noreferrer">
-                  <Globe className="h-2 w-2 mr-1" />
-                  Site
+                  <Globe className="h-3 w-3 mr-2" />
+                  Website
                 </a>
               </Button>
             )}
@@ -171,7 +171,7 @@ export const SharedAIChat: React.FC<SharedAIChatProps> = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-md max-h-[600px] p-0 flex flex-col">
+      <DialogContent className="max-w-2xl max-h-[80vh] p-0 flex flex-col">
         <DialogHeader className="p-4 pb-2 border-b shrink-0">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
@@ -202,8 +202,8 @@ export const SharedAIChat: React.FC<SharedAIChatProps> = ({
           {children}
         </DialogHeader>
 
-        <ScrollArea className="flex-1 p-3" ref={scrollAreaRef}>
-          <div className="space-y-3">
+        <ScrollArea className="flex-1 p-4" ref={scrollAreaRef}>
+          <div className="space-y-4">
             {messages.length === 0 ? (
               <div className="text-center py-8">
                 <HeaderIcon className={`h-8 w-8 ${headerColor} mx-auto mb-3`} />
