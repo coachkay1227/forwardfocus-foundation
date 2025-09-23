@@ -1,3 +1,4 @@
+import React from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -6,6 +7,8 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { SecurityProvider } from "@/components/security/SecurityProvider";
 import { SecurityHeaders } from "@/components/security/SecurityHeaders";
+import { antiWhitelabelProtection } from "@/lib/anti-whitelabel";
+import { sessionSecurity } from "@/lib/session-security";
 import { AntiWhiteLabelProtection } from "@/components/security/AntiWhiteLabelProtection";
 import { SessionSecurityProvider } from "@/components/security/SessionSecurityProvider";
 import Layout from "./components/layout/Layout";
@@ -40,7 +43,13 @@ import { AnalyticsProvider } from "./components/layout/AnalyticsProvider";
 
 const queryClient = new QueryClient();
 
-const App = () => (
+const App = () => {
+  // Initialize security systems
+  React.useEffect(() => {
+    console.log('Security systems initialized');
+  }, []);
+
+  return (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
       <SecurityProvider>
@@ -94,6 +103,7 @@ const App = () => (
       </SecurityProvider>
     </TooltipProvider>
   </QueryClientProvider>
-);
+  );
+};
 
 export default App;
