@@ -86,13 +86,16 @@ export const usePerformanceMonitoring = () => {
             tcp_connect: navigation.connectEnd - navigation.connectStart,
             server_response: navigation.responseStart - navigation.requestStart,
             dom_processing: navigation.domContentLoadedEventEnd - navigation.responseEnd,
-            page_load: navigation.loadEventEnd - navigation.navigationStart,
+            page_load: navigation.loadEventEnd - navigation.startTime,
             ttfb: navigation.responseStart - navigation.requestStart
           };
 
           trackEvent({
-            action_type: 'page_load_performance',
-            additional_data: metrics
+            action_type: 'page_view',
+            additional_data: {
+              ...metrics,
+              metric_type: 'page_load_performance'
+            }
           });
         }
       }
@@ -114,12 +117,13 @@ export const usePerformanceMonitoring = () => {
       if ('memory' in performance) {
         const memory = (performance as any).memory;
         trackEvent({
-          action_type: 'memory_usage',
+          action_type: 'page_view',
           additional_data: {
             used: memory.usedJSHeapSize,
             total: memory.totalJSHeapSize,
             limit: memory.jsHeapSizeLimit,
-            usage_percentage: (memory.usedJSHeapSize / memory.jsHeapSizeLimit) * 100
+            usage_percentage: (memory.usedJSHeapSize / memory.jsHeapSizeLimit) * 100,
+            metric_type: 'memory_usage'
           }
         });
       }
