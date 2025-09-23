@@ -1,115 +1,86 @@
-import { useState } from "react";
+import React, { useEffect, useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { AlertTriangle, CheckCircle, Clock, Shield } from 'lucide-react';
 import { supabase } from "@/integrations/supabase/client";
-import { toast } from "@/hooks/use-toast";
-import { CheckCircle, AlertTriangle, Info, Clock } from "lucide-react";
+import { toast } from "sonner";
 
 interface SecurityAlert {
   id: string;
   alert_type: string;
-  severity: string;
+  severity: 'low' | 'medium' | 'high' | 'critical';
   title: string;
   description: string;
-  metadata: any;
   resolved: boolean;
-  resolved_at: string | null;
   created_at: string;
+  resolved_at?: string;
+  metadata?: any;
 }
 
-interface SecurityAlertsProps {
-  alerts: SecurityAlert[];
-  onRefresh: () => void;
-}
+export const SecurityAlerts = () => {
+  const [alerts, setAlerts] = useState<SecurityAlert[]>([]);
+  const [loading, setLoading] = useState(true);
 
-export const SecurityAlerts = ({ alerts, onRefresh }: SecurityAlertsProps) => {
-  const [resolving, setResolving] = useState<Set<string>>(new Set());
+  const loadAlerts = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('security_alerts')
+        .select('*')
+        .order('created_at', { ascending: false })
+        .limit(20);
+      
+      if (error) throw error;
+      setAlerts(data || []);
+    } catch (error) {
+      console.error('Error loading security alerts:', error);
+      toast.error('Failed to load security alerts');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const resolveAlert = async (alertId: string) => {
-    setResolving(prev => new Set(prev).add(alertId));
-    
     try {
       const { error } = await supabase.rpc('resolve_security_alert', {
         p_alert_id: alertId
       });
 
-      if (error) {
-        toast({
-          title: "Error",
-          description: "Failed to resolve alert",
-          variant: "destructive",
-        });
-      } else {
-        toast({
-          title: "Success",
-          description: "Alert resolved successfully",
-        });
-        onRefresh();
-      }
+      if (error) throw error;
+
+      toast.success('Security alert resolved');
+      loadAlerts();
     } catch (error) {
       console.error('Error resolving alert:', error);
-      toast({
-        title: "Error",
-        description: "Failed to resolve alert",
-        variant: "destructive",
-      });
-    } finally {
-      setResolving(prev => {
-        const newSet = new Set(prev);
-        newSet.delete(alertId);
-        return newSet;
-      });
+      toast.error('Failed to resolve alert');
     }
   };
 
-  const getSeverityIcon = (severity: string) => {
-    switch (severity) {
-      case 'critical':
-      case 'high':
-        return <AlertTriangle className="h-4 w-4 text-destructive" />;
-      case 'medium':
-        return <Clock className="h-4 w-4 text-yellow-500" />;
-      case 'low':
-        return <Info className="h-4 w-4 text-blue-500" />;
-      default:
-        return <Info className="h-4 w-4" />;
-    }
-  };
+  useEffect(() => {
+    loadAlerts();
+  }, []);
 
   const getSeverityColor = (severity: string) => {
-    switch (severity) {
-      case 'critical': return 'destructive';
-      case 'high': return 'destructive';
-      case 'medium': return 'secondary';
-      case 'low': return 'outline';
-      default: return 'outline';
-    }
+    const colors = {
+      low: 'bg-blue-100 text-blue-800',
+      medium: 'bg-yellow-100 text-yellow-800',
+      high: 'bg-orange-100 text-orange-800',
+      critical: 'bg-red-100 text-red-800'
+    };
+    return colors[severity as keyof typeof colors] || colors.medium;
   };
 
-  const getAlertTypeDescription = (alertType: string) => {
-    switch (alertType) {
-      case 'EXCESSIVE_CONTACT_ACCESS':
-        return 'User accessed contact data excessively in a short time period';
-      case 'AI_ENDPOINT_ABUSE':
-        return 'Potential abuse or unusual usage patterns detected on AI endpoints';
-      case 'GEOGRAPHIC_ANOMALY':
-        return 'Unusual geographic access patterns detected';
-      case 'SUSPICIOUS_ACTIVITY':
-        return 'General suspicious activity pattern detected';
-      default:
-        return 'Security alert requiring attention';
-    }
-  };
+  const unresolvedAlerts = alerts.filter(a => !a.resolved);
+  const criticalAlerts = unresolvedAlerts.filter(a => a.severity === 'critical');
 
-  if (alerts.length === 0) {
+  if (loading) {
     return (
       <Card>
-        <CardContent className="py-8">
-          <div className="text-center text-muted-foreground">
-            <CheckCircle className="mx-auto h-12 w-12 mb-4 text-green-500" />
-            <p>No security alerts at this time</p>
-            <p className="text-sm mt-2">All systems are operating normally</p>
+        <CardContent className="p-6">
+          <div className="flex items-center justify-center">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+            <span className="ml-2">Loading security alerts...</span>
           </div>
         </CardContent>
       </Card>
@@ -117,78 +88,84 @@ export const SecurityAlerts = ({ alerts, onRefresh }: SecurityAlertsProps) => {
   }
 
   return (
-    <div className="space-y-4">
-      {alerts.map((alert) => (
-        <Card key={alert.id} className={alert.resolved ? "opacity-60" : ""}>
-          <CardHeader className="pb-3">
-            <div className="flex items-start justify-between">
-              <div className="flex items-start space-x-3">
-                {getSeverityIcon(alert.severity)}
-                <div>
-                  <CardTitle className="text-base flex items-center gap-2">
-                    {alert.title}
-                    <Badge variant={getSeverityColor(alert.severity) as any}>
-                      {alert.severity}
+    <div className="space-y-6">
+      <div>
+        <h2 className="text-2xl font-bold">Security Alerts</h2>
+        <p className="text-muted-foreground">
+          Monitor and manage security incidents across the platform
+        </p>
+      </div>
+
+      {criticalAlerts.length > 0 && (
+        <Alert className="border-red-200 bg-red-50">
+          <AlertTriangle className="h-4 w-4" />
+          <AlertTitle>Critical Security Threats</AlertTitle>
+          <AlertDescription>
+            <strong>{criticalAlerts.length} critical alert(s)</strong> require immediate attention.
+          </AlertDescription>
+        </Alert>
+      )}
+
+      <div className="space-y-4">
+        {alerts.length === 0 ? (
+          <Card>
+            <CardContent className="p-6">
+              <div className="text-center">
+                <CheckCircle className="h-12 w-12 text-green-500 mx-auto mb-4" />
+                <h3 className="text-lg font-medium mb-2">No Security Alerts</h3>
+                <p className="text-muted-foreground">
+                  All security alerts have been resolved. Great work!
+                </p>
+              </div>
+            </CardContent>
+          </Card>
+        ) : (
+          alerts.map((alert) => (
+            <Card key={alert.id} className={alert.severity === 'critical' ? 'border-red-200' : ''}>
+              <CardHeader>
+                <div className="flex items-start justify-between">
+                  <div>
+                    <CardTitle className="text-lg">{alert.title}</CardTitle>
+                    <CardDescription className="mt-1">
+                      {alert.description}
+                    </CardDescription>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <Badge className={getSeverityColor(alert.severity)}>
+                      {alert.severity.toUpperCase()}
                     </Badge>
                     {alert.resolved && (
-                      <Badge variant="outline" className="text-green-600">
+                      <Badge variant="default">
+                        <CheckCircle className="h-3 w-3 mr-1" />
                         Resolved
                       </Badge>
                     )}
-                  </CardTitle>
-                  <CardDescription className="mt-1">
-                    {getAlertTypeDescription(alert.alert_type)}
-                  </CardDescription>
-                </div>
-              </div>
-              
-              {!alert.resolved && (
-                <Button
-                  size="sm"
-                  onClick={() => resolveAlert(alert.id)}
-                  disabled={resolving.has(alert.id)}
-                >
-                  {resolving.has(alert.id) ? "Resolving..." : "Mark Resolved"}
-                </Button>
-              )}
-            </div>
-          </CardHeader>
-          
-          <CardContent>
-            <div className="space-y-3">
-              {alert.description && (
-                <div>
-                  <h4 className="text-sm font-medium mb-1">Description</h4>
-                  <p className="text-sm text-muted-foreground">{alert.description}</p>
-                </div>
-              )}
-              
-              {alert.metadata && Object.keys(alert.metadata).length > 0 && (
-                <div>
-                  <h4 className="text-sm font-medium mb-1">Details</h4>
-                  <div className="bg-muted p-3 rounded-md text-sm">
-                    <pre className="whitespace-pre-wrap">
-                      {JSON.stringify(alert.metadata, null, 2)}
-                    </pre>
                   </div>
                 </div>
-              )}
+              </CardHeader>
               
-              <div className="flex justify-between text-xs text-muted-foreground">
-                <span>Alert Type: {alert.alert_type}</span>
-                <span>
-                  Created: {new Date(alert.created_at).toLocaleString()}
-                </span>
-                {alert.resolved_at && (
-                  <span>
-                    Resolved: {new Date(alert.resolved_at).toLocaleString()}
-                  </span>
-                )}
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      ))}
+              <CardContent>
+                <div className="space-y-3">
+                  <div className="text-sm text-muted-foreground">
+                    Created: {new Date(alert.created_at).toLocaleString()}
+                  </div>
+
+                  {!alert.resolved && (
+                    <Button
+                      onClick={() => resolveAlert(alert.id)}
+                      size="sm"
+                      variant="outline"
+                    >
+                      <CheckCircle className="h-4 w-4 mr-2" />
+                      Mark as Resolved
+                    </Button>
+                  )}
+                </div>
+              </CardContent>
+            </Card>
+          ))
+        )}
+      </div>
     </div>
   );
 };
