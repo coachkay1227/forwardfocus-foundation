@@ -31,6 +31,7 @@ import RequestPartnerVerification from "./pages/RequestPartnerVerification";
 import Organizations from "./pages/Organizations";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsOfService from "./pages/TermsOfService";
+import DonationSuccess from "./pages/DonationSuccess";
 
 import { StateProvider } from "./contexts/StateContext";
 
@@ -73,6 +74,7 @@ const App = () => (
                   <Route path="/organizations" element={<Organizations />} />
                   <Route path="/privacy" element={<PrivacyPolicy />} />
                   <Route path="/terms" element={<TermsOfService />} />
+                  <Route path="/donation-success" element={<DonationSuccess />} />
                   <Route path="/resources/:id" element={<Navigate to="/help" replace />} />
                   {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                   <Route path="*" element={<NotFound />} />
