@@ -6,6 +6,8 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { SecurityProvider } from "@/components/security/SecurityProvider";
 import { SecurityHeaders } from "@/components/security/SecurityHeaders";
+import { AntiWhiteLabelProtection } from "@/components/security/AntiWhiteLabelProtection";
+import { SessionSecurityProvider } from "@/components/security/SessionSecurityProvider";
 import Layout from "./components/layout/Layout";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
@@ -42,13 +44,15 @@ const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
       <SecurityProvider>
-        <AuthProvider>
-          <SecurityHeaders />
-          <Toaster />
-          <Sonner />
-          <BrowserRouter>
-            <AnalyticsProvider>
-              <StateProvider>
+        <SessionSecurityProvider>
+          <AuthProvider>
+            <AntiWhiteLabelProtection />
+            <SecurityHeaders />
+            <Toaster />
+            <Sonner />
+            <BrowserRouter>
+              <AnalyticsProvider>
+                <StateProvider>
               <Layout>
                 <Routes>
                   <Route path="/" element={<Index />} />
@@ -82,10 +86,11 @@ const App = () => (
                   <Route path="*" element={<NotFound />} />
                 </Routes>
               </Layout>
-              </StateProvider>
-            </AnalyticsProvider>
-          </BrowserRouter>
-        </AuthProvider>
+                </StateProvider>
+              </AnalyticsProvider>
+            </BrowserRouter>
+          </AuthProvider>
+        </SessionSecurityProvider>
       </SecurityProvider>
     </TooltipProvider>
   </QueryClientProvider>

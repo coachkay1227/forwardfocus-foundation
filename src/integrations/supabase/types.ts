@@ -1168,6 +1168,10 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: boolean
       }
+      get_current_user_role: {
+        Args: Record<PropertyKey, never>
+        Returns: string
+      }
       get_masked_contact_info: {
         Args: { contact_text: string; user_id?: string }
         Returns: string
@@ -1399,22 +1403,9 @@ export type Database = {
         }
         Returns: undefined
       }
-      log_sensitive_access: {
-        Args: {
-          is_sensitive?: boolean
-          operation: string
-          record_id: string
-          table_name: string
-        }
-        Returns: undefined
-      }
       manage_contact_access_request: {
         Args: { expiry_days?: number; new_status: string; request_id: string }
         Returns: undefined
-      }
-      mask_contact_info: {
-        Args: { contact_value: string }
-        Returns: string
       }
       request_admin_contact_access: {
         Args: {
@@ -1477,6 +1468,10 @@ export type Database = {
       }
       validate_admin_access_pattern: {
         Args: Record<PropertyKey, never>
+        Returns: boolean
+      }
+      validate_anonymous_session: {
+        Args: { session_token: string }
         Returns: boolean
       }
       validate_contact_access_permission: {
