@@ -18,6 +18,7 @@ import { WebsitePerformance } from "@/components/admin/WebsitePerformance";
 import { LaunchChecklist } from "@/components/launch/LaunchChecklist";
 import { AdminSetup } from "@/components/admin/AdminSetup";
 import { LaunchInstructions } from "@/components/admin/LaunchInstructions";
+import { PartnerVerificationManager } from "@/components/admin/PartnerVerificationManager";
 
 interface PartnerReferral {
   id: string;
@@ -297,9 +298,10 @@ const Admin = () => {
       <h1 className="font-heading text-3xl font-semibold mb-8">Admin Dashboard</h1>
       
       <Tabs defaultValue="management" className="space-y-6">
-        <TabsList className="grid w-full grid-cols-5 lg:grid-cols-9">
+        <TabsList className="grid w-full grid-cols-5 lg:grid-cols-10">
           <TabsTrigger value="launch">Launch</TabsTrigger>
           <TabsTrigger value="management">Partner</TabsTrigger>
+          <TabsTrigger value="verifications">Verify</TabsTrigger>
           <TabsTrigger value="submissions">Forms</TabsTrigger>
           <TabsTrigger value="support">Support</TabsTrigger>
           <TabsTrigger value="bookings">Bookings</TabsTrigger>
@@ -762,6 +764,16 @@ const Admin = () => {
 
         <TabsContent value="email">
           <EmailMarketingDashboard />
+        </TabsContent>
+
+        <TabsContent value="verifications">
+          <div className="space-y-6">
+            <h2 className="font-heading text-2xl font-semibold">Partner Verification Management</h2>
+            <p className="text-muted-foreground">
+              Review and manage partner verification requests. Approve or deny requests to grant verified partner status.
+            </p>
+            <PartnerVerificationManager />
+          </div>
         </TabsContent>
 
         <TabsContent value="security">
