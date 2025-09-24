@@ -37,9 +37,18 @@ const handler = async (req: Request): Promise<Response> => {
 
     // Get client info
     const userAgent = req.headers.get("user-agent") || "";
-    const clientIP = req.headers.get("x-forwarded-for") || 
-                     req.headers.get("x-real-ip") || 
-                     "";
+    
+    // Parse IP address - handle comma-separated IPs from x-forwarded-for
+    const forwardedFor = req.headers.get("x-forwarded-for");
+    const realIP = req.headers.get("x-real-ip");
+    let clientIP = "";
+    
+    if (forwardedFor) {
+      // Take the first IP from comma-separated list
+      clientIP = forwardedFor.split(',')[0].trim();
+    } else if (realIP) {
+      clientIP = realIP.trim();
+    }
 
     // Check if already subscribed
     const { data: existing } = await supabaseClient
