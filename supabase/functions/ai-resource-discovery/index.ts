@@ -9,7 +9,7 @@ const corsHeaders = {
 
 const supabase = createClient(
   Deno.env.get('SUPABASE_URL') ?? '',
-  Deno.env.get('SUPABASE_ANON_KEY') ?? ''
+  Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
 );
 
 interface ResourceQuery {
@@ -115,8 +115,34 @@ Guidelines:
       const errorData = await openAIResponse.text();
       console.error('OpenAI API error:', errorData);
       errorCount++;
-      return new Response(JSON.stringify({ error: 'AI service temporarily unavailable' }), {
-        status: 500,
+      
+      // Instead of throwing, provide helpful guidance with database resources
+      const responseTime = Date.now() - startTime;
+      try {
+        await supabase.rpc('log_ai_usage', {
+          p_endpoint_name: 'ai-resource-discovery',
+          p_user_id: null,
+          p_response_time_ms: responseTime,
+          p_error_count: errorCount
+        });
+      } catch (logError) {
+        console.error('Failed to log AI usage:', logError);
+      }
+
+      const helpfulGuidance = `I'm here to help you find Ohio resources! While my AI is temporarily unavailable, I've found ${resources?.length || 0} resources from our database that might help.
+
+**Tips for better results:**
+• Be specific about your location (city or county in Ohio)
+• Mention the type of help you need (housing, employment, healthcare, legal aid, etc.)
+• Include any special circumstances (justice-involved, family with children, etc.)
+
+Here are the resources I found for you:`;
+
+      return new Response(JSON.stringify({
+        response: helpfulGuidance,
+        resources: resources?.slice(0, limit) || [],
+        totalFound: resources?.length || 0
+      }), {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       });
     }
@@ -167,11 +193,28 @@ Guidelines:
       console.error('Failed to log AI usage error:', logError);
     }
     
+    // Emergency fallback: Try to get basic resources 
+    let fallbackResources = [];
+    try {
+      const { data: basicResources } = await supabase
+        .from('resources')
+        .select('*')
+        .limit(10);
+      fallbackResources = basicResources || [];
+    } catch (dbError) {
+      console.error('Fallback database error:', dbError);
+    }
+
+    const guidanceMessage = fallbackResources.length > 0 
+      ? `I found ${fallbackResources.length} Ohio resources in our database. While I'm experiencing technical difficulties, these resources should help you get started. For more specific assistance, try being more detailed about your location and needs.`
+      : `I'm having technical difficulties right now. Please try refreshing the page, or visit our resource directory directly to browse available Ohio services and support.`;
+
     return new Response(JSON.stringify({ 
-      error: 'An error occurred processing your request',
-      details: error.message 
+      response: guidanceMessage,
+      resources: fallbackResources,
+      totalFound: fallbackResources.length
     }), {
-      status: 500,
+      status: 200,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });
   }

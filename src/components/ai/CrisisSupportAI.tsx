@@ -230,7 +230,10 @@ const CrisisSupportAI: React.FC<CrisisSupportAIProps> = ({ isOpen, onClose, init
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="w-[92vw] sm:w-full sm:max-w-3xl max-h-[85vh] p-0 flex flex-col" aria-describedby="crisis-support-description">
+      <DialogContent className="w-[95vw] sm:w-full sm:max-w-4xl max-h-[90vh] p-0 flex flex-col" aria-describedby="crisis-support-description">
+        <div className="sr-only">
+          <h2 id="crisis-support-dialog-title">Crisis Support AI Chat</h2>
+        </div>
         {/* Header */}
         <div className="flex items-center justify-between bg-destructive p-4 text-destructive-foreground shrink-0">
           <div className="flex items-center gap-3">
@@ -263,7 +266,7 @@ const CrisisSupportAI: React.FC<CrisisSupportAIProps> = ({ isOpen, onClose, init
         </div>
 
         {/* Messages */}
-        <ScrollArea className="flex-1 p-3 sm:p-4">
+        <ScrollArea className="flex-1 p-3 sm:p-4 max-h-[50vh]">
           <div className="space-y-4">
             {messages.map((message) => (
               <div key={message.id} className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}>

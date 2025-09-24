@@ -108,7 +108,39 @@ Remember: You're Alex, a trusted companion who believes in people's strength and
     if (!openAIResponse.ok) {
       console.error('OpenAI API error:', await openAIResponse.text());
       errorCount++;
-      throw new Error('Failed to generate AI response');
+      
+      // Instead of throwing, return a compassionate fallback response
+      const responseTime = Date.now() - startTime;
+      try {
+        await supabase.rpc('log_ai_usage', {
+          p_endpoint_name: 'crisis-support-ai',
+          p_user_id: null,
+          p_response_time_ms: responseTime,
+          p_error_count: errorCount
+        });
+      } catch (logError) {
+        console.error('Failed to log AI usage:', logError);
+      }
+
+      const compassionateResponse = `I'm here with you, and I want you to know that you're not alone. While I'm having some technical difficulties right now, your wellbeing is my priority.
+
+**If you're in immediate danger, please call 911 right now.**
+
+**For crisis support:**
+• 988 - Suicide & Crisis Lifeline (available 24/7)
+• Text HOME to 741741 - Crisis Text Line
+• 1-800-799-7233 - National Domestic Violence Hotline
+
+I'm searching for local Ohio resources that can provide you with immediate support...`;
+
+      return new Response(JSON.stringify({
+        response: compassionateResponse,
+        resources: relevantResources,
+        urgencyLevel,
+        totalResources: resources?.length || 0
+      }), {
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
     }
 
     const aiData = await openAIResponse.json();
@@ -177,11 +209,42 @@ Remember: You're Alex, a trusted companion who believes in people's strength and
       console.error('Failed to log AI usage error:', logError);
     }
     
+    // Emergency fallback: Return supportive message with any available resources
+    const fallbackMessage = `I'm here with you right now. While I'm experiencing technical difficulties, your safety is what matters most.
+
+**Immediate Crisis Support:**
+• Call 911 for emergencies
+• Call 988 for suicide & crisis lifeline  
+• Text HOME to 741741 for crisis text support
+• Call 1-800-799-7233 for domestic violence help
+
+I'm searching our database for local Ohio resources that can help you...`;
+
+    // Try to get basic crisis resources as fallback
+    const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
+    const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
+    const supabase = createClient(supabaseUrl, supabaseKey);
+    
+    let fallbackResources = [];
+    try {
+      const { data: dbResources } = await supabase
+        .from('resources')
+        .select('*')
+        .or('type.ilike.%crisis%,type.ilike.%emergency%,type.ilike.%mental health%')
+        .eq('verified', 'verified')
+        .limit(5);
+      fallbackResources = dbResources || [];
+    } catch (dbError) {
+      console.error('Fallback database error:', dbError);
+    }
+
     return new Response(JSON.stringify({ 
-      error: 'I apologize, but I encountered an error. Let me help connect you with local Ohio crisis resources and support services in your area.',
-      resources: []
+      response: fallbackMessage,
+      resources: fallbackResources,
+      urgencyLevel: 'urgent',
+      totalResources: fallbackResources.length
     }), {
-      status: 500,
+      status: 200,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });
   }

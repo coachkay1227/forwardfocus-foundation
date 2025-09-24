@@ -296,7 +296,10 @@ const ReentryNavigatorAI: React.FC<ReentryNavigatorAIProps> = ({ isOpen, onClose
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => { if (!open) handleCloseRequest(); }}>
-      <DialogContent className="max-w-2xl max-h-[85vh] p-0 flex flex-col overflow-hidden">
+      <DialogContent className="max-w-4xl max-h-[90vh] p-0 flex flex-col overflow-hidden">
+        <div className="sr-only">
+          <h2 id="reentry-navigator-dialog-title">Reentry Navigator AI Chat</h2>
+        </div>
         <DialogTitle className="sr-only">{selectedCoach ? `${selectedCoach.name} Chat` : 'Coach Kay Chat'}</DialogTitle>
         {/* Header */}
         <div className="flex items-center justify-between bg-secondary p-4 text-secondary-foreground">

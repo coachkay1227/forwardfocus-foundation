@@ -305,7 +305,10 @@ const AIResourceDiscovery: React.FC<AIResourceDiscoveryProps> = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-4xl max-h-[85vh] h-[85vh] p-0 flex flex-col" aria-describedby="ai-discovery-description">
+      <DialogContent className="max-w-5xl max-h-[90vh] h-[90vh] p-0 flex flex-col" aria-describedby="ai-discovery-description">
+        <div className="sr-only">
+          <h2 id="ai-discovery-dialog-title">AI Resource Discovery Chat</h2>
+        </div>
         <DialogHeader className="p-6 pb-0">
           <DialogTitle className="flex items-center gap-2">
             <Bot className="h-5 w-5 text-osu-scarlet" />
