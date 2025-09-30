@@ -188,8 +188,8 @@ const Header = ({
                     <NavigationMenuTrigger className="text-foreground hover:text-foreground/80 bg-transparent h-auto p-0 text-sm font-medium">
                       About
                     </NavigationMenuTrigger>
-                    <NavigationMenuContent className="left-0 z-[60]">
-                      <ul className="grid w-[200px] gap-1 p-2 bg-background border border-border shadow-lg">
+                    <NavigationMenuContent>
+                      <ul className="grid w-[200px] gap-1 p-2">
                         <li>
                           <NavigationMenuLink asChild>
                             <NavLink
@@ -218,8 +218,8 @@ const Header = ({
                     <NavigationMenuTrigger className="text-foreground hover:text-foreground/80 bg-transparent h-auto p-0 text-sm font-medium">
                       Portal
                     </NavigationMenuTrigger>
-                    <NavigationMenuContent className="left-0 z-[60]">
-                      <ul className="grid w-[200px] gap-1 p-2 bg-background border border-border shadow-lg">
+                    <NavigationMenuContent>
+                      <ul className="grid w-[200px] gap-1 p-2">
                         <li>
                           <NavigationMenuLink asChild>
                             <NavLink
