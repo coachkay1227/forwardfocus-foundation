@@ -55,7 +55,7 @@ const App = () => {
       <SecurityProvider>
         <SessionSecurityProvider>
           <AuthProvider>
-            <AntiWhiteLabelProtection />
+            {/* <AntiWhiteLabelProtection /> */}
             <SecurityHeaders />
             <Toaster />
             <Sonner />
