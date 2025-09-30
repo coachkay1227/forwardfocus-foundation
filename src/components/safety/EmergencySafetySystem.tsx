@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { X, Phone, MessageCircle, MapPin, MessageSquare, ExternalLink } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import AIResourceDiscovery from "@/components/ai/AIResourceDiscovery";
 
@@ -8,6 +9,7 @@ const MENTAL = "988";
 const COMMUNITY = "211";
 
 export const EmergencySafetySystem = () => {
+  const navigate = useNavigate();
   const [isTopBarVisible, setIsTopBarVisible] = useState(true);
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const [isLabelVisible, setIsLabelVisible] = useState(true);
@@ -112,7 +114,9 @@ export const EmergencySafetySystem = () => {
         setShowAIDiscovery(true);
         break;
       case "exit":
-        window.location.href = "https://weather.com";
+        setShowAIDiscovery(false);
+        setIsSheetOpen(false);
+        navigate("/");
         break;
     }
     setIsSheetOpen(false);
