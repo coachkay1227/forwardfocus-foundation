@@ -101,23 +101,7 @@ export const AntiWhiteLabelProtection = () => {
       }
     }
 
-    // Add copyright watermark to all pages
-    const watermark = document.createElement('div');
-    watermark.style.cssText = `
-      position: fixed;
-      bottom: 10px;
-      right: 10px;
-      background: rgba(0, 0, 0, 0.7);
-      color: white;
-      padding: 5px 10px;
-      font-size: 12px;
-      border-radius: 4px;
-      z-index: 1000;
-      pointer-events: none;
-      font-family: Arial, sans-serif;
-    `;
-    watermark.textContent = `© ${config.brandName}`;
-    document.body.appendChild(watermark);
+    // Watermark removed per user request
 
   }, []);
 
