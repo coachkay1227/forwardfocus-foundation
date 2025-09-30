@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 
 const Footer = () => {
-  return <footer className="border-t bg-gradient-osu-subtle">
+  return <footer className="border-t">
       <div className="container py-16 grid gap-16 md:grid-cols-3 md:gap-8 justify-items-center text-center md:text-left">
         <div>
           <div className="font-heading font-bold text-lg text-osu-scarlet">Forward Focus Elevation</div>
