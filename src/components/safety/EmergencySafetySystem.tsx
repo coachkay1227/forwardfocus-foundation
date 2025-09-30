@@ -157,7 +157,7 @@ export const EmergencySafetySystem = () => {
       )}
 
       {/* Safety Dock */}
-      <div className="fixed right-4 bottom-4 z-[10001]">
+      <div className="fixed right-4 bottom-24 z-[10001]">
         <Button
           className="bg-destructive hover:bg-destructive/90 text-destructive-foreground rounded-full px-4 py-2 pr-12 shadow-2xl flex items-center gap-2 h-auto relative"
           onMouseDown={startLongPress}
