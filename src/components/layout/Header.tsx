@@ -157,8 +157,8 @@ const Header = ({
               </Sheet>
             </div>
 
-            {/* Logo - Columns 2-4 on mobile, 1-3 on desktop */}
-            <div className="col-span-10 md:col-span-3 flex justify-center md:justify-start">
+            {/* Logo - Columns 2-4 on mobile, 1-2 on desktop */}
+            <div className="col-span-10 md:col-span-2 flex justify-center md:justify-start">
               <NavLink to="/" className="flex items-center md:hover:scale-105 transition-all duration-300 group">
                 <img 
                   src={logoTransparent} 
@@ -168,8 +168,8 @@ const Header = ({
               </NavLink>
             </div>
 
-            {/* Main Navigation - Desktop - Columns 4-8 */}
-            <nav className="hidden md:flex col-span-5 items-center justify-center">
+            {/* Main Navigation - Desktop - Columns 3-9 */}
+            <nav className="hidden md:flex col-span-7 items-center justify-end pr-4">
               <NavigationMenu>
                 <NavigationMenuList className="flex items-center space-x-6">
                   <NavigationMenuItem>
@@ -188,8 +188,8 @@ const Header = ({
                     <NavigationMenuTrigger className="text-foreground hover:text-foreground/80 bg-transparent h-auto p-0 text-sm font-medium">
                       About
                     </NavigationMenuTrigger>
-                    <NavigationMenuContent>
-                      <ul className="grid w-[200px] gap-1 p-2">
+                    <NavigationMenuContent className="left-0">
+                      <ul className="grid w-[200px] gap-1 p-2 bg-background border border-border shadow-lg">
                         <li>
                           <NavigationMenuLink asChild>
                             <NavLink
@@ -218,8 +218,8 @@ const Header = ({
                     <NavigationMenuTrigger className="text-foreground hover:text-foreground/80 bg-transparent h-auto p-0 text-sm font-medium">
                       Portal
                     </NavigationMenuTrigger>
-                    <NavigationMenuContent>
-                      <ul className="grid w-[200px] gap-1 p-2">
+                    <NavigationMenuContent className="left-0">
+                      <ul className="grid w-[200px] gap-1 p-2 bg-background border border-border shadow-lg">
                         <li>
                           <NavigationMenuLink asChild>
                             <NavLink
@@ -247,8 +247,8 @@ const Header = ({
               </NavigationMenu>
             </nav>
 
-            {/* Auth Links - Columns 9-12 */}
-            <div className="hidden md:flex col-span-4 items-center justify-end">
+            {/* Auth Links - Columns 10-12 */}
+            <div className="hidden md:flex col-span-3 items-center justify-end">
               <div className="flex items-center gap-2">
                 {user ? <DropdownMenu>
                     <DropdownMenuTrigger asChild>
