@@ -166,7 +166,7 @@ const Header = ({
                 <img 
                   src={logoTransparent} 
                   alt="Forward Focus Elevation" 
-                  className="h-20 w-auto drop-shadow-2xl filter brightness-105 contrast-105 group-hover:scale-105 group-hover:drop-shadow-2xl transition-all duration-300" 
+                  className="h-24 w-auto drop-shadow-2xl filter brightness-105 contrast-105 group-hover:scale-105 group-hover:drop-shadow-2xl transition-all duration-300" 
                 />
               </NavLink>
             </div>
