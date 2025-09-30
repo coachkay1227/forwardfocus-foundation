@@ -8,7 +8,7 @@ const MENTAL = "988";
 const COMMUNITY = "211";
 
 export const EmergencySafetySystem = () => {
-  const [isTopBarVisible, setIsTopBarVisible] = useState(false);
+  const [isTopBarVisible, setIsTopBarVisible] = useState(true);
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const [isLabelVisible, setIsLabelVisible] = useState(true);
   const [ringProgress, setRingProgress] = useState(0);
@@ -128,6 +128,10 @@ export const EmergencySafetySystem = () => {
               ⚠️ <strong>Crisis?</strong> Call{" "}
               <a href={`tel:${EMERGENCY}`} className="underline hover:no-underline">
                 {EMERGENCY}
+              </a>{" "}
+              • Community help:{" "}
+              <a href={`tel:${COMMUNITY}`} className="underline hover:no-underline">
+                {COMMUNITY}
               </a>{" "}
               • Mental health:{" "}
               <a href={`tel:${MENTAL}`} className="underline hover:no-underline">
