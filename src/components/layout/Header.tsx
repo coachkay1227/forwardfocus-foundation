@@ -90,7 +90,7 @@ const Header = ({
       {/* Main Navigation */}
       <div className="bg-gradient-to-r from-osu-gray-light/30 via-cream/50 to-osu-gray-light/20 backdrop-blur-sm border-b border-border/50 shadow-sm">
         <div className="container mx-auto px-6">
-          <div className="grid grid-cols-12 gap-4 items-center py-0.5 max-w-full">
+          <div className="grid grid-cols-12 gap-4 items-center py-0 max-w-full">
             {/* Mobile menu button - Column 1 */}
             <div className="col-span-1 md:hidden">
               <Sheet open={open} onOpenChange={setOpen}>
