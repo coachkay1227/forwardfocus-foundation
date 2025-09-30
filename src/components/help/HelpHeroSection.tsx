@@ -20,12 +20,6 @@ export const HelpHeroSection = () => {
           <p className="text-lg md:text-xl text-white/90 mb-8 leading-relaxed max-w-2xl mx-auto">
             You're not alone. Get immediate crisis support, emergency resources, or personalized guidance to find the help you need.
           </p>
-
-          <div className="bg-osu-gray/20 backdrop-blur-sm border border-white/20 rounded-lg p-4 mb-8 max-w-md mx-auto">
-            <p className="text-sm text-white/90">
-              <strong>Need to exit quickly?</strong> Press Ctrl+Shift+Q for a safe exit
-            </p>
-          </div>
         </div>
       </div>
     </header>
