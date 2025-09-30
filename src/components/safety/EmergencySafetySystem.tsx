@@ -5,9 +5,10 @@ import AIResourceDiscovery from "@/components/ai/AIResourceDiscovery";
 
 const EMERGENCY = "911";
 const MENTAL = "988";
+const COMMUNITY = "211";
 
 export const EmergencySafetySystem = () => {
-  const [isTopBarVisible, setIsTopBarVisible] = useState(true);
+  const [isTopBarVisible, setIsTopBarVisible] = useState(false);
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const [isLabelVisible, setIsLabelVisible] = useState(true);
   const [ringProgress, setRingProgress] = useState(0);
@@ -83,6 +84,9 @@ export const EmergencySafetySystem = () => {
         break;
       case "mh":
         window.location.href = `tel:${MENTAL}`;
+        break;
+      case "211":
+        window.location.href = `tel:${COMMUNITY}`;
         break;
       case "sms":
         window.location.href = `sms:?&body=${encodeURIComponent("I need help. My location: " + window.location.href)}`;
@@ -276,6 +280,29 @@ export const EmergencySafetySystem = () => {
                 <span className="text-center leading-tight">
                   <strong className="block font-bold text-sm text-white">Mental</strong>
                   <em className="block font-semibold text-xs text-blue-300 opacity-90 not-italic">{MENTAL}</em>
+                </span>
+              </button>
+              
+              <button
+                onClick={() => handleEmergencyAction("211")}
+                className="flex flex-col items-center gap-3 p-2 bg-transparent border-0 cursor-pointer"
+              >
+                <span 
+                  className="w-20 h-20 rounded-full flex items-center justify-center relative transition-all duration-200 md:hover:translate-y-[-2px] md:hover:scale-105"
+                  style={{
+                    background: 'radial-gradient(120% 120% at 30% 20%, #a78bfa 0%, #7c3aed 55%, #4c1d95 100%)',
+                    boxShadow: 'inset 0 -10px 24px rgba(255,255,255,.08), 0 10px 22px rgba(0,0,0,.25)'
+                  }}
+                >
+                  <svg viewBox="0 0 24 24" fill="none" className="w-7 h-7 text-white opacity-95">
+                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" stroke="currentColor" strokeWidth="2"/>
+                    <circle cx="9" cy="7" r="4" stroke="currentColor" strokeWidth="2"/>
+                    <path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" stroke="currentColor" strokeWidth="2"/>
+                  </svg>
+                </span>
+                <span className="text-center leading-tight">
+                  <strong className="block font-bold text-sm text-white">Community</strong>
+                  <em className="block font-semibold text-xs text-blue-300 opacity-90 not-italic">{COMMUNITY}</em>
                 </span>
               </button>
               
