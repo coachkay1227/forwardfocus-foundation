@@ -6,9 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, NavigationMenuTrigger } from "@/components/ui/navigation-menu";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { CrisisEmergencyBot } from "@/components/ai/CrisisEmergencyBot";
@@ -113,17 +111,33 @@ const Header = ({
                       <Button variant="ghost" size="sm" asChild className="justify-start w-full">
                         <NavLink to="/victim-services" onClick={() => setOpen(false)}>Healing Hub</NavLink>
                       </Button>
-                      <Button variant="ghost" size="sm" asChild className="justify-start w-full">
-                        <NavLink to="/learn" onClick={() => setOpen(false)}>The Collective</NavLink>
-                      </Button>
-                      <Button variant="ghost" size="sm" asChild className="justify-start w-full">
-                        <NavLink to="/about" onClick={() => setOpen(false)}>About</NavLink>
-                      </Button>
+                      
+                      {/* About Dropdown */}
+                      <div className="border-t pt-2 mt-2">
+                        <p className="text-xs text-muted-foreground px-3 mb-1">About</p>
+                        <Button variant="ghost" size="sm" asChild className="justify-start w-full pl-6">
+                          <NavLink to="/about" onClick={() => setOpen(false)}>About Us</NavLink>
+                        </Button>
+                        <Button variant="ghost" size="sm" asChild className="justify-start w-full pl-6">
+                          <NavLink to="/learn" onClick={() => setOpen(false)}>The Collective</NavLink>
+                        </Button>
+                      </div>
+
+                      {/* Portal Dropdown */}
+                      <div className="border-t pt-2 mt-2">
+                        <p className="text-xs text-muted-foreground px-3 mb-1">Portal</p>
+                        <Button variant="ghost" size="sm" asChild className="justify-start w-full pl-6">
+                          <NavLink to="/auth" onClick={() => setOpen(false)}>Client Portal</NavLink>
+                        </Button>
+                        <Button variant="ghost" size="sm" asChild className="justify-start w-full pl-6">
+                          <NavLink to="/partners" onClick={() => setOpen(false)}>Partner Portal</NavLink>
+                        </Button>
+                      </div>
                     </nav>
 
                      {/* Mobile Auth */}
                     {user ? <>
-                        <div className="flex items-center gap-2 py-2 text-sm text-foreground border-b border-border pb-3">
+                        <div className="flex items-center gap-2 py-2 text-sm text-foreground border-t border-border pt-3 mt-2">
                           <User className="h-4 w-4" />
                           <span className="truncate">{user.email}</span>
                         </div>
@@ -137,24 +151,7 @@ const Header = ({
                           <LogOut className="mr-2 h-4 w-4" />
                           Sign Out
                         </Button>
-                      </> : <div className="flex flex-col space-y-2">
-                        {/* Client Portal Mobile */}
-                        <div className="border rounded-md p-3">
-                          <h4 className="text-sm font-medium mb-2">Client Portal</h4>
-                          <div className="flex flex-col space-y-1">
-                            <Button variant="ghost" size="sm" asChild className="justify-start w-full">
-                              <NavLink to="/auth" onClick={() => setOpen(false)}>Sign In</NavLink>
-                            </Button>
-                            <Button variant="ghost" size="sm" asChild className="justify-start w-full">
-                              <NavLink to="/register" onClick={() => setOpen(false)}>Register</NavLink>
-                            </Button>
-                          </div>
-                        </div>
-                        {/* Partner Portal Mobile */}
-                        <Button variant="outline" size="sm" asChild className="justify-start w-full">
-                          <NavLink to="/partners" onClick={() => setOpen(false)}>Partner Portal</NavLink>
-                        </Button>
-                      </div>}
+                      </> : null}
                   </div>
                 </SheetContent>
               </Sheet>
@@ -173,13 +170,81 @@ const Header = ({
 
             {/* Main Navigation - Desktop - Columns 4-8 */}
             <nav className="hidden md:flex col-span-5 items-center justify-center">
-              <div className="flex items-center space-x-8 text-sm font-medium">
-                <NavLink to="/" className={linkCls}>Home</NavLink>
-                <NavLink to="/help" className={linkCls}>Get Help Now</NavLink>
-                <NavLink to="/victim-services" className={linkCls}>Healing Hub</NavLink>
-                <NavLink to="/learn" className={linkCls}>The Collective</NavLink>
-                <NavLink to="/about" className={linkCls}>About</NavLink>
-              </div>
+              <NavigationMenu>
+                <NavigationMenuList className="flex items-center space-x-6">
+                  <NavigationMenuItem>
+                    <NavLink to="/" className={linkCls}>Home</NavLink>
+                  </NavigationMenuItem>
+                  
+                  <NavigationMenuItem>
+                    <NavLink to="/help" className={linkCls}>Get Help Now</NavLink>
+                  </NavigationMenuItem>
+                  
+                  <NavigationMenuItem>
+                    <NavLink to="/victim-services" className={linkCls}>Healing Hub</NavLink>
+                  </NavigationMenuItem>
+                  
+                  <NavigationMenuItem>
+                    <NavigationMenuTrigger className="text-foreground hover:text-foreground/80 bg-transparent h-auto p-0 text-sm font-medium">
+                      About
+                    </NavigationMenuTrigger>
+                    <NavigationMenuContent>
+                      <ul className="grid w-[200px] gap-1 p-2">
+                        <li>
+                          <NavigationMenuLink asChild>
+                            <NavLink
+                              to="/about"
+                              className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
+                            >
+                              <div className="text-sm font-medium leading-none">About Us</div>
+                            </NavLink>
+                          </NavigationMenuLink>
+                        </li>
+                        <li>
+                          <NavigationMenuLink asChild>
+                            <NavLink
+                              to="/learn"
+                              className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
+                            >
+                              <div className="text-sm font-medium leading-none">The Collective</div>
+                            </NavLink>
+                          </NavigationMenuLink>
+                        </li>
+                      </ul>
+                    </NavigationMenuContent>
+                  </NavigationMenuItem>
+                  
+                  <NavigationMenuItem>
+                    <NavigationMenuTrigger className="text-foreground hover:text-foreground/80 bg-transparent h-auto p-0 text-sm font-medium">
+                      Portal
+                    </NavigationMenuTrigger>
+                    <NavigationMenuContent>
+                      <ul className="grid w-[200px] gap-1 p-2">
+                        <li>
+                          <NavigationMenuLink asChild>
+                            <NavLink
+                              to="/auth"
+                              className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
+                            >
+                              <div className="text-sm font-medium leading-none">Client Portal</div>
+                            </NavLink>
+                          </NavigationMenuLink>
+                        </li>
+                        <li>
+                          <NavigationMenuLink asChild>
+                            <NavLink
+                              to="/partners"
+                              className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
+                            >
+                              <div className="text-sm font-medium leading-none">Partner Portal</div>
+                            </NavLink>
+                          </NavigationMenuLink>
+                        </li>
+                      </ul>
+                    </NavigationMenuContent>
+                  </NavigationMenuItem>
+                </NavigationMenuList>
+              </NavigationMenu>
             </nav>
 
             {/* Auth Links - Columns 9-12 */}
@@ -201,48 +266,7 @@ const Header = ({
                         Sign Out
                       </DropdownMenuItem>
                     </DropdownMenuContent>
-                  </DropdownMenu> : <>
-                    {/* Client Portal with Tabs */}
-                    <Popover>
-                      <PopoverTrigger asChild>
-                        <Button variant="ghost" size="sm" className="text-foreground font-medium h-8 px-2 text-sm">
-                          Client Portal
-                          <ChevronDown className="ml-1 h-3 w-3" />
-                        </Button>
-                      </PopoverTrigger>
-                      <PopoverContent className="w-64 p-0 bg-background border border-border shadow-lg z-[60]" align="end">
-                        <Tabs defaultValue="signin" className="w-full">
-                          <TabsList className="grid w-full grid-cols-2">
-                            <TabsTrigger value="signin">Sign In</TabsTrigger>
-                            <TabsTrigger value="register">Register</TabsTrigger>
-                          </TabsList>
-                          <TabsContent value="signin" className="p-4">
-                            <div className="text-center">
-                              <h3 className="text-lg font-semibold mb-2">Sign In</h3>
-                              <p className="text-sm text-muted-foreground mb-4">Access your client account</p>
-                              <Button asChild className="w-full">
-                                <NavLink to="/auth">Continue to Sign In</NavLink>
-                              </Button>
-                            </div>
-                          </TabsContent>
-                          <TabsContent value="register" className="p-4">
-                            <div className="text-center">
-                              <h3 className="text-lg font-semibold mb-2">Register</h3>
-                              <p className="text-sm text-muted-foreground mb-4">Create your client account</p>
-                              <Button asChild className="w-full">
-                                <NavLink to="/register">Continue to Register</NavLink>
-                              </Button>
-                            </div>
-                          </TabsContent>
-                        </Tabs>
-                      </PopoverContent>
-                    </Popover>
-
-                    {/* Partner Portal Link */}
-                    <Button variant="ghost" size="sm" asChild className="text-foreground font-medium h-9 px-3">
-                      <NavLink to="/partners">Partner Portal</NavLink>
-                    </Button>
-                  </>}
+                  </DropdownMenu> : null}
 
                   {/* Get Involved CTA */}
                   <Button size="sm" asChild className="bg-[hsl(var(--osu-scarlet))] hover:bg-[hsl(var(--osu-scarlet-dark))] text-white font-medium px-4 py-2 rounded-lg shadow-sm hover:shadow-md transition-all duration-200">
