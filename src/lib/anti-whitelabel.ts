@@ -42,8 +42,8 @@ class AntiWhitelabelProtection {
     // Check for tampering attempts
     this.monitorTampering();
     
-    // Add copyright watermarks
-    this.addCopyrightProtection();
+    // Add copyright watermarks - DISABLED
+    // this.addCopyrightProtection();
   }
 
   private validateDomain(): boolean {

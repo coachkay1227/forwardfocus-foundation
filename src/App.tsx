@@ -7,7 +7,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { SecurityProvider } from "@/components/security/SecurityProvider";
 import { SecurityHeaders } from "@/components/security/SecurityHeaders";
-import { antiWhitelabelProtection } from "@/lib/anti-whitelabel";
+// import { antiWhitelabelProtection } from "@/lib/anti-whitelabel";
 import { sessionSecurity } from "@/lib/session-security";
 import { AntiWhiteLabelProtection } from "@/components/security/AntiWhiteLabelProtection";
 import { SessionSecurityProvider } from "@/components/security/SessionSecurityProvider";
