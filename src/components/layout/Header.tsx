@@ -1,4 +1,5 @@
 import { NavLink, useLocation } from "react-router-dom";
+import logoTransparent from "@/assets/logo-transparent.png";
 import { useState, useEffect } from "react";
 import { Menu, User, LogOut, Search, Globe, Phone, ChevronDown, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -163,7 +164,7 @@ const Header = ({
             <div className="col-span-10 md:col-span-3 flex justify-center md:justify-start">
               <NavLink to="/" className="flex items-center md:hover:scale-105 transition-all duration-300 group">
                 <img 
-                  src="/logo-new.png" 
+                  src={logoTransparent} 
                   alt="Forward Focus Elevation" 
                   className="h-12 w-auto drop-shadow-lg filter brightness-110 contrast-110 group-hover:drop-shadow-xl transition-all duration-300" 
                 />
