@@ -34,8 +34,8 @@ export const CoachKaySection = () => {
                   onClick={(e) => {
                     e.preventDefault();
                     e.stopPropagation();
-                    if (calendlyReady) {
-                      openCalendly('https://calendly.com/ffe_coach_kay');
+                    if (calendlyReady && window.Calendly) {
+                      window.Calendly.initPopupWidget({ url: 'https://calendly.com/ffe_coach_kay' });
                     }
                   }}
                   className="w-full"
