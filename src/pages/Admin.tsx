@@ -371,7 +371,14 @@ const Admin = () => {
   return (
     <main id="main" className="container py-10">
       <div className="flex items-center justify-between mb-8">
-        <h1 className="font-heading text-3xl font-semibold">Admin Dashboard</h1>
+        <div>
+          <h1 className="font-heading text-3xl font-semibold">Admin Dashboard</h1>
+          <p className="text-muted-foreground">
+            <a href="/admin-guide" target="_blank" className="text-primary hover:underline">
+              View Admin Guide →
+            </a>
+          </p>
+        </div>
         <RealtimeNotifications />
       </div>
       
