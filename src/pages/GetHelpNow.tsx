@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import CrisisSupportAI from "@/components/ai/CrisisSupportAI";
 import AIResourceDiscovery from "@/components/ai/AIResourceDiscovery";
+import { AIResourceRecommendations } from "@/components/ai/AIResourceRecommendations";
 import { HelpHeroSection } from "@/components/help/HelpHeroSection";
 import { EmergencySupportSection } from "@/components/help/EmergencySupportSection";
 import { AIPoweredHelpSection } from "@/components/help/AIPoweredHelpSection";
@@ -38,6 +39,7 @@ export default function GetHelpNow() {
         
         <div className="container py-16 space-y-16">
           <EmergencySupportSection />
+          <AIResourceRecommendations />
           <AIPoweredHelpSection 
             onShowCrisisAI={() => setShowCrisisAI(true)}
             onShowAIDiscovery={() => setShowAIDiscovery(true)}

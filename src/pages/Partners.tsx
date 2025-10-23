@@ -25,6 +25,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
 import { PartnerVerificationStatus } from "@/components/partner/PartnerVerificationStatus";
+import { PartnerSupportChatbot } from "@/components/ai/PartnerSupportChatbot";
 
 // Import hero image
 import partnershipCollaboration from "@/assets/partnership-collaboration.jpg";
@@ -337,6 +338,9 @@ const Partners = () => {
 
           {/* Partner Network Tab */}
           <TabsContent value="network" className="space-y-4">
+            {/* AI Partner Support Chatbot */}
+            <PartnerSupportChatbot />
+            
             <div className="max-w-4xl mx-auto">
               <Card className="border-osu-gray/20 shadow-lg">
                 <CardHeader className="bg-gradient-to-r from-osu-scarlet/5 to-osu-gray/5 text-center pb-3">

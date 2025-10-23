@@ -10,6 +10,7 @@ import { Switch } from "@/components/ui/switch";
 import { Award, Eye, Plus, Star, TrendingUp } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
+import { AIStoryGenerator } from "@/components/ai/AIStoryGenerator";
 
 interface SuccessStory {
   id: string;
@@ -208,100 +209,117 @@ export const SuccessStoriesManager = () => {
             Showcase impactful outcomes from partner referrals
           </p>
         </div>
-        <Dialog>
-          <DialogTrigger asChild>
-            <Button>
-              <Plus className="w-4 h-4 mr-2" />
-              Create Story
-            </Button>
-          </DialogTrigger>
-          <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
-            <DialogHeader>
-              <DialogTitle>Create Success Story</DialogTitle>
-              <DialogDescription>
-                Document and share a success story from your partnership work
-              </DialogDescription>
-            </DialogHeader>
-            <div className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="title">Story Title *</Label>
-                <Input
-                  id="title"
-                  value={formData.title}
-                  onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                  placeholder="e.g., From Incarceration to Employment Success"
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="story">Story *</Label>
-                <Textarea
-                  id="story"
-                  value={formData.story}
-                  onChange={(e) => setFormData({ ...formData, story: e.target.value })}
-                  placeholder="Tell the full story..."
-                  rows={6}
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="outcome">Outcome</Label>
-                <Textarea
-                  id="outcome"
-                  value={formData.outcome}
-                  onChange={(e) => setFormData({ ...formData, outcome: e.target.value })}
-                  placeholder="What was the result?"
-                  rows={3}
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="participant_name">Participant Name (Optional)</Label>
-                <Input
-                  id="participant_name"
-                  value={formData.participant_name}
-                  onChange={(e) => setFormData({ ...formData, participant_name: e.target.value })}
-                  placeholder="John D."
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="testimonial">Participant Testimonial (Optional)</Label>
-                <Textarea
-                  id="testimonial"
-                  value={formData.participant_testimonial}
-                  onChange={(e) => setFormData({ ...formData, participant_testimonial: e.target.value })}
-                  placeholder="Quote from participant"
-                  rows={3}
-                />
-              </div>
-
-              <div className="flex items-center space-x-4">
-                <div className="flex items-center space-x-2">
-                  <Switch
-                    id="published"
-                    checked={formData.published}
-                    onCheckedChange={(checked) => setFormData({ ...formData, published: checked })}
-                  />
-                  <Label htmlFor="published">Publish immediately</Label>
-                </div>
-
-                <div className="flex items-center space-x-2">
-                  <Switch
-                    id="featured"
-                    checked={formData.featured}
-                    onCheckedChange={(checked) => setFormData({ ...formData, featured: checked })}
-                  />
-                  <Label htmlFor="featured">Feature on homepage</Label>
-                </div>
-              </div>
-
-              <Button onClick={createStory} disabled={creating} className="w-full">
-                {creating ? 'Creating...' : 'Create Success Story'}
+        <div className="flex gap-2">
+          <AIStoryGenerator onStoryGenerated={(story) => {
+            setFormData({
+              title: story.title,
+              story: story.story,
+              outcome: story.summary,
+              participant_name: '',
+              participant_testimonial: '',
+              published: false,
+              featured: false
+            });
+            toast({
+              title: "Story Loaded",
+              description: "AI-generated content has been loaded into the form",
+            });
+          }} />
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button>
+                <Plus className="w-4 h-4 mr-2" />
+                Create Story
               </Button>
-            </div>
-          </DialogContent>
-        </Dialog>
+            </DialogTrigger>
+            <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+              <DialogHeader>
+                <DialogTitle>Create Success Story</DialogTitle>
+                <DialogDescription>
+                  Document and share a success story from your partnership work
+                </DialogDescription>
+              </DialogHeader>
+              <div className="space-y-4">
+                <div className="space-y-2">
+                  <Label htmlFor="title">Story Title *</Label>
+                  <Input
+                    id="title"
+                    value={formData.title}
+                    onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                    placeholder="e.g., From Incarceration to Employment Success"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="story">Story *</Label>
+                  <Textarea
+                    id="story"
+                    value={formData.story}
+                    onChange={(e) => setFormData({ ...formData, story: e.target.value })}
+                    placeholder="Tell the full story..."
+                    rows={6}
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="outcome">Outcome</Label>
+                  <Textarea
+                    id="outcome"
+                    value={formData.outcome}
+                    onChange={(e) => setFormData({ ...formData, outcome: e.target.value })}
+                    placeholder="What was the result?"
+                    rows={3}
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="participant_name">Participant Name (Optional)</Label>
+                  <Input
+                    id="participant_name"
+                    value={formData.participant_name}
+                    onChange={(e) => setFormData({ ...formData, participant_name: e.target.value })}
+                    placeholder="John D."
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="testimonial">Participant Testimonial (Optional)</Label>
+                  <Textarea
+                    id="testimonial"
+                    value={formData.participant_testimonial}
+                    onChange={(e) => setFormData({ ...formData, participant_testimonial: e.target.value })}
+                    placeholder="Quote from participant"
+                    rows={3}
+                  />
+                </div>
+
+                <div className="flex items-center space-x-4">
+                  <div className="flex items-center space-x-2">
+                    <Switch
+                      id="published"
+                      checked={formData.published}
+                      onCheckedChange={(checked) => setFormData({ ...formData, published: checked })}
+                    />
+                    <Label htmlFor="published">Publish immediately</Label>
+                  </div>
+
+                  <div className="flex items-center space-x-2">
+                    <Switch
+                      id="featured"
+                      checked={formData.featured}
+                      onCheckedChange={(checked) => setFormData({ ...formData, featured: checked })}
+                    />
+                    <Label htmlFor="featured">Feature on homepage</Label>
+                  </div>
+                </div>
+
+                <Button onClick={createStory} disabled={creating} className="w-full">
+                  {creating ? 'Creating...' : 'Create Success Story'}
+                </Button>
+              </div>
+            </DialogContent>
+          </Dialog>
+        </div>
       </div>
 
       {/* Stats */}

@@ -22,6 +22,7 @@ import { PartnerVerificationManager } from "@/components/admin/PartnerVerificati
 import { AdminSetupBanner } from "@/components/admin/AdminSetupBanner";
 import { RealtimeNotifications } from "@/components/admin/RealtimeNotifications";
 import { SuccessStoriesManager } from "@/components/admin/SuccessStoriesManager";
+import { MarketingImageGenerator } from "@/components/ai/MarketingImageGenerator";
 
 interface PartnerReferral {
   id: string;
@@ -822,7 +823,10 @@ const Admin = () => {
         </TabsContent>
 
         <TabsContent value="email">
-          <EmailMarketingDashboard />
+          <div className="space-y-6">
+            <EmailMarketingDashboard />
+            <MarketingImageGenerator />
+          </div>
         </TabsContent>
 
         <TabsContent value="verifications">
