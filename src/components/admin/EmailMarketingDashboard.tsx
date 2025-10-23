@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { EmailCampaignForm } from "./EmailCampaignForm";
 
 interface NewsletterSubscription {
   id: string;
@@ -168,6 +169,7 @@ export const EmailMarketingDashboard = () => {
       <div className="flex justify-between items-center">
         <h2 className="text-2xl font-bold text-foreground">Email Marketing</h2>
         <div className="flex gap-2">
+          <EmailCampaignForm onSuccess={loadEmailData} />
           <Button onClick={exportSubscribers} variant="outline" size="sm">
             <Download className="w-4 h-4 mr-2" />
             Export Subscribers

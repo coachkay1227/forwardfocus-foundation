@@ -50,7 +50,8 @@ export const SecurityMonitoringDashboard = () => {
     try {
       // Fetch security metrics summary
       const { data: metricsData, error: metricsError } = await supabase
-        .rpc('get_security_metrics_summary');
+        .rpc('get_security_metrics_summary')
+        .single();
 
       if (metricsError) {
         console.error('Error fetching security metrics:', metricsError);
@@ -62,7 +63,7 @@ export const SecurityMonitoringDashboard = () => {
         return;
       }
 
-      setMetrics(metricsData[0]);
+      setMetrics(metricsData);
 
       // Fetch recent security alerts
       const { data: alertsData, error: alertsError } = await supabase

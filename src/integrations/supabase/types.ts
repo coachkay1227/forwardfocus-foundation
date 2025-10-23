@@ -1327,7 +1327,18 @@ export type Database = {
           website_url: string
         }[]
       }
-      get_security_metrics_summary: { Args: never; Returns: Json }
+      get_security_metrics_summary: {
+        Args: never
+        Returns: {
+          ai_requests_24h: number
+          avg_response_time_ms: number
+          critical_alerts: number
+          high_alerts: number
+          total_alerts: number
+          unique_users_24h: number
+          unresolved_alerts: number
+        }[]
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]

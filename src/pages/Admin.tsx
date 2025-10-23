@@ -19,6 +19,7 @@ import { LaunchChecklist } from "@/components/launch/LaunchChecklist";
 import { AdminSetup } from "@/components/admin/AdminSetup";
 import { LaunchInstructions } from "@/components/admin/LaunchInstructions";
 import { PartnerVerificationManager } from "@/components/admin/PartnerVerificationManager";
+import { AdminSetupBanner } from "@/components/admin/AdminSetupBanner";
 
 interface PartnerReferral {
   id: string;
@@ -300,6 +301,8 @@ const Admin = () => {
   return (
     <main id="main" className="container py-10">
       <h1 className="font-heading text-3xl font-semibold mb-8">Admin Dashboard</h1>
+      
+      <AdminSetupBanner />
       
       <Tabs defaultValue="management" className="space-y-6">
         <TabsList className="grid w-full grid-cols-5 lg:grid-cols-10">
