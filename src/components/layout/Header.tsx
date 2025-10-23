@@ -186,16 +186,16 @@ const Header = ({
                   </NavigationMenuItem>
                   
                   <NavigationMenuItem>
-                    <NavigationMenuTrigger className="text-foreground hover:text-foreground/80 bg-transparent h-auto p-0 text-sm font-medium">
+                    <NavigationMenuTrigger className="text-foreground hover:bg-gray-100 data-[state=open]:text-red-700 data-[state=open]:bg-red-100 bg-transparent h-auto px-3 py-2 text-sm font-medium rounded-md transition-all duration-150">
                       About
                     </NavigationMenuTrigger>
-                    <NavigationMenuContent>
-                      <ul className="grid w-[200px] gap-1 p-2">
+                    <NavigationMenuContent className="z-[60]">
+                      <ul className="grid w-[200px] gap-1 p-2 bg-white rounded-md shadow-lg border border-border">
                         <li>
                           <NavigationMenuLink asChild>
                             <NavLink
                               to="/about"
-                              className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
+                              className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-all duration-150 hover:bg-gray-100 focus:bg-gray-100"
                             >
                               <div className="text-sm font-medium leading-none">About Us</div>
                             </NavLink>
@@ -205,7 +205,7 @@ const Header = ({
                           <NavigationMenuLink asChild>
                             <NavLink
                               to="/learn"
-                              className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
+                              className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-all duration-150 hover:bg-gray-100 focus:bg-gray-100"
                             >
                               <div className="text-sm font-medium leading-none">The Collective</div>
                             </NavLink>
@@ -216,16 +216,16 @@ const Header = ({
                   </NavigationMenuItem>
                   
                   <NavigationMenuItem>
-                    <NavigationMenuTrigger className="text-foreground hover:text-foreground/80 bg-transparent h-auto p-0 text-sm font-medium">
+                    <NavigationMenuTrigger className="text-foreground hover:bg-gray-100 data-[state=open]:text-red-700 data-[state=open]:bg-red-100 bg-transparent h-auto px-3 py-2 text-sm font-medium rounded-md transition-all duration-150">
                       Portal
                     </NavigationMenuTrigger>
-                    <NavigationMenuContent>
-                      <ul className="grid w-[200px] gap-1 p-2">
+                    <NavigationMenuContent className="z-[60]">
+                      <ul className="grid w-[200px] gap-1 p-2 bg-white rounded-md shadow-lg border border-border">
                         <li>
                           <NavigationMenuLink asChild>
                             <NavLink
                               to="/auth"
-                              className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
+                              className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-all duration-150 hover:bg-gray-100 focus:bg-gray-100"
                             >
                               <div className="text-sm font-medium leading-none">Client Portal</div>
                             </NavLink>
@@ -235,7 +235,7 @@ const Header = ({
                           <NavigationMenuLink asChild>
                             <NavLink
                               to="/partners"
-                              className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
+                              className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-all duration-150 hover:bg-gray-100 focus:bg-gray-100"
                             >
                               <div className="text-sm font-medium leading-none">Partner Portal</div>
                             </NavLink>
