@@ -1284,6 +1284,16 @@ export type Database = {
       check_admin_exists: { Args: never; Returns: boolean }
       check_admin_operation_limit: { Args: never; Returns: boolean }
       create_first_admin_user: { Args: { admin_email: string }; Returns: Json }
+      detect_advanced_suspicious_activity: {
+        Args: never
+        Returns: {
+          alert_data: Json
+          alert_type: string
+          description: string
+          severity: string
+          user_id: string
+        }[]
+      }
       get_partner_stats: {
         Args: never
         Returns: {
@@ -1333,6 +1343,15 @@ export type Database = {
           p_organization_id: string
         }
         Returns: string
+      }
+      resolve_security_alert: { Args: { p_alert_id: string }; Returns: boolean }
+      track_anonymous_ai_usage: {
+        Args: { p_ai_endpoint: string; p_session_id: string }
+        Returns: string
+      }
+      transfer_anonymous_session_to_user: {
+        Args: { p_session_id: string; p_user_id: string }
+        Returns: boolean
       }
     }
     Enums: {

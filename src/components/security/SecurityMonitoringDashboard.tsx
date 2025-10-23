@@ -95,11 +95,44 @@ export const SecurityMonitoringDashboard = () => {
 
   const runSuspiciousActivityDetection = async () => {
     try {
-      // Stub - feature not fully implemented
-      toast({
-        title: "Info",
-        description: "Suspicious activity detection will be available in a future update",
-      });
+      console.log('Running suspicious activity detection...');
+      
+      const { data, error } = await supabase.rpc('detect_advanced_suspicious_activity');
+      
+      if (error) {
+        console.error('Error detecting suspicious activity:', error);
+        toast({
+          title: "Error",
+          description: "Failed to run security scan",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      if (data && data.length > 0) {
+        // Create security alerts from detected issues
+        for (const issue of data) {
+          await supabase.from('security_alerts').insert({
+            alert_type: issue.alert_type,
+            severity: issue.severity,
+            description: issue.description,
+            user_id: issue.user_id,
+            alert_data: issue.alert_data,
+          });
+        }
+        toast({
+          title: "Security Scan Complete",
+          description: `${data.length} issue(s) detected and logged`,
+        });
+      } else {
+        toast({
+          title: "Security Scan Complete",
+          description: "No security issues detected",
+        });
+      }
+      
+      // Refresh metrics after detection
+      fetchSecurityData();
     } catch (error) {
       console.error('Error running suspicious activity detection:', error);
       toast({

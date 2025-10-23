@@ -48,17 +48,13 @@ export const SecurityAlerts = () => {
 
   const resolveAlert = async (alertId: string) => {
     try {
-      const { error } = await supabase
-        .from('security_alerts')
-        .update({ 
-          resolved: true, 
-          resolved_at: new Date().toISOString() 
-        })
-        .eq('id', alertId);
+      const { error } = await supabase.rpc('resolve_security_alert', {
+        p_alert_id: alertId
+      });
 
       if (error) throw error;
 
-      toast.success('Security alert resolved');
+      toast.success('Security alert resolved successfully');
       loadAlerts();
     } catch (error) {
       console.error('Error resolving alert:', error);
