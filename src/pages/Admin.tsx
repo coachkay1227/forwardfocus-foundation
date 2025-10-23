@@ -106,6 +106,7 @@ const Admin = () => {
   const { user, loading } = useAuth();
   const [isAdmin, setIsAdmin] = useState(false);
   const [checkingAdmin, setCheckingAdmin] = useState(true);
+  const [adminExists, setAdminExists] = useState<boolean | null>(null);
   const [referrals, setReferrals] = useState<PartnerReferral[]>([]);
   const [partnershipRequests, setPartnershipRequests] = useState<PartnershipRequest[]>([]);
   const [contactSubmissions, setContactSubmissions] = useState<ContactSubmission[]>([]);
@@ -123,6 +124,26 @@ const Admin = () => {
 
   useEffect(() => {
     document.title = "Admin Dashboard | Forward Focus Elevation";
+  }, []);
+
+  // Check if any admin exists in the system
+  useEffect(() => {
+    const checkIfAdminExists = async () => {
+      try {
+        const { data, error } = await supabase.rpc('check_admin_exists');
+        if (error) {
+          console.error('Error checking if admin exists:', error);
+          setAdminExists(false);
+        } else {
+          setAdminExists(data || false);
+        }
+      } catch (error) {
+        console.error('Error checking if admin exists:', error);
+        setAdminExists(false);
+      }
+    };
+
+    checkIfAdminExists();
   }, []);
 
   useEffect(() => {
@@ -349,7 +370,7 @@ const Admin = () => {
     }
   };
 
-  if (loading || checkingAdmin) {
+  if (loading || checkingAdmin || adminExists === null) {
     return (
       <main id="main" className="container py-12 flex items-center justify-center min-h-[400px]">
         <div className="text-center">
@@ -360,10 +381,17 @@ const Admin = () => {
     );
   }
 
+  // If no admin exists in the system, redirect to setup
+  if (adminExists === false) {
+    return <Navigate to="/setup-admin" replace />;
+  }
+
+  // If admin exists but user is not logged in, redirect to auth
   if (!user) {
     return <Navigate to="/auth" replace />;
   }
 
+  // If user is logged in but not an admin, redirect to home
   if (!isAdmin) {
     return <Navigate to="/" replace />;
   }
