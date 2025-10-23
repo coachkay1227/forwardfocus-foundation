@@ -118,7 +118,7 @@ const CrisisSupportAI: React.FC<CrisisSupportAIProps> = ({ isOpen, onClose, init
           .from('resources')
           .select('*')
           .or('type.ilike.%crisis%,type.ilike.%emergency%,type.ilike.%mental health%,type.ilike.%suicide%,type.ilike.%domestic violence%,type.ilike.%substance abuse%')
-          .eq('verified', 'verified')
+          .eq('verified', true)
           .limit(8);
 
         const content = "I'm experiencing technical difficulties, but your safety is my priority. For immediate support: Call 911 (emergency), 988 (suicide & crisis), or text HOME to 741741. Here are crisis resources I found:";

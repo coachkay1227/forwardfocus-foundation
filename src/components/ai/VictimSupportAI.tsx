@@ -101,7 +101,7 @@ const VictimSupportAI: React.FC<VictimSupportAIProps> = ({ isOpen, onClose, init
           .from('resources')
           .select('*')
           .or('type.ilike.%victim%,type.ilike.%legal aid%,type.ilike.%compensation%,type.ilike.%counseling%,type.ilike.%trauma%,type.ilike.%advocacy%,type.ilike.%domestic violence%,type.ilike.%sexual assault%')
-          .eq('verified', 'verified')
+          .eq('verified', true)
           .limit(8);
 
         const content = "I'm having trouble connecting to the AI right now, but here are trauma-informed victim services I found that may help:";

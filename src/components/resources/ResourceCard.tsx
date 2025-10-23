@@ -13,7 +13,7 @@ type Resource = {
   city: string;
   county: string;
   type: string;
-  verified: string;
+  verified: boolean;
   justice_friendly: boolean;
   rating: number;
   updated_at: string;
@@ -21,10 +21,10 @@ type Resource = {
 };
 
 const ResourceCard = ({ resource }: { resource: Resource }) => {
-  const badge = resource.verified === "partner" ? (
-    <Badge variant="secondary" className="inline-flex items-center gap-1"><ShieldCheck className="size-3" /> Partner Recommended</Badge>
+  const badge = resource.verified ? (
+    <Badge variant="secondary" className="inline-flex items-center gap-1"><ShieldCheck className="size-3" /> Verified</Badge>
   ) : (
-    <Badge variant="outline" className="inline-flex items-center gap-1"><Users className="size-3" /> Community Verified</Badge>
+    <Badge variant="outline" className="inline-flex items-center gap-1"><Users className="size-3" /> Unverified</Badge>
   );
 
   const onSave = () => toast({ title: "Saved", description: "Resource saved to your list." });

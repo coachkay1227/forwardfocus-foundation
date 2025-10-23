@@ -11,10 +11,11 @@ interface AuditLogEntry {
   id: string;
   user_id: string | null;
   action: string;
-  table_name: string;
-  record_id: string | null;
-  sensitive_data_accessed: boolean;
-  ip_address: unknown;
+  resource_type: string | null;
+  resource_id: string | null;
+  details: any;
+  severity: string | null;
+  ip_address: string | null;
   user_agent: string | null;
   created_at: string;
 }
@@ -49,7 +50,7 @@ export const AuditLogViewer = () => {
       }
 
       const { data, error } = await supabase
-        .from('audit_log')
+        .from('audit_logs')
         .select('*')
         .gte('created_at', new Date(Date.now() - hoursBack * 60 * 60 * 1000).toISOString())
         .order('created_at', { ascending: false })

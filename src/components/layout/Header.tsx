@@ -42,9 +42,7 @@ const Header = ({
       try {
         const {
           data
-        } = await supabase.rpc("is_user_admin", {
-          user_id: user.id
-        });
+        } = await supabase.rpc("is_user_admin");
         setIsAdmin(Boolean(data));
       } catch (e) {
         console.error("Error checking admin status:", e);

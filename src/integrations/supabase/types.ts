@@ -365,6 +365,13 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
+            foreignKeyName: "contact_access_justifications_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "fk_organization"
             columns: ["organization_id"]
             isOneToOne: false
@@ -898,15 +905,20 @@ export type Database = {
           address: string | null
           category: string
           city: string | null
+          county: string | null
           created_at: string
           created_by: string | null
           description: string | null
           email: string | null
           id: string
+          justice_friendly: boolean | null
+          name: string
+          organization: string | null
           phone: string | null
           state: string | null
           tags: string[] | null
           title: string
+          type: string | null
           updated_at: string
           verified: boolean | null
           website_url: string | null
@@ -915,15 +927,20 @@ export type Database = {
           address?: string | null
           category: string
           city?: string | null
+          county?: string | null
           created_at?: string
           created_by?: string | null
           description?: string | null
           email?: string | null
           id?: string
+          justice_friendly?: boolean | null
+          name: string
+          organization?: string | null
           phone?: string | null
           state?: string | null
           tags?: string[] | null
           title: string
+          type?: string | null
           updated_at?: string
           verified?: boolean | null
           website_url?: string | null
@@ -932,15 +949,20 @@ export type Database = {
           address?: string | null
           category?: string
           city?: string | null
+          county?: string | null
           created_at?: string
           created_by?: string | null
           description?: string | null
           email?: string | null
           id?: string
+          justice_friendly?: boolean | null
+          name?: string
+          organization?: string | null
           phone?: string | null
           state?: string | null
           tags?: string[] | null
           title?: string
+          type?: string | null
           updated_at?: string
           verified?: boolean | null
           website_url?: string | null
@@ -1265,6 +1287,31 @@ export type Database = {
           verified_partners: number
         }[]
       }
+      get_resources_public: {
+        Args: never
+        Returns: {
+          address: string
+          category: string
+          city: string
+          county: string
+          created_at: string
+          description: string
+          email: string
+          id: string
+          justice_friendly: boolean
+          name: string
+          organization: string
+          phone: string
+          state: string
+          tags: string[]
+          title: string
+          type: string
+          updated_at: string
+          verified: boolean
+          website_url: string
+        }[]
+      }
+      get_security_metrics_summary: { Args: never; Returns: Json }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]

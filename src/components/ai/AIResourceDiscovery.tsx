@@ -30,7 +30,7 @@ interface Resource {
   phone?: string;
   website?: string;
   email?: string;
-  verified: string;
+  verified: boolean;
   justice_friendly: boolean;
   rating?: number;
 }
@@ -209,10 +209,10 @@ const AIResourceDiscovery: React.FC<AIResourceDiscoveryProps> = ({
             <p className="text-sm text-muted-foreground">{resource.organization}</p>
           </div>
           <div className="flex gap-1 flex-wrap">
-            {resource.verified === 'partner' && (
+            {resource.verified && (
               <Badge variant="default" className="text-xs">
                 <Shield className="h-3 w-3 mr-1" />
-                Partner
+                Verified
               </Badge>
             )}
             {resource.justice_friendly && (

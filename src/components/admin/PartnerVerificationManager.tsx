@@ -11,11 +11,15 @@ import { Label } from '@/components/ui/label';
 interface PartnerVerification {
   id: string;
   user_id: string;
-  organization_id: string | null;
-  verification_type: string;
+  organization_name: string;
+  organization_type: string;
   status: string;
   notes: string | null;
   created_at: string;
+  updated_at: string;
+  reviewed_at: string | null;
+  reviewed_by: string | null;
+  verification_documents: any;
   // User profile info (from join)
   display_name?: string;
 }

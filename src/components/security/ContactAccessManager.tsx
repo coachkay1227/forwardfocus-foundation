@@ -21,11 +21,11 @@ import { useAuth } from "@/contexts/AuthContext";
 
 interface ContactAccessRequest {
   id: string;
-  requester_id: string;
+  admin_user_id: string;
   organization_id: string;
-  status: 'pending' | 'approved' | 'denied' | 'revoked';
-  request_reason: string;
-  business_justification?: string | null;
+  status: 'pending' | 'approved' | 'denied' | 'expired';
+  access_purpose: string;
+  business_justification: string;
   approved_by?: string | null;
   approved_at?: string | null;
   expires_at?: string | null;
@@ -54,47 +54,44 @@ export const ContactAccessManager = () => {
     try {
       // Get contact access requests with related data
       const { data, error } = await supabase
-        .from('contact_access_permissions')
+        .from('contact_access_justifications')
         .select(`
           *,
-          organizations!organization_id(name),
-          profiles!requester_id(display_name)
+          organizations!contact_access_justifications_organization_id_fkey(name)
         `)
         .order('created_at', { ascending: false });
 
       if (error) throw error;
 
-      // Get requester emails from auth.users (admin only can see this)
-      const requesterIds = [...new Set(data?.map(r => r.requester_id) || [])];
+      // Get requester emails from profiles
+      const requesterIds = [...new Set(data?.map(r => r.admin_user_id) || [])];
       
       let userEmails: Record<string, string> = {};
       if (requesterIds.length > 0) {
-        // For admin users, we can get email info through a secure function
-        // For now, we'll use the display name from profiles
         const { data: userData } = await supabase
           .from('profiles')
-          .select('user_id, display_name')
-          .in('user_id', requesterIds);
+          .select('id, email, full_name')
+          .in('id', requesterIds);
         
         userEmails = (userData || []).reduce((acc, user) => {
-          acc[user.user_id] = user.display_name || 'Unknown User';
+          acc[user.id] = user.full_name || user.email || 'Unknown User';
           return acc;
         }, {} as Record<string, string>);
       }
 
       const formattedRequests: ContactAccessRequest[] = (data || []).map(request => ({
         id: request.id,
-        requester_id: request.requester_id,
+        admin_user_id: request.admin_user_id,
         organization_id: request.organization_id,
-        status: request.status as 'pending' | 'approved' | 'denied' | 'revoked',
-        request_reason: request.request_reason,
+        status: request.status as 'pending' | 'approved' | 'denied' | 'expired',
+        access_purpose: request.access_purpose,
         business_justification: request.business_justification,
         approved_by: request.approved_by,
         approved_at: request.approved_at,
         expires_at: request.expires_at,
         created_at: request.created_at,
         updated_at: request.updated_at,
-        requester_email: userEmails[request.requester_id] || 'Unknown User',
+        requester_email: userEmails[request.admin_user_id] || 'Unknown User',
         organization_name: (request.organizations as any)?.name || 'Unknown Organization'
       }));
 

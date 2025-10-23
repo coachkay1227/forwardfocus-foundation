@@ -151,7 +151,7 @@ const ReentryNavigatorAI: React.FC<ReentryNavigatorAIProps> = ({ isOpen, onClose
           .from('resources')
           .select('*')
           .or('type.ilike.%housing%,type.ilike.%employment%,type.ilike.%job training%,type.ilike.%education%,type.ilike.%reentry%,type.ilike.%legal aid%,type.ilike.%mental health%,type.ilike.%substance abuse%,type.ilike.%healthcare%,type.ilike.%transportation%')
-          .eq('verified', 'verified')
+          .eq('verified', true)
           .limit(10);
 
         const coachName = selectedCoach ? selectedCoach.name.split(' ')[1] : 'Coach Kay';
