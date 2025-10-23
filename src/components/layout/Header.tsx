@@ -133,7 +133,7 @@ const Header = ({
                       </div>
                     </nav>
 
-                     {/* Mobile Auth */}
+                      {/* Mobile Auth */}
                     {user ? <>
                         <div className="flex items-center gap-2 py-2 text-sm text-foreground border-t border-border pt-3 mt-2">
                           <User className="h-4 w-4" />
@@ -142,6 +142,9 @@ const Header = ({
                         {isAdmin && <Button variant="ghost" size="sm" asChild className="justify-start w-full">
                             <NavLink to="/admin" onClick={() => setOpen(false)}>Admin Dashboard</NavLink>
                           </Button>}
+                        <Button variant="ghost" size="sm" asChild className="justify-start w-full">
+                          <NavLink to="/partner-dashboard" onClick={() => setOpen(false)}>Partner Dashboard</NavLink>
+                        </Button>
                         <Button variant="ghost" size="sm" onClick={() => {
                       signOut();
                       setOpen(false);
@@ -259,6 +262,9 @@ const Header = ({
                       {isAdmin && <DropdownMenuItem asChild>
                           <NavLink to="/admin">Admin Dashboard</NavLink>
                         </DropdownMenuItem>}
+                      <DropdownMenuItem asChild>
+                        <NavLink to="/partner-dashboard">Partner Dashboard</NavLink>
+                      </DropdownMenuItem>
                       <DropdownMenuItem onClick={signOut}>
                         <LogOut className="mr-2 h-4 w-4" />
                         Sign Out

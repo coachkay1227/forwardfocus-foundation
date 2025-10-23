@@ -23,7 +23,7 @@ const PartnerSignIn = () => {
   const navigate = useNavigate();
   useEffect(() => {
     if (user) {
-      navigate("/partners");
+      navigate("/partner-dashboard");
     }
   }, [user, navigate]);
   const handleSubmit = async (e: React.FormEvent) => {
@@ -44,7 +44,7 @@ const PartnerSignIn = () => {
           title: "Welcome back!",
           description: "Successfully signed in to Partner Portal"
         });
-        navigate("/partners");
+        navigate("/partner-dashboard");
       }
     } catch (error) {
       toast({

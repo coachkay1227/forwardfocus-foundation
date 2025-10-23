@@ -24,7 +24,7 @@ const PartnerSignUp = () => {
 
   useEffect(() => {
     if (user) {
-      navigate("/partners");
+      navigate("/partner-dashboard");
     }
   }, [user, navigate]);
 
@@ -83,7 +83,7 @@ const PartnerSignUp = () => {
           title: "Account Created!",
           description: "Welcome to the Partner Portal. Please check your email to verify your account.",
         });
-        navigate("/partners");
+        navigate("/partner-dashboard");
       }
     } catch (error) {
       toast({

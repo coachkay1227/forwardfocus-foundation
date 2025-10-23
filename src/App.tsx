@@ -26,6 +26,7 @@ import Auth from "./pages/Auth";
 import Register from "./pages/Register";
 import PartnerSignIn from "./pages/PartnerSignIn";
 import PartnerSignUp from "./pages/PartnerSignUp";
+import PartnerDashboard from "./pages/PartnerDashboard";
 import Admin from "./pages/Admin";
 import Search from "./pages/Search";
 import Discover from "./pages/Discover";
@@ -80,6 +81,7 @@ const App = () => {
                         <Route path="/register" element={<Register />} />
                         <Route path="/partner-signin" element={<PartnerSignIn />} />
                         <Route path="/partner-signup" element={<PartnerSignUp />} />
+                        <Route path="/partner-dashboard" element={<PartnerDashboard />} />
                         <Route path="/login" element={<Navigate to="/auth" replace />} />
                         <Route path="/setup-admin" element={<SetupAdmin />} />
                         <Route path="/admin" element={<Admin />} />
