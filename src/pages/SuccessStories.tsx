@@ -54,10 +54,20 @@ export default function SuccessStories() {
         .order('featured', { ascending: false })
         .order('published_at', { ascending: false });
 
-      if (error) throw error;
+      if (error) {
+        console.error('Error loading success stories:', error);
+        toast({
+          title: "Error",
+          description: "Failed to load success stories",
+          variant: "destructive",
+        });
+        return;
+      }
+      
+      // Successfully loaded - set stories (even if empty array)
       setStories(data || []);
     } catch (error: any) {
-      console.error('Error loading success stories:', error);
+      console.error('Unexpected error loading success stories:', error);
       toast({
         title: "Error",
         description: "Failed to load success stories",
