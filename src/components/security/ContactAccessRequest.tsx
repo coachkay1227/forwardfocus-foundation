@@ -43,10 +43,10 @@ export const ContactAccessRequest = ({
 
     setIsSubmitting(true);
     try {
-      const { data, error } = await supabase.rpc('request_contact_access', {
-        org_id: organizationId,
-        reason: reason.trim(),
-        justification: justification.trim() || null
+      const { data, error} = await supabase.rpc('request_admin_contact_access', {
+        p_organization_id: organizationId,
+        p_access_purpose: reason.trim(),
+        p_business_justification: justification.trim() || ''
       });
 
       if (error) {

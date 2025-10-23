@@ -36,7 +36,8 @@ export const RequestPartnerVerification: React.FC = () => {
         .from('partner_verifications')
         .insert({
           user_id: user.id,
-          verification_type: verificationRequest.verification_type,
+          organization_name: 'Pending Organization Name',
+          organization_type: verificationRequest.verification_type,
           notes: verificationRequest.notes || null,
           status: 'pending'
         });

@@ -46,7 +46,12 @@ export const PartnerVerificationStatus = () => {
         throw error;
       }
 
-      setVerificationStatus(data as VerificationStatus);
+      if (data) {
+        setVerificationStatus({
+          ...data,
+          verification_type: data.organization_type
+        } as VerificationStatus);
+      }
     } catch (error) {
       console.error('Error fetching verification status:', error);
       toast({

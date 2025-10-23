@@ -40,9 +40,9 @@ export const UsageAnalytics = () => {
 
   const fetchUsageData = async () => {
     try {
-      // Fetch AI usage data from the last 24 hours
+      // Fetch AI trial session data as a proxy for usage
       const { data: rawData, error } = await supabase
-        .from('ai_usage_analytics')
+        .from('ai_trial_sessions')
         .select('*')
         .gte('created_at', new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString())
         .order('created_at', { ascending: false });
@@ -52,11 +52,22 @@ export const UsageAnalytics = () => {
         return;
       }
 
-      setUsageData(rawData || []);
+      // Transform trial session data to usage data format
+      const transformedData: AIUsageData[] = (rawData || []).map(session => ({
+        id: session.id,
+        endpoint_name: session.ai_endpoint,
+        user_id: session.user_id,
+        request_count: session.usage_count || 1,
+        response_time_ms: null,
+        error_count: session.is_expired ? 1 : 0,
+        created_at: session.created_at
+      }));
+
+      setUsageData(transformedData);
 
       // Process data for charts
-      processEndpointStats(rawData || []);
-      processHourlyUsage(rawData || []);
+      processEndpointStats(transformedData);
+      processHourlyUsage(transformedData);
 
     } catch (error) {
       console.error('Error in fetchUsageData:', error);

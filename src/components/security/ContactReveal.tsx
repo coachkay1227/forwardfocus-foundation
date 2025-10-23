@@ -49,10 +49,12 @@ export const ContactReveal = ({
 
     setIsRevealing(true);
     try {
-      // Use the secure admin function to reveal full contact information
-      const { data, error } = await supabase.rpc('admin_reveal_full_contact', {
-        org_id: organizationId
-      });
+      // Fetch organization data directly - admin can see all
+      const { data, error } = await supabase
+        .from('organizations')
+        .select('email, phone, address')
+        .eq('id', organizationId)
+        .single();
 
       if (error) {
         if (error.message.includes('rate limit')) {

@@ -11,12 +11,13 @@ interface SecurityAlert {
   id: string;
   alert_type: string;
   severity: string;
-  title: string;
+  title?: string;
   description: string;
   resolved: boolean;
   created_at: string;
   resolved_at?: string;
   metadata?: any;
+  alert_data?: any;
 }
 
 export const SecurityAlerts = () => {
@@ -32,7 +33,11 @@ export const SecurityAlerts = () => {
         .limit(20);
       
       if (error) throw error;
-      setAlerts(data || []);
+      setAlerts((data || []).map(alert => ({
+        ...alert,
+        title: alert.alert_type,
+        metadata: alert.alert_data
+      })));
     } catch (error) {
       console.error('Error loading security alerts:', error);
       toast.error('Failed to load security alerts');
@@ -43,9 +48,13 @@ export const SecurityAlerts = () => {
 
   const resolveAlert = async (alertId: string) => {
     try {
-      const { error } = await supabase.rpc('resolve_security_alert', {
-        p_alert_id: alertId
-      });
+      const { error } = await supabase
+        .from('security_alerts')
+        .update({ 
+          resolved: true, 
+          resolved_at: new Date().toISOString() 
+        })
+        .eq('id', alertId);
 
       if (error) throw error;
 

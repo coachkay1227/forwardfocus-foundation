@@ -108,14 +108,13 @@ export const ContactAccessManager = () => {
     }
   };
 
-  const handleRequestAction = async (requestId: string, action: 'approved' | 'denied' | 'revoked') => {
+  const handleRequestAction = async (requestId: string, action: 'approved' | 'denied') => {
     setProcessingId(requestId);
     
     try {
-      const { error } = await supabase.rpc('manage_contact_access_request', {
-        request_id: requestId,
-        new_status: action,
-        expiry_days: action === 'approved' ? 90 : undefined
+      const { error } = await supabase.rpc('approve_admin_contact_access', {
+        p_request_id: requestId,
+        p_decision: action
       });
 
       if (error) throw error;
@@ -297,8 +296,8 @@ export const ContactAccessManager = () => {
                             <div className="flex items-start gap-2 text-sm">
                               <MessageSquare className="h-4 w-4 text-muted-foreground mt-0.5" />
                               <div>
-                                <span className="font-medium">Reason:</span>
-                                <p className="text-muted-foreground mt-1">{request.request_reason}</p>
+                                <span className="font-medium">Purpose:</span>
+                                <p className="text-muted-foreground mt-1">{request.access_purpose}</p>
                               </div>
                             </div>
                             {request.business_justification && (

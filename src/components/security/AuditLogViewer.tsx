@@ -76,7 +76,7 @@ export const AuditLogViewer = () => {
     if (searchTerm) {
       filtered = filtered.filter(log => 
         log.action.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        log.table_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        (log.resource_type && log.resource_type.toLowerCase().includes(searchTerm.toLowerCase())) ||
         (log.user_id && log.user_id.includes(searchTerm)) ||
         (log.ip_address && String(log.ip_address).includes(searchTerm))
       );
@@ -87,10 +87,10 @@ export const AuditLogViewer = () => {
       filtered = filtered.filter(log => log.action.includes(actionFilter.toUpperCase()));
     }
 
-    // Sensitive data filter
+    // Sensitive data filter - use severity as proxy
     if (sensitiveFilter !== "all") {
       const isSensitive = sensitiveFilter === "sensitive";
-      filtered = filtered.filter(log => log.sensitive_data_accessed === isSensitive);
+      filtered = filtered.filter(log => isSensitive ? log.severity === 'high' || log.severity === 'critical' : log.severity === 'info' || log.severity === 'low');
     }
 
     setFilteredLogs(filtered);
@@ -234,10 +234,10 @@ export const AuditLogViewer = () => {
                       <div>
                         <div className="flex items-center space-x-2">
                           <span className="font-medium">{log.action}</span>
-                          <Badge variant={getActionColor(log.action, log.sensitive_data_accessed) as any}>
-                            {log.table_name}
+                          <Badge variant={getActionColor(log.action, log.severity === 'high' || log.severity === 'critical') as any}>
+                            {log.resource_type || 'System'}
                           </Badge>
-                          {log.sensitive_data_accessed && (
+                          {(log.severity === 'high' || log.severity === 'critical') && (
                             <Badge variant="destructive">Sensitive</Badge>
                           )}
                         </div>
@@ -258,8 +258,8 @@ export const AuditLogViewer = () => {
                       {(log.ip_address as string) || 'Unknown'}
                     </div>
                     <div>
-                      <span className="font-medium">Record ID:</span>{' '}
-                      {log.record_id ? log.record_id.substring(0, 8) + '...' : 'N/A'}
+                      <span className="font-medium">Resource ID:</span>{' '}
+                      {log.resource_id ? log.resource_id.substring(0, 8) + '...' : 'N/A'}
                     </div>
                   </div>
 

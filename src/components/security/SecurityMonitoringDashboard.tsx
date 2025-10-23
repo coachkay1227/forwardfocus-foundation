@@ -74,7 +74,11 @@ export const SecurityMonitoringDashboard = () => {
       if (alertsError) {
         console.error('Error fetching security alerts:', alertsError);
       } else {
-        setAlerts(alertsData || []);
+        setAlerts((alertsData || []).map(alert => ({
+          ...alert,
+          title: alert.alert_type,
+          metadata: alert.alert_data
+        })));
       }
 
     } catch (error) {
@@ -91,21 +95,11 @@ export const SecurityMonitoringDashboard = () => {
 
   const runSuspiciousActivityDetection = async () => {
     try {
-      const { error } = await supabase.rpc('detect_advanced_suspicious_activity');
-      
-      if (error) {
-        toast({
-          title: "Error",
-          description: "Failed to run suspicious activity detection",
-          variant: "destructive",
-        });
-      } else {
-        toast({
-          title: "Success",
-          description: "Suspicious activity detection completed",
-        });
-        fetchSecurityData(); // Refresh data
-      }
+      // Stub - feature not fully implemented
+      toast({
+        title: "Info",
+        description: "Suspicious activity detection will be available in a future update",
+      });
     } catch (error) {
       console.error('Error running suspicious activity detection:', error);
       toast({

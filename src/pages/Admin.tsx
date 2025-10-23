@@ -99,9 +99,7 @@ const Admin = () => {
       }
 
       try {
-        const { data, error } = await supabase.rpc('is_user_admin', {
-          user_id: user.id
-        });
+        const { data, error } = await supabase.rpc('is_user_admin');
         
         if (error) {
           console.error('Error checking admin status:', error);
@@ -130,7 +128,7 @@ const Admin = () => {
           supabase.from('partnership_requests').select('*').order('created_at', { ascending: false }),
           supabase.from('contact_submissions').select('*').order('created_at', { ascending: false }),
           supabase.from('support_requests').select('*').order('created_at', { ascending: false }),
-          supabase.from('booking_requests').select('*').order('created_at', { ascending: false })
+          supabase.from('bookings').select('*').order('created_at', { ascending: false })
         ]);
 
         if (referralsRes.error) {

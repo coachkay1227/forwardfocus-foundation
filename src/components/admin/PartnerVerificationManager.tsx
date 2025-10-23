@@ -184,8 +184,8 @@ const VerificationCard: React.FC<VerificationCardProps> = ({
             </p>
           </div>
           <div>
-            <Label className="text-muted-foreground">Type</Label>
-            <p className="font-medium">{verification.verification_type}</p>
+            <Label className="text-muted-foreground">Organization</Label>
+            <p className="font-medium">{verification.organization_name}</p>
           </div>
           <div>
             <Label className="text-muted-foreground">Requested</Label>
