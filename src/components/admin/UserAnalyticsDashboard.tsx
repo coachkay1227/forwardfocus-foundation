@@ -12,7 +12,7 @@ interface WebsiteAnalytics {
   user_id: string | null;
   session_id: string | null;
   referrer: string | null;
-  additional_data: any;
+  event_data: any;
   created_at: string;
 }
 

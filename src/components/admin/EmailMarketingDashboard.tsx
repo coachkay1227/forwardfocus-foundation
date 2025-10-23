@@ -33,9 +33,10 @@ interface EmailCampaign {
   status: string;
   scheduled_at: string | null;
   sent_at: string | null;
-  recipient_count: number;
-  success_count: number;
-  failure_count: number;
+  total_recipients: number;
+  sent_count: number;
+  open_count: number;
+  click_count: number;
   created_at: string;
 }
 
@@ -326,10 +327,10 @@ export const EmailMarketingDashboard = () => {
                               {campaign.status}
                             </Badge>
                           </td>
-                          <td className="p-2">{campaign.recipient_count}</td>
+                          <td className="p-2">{campaign.total_recipients}</td>
                           <td className="p-2">
-                            {campaign.recipient_count > 0 
-                              ? `${Math.round((campaign.success_count / campaign.recipient_count) * 100)}%`
+                            {campaign.total_recipients > 0 
+                              ? `${Math.round((campaign.sent_count / campaign.total_recipients) * 100)}%`
                               : '-'
                             }
                           </td>

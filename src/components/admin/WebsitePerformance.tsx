@@ -8,7 +8,7 @@ import { Zap, Activity, Clock, TrendingDown, AlertTriangle, CheckCircle } from "
 interface PerformanceData {
   id: string;
   page_path: string;
-  additional_data: any;
+  event_data: any;
   created_at: string;
 }
 
@@ -42,7 +42,7 @@ export const WebsitePerformance = () => {
         .select('*')
         .gte('created_at', sevenDaysAgo.toISOString())
         .eq('action_type', 'page_view')
-        .not('additional_data->performance', 'is', null)
+        .not('event_data->performance', 'is', null)
         .order('created_at', { ascending: false });
 
       if (error) {
@@ -64,7 +64,7 @@ export const WebsitePerformance = () => {
   const processPagePerformance = (data: PerformanceData[]) => {
     const pageStats = data.reduce((acc, record) => {
       const page = record.page_path;
-      const perf = record.additional_data?.performance;
+      const perf = record.event_data?.performance;
       
       if (!perf || !page) return acc;
       
@@ -79,14 +79,14 @@ export const WebsitePerformance = () => {
       }
       
       if (perf.total_time) acc[page].load_times.push(perf.total_time);
-      if (record.additional_data?.web_vital?.name === 'FCP') {
-        acc[page].fcp_times.push(record.additional_data.web_vital.value);
+      if (record.event_data?.web_vital?.name === 'FCP') {
+        acc[page].fcp_times.push(record.event_data.web_vital.value);
       }
-      if (record.additional_data?.web_vital?.name === 'LCP') {
-        acc[page].lcp_times.push(record.additional_data.web_vital.value);
+      if (record.event_data?.web_vital?.name === 'LCP') {
+        acc[page].lcp_times.push(record.event_data.web_vital.value);
       }
-      if (record.additional_data?.web_vital?.name === 'CLS') {
-        acc[page].cls_scores.push(record.additional_data.web_vital.value);
+      if (record.event_data?.web_vital?.name === 'CLS') {
+        acc[page].cls_scores.push(record.event_data.web_vital.value);
       }
       
       return acc;
@@ -114,10 +114,10 @@ export const WebsitePerformance = () => {
 
   const processCoreWebVitals = (data: PerformanceData[]) => {
     const vitalsData = data
-      .filter(d => d.additional_data?.web_vital)
+      .filter(d => d.event_data?.web_vital)
       .reduce((acc, record) => {
         const date = new Date(record.created_at).toLocaleDateString();
-        const vital = record.additional_data.web_vital;
+        const vital = record.event_data.web_vital;
         
         if (!acc[date]) {
           acc[date] = { date, FCP: [], LCP: [], CLS: [] };

@@ -69,9 +69,8 @@ export const JustificationManager = () => {
     setProcessingId(requestId);
     try {
       const { error } = await supabase.rpc('approve_admin_contact_access', {
-        p_justification_id: requestId,
-        p_decision: decision,
-        p_hours_valid: hoursValid
+        p_request_id: requestId,
+        p_decision: decision
       });
 
       if (error) {
