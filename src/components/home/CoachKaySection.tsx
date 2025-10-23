@@ -29,7 +29,11 @@ export const CoachKaySection = () => {
                 <Button 
                   size="lg" 
                   variant="outline" 
-                  onClick={() => openCalendly('https://calendly.com/ffe_coach_kay')}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    openCalendly('https://calendly.com/ffe_coach_kay');
+                  }}
                   className="w-full"
                 >
                   <Calendar className="h-5 w-5 mr-2" />

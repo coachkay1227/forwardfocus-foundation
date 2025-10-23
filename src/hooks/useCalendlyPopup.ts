@@ -20,11 +20,18 @@ export const useCalendlyPopup = () => {
   }, []);
 
   const openCalendly = (url: string) => {
-    if (!calendlyReady) {
+    if (!calendlyReady || !window.Calendly) {
+      console.error('Calendly not ready');
       alert('Calendly is still loading. Please wait a second and try again.');
       return;
     }
-    window.Calendly.initPopupWidget({ url });
+    
+    try {
+      window.Calendly.initPopupWidget({ url });
+    } catch (error) {
+      console.error('Error opening Calendly:', error);
+      alert('Unable to open Calendly. Please try refreshing the page.');
+    }
   };
 
   return { openCalendly, calendlyReady };
