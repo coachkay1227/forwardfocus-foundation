@@ -204,6 +204,7 @@ const AskCoachKay = () => {
                     </DialogTitle>
                     <div className="flex items-center gap-2">
                       <Button
+                        type="button"
                         variant="ghost"
                         size="sm"
                         onClick={handleOpenCalendly}

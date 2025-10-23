@@ -32,6 +32,7 @@ export default function CalendlyButton() {
 
   return (
     <button
+      type="button"
       onClick={openCalendly}
       className="bg-primary text-primary-foreground px-6 py-3 rounded-xl font-semibold shadow-md hover:bg-primary/90 transition-all duration-300"
     >

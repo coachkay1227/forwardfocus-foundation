@@ -284,6 +284,7 @@ const Support = () => {
               </p>
                <div className="flex justify-center">
                  <Button 
+                   type="button"
                    size="lg" 
                    variant="secondary" 
                    className="px-8 text-lg bg-white text-primary hover:bg-white/90"

@@ -27,6 +27,7 @@ export const CoachKaySection = () => {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-8 max-w-md">
                 <AskCoachKay />
                 <Button 
+                  type="button"
                   size="lg" 
                   variant="outline" 
                   onClick={(e) => {
