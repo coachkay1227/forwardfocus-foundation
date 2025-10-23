@@ -23,7 +23,7 @@ export const usePerformanceMonitoring = () => {
         setTimeout(() => {
           trackEvent({
             action_type: 'page_view',
-            additional_data: {
+            event_data: {
               metric: 'CLS',
               value: clsValue,
               rating: clsValue < 0.1 ? 'good' : clsValue < 0.25 ? 'needs-improvement' : 'poor'
@@ -37,7 +37,7 @@ export const usePerformanceMonitoring = () => {
         const fid = entry.processingStart - entry.startTime;
         trackEvent({
           action_type: 'page_view',
-          additional_data: {
+          event_data: {
             metric: 'FID',
             value: fid,
             rating: fid < 100 ? 'good' : fid < 300 ? 'needs-improvement' : 'poor'
@@ -63,7 +63,7 @@ export const usePerformanceMonitoring = () => {
           
           trackEvent({
             action_type: 'page_view',
-            additional_data: {
+            event_data: {
               metric: 'LCP',
               value: lcp,
               rating: lcp < 2500 ? 'good' : lcp < 4000 ? 'needs-improvement' : 'poor'
@@ -92,7 +92,7 @@ export const usePerformanceMonitoring = () => {
 
           trackEvent({
             action_type: 'page_view',
-            additional_data: {
+            event_data: {
               ...metrics,
               metric_type: 'page_load_performance'
             }
@@ -118,7 +118,7 @@ export const usePerformanceMonitoring = () => {
         const memory = (performance as any).memory;
         trackEvent({
           action_type: 'page_view',
-          additional_data: {
+          event_data: {
             used: memory.usedJSHeapSize,
             total: memory.totalJSHeapSize,
             limit: memory.jsHeapSizeLimit,

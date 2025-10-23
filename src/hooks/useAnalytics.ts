@@ -8,7 +8,7 @@ interface AnalyticsEvent {
   page_path?: string;
   referrer?: string;
   session_id?: string;
-  additional_data?: Record<string, any>;
+  event_data?: Record<string, any>;
 }
 
 // Safe hook that won't break if Router is not available
@@ -47,13 +47,13 @@ export const useAnalytics = () => {
         user_id: user?.id || null,
         ip_address: null, // Will be set server-side
         user_agent: navigator.userAgent,
-        additional_data: {
+        event_data: {
           viewport: {
             width: window.innerWidth,
             height: window.innerHeight
           },
           timestamp: Date.now(),
-          ...event.additional_data
+          ...event.event_data
         }
       };
 
@@ -78,7 +78,7 @@ export const useAnalytics = () => {
   const trackFormSubmission = useCallback((formType: string, formData?: Record<string, any>) => {
     trackEvent({
       action_type: 'form_submit',
-      additional_data: {
+      event_data: {
         form_type: formType,
         form_data: formData
       }
@@ -88,7 +88,7 @@ export const useAnalytics = () => {
   const trackAIInteraction = useCallback((aiEndpoint: string, interactionData?: Record<string, any>) => {
     trackEvent({
       action_type: 'ai_interaction',
-      additional_data: {
+      event_data: {
         ai_endpoint: aiEndpoint,
         ...interactionData
       }
@@ -98,7 +98,7 @@ export const useAnalytics = () => {
   const trackConversion = useCallback((conversionType: string, conversionData?: Record<string, any>) => {
     trackEvent({
       action_type: 'conversion',
-      additional_data: {
+      event_data: {
         conversion_type: conversionType,
         ...conversionData
       }
@@ -108,7 +108,7 @@ export const useAnalytics = () => {
   const trackClick = useCallback((element: string, elementData?: Record<string, any>) => {
     trackEvent({
       action_type: 'click',
-      additional_data: {
+      event_data: {
         element,
         ...elementData
       }
@@ -118,7 +118,7 @@ export const useAnalytics = () => {
   const trackError = useCallback((errorType: string, errorMessage?: string, errorData?: Record<string, any>) => {
     trackEvent({
       action_type: 'error',
-      additional_data: {
+      event_data: {
         error_type: errorType,
         error_message: errorMessage,
         ...errorData
@@ -150,7 +150,7 @@ export const usePerformanceTracking = () => {
             
             trackEvent({
               action_type: 'page_view',
-              additional_data: {
+              event_data: {
                 performance: {
                   dns_lookup: navEntry.domainLookupEnd - navEntry.domainLookupStart,
                   connection_time: navEntry.connectEnd - navEntry.connectStart,
@@ -180,7 +180,7 @@ export const usePerformanceTracking = () => {
         webVitals.onCLS((metric) => {
           trackEvent({
             action_type: 'page_view',
-            additional_data: {
+            event_data: {
               web_vital: {
                 name: 'CLS',
                 value: metric.value,
@@ -193,7 +193,7 @@ export const usePerformanceTracking = () => {
         webVitals.onINP?.((metric) => {
           trackEvent({
             action_type: 'page_view',
-            additional_data: {
+            event_data: {
               web_vital: {
                 name: 'INP',
                 value: metric.value,
@@ -206,7 +206,7 @@ export const usePerformanceTracking = () => {
         webVitals.onFCP((metric) => {
           trackEvent({
             action_type: 'page_view',
-            additional_data: {
+            event_data: {
               web_vital: {
                 name: 'FCP',
                 value: metric.value,
@@ -219,7 +219,7 @@ export const usePerformanceTracking = () => {
         webVitals.onLCP((metric) => {
           trackEvent({
             action_type: 'page_view',
-            additional_data: {
+            event_data: {
               web_vital: {
                 name: 'LCP',
                 value: metric.value,
@@ -232,7 +232,7 @@ export const usePerformanceTracking = () => {
         webVitals.onTTFB((metric) => {
           trackEvent({
             action_type: 'page_view',
-            additional_data: {
+            event_data: {
               web_vital: {
                 name: 'TTFB',
                 value: metric.value,
