@@ -20,6 +20,8 @@ import { AdminSetup } from "@/components/admin/AdminSetup";
 import { LaunchInstructions } from "@/components/admin/LaunchInstructions";
 import { PartnerVerificationManager } from "@/components/admin/PartnerVerificationManager";
 import { AdminSetupBanner } from "@/components/admin/AdminSetupBanner";
+import { RealtimeNotifications } from "@/components/admin/RealtimeNotifications";
+import { SuccessStoriesManager } from "@/components/admin/SuccessStoriesManager";
 
 interface PartnerReferral {
   id: string;
@@ -180,6 +182,53 @@ const Admin = () => {
 
     if (isAdmin) {
       fetchData();
+
+      // Set up realtime subscriptions for automatic updates
+      const channels = [
+        supabase
+          .channel('admin-referrals')
+          .on('postgres_changes', { event: '*', schema: 'public', table: 'partner_referrals' }, () => {
+            supabase.from('partner_referrals').select('*').order('created_at', { ascending: false })
+              .then(({ data }) => setReferrals(data || []));
+          })
+          .subscribe(),
+
+        supabase
+          .channel('admin-partnerships')
+          .on('postgres_changes', { event: '*', schema: 'public', table: 'partnership_requests' }, () => {
+            supabase.from('partnership_requests').select('*').order('created_at', { ascending: false })
+              .then(({ data }) => setPartnershipRequests(data || []));
+          })
+          .subscribe(),
+
+        supabase
+          .channel('admin-contacts')
+          .on('postgres_changes', { event: '*', schema: 'public', table: 'contact_submissions' }, () => {
+            supabase.from('contact_submissions').select('*').order('created_at', { ascending: false })
+              .then(({ data }) => setContactSubmissions(data || []));
+          })
+          .subscribe(),
+
+        supabase
+          .channel('admin-support')
+          .on('postgres_changes', { event: '*', schema: 'public', table: 'support_requests' }, () => {
+            supabase.from('support_requests').select('*').order('created_at', { ascending: false })
+              .then(({ data }) => setSupportRequests(data || []));
+          })
+          .subscribe(),
+
+        supabase
+          .channel('admin-bookings')
+          .on('postgres_changes', { event: '*', schema: 'public', table: 'bookings' }, () => {
+            supabase.from('bookings').select('*').order('created_at', { ascending: false })
+              .then(({ data }) => setBookingRequests(data || []));
+          })
+          .subscribe()
+      ];
+
+      return () => {
+        channels.forEach(channel => supabase.removeChannel(channel));
+      };
     }
   }, [isAdmin]);
 
@@ -300,12 +349,15 @@ const Admin = () => {
 
   return (
     <main id="main" className="container py-10">
-      <h1 className="font-heading text-3xl font-semibold mb-8">Admin Dashboard</h1>
+      <div className="flex items-center justify-between mb-8">
+        <h1 className="font-heading text-3xl font-semibold">Admin Dashboard</h1>
+        <RealtimeNotifications />
+      </div>
       
       <AdminSetupBanner />
       
       <Tabs defaultValue="management" className="space-y-6">
-        <TabsList className="grid w-full grid-cols-5 lg:grid-cols-10">
+        <TabsList className="grid w-full grid-cols-5 lg:grid-cols-11">
           <TabsTrigger value="launch">Launch</TabsTrigger>
           <TabsTrigger value="management">Partner</TabsTrigger>
           <TabsTrigger value="verifications">Verify</TabsTrigger>
@@ -313,6 +365,7 @@ const Admin = () => {
           <TabsTrigger value="support">Support</TabsTrigger>
           <TabsTrigger value="bookings">Bookings</TabsTrigger>
           <TabsTrigger value="organizations">Orgs</TabsTrigger>
+          <TabsTrigger value="stories">Stories</TabsTrigger>
           <TabsTrigger value="analytics">Analytics</TabsTrigger>
           <TabsTrigger value="email">Email</TabsTrigger>
           <TabsTrigger value="security">Security</TabsTrigger>
@@ -780,6 +833,10 @@ const Admin = () => {
             </p>
             <PartnerVerificationManager />
           </div>
+        </TabsContent>
+
+        <TabsContent value="stories">
+          <SuccessStoriesManager />
         </TabsContent>
 
         <TabsContent value="security">

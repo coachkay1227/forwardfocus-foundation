@@ -11,6 +11,7 @@ import { SecurityHeaders } from "@/components/security/SecurityHeaders";
 import { sessionSecurity } from "@/lib/session-security";
 import { AntiWhiteLabelProtection } from "@/components/security/AntiWhiteLabelProtection";
 import { SessionSecurityProvider } from "@/components/security/SessionSecurityProvider";
+import { EnhancedErrorBoundary } from "@/components/ui/enhanced-error-boundary";
 import Layout from "./components/layout/Layout";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
@@ -51,60 +52,62 @@ const App = () => {
   }, []);
 
   return (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <SecurityProvider>
-        <SessionSecurityProvider>
-          <AuthProvider>
-            {/* <AntiWhiteLabelProtection /> */}
-            <SecurityHeaders />
-            <Toaster />
-            <Sonner />
-            <BrowserRouter>
-              <AnalyticsProvider>
-                <StateProvider>
-              <Layout>
-                <Routes>
-                  <Route path="/" element={<Index />} />
-                  <Route path="/help" element={<GetHelpNow />} />
-                  <Route path="/ohio-resources" element={<Navigate to="/help" replace />} />
-                  <Route path="/victim-services" element={<VictimServices />} />
-                  <Route path="/learn" element={<LearnGrow />} />
-                  <Route path="/community" element={<Navigate to="/learn" replace />} />
-                  <Route path="/about" element={<AboutUs />} />
-                  <Route path="/support" element={<Support />} />
-                  <Route path="/auth" element={<Auth />} />
-                  <Route path="/register" element={<Register />} />
-                  <Route path="/partner-signin" element={<PartnerSignIn />} />
-                  <Route path="/partner-signup" element={<PartnerSignUp />} />
-                  <Route path="/login" element={<Navigate to="/auth" replace />} />
-                  <Route path="/setup-admin" element={<SetupAdmin />} />
-                  <Route path="/admin" element={<Admin />} />
-          <Route path="/search" element={<Search />} />
-          <Route path="/discover" element={<Discover />} />
-                  <Route path="/partners" element={<Partners />} />
-                  <Route path="/partners/submit-referral" element={<SubmitReferral />} />
-                  <Route path="/partners/add-resource" element={<AddResource />} />
-                  <Route path="/partners/request" element={<RequestPartnership />} />
-                  <Route path="/partners/request-verification" element={<RequestPartnerVerification />} />
-                  <Route path="/RequestPartnership" element={<RequestPartnership />} />
-                  <Route path="/organizations" element={<Organizations />} />
-                  <Route path="/privacy" element={<PrivacyPolicy />} />
-                  <Route path="/terms" element={<TermsOfService />} />
-                  <Route path="/donation-success" element={<DonationSuccess />} />
-                  <Route path="/resources/:id" element={<Navigate to="/help" replace />} />
-                  {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-                  <Route path="*" element={<NotFound />} />
-                </Routes>
-              </Layout>
-                </StateProvider>
-              </AnalyticsProvider>
-            </BrowserRouter>
-          </AuthProvider>
-        </SessionSecurityProvider>
-      </SecurityProvider>
-    </TooltipProvider>
-  </QueryClientProvider>
+  <EnhancedErrorBoundary>
+    <QueryClientProvider client={queryClient}>
+      <TooltipProvider>
+        <SecurityProvider>
+          <SessionSecurityProvider>
+            <AuthProvider>
+              {/* <AntiWhiteLabelProtection /> */}
+              <SecurityHeaders />
+              <Toaster />
+              <Sonner />
+              <BrowserRouter>
+                <AnalyticsProvider>
+                  <StateProvider>
+                    <Layout>
+                      <Routes>
+                        <Route path="/" element={<Index />} />
+                        <Route path="/help" element={<GetHelpNow />} />
+                        <Route path="/ohio-resources" element={<Navigate to="/help" replace />} />
+                        <Route path="/victim-services" element={<VictimServices />} />
+                        <Route path="/learn" element={<LearnGrow />} />
+                        <Route path="/community" element={<Navigate to="/learn" replace />} />
+                        <Route path="/about" element={<AboutUs />} />
+                        <Route path="/support" element={<Support />} />
+                        <Route path="/auth" element={<Auth />} />
+                        <Route path="/register" element={<Register />} />
+                        <Route path="/partner-signin" element={<PartnerSignIn />} />
+                        <Route path="/partner-signup" element={<PartnerSignUp />} />
+                        <Route path="/login" element={<Navigate to="/auth" replace />} />
+                        <Route path="/setup-admin" element={<SetupAdmin />} />
+                        <Route path="/admin" element={<Admin />} />
+                        <Route path="/search" element={<Search />} />
+                        <Route path="/discover" element={<Discover />} />
+                        <Route path="/partners" element={<Partners />} />
+                        <Route path="/partners/submit-referral" element={<SubmitReferral />} />
+                        <Route path="/partners/add-resource" element={<AddResource />} />
+                        <Route path="/partners/request" element={<RequestPartnership />} />
+                        <Route path="/partners/request-verification" element={<RequestPartnerVerification />} />
+                        <Route path="/RequestPartnership" element={<RequestPartnership />} />
+                        <Route path="/organizations" element={<Organizations />} />
+                        <Route path="/privacy" element={<PrivacyPolicy />} />
+                        <Route path="/terms" element={<TermsOfService />} />
+                        <Route path="/donation-success" element={<DonationSuccess />} />
+                        <Route path="/resources/:id" element={<Navigate to="/help" replace />} />
+                        {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+                        <Route path="*" element={<NotFound />} />
+                      </Routes>
+                    </Layout>
+                  </StateProvider>
+                </AnalyticsProvider>
+              </BrowserRouter>
+            </AuthProvider>
+          </SessionSecurityProvider>
+        </SecurityProvider>
+      </TooltipProvider>
+    </QueryClientProvider>
+  </EnhancedErrorBoundary>
   );
 };
 

@@ -1043,6 +1043,75 @@ export type Database = {
           },
         ]
       }
+      success_stories: {
+        Row: {
+          created_at: string
+          featured: boolean | null
+          id: string
+          images: Json | null
+          impact_metrics: Json | null
+          outcome: string | null
+          participant_name: string | null
+          participant_testimonial: string | null
+          partner_id: string | null
+          published: boolean | null
+          published_at: string | null
+          referral_id: string | null
+          story: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          featured?: boolean | null
+          id?: string
+          images?: Json | null
+          impact_metrics?: Json | null
+          outcome?: string | null
+          participant_name?: string | null
+          participant_testimonial?: string | null
+          partner_id?: string | null
+          published?: boolean | null
+          published_at?: string | null
+          referral_id?: string | null
+          story: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          featured?: boolean | null
+          id?: string
+          images?: Json | null
+          impact_metrics?: Json | null
+          outcome?: string | null
+          participant_name?: string | null
+          participant_testimonial?: string | null
+          partner_id?: string | null
+          published?: boolean | null
+          published_at?: string | null
+          referral_id?: string | null
+          story?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "success_stories_partner_id_fkey"
+            columns: ["partner_id"]
+            isOneToOne: false
+            referencedRelation: "partners"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "success_stories_referral_id_fkey"
+            columns: ["referral_id"]
+            isOneToOne: false
+            referencedRelation: "partner_referrals"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       support_requests: {
         Row: {
           assigned_to: string | null
@@ -1300,6 +1369,17 @@ export type Database = {
           pending_partners: number
           total_partners: number
           total_referrals: number
+          verified_partners: number
+        }[]
+      }
+      get_partner_stats_detailed: {
+        Args: never
+        Returns: {
+          pending_partners: number
+          published_success_stories: number
+          total_partners: number
+          total_referrals: number
+          total_success_stories: number
           verified_partners: number
         }[]
       }
