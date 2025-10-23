@@ -14,6 +14,53 @@ export type Database = {
   }
   public: {
     Tables: {
+      ai_trial_sessions: {
+        Row: {
+          ai_endpoint: string
+          created_at: string
+          id: string
+          is_expired: boolean | null
+          session_id: string
+          trial_end: string | null
+          trial_start: string
+          updated_at: string
+          usage_count: number | null
+          user_id: string | null
+        }
+        Insert: {
+          ai_endpoint: string
+          created_at?: string
+          id?: string
+          is_expired?: boolean | null
+          session_id: string
+          trial_end?: string | null
+          trial_start?: string
+          updated_at?: string
+          usage_count?: number | null
+          user_id?: string | null
+        }
+        Update: {
+          ai_endpoint?: string
+          created_at?: string
+          id?: string
+          is_expired?: boolean | null
+          session_id?: string
+          trial_end?: string | null
+          trial_start?: string
+          updated_at?: string
+          usage_count?: number | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_trial_sessions_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       analytics_events: {
         Row: {
           created_at: string
@@ -61,6 +108,207 @@ export type Database = {
           },
         ]
       }
+      audit_logs: {
+        Row: {
+          action: string
+          created_at: string
+          details: Json | null
+          id: string
+          ip_address: string | null
+          resource_id: string | null
+          resource_type: string | null
+          severity: string | null
+          user_agent: string | null
+          user_id: string | null
+        }
+        Insert: {
+          action: string
+          created_at?: string
+          details?: Json | null
+          id?: string
+          ip_address?: string | null
+          resource_id?: string | null
+          resource_type?: string | null
+          severity?: string | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          action?: string
+          created_at?: string
+          details?: Json | null
+          id?: string
+          ip_address?: string | null
+          resource_id?: string | null
+          resource_type?: string | null
+          severity?: string | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "audit_logs_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      bookings: {
+        Row: {
+          booking_type: string
+          created_at: string
+          duration_minutes: number | null
+          email: string
+          id: string
+          name: string
+          notes: string | null
+          phone: string | null
+          reminder_sent: boolean | null
+          scheduled_date: string
+          scheduled_time: string
+          status: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          booking_type: string
+          created_at?: string
+          duration_minutes?: number | null
+          email: string
+          id?: string
+          name: string
+          notes?: string | null
+          phone?: string | null
+          reminder_sent?: boolean | null
+          scheduled_date: string
+          scheduled_time: string
+          status?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          booking_type?: string
+          created_at?: string
+          duration_minutes?: number | null
+          email?: string
+          id?: string
+          name?: string
+          notes?: string | null
+          phone?: string | null
+          reminder_sent?: boolean | null
+          scheduled_date?: string
+          scheduled_time?: string
+          status?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "bookings_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      chat_history: {
+        Row: {
+          ai_endpoint: string
+          created_at: string
+          id: string
+          message_content: string
+          message_metadata: Json | null
+          message_role: string
+          session_id: string
+          user_id: string | null
+        }
+        Insert: {
+          ai_endpoint: string
+          created_at?: string
+          id?: string
+          message_content: string
+          message_metadata?: Json | null
+          message_role: string
+          session_id: string
+          user_id?: string | null
+        }
+        Update: {
+          ai_endpoint?: string
+          created_at?: string
+          id?: string
+          message_content?: string
+          message_metadata?: Json | null
+          message_role?: string
+          session_id?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "chat_history_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      community_applications: {
+        Row: {
+          application_data: Json
+          created_at: string
+          id: string
+          pathway_id: string
+          review_notes: string | null
+          reviewed_at: string | null
+          reviewed_by: string | null
+          status: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          application_data: Json
+          created_at?: string
+          id?: string
+          pathway_id: string
+          review_notes?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          status?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          application_data?: Json
+          created_at?: string
+          id?: string
+          pathway_id?: string
+          review_notes?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          status?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "community_applications_reviewed_by_fkey"
+            columns: ["reviewed_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "community_applications_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       contact_submissions: {
         Row: {
           created_at: string
@@ -90,6 +338,83 @@ export type Database = {
           subject?: string | null
         }
         Relationships: []
+      }
+      emergency_contacts: {
+        Row: {
+          available_24_7: boolean | null
+          category: string
+          city: string | null
+          created_at: string
+          description: string | null
+          id: string
+          name: string
+          phone: string
+          state: string | null
+          updated_at: string
+        }
+        Insert: {
+          available_24_7?: boolean | null
+          category: string
+          city?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          name: string
+          phone: string
+          state?: string | null
+          updated_at?: string
+        }
+        Update: {
+          available_24_7?: boolean | null
+          category?: string
+          city?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          name?: string
+          phone?: string
+          state?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      healing_sessions: {
+        Row: {
+          completed: boolean | null
+          created_at: string
+          duration_seconds: number | null
+          id: string
+          session_data: Json | null
+          session_type: string
+          user_id: string
+        }
+        Insert: {
+          completed?: boolean | null
+          created_at?: string
+          duration_seconds?: number | null
+          id?: string
+          session_data?: Json | null
+          session_type: string
+          user_id: string
+        }
+        Update: {
+          completed?: boolean | null
+          created_at?: string
+          duration_seconds?: number | null
+          id?: string
+          session_data?: Json | null
+          session_type?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "healing_sessions_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       learning_progress: {
         Row: {
@@ -336,6 +661,135 @@ export type Database = {
           },
         ]
       }
+      security_alerts: {
+        Row: {
+          acknowledged: boolean | null
+          acknowledged_at: string | null
+          acknowledged_by: string | null
+          alert_data: Json | null
+          alert_type: string
+          created_at: string
+          description: string
+          id: string
+          resolved: boolean | null
+          resolved_at: string | null
+          severity: string
+          user_id: string | null
+        }
+        Insert: {
+          acknowledged?: boolean | null
+          acknowledged_at?: string | null
+          acknowledged_by?: string | null
+          alert_data?: Json | null
+          alert_type: string
+          created_at?: string
+          description: string
+          id?: string
+          resolved?: boolean | null
+          resolved_at?: string | null
+          severity: string
+          user_id?: string | null
+        }
+        Update: {
+          acknowledged?: boolean | null
+          acknowledged_at?: string | null
+          acknowledged_by?: string | null
+          alert_data?: Json | null
+          alert_type?: string
+          created_at?: string
+          description?: string
+          id?: string
+          resolved?: boolean | null
+          resolved_at?: string | null
+          severity?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "security_alerts_acknowledged_by_fkey"
+            columns: ["acknowledged_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "security_alerts_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      support_requests: {
+        Row: {
+          assigned_to: string | null
+          created_at: string
+          email: string
+          id: string
+          message: string
+          name: string
+          notes: string | null
+          organization: string | null
+          phone: string | null
+          request_data: Json | null
+          request_type: string
+          status: string | null
+          subject: string | null
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          assigned_to?: string | null
+          created_at?: string
+          email: string
+          id?: string
+          message: string
+          name: string
+          notes?: string | null
+          organization?: string | null
+          phone?: string | null
+          request_data?: Json | null
+          request_type: string
+          status?: string | null
+          subject?: string | null
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          assigned_to?: string | null
+          created_at?: string
+          email?: string
+          id?: string
+          message?: string
+          name?: string
+          notes?: string | null
+          organization?: string | null
+          phone?: string | null
+          request_data?: Json | null
+          request_type?: string
+          status?: string | null
+          subject?: string | null
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "support_requests_assigned_to_fkey"
+            columns: ["assigned_to"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "support_requests_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       user_roles: {
         Row: {
           created_at: string
@@ -356,6 +810,50 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      user_sessions: {
+        Row: {
+          created_at: string
+          expires_at: string
+          id: string
+          ip_address: string | null
+          is_active: boolean | null
+          last_activity: string
+          session_token: string
+          user_agent: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          expires_at: string
+          id?: string
+          ip_address?: string | null
+          is_active?: boolean | null
+          last_activity?: string
+          session_token: string
+          user_agent?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          expires_at?: string
+          id?: string
+          ip_address?: string | null
+          is_active?: boolean | null
+          last_activity?: string
+          session_token?: string
+          user_agent?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_sessions_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       verification_requests: {
         Row: {
