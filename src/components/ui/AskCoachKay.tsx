@@ -7,6 +7,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import EmailChatHistoryModal from "@/components/ai/EmailChatHistoryModal";
 import { AIWithTrial } from "@/components/ai/AIWithTrial";
 import { useToast } from "@/hooks/use-toast";
+import { useCalendlyPopup } from "@/hooks/useCalendlyPopup";
 
 interface Message {
   id: string;
@@ -30,6 +31,7 @@ const AskCoachKay = () => {
   const [showEmailModal, setShowEmailModal] = useState(false);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
+  const { openCalendly } = useCalendlyPopup();
 
   return (
     <AIWithTrial aiEndpoint="coach-k">
@@ -66,8 +68,8 @@ const AskCoachKay = () => {
     });
   };
 
-  const openCalendly = () => {
-    window.open('https://calendly.com/ffe_coach_kay/free-call', '_blank');
+  const handleOpenCalendly = () => {
+    openCalendly('https://calendly.com/ffe_coach_kay/free-call');
   };
 
   const sendMessage = async (messages: {role: string, content: string}[]) => {
@@ -204,7 +206,7 @@ const AskCoachKay = () => {
                       <Button
                         variant="ghost"
                         size="sm"
-                        onClick={openCalendly}
+                        onClick={handleOpenCalendly}
                         className="text-xs"
                       >
                         <Calendar className="h-4 w-4 mr-1" />

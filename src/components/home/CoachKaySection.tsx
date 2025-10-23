@@ -1,8 +1,11 @@
 import { Calendar } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import AskCoachKay from "@/components/ui/AskCoachKay";
+import { useCalendlyPopup } from "@/hooks/useCalendlyPopup";
 
 export const CoachKaySection = () => {
+  const { openCalendly } = useCalendlyPopup();
+  
   return (
     <section className="py-24 bg-gradient-to-br from-secondary/10 to-accent/10">
       <div className="container">
@@ -26,7 +29,7 @@ export const CoachKaySection = () => {
                 <Button 
                   size="lg" 
                   variant="outline" 
-                  onClick={() => window.open('https://calendly.com/ffe_coach_kay', '_blank')}
+                  onClick={() => openCalendly('https://calendly.com/ffe_coach_kay')}
                   className="w-full"
                 >
                   <Calendar className="h-5 w-5 mr-2" />

@@ -10,8 +10,10 @@ import GrantInquiryForm from "@/components/support/GrantInquiryForm";
 import AIConsultationForm from "@/components/support/AIConsultationForm";
 import CorporateTrainingForm from "@/components/support/CorporateTrainingForm";
 import ContactForm from "@/components/forms/ContactForm";
+import { useCalendlyPopup } from "@/hooks/useCalendlyPopup";
 const Support = () => {
   const [activeDialog, setActiveDialog] = useState<string | null>(null);
+  const { openCalendly } = useCalendlyPopup();
 
   useEffect(() => {
     document.title = "Get Involved | Forward Focus Elevation";
@@ -285,7 +287,7 @@ const Support = () => {
                    size="lg" 
                    variant="secondary" 
                    className="px-8 text-lg bg-white text-primary hover:bg-white/90"
-                   onClick={() => window.open('https://calendly.com/ffe_coach_kay/free-call', '_blank')}
+                   onClick={() => openCalendly('https://calendly.com/ffe_coach_kay/free-call')}
                  >
                    Schedule Consultation →
                  </Button>
