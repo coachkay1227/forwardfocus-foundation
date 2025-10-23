@@ -5,10 +5,13 @@ import SearchFilters from "@/components/resources/SearchFilters";
 import ResourceCard from "@/components/resources/ResourceCard";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Search as SearchIcon, Filter, MapPin } from "lucide-react";
+import { Search as SearchIcon, Filter } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { useToast } from "@/hooks/use-toast";
+import { usePagination } from "@/hooks/usePagination";
+import { DataPagination } from "@/components/ui/data-pagination";
+import { Skeleton } from "@/components/ui/skeleton";
 
 // Import hero image
 import communitySearchResources from "@/assets/community-search-resources.jpg";
@@ -50,6 +53,8 @@ const Search = () => {
   const [loading, setLoading] = useState(false);
   const [showFilters, setShowFilters] = useState(false);
   const { toast } = useToast();
+
+  const resourcesPagination = usePagination({ items: resources, itemsPerPage: 20 });
 
   useEffect(() => {
     document.title = "Search Resources | Forward Focus Elevation";
@@ -224,7 +229,6 @@ const Search = () => {
                 )}
                 {county && (
                   <Badge variant="secondary" className="flex items-center gap-1 bg-osu-gray/10 text-osu-gray border-osu-gray/20">
-                    <MapPin className="h-3 w-3" />
                     {county}
                   </Badge>
                 )}
@@ -262,14 +266,23 @@ const Search = () => {
             ))}
           </div>
         ) : resources.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-             {resources.map((resource) => (
-               <ResourceCard 
-                 key={resource.id} 
-                 resource={resource}
-               />
-             ))}
-          </div>
+          <>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {resourcesPagination.paginatedItems.map((resource) => (
+                <ResourceCard 
+                  key={resource.id} 
+                  resource={resource}
+                />
+              ))}
+            </div>
+            <DataPagination
+              currentPage={resourcesPagination.currentPage}
+              totalPages={resourcesPagination.totalPages}
+              onPageChange={resourcesPagination.goToPage}
+              hasNextPage={resourcesPagination.hasNextPage}
+              hasPreviousPage={resourcesPagination.hasPreviousPage}
+            />
+          </>
         ) : (
           <div className="text-center py-12">
             <SearchIcon className="mx-auto h-12 w-12 text-osu-gray mb-4" />

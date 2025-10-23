@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, lazy, Suspense } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { Navigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -9,20 +9,33 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
 import { maskContactInfo } from "@/lib/security";
 import { Eye, EyeOff, Shield } from "lucide-react";
-import { SecurityMonitoringDashboard } from "@/components/security/SecurityMonitoringDashboard";
-import { EmailMarketingDashboard } from "@/components/admin/EmailMarketingDashboard";
-import { ContactAccessManager } from "@/components/security/ContactAccessManager";
-import { JustificationManager } from "@/components/admin/JustificationManager";
-import { UserAnalyticsDashboard } from "@/components/admin/UserAnalyticsDashboard";
-import { WebsitePerformance } from "@/components/admin/WebsitePerformance";
-import { LaunchChecklist } from "@/components/launch/LaunchChecklist";
-import { AdminSetup } from "@/components/admin/AdminSetup";
-import { LaunchInstructions } from "@/components/admin/LaunchInstructions";
-import { PartnerVerificationManager } from "@/components/admin/PartnerVerificationManager";
 import { AdminSetupBanner } from "@/components/admin/AdminSetupBanner";
 import { RealtimeNotifications } from "@/components/admin/RealtimeNotifications";
-import { SuccessStoriesManager } from "@/components/admin/SuccessStoriesManager";
-import { MarketingImageGenerator } from "@/components/ai/MarketingImageGenerator";
+import { usePagination } from "@/hooks/usePagination";
+import { DataPagination } from "@/components/ui/data-pagination";
+import { Skeleton } from "@/components/ui/skeleton";
+
+// Lazy load heavy components for better performance
+const SecurityMonitoringDashboard = lazy(() => import("@/components/security/SecurityMonitoringDashboard").then(m => ({ default: m.SecurityMonitoringDashboard })));
+const EmailMarketingDashboard = lazy(() => import("@/components/admin/EmailMarketingDashboard").then(m => ({ default: m.EmailMarketingDashboard })));
+const ContactAccessManager = lazy(() => import("@/components/security/ContactAccessManager").then(m => ({ default: m.ContactAccessManager })));
+const JustificationManager = lazy(() => import("@/components/admin/JustificationManager").then(m => ({ default: m.JustificationManager })));
+const UserAnalyticsDashboard = lazy(() => import("@/components/admin/UserAnalyticsDashboard").then(m => ({ default: m.UserAnalyticsDashboard })));
+const WebsitePerformance = lazy(() => import("@/components/admin/WebsitePerformance").then(m => ({ default: m.WebsitePerformance })));
+const LaunchChecklist = lazy(() => import("@/components/launch/LaunchChecklist").then(m => ({ default: m.LaunchChecklist })));
+const AdminSetup = lazy(() => import("@/components/admin/AdminSetup").then(m => ({ default: m.AdminSetup })));
+const LaunchInstructions = lazy(() => import("@/components/admin/LaunchInstructions").then(m => ({ default: m.LaunchInstructions })));
+const PartnerVerificationManager = lazy(() => import("@/components/admin/PartnerVerificationManager").then(m => ({ default: m.PartnerVerificationManager })));
+const SuccessStoriesManager = lazy(() => import("@/components/admin/SuccessStoriesManager").then(m => ({ default: m.SuccessStoriesManager })));
+const MarketingImageGenerator = lazy(() => import("@/components/ai/MarketingImageGenerator").then(m => ({ default: m.MarketingImageGenerator })));
+
+const ComponentLoader = () => (
+  <div className="space-y-4">
+    <Skeleton className="h-32 w-full" />
+    <Skeleton className="h-32 w-full" />
+    <Skeleton className="h-32 w-full" />
+  </div>
+);
 
 interface PartnerReferral {
   id: string;
@@ -100,6 +113,13 @@ const Admin = () => {
   const [bookingRequests, setBookingRequests] = useState<BookingRequest[]>([]);
   const [loadingData, setLoadingData] = useState(true);
   const [revealedContacts, setRevealedContacts] = useState<Set<string>>(new Set());
+
+  // Pagination hooks for each list
+  const referralsPagination = usePagination({ items: referrals, itemsPerPage: 10 });
+  const partnershipsPagination = usePagination({ items: partnershipRequests, itemsPerPage: 10 });
+  const contactsPagination = usePagination({ items: contactSubmissions, itemsPerPage: 10 });
+  const supportPagination = usePagination({ items: supportRequests, itemsPerPage: 10 });
+  const bookingsPagination = usePagination({ items: bookingRequests, itemsPerPage: 10 });
 
   useEffect(() => {
     document.title = "Admin Dashboard | Forward Focus Elevation";
@@ -373,18 +393,20 @@ const Admin = () => {
         </TabsList>
 
         <TabsContent value="launch">
-          <div className="space-y-6">
-            <div>
-              <h2 className="font-heading text-2xl font-semibold mb-2">Launch Readiness</h2>
-              <p className="text-muted-foreground mb-6">
-                Complete these final steps to prepare your application for production launch.
-              </p>
+          <Suspense fallback={<ComponentLoader />}>
+            <div className="space-y-6">
+              <div>
+                <h2 className="font-heading text-2xl font-semibold mb-2">Launch Readiness</h2>
+                <p className="text-muted-foreground mb-6">
+                  Complete these final steps to prepare your application for production launch.
+                </p>
+              </div>
+              
+              <AdminSetup />
+              <LaunchChecklist />
+              <LaunchInstructions />
             </div>
-            
-            <AdminSetup />
-            <LaunchChecklist />
-            <LaunchInstructions />
-          </div>
+          </Suspense>
         </TabsContent>
 
         <TabsContent value="management">
@@ -403,8 +425,9 @@ const Admin = () => {
               </CardContent>
             </Card>
           ) : (
-            <div className="grid gap-4">
-              {referrals.map((referral) => (
+            <>
+              <div className="grid gap-4">
+                {referralsPagination.paginatedItems.map((referral) => (
                 <Card key={referral.id}>
                   <CardHeader className="pb-3">
                     <div className="flex items-center justify-between">
@@ -462,6 +485,14 @@ const Admin = () => {
                 </Card>
               ))}
             </div>
+            <DataPagination
+              currentPage={referralsPagination.currentPage}
+              totalPages={referralsPagination.totalPages}
+              onPageChange={referralsPagination.goToPage}
+              hasNextPage={referralsPagination.hasNextPage}
+              hasPreviousPage={referralsPagination.hasPreviousPage}
+            />
+          </>
           )}
         </section>
 
@@ -479,8 +510,9 @@ const Admin = () => {
               </CardContent>
             </Card>
           ) : (
-            <div className="grid gap-4">
-              {partnershipRequests.map((request) => (
+            <>
+              <div className="grid gap-4">
+                {partnershipsPagination.paginatedItems.map((request) => (
                 <Card key={request.id}>
                   <CardHeader className="pb-3">
                     <div className="flex items-center justify-between">
@@ -538,6 +570,14 @@ const Admin = () => {
                 </Card>
               ))}
             </div>
+            <DataPagination
+              currentPage={partnershipsPagination.currentPage}
+              totalPages={partnershipsPagination.totalPages}
+              onPageChange={partnershipsPagination.goToPage}
+              hasNextPage={partnershipsPagination.hasNextPage}
+              hasPreviousPage={partnershipsPagination.hasPreviousPage}
+            />
+          </>
           )}
         </section>
           </div>
@@ -557,8 +597,9 @@ const Admin = () => {
                 </CardContent>
               </Card>
             ) : (
-              <div className="grid gap-4">
-                {contactSubmissions.map((submission) => (
+              <>
+                <div className="grid gap-4">
+                  {contactsPagination.paginatedItems.map((submission) => (
                   <Card key={submission.id}>
                     <CardHeader className="pb-3">
                       <div className="flex items-center justify-between">
@@ -601,6 +642,14 @@ const Admin = () => {
                   </Card>
                 ))}
               </div>
+              <DataPagination
+                currentPage={contactsPagination.currentPage}
+                totalPages={contactsPagination.totalPages}
+                onPageChange={contactsPagination.goToPage}
+                hasNextPage={contactsPagination.hasNextPage}
+                hasPreviousPage={contactsPagination.hasPreviousPage}
+              />
+            </>
             )}
           </div>
         </TabsContent>
@@ -619,8 +668,9 @@ const Admin = () => {
                 </CardContent>
               </Card>
             ) : (
-              <div className="grid gap-4">
-                {supportRequests.map((request) => (
+              <>
+                <div className="grid gap-4">
+                  {supportPagination.paginatedItems.map((request) => (
                   <Card key={request.id}>
                     <CardHeader className="pb-3">
                       <div className="flex items-center justify-between">
@@ -677,6 +727,14 @@ const Admin = () => {
                   </Card>
                 ))}
               </div>
+              <DataPagination
+                currentPage={supportPagination.currentPage}
+                totalPages={supportPagination.totalPages}
+                onPageChange={supportPagination.goToPage}
+                hasNextPage={supportPagination.hasNextPage}
+                hasPreviousPage={supportPagination.hasPreviousPage}
+              />
+            </>
             )}
           </div>
         </TabsContent>
@@ -695,8 +753,9 @@ const Admin = () => {
                 </CardContent>
               </Card>
             ) : (
-              <div className="grid gap-4">
-                {bookingRequests.map((booking) => (
+              <>
+                <div className="grid gap-4">
+                  {bookingsPagination.paginatedItems.map((booking) => (
                   <Card key={booking.id}>
                     <CardHeader className="pb-3">
                       <div className="flex items-center justify-between">
@@ -748,10 +807,18 @@ const Admin = () => {
                         )}
                       </div>
                     </CardContent>
-                  </Card>
-                ))}
-              </div>
-            )}
+                </Card>
+              ))}
+            </div>
+            <DataPagination
+              currentPage={bookingsPagination.currentPage}
+              totalPages={bookingsPagination.totalPages}
+              onPageChange={bookingsPagination.goToPage}
+              hasNextPage={bookingsPagination.hasNextPage}
+              hasPreviousPage={bookingsPagination.hasPreviousPage}
+            />
+          </>
+          )}
           </div>
         </TabsContent>
 
@@ -801,50 +868,60 @@ const Admin = () => {
           </div>
         </TabsContent>
 
-        <TabsContent value="analytics">
-          <div className="space-y-6">
-            <h2 className="font-heading text-2xl font-semibold">Analytics Dashboard</h2>
-            
-            <Tabs defaultValue="user-analytics" className="space-y-6">
-              <TabsList className="grid w-full grid-cols-2">
-                <TabsTrigger value="user-analytics">User Analytics</TabsTrigger>
-                <TabsTrigger value="performance">Performance</TabsTrigger>
-              </TabsList>
-              
-              <TabsContent value="user-analytics">
-                <UserAnalyticsDashboard />
-              </TabsContent>
-              
-              <TabsContent value="performance">
-                <WebsitePerformance />
-              </TabsContent>
-            </Tabs>
-          </div>
-        </TabsContent>
-
-        <TabsContent value="email">
-          <div className="space-y-6">
-            <EmailMarketingDashboard />
-            <MarketingImageGenerator />
-          </div>
-        </TabsContent>
-
         <TabsContent value="verifications">
-          <div className="space-y-6">
-            <h2 className="font-heading text-2xl font-semibold">Partner Verification Management</h2>
-            <p className="text-muted-foreground">
-              Review and manage partner verification requests. Approve or deny requests to grant verified partner status.
-            </p>
-            <PartnerVerificationManager />
-          </div>
+          <Suspense fallback={<ComponentLoader />}>
+            <div className="space-y-6">
+              <h2 className="font-heading text-2xl font-semibold">Partner Verification Management</h2>
+              <p className="text-muted-foreground">
+                Review and manage partner verification requests. Approve or deny requests to grant verified partner status.
+              </p>
+              <PartnerVerificationManager />
+            </div>
+          </Suspense>
         </TabsContent>
 
         <TabsContent value="stories">
-          <SuccessStoriesManager />
+          <Suspense fallback={<ComponentLoader />}>
+            <SuccessStoriesManager />
+          </Suspense>
+        </TabsContent>
+
+        <TabsContent value="analytics">
+          <Suspense fallback={<ComponentLoader />}>
+            <div className="space-y-6">
+              <h2 className="font-heading text-2xl font-semibold">Analytics Dashboard</h2>
+              
+              <Tabs defaultValue="user-analytics" className="space-y-6">
+                <TabsList className="grid w-full grid-cols-2">
+                  <TabsTrigger value="user-analytics">User Analytics</TabsTrigger>
+                  <TabsTrigger value="performance">Performance</TabsTrigger>
+                </TabsList>
+                
+                <TabsContent value="user-analytics">
+                  <UserAnalyticsDashboard />
+                </TabsContent>
+                
+                <TabsContent value="performance">
+                  <WebsitePerformance />
+                </TabsContent>
+              </Tabs>
+            </div>
+          </Suspense>
+        </TabsContent>
+
+        <TabsContent value="email">
+          <Suspense fallback={<ComponentLoader />}>
+            <div className="space-y-6">
+              <EmailMarketingDashboard />
+              <MarketingImageGenerator />
+            </div>
+          </Suspense>
         </TabsContent>
 
         <TabsContent value="security">
-          <SecurityMonitoringDashboard />
+          <Suspense fallback={<ComponentLoader />}>
+            <SecurityMonitoringDashboard />
+          </Suspense>
         </TabsContent>
       </Tabs>
     </main>
