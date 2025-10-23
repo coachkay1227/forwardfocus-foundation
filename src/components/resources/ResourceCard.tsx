@@ -9,13 +9,15 @@ type Resource = {
   organization: string;
   phone?: string;
   website?: string;
+  website_url?: string;
   address?: string;
   city: string;
-  county: string;
+  state?: string;
+  county?: string;
   type: string;
   verified: boolean;
   justice_friendly: boolean;
-  rating: number;
+  rating?: number;
   updated_at: string;
   description: string;
 };
@@ -44,7 +46,7 @@ const ResourceCard = ({ resource }: { resource: Resource }) => {
               </Badge>
             )}
             <Badge variant="outline" className="inline-flex items-center gap-1 font-medium border-primary/20">
-              <Star className="size-3" /> {resource.rating.toFixed(1)}
+              <Star className="size-3" /> {resource.rating?.toFixed(1) || 'N/A'}
             </Badge>
             <span className="text-sm text-foreground/60">Updated {new Date(resource.updated_at).toLocaleDateString()}</span>
           </div>

@@ -31,11 +31,13 @@ interface PartnerReferral {
 
 interface PartnershipRequest {
   id: string;
-  organization_name: string;
-  contact_email: string;
-  description: string;
+  organization: string;
+  email: string;
+  message: string;
   status: string;
   created_at: string;
+  updated_at: string;
+  name: string;
 }
 
 interface ContactSubmission {
@@ -44,7 +46,6 @@ interface ContactSubmission {
   email: string;
   subject: string;
   message: string;
-  form_type: string;
   status: string;
   created_at: string;
 }
@@ -58,9 +59,13 @@ interface SupportRequest {
   phone: string;
   subject: string;
   message: string;
-  additional_data: any;
+  request_data: any;
   status: string;
   created_at: string;
+  updated_at: string;
+  user_id: string;
+  assigned_to: string;
+  notes: string;
 }
 
 interface BookingRequest {
@@ -68,11 +73,16 @@ interface BookingRequest {
   name: string;
   email: string;
   phone: string;
-  booking_date: string;
-  booking_time: string;
-  message: string;
+  scheduled_date: string;
+  scheduled_time: string;
+  notes: string;
   status: string;
   created_at: string;
+  updated_at: string;
+  user_id: string;
+  booking_type: string;
+  duration_minutes: number;
+  reminder_sent: boolean;
 }
 
 const Admin = () => {
@@ -173,11 +183,9 @@ const Admin = () => {
   }, [isAdmin]);
 
   const toggleContactVisibility = async (id: string, contactInfo: string) => {
-    // Check admin operation limits before proceeding
+      // Check admin operation limits before proceeding
     try {
-      const { data: canProceed, error: rateLimitError } = await supabase.rpc('check_admin_operation_limit', {
-        operation_type: 'contact_reveal'
-      });
+      const { data: canProceed, error: rateLimitError } = await supabase.rpc('check_admin_operation_limit');
 
       if (rateLimitError || !canProceed) {
         toast({
@@ -208,12 +216,10 @@ const Admin = () => {
     }
   };
 
-  const updateStatus = async (table: 'partner_referrals' | 'partnership_requests' | 'contact_submissions' | 'support_requests' | 'booking_requests', id: string, newStatus: string) => {
+  const updateStatus = async (table: 'partner_referrals' | 'partnership_requests' | 'contact_submissions' | 'support_requests' | 'bookings', id: string, newStatus: string) => {
     try {
       // Check admin operation limits
-      const { data: canProceed, error: rateLimitError } = await supabase.rpc('check_admin_operation_limit', {
-        operation_type: 'status_update'
-      });
+      const { data: canProceed, error: rateLimitError } = await supabase.rpc('check_admin_operation_limit');
 
       if (rateLimitError || !canProceed) {
         toast({
@@ -257,8 +263,8 @@ const Admin = () => {
         } else if (table === 'support_requests') {
           const { data } = await supabase.from('support_requests').select('*').order('created_at', { ascending: false });
           setSupportRequests(data || []);
-        } else if (table === 'booking_requests') {
-          const { data } = await supabase.from('booking_requests').select('*').order('created_at', { ascending: false });
+        } else if (table === 'bookings') {
+          const { data } = await supabase.from('bookings').select('*').order('created_at', { ascending: false });
           setBookingRequests(data || []);
         }
       }
@@ -421,7 +427,7 @@ const Admin = () => {
                 <Card key={request.id}>
                   <CardHeader className="pb-3">
                     <div className="flex items-center justify-between">
-                      <CardTitle className="text-lg">{request.organization_name}</CardTitle>
+                      <CardTitle className="text-lg">{request.organization}</CardTitle>
                       <Badge variant={request.status === 'new' ? 'default' : 'secondary'}>
                         {request.status}
                       </Badge>
@@ -431,14 +437,14 @@ const Admin = () => {
                         <span>Email: </span>
                         <span className="font-mono">
                           {revealedContacts.has(request.id) 
-                            ? request.contact_email 
-                            : maskContactInfo(request.contact_email)
+                            ? request.email 
+                            : maskContactInfo(request.email)
                           }
                         </span>
                         <Button
                           size="sm"
                           variant="ghost"
-                          onClick={() => toggleContactVisibility(request.id, request.contact_email)}
+                          onClick={() => toggleContactVisibility(request.id, request.email)}
                           className="h-6 w-6 p-0"
                         >
                           {revealedContacts.has(request.id) ? (
@@ -451,7 +457,7 @@ const Admin = () => {
                     </CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <p className="text-sm mb-4">{request.description}</p>
+                    <p className="text-sm mb-4">{request.message}</p>
                     <div className="flex gap-2">
                       {request.status === 'new' && (
                         <>
@@ -501,7 +507,6 @@ const Admin = () => {
                       <div className="flex items-center justify-between">
                         <CardTitle className="text-lg">{submission.name}</CardTitle>
                         <div className="flex gap-2">
-                          <Badge variant="outline">{submission.form_type}</Badge>
                           <Badge variant={submission.status === 'new' ? 'default' : 'secondary'}>
                             {submission.status}
                           </Badge>
@@ -577,11 +582,11 @@ const Admin = () => {
                     <CardContent>
                       <p className="text-sm mb-2"><strong>Subject:</strong> {request.subject}</p>
                       <p className="text-sm mb-4">{request.message}</p>
-                      {request.additional_data && Object.keys(request.additional_data).length > 0 && (
+                      {request.request_data && Object.keys(request.request_data).length > 0 && (
                         <div className="mt-4 p-3 bg-secondary/20 rounded-lg">
                           <p className="text-xs font-medium mb-2">Additional Details:</p>
                           <div className="text-xs space-y-1">
-                            {Object.entries(request.additional_data).map(([key, value]) => (
+                            {Object.entries(request.request_data).map(([key, value]) => (
                               <div key={key}>
                                 <strong>{key.replace(/_/g, ' ')}:</strong> {Array.isArray(value) ? value.join(', ') : String(value)}
                               </div>
@@ -652,16 +657,16 @@ const Admin = () => {
                         <div>
                           <p className="text-sm font-medium">Date</p>
                           <p className="text-sm text-muted-foreground">
-                            {new Date(booking.booking_date).toLocaleDateString()}
+                            {new Date(booking.scheduled_date).toLocaleDateString()}
                           </p>
                         </div>
                         <div>
                           <p className="text-sm font-medium">Time</p>
-                          <p className="text-sm text-muted-foreground">{booking.booking_time}</p>
+                          <p className="text-sm text-muted-foreground">{booking.scheduled_time}</p>
                         </div>
                       </div>
-                      {booking.message && (
-                        <p className="text-sm mb-4">{booking.message}</p>
+                      {booking.notes && (
+                        <p className="text-sm mb-4">{booking.notes}</p>
                       )}
                       <div className="flex gap-2 text-xs text-muted-foreground">
                         <span>Booked: {new Date(booking.created_at).toLocaleDateString()}</span>
@@ -671,14 +676,14 @@ const Admin = () => {
                           <>
                             <Button
                               size="sm"
-                              onClick={() => updateStatus('booking_requests', booking.id, 'completed')}
+                              onClick={() => updateStatus('bookings', booking.id, 'completed')}
                             >
                               Mark as Completed
                             </Button>
                             <Button
                               size="sm"
                               variant="outline"
-                              onClick={() => updateStatus('booking_requests', booking.id, 'cancelled')}
+                              onClick={() => updateStatus('bookings', booking.id, 'cancelled')}
                             >
                               Mark as Cancelled
                             </Button>

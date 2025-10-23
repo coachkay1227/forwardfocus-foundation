@@ -342,7 +342,7 @@ export const ContactAccessManager = () => {
                             <Button
                               size="sm"
                               variant="outline"
-                              onClick={() => handleRequestAction(request.id, 'revoked')}
+                              onClick={() => handleRequestAction(request.id, 'denied')}
                               disabled={processingId === request.id}
                               className="flex items-center gap-1"
                             >

@@ -89,9 +89,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const isAdmin = async (): Promise<boolean> => {
     if (!user) return false;
     
-    const { data, error } = await supabase.rpc('is_user_admin', {
-      user_id: user.id
-    });
+    const { data, error } = await supabase.rpc('is_user_admin');
     
     if (error) {
       console.error('Error checking admin status:', error);

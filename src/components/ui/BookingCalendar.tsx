@@ -25,12 +25,13 @@ const BookingCalendar = () => {
         const { supabase } = await import("@/integrations/supabase/client");
         
         // Save to database first
-        const { error: dbError } = await supabase.from('booking_requests').insert({
-          name: "Valued Community Member", // Enhanced later with form
-          email: "user@example.com", // From auth context or form
-          booking_date: selectedDate.toISOString(),
-          booking_time: selectedTime,
-          message: `Consultation booked for ${format(selectedDate, "EEEE, MMMM do, yyyy")} at ${selectedTime}. Duration: 30 minutes. Format: Video call.`,
+        const { error: dbError } = await supabase.from('bookings').insert({
+          user_id: 'anonymous',
+          name: "Valued Community Member",
+          email: "user@example.com",
+          scheduled_date: format(selectedDate, "yyyy-MM-dd"),
+          scheduled_time: selectedTime,
+          booking_type: 'consultation',
           status: 'confirmed'
         });
 

@@ -97,9 +97,10 @@ const RequestPartnership = () => {
       const { error } = await supabase
         .from('partnership_requests')
         .insert({
-          organization_name: sanitizedOrgName,
-          contact_email: sanitizedEmail,
-          description: `Partnership Type: ${partnershipType}\n\n${sanitizedDescription}`
+          organization: sanitizedOrgName,
+          email: sanitizedEmail,
+          name: sanitizedOrgName,
+          message: `Partnership Type: ${partnershipType}\n\n${sanitizedDescription}`
         });
 
       if (error) {

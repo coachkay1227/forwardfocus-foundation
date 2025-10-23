@@ -42,30 +42,44 @@ export const useAnonymousSession = (): UseAnonymousSessionReturn => {
     try {
       const sessionToken = getSessionToken();
       
-      const { data, error } = await supabase.rpc('track_anonymous_ai_usage', {
-        p_session_token: sessionToken,
-        p_ai_endpoint: aiEndpoint,
-        p_conversation_data: conversationData ? JSON.stringify(conversationData) : null
-      });
+      // Check existing trial session
+      const { data: session, error } = await supabase
+        .from('ai_trial_sessions')
+        .select('*')
+        .eq('session_id', sessionToken)
+        .eq('ai_endpoint', aiEndpoint)
+        .single();
 
-      if (error) {
-        console.error('Error checking trial access:', error);
-        return false;
+      const now = new Date();
+      let trialExpired = false;
+      let timeRemaining = 180; // 3 minutes default
+      let usageCount = 0;
+
+      if (session) {
+        const trialEnd = new Date(session.trial_end || session.trial_start);
+        trialEnd.setMinutes(trialEnd.getMinutes() + 3);
+        timeRemaining = Math.max(0, Math.floor((trialEnd.getTime() - now.getTime()) / 1000));
+        trialExpired = session.is_expired || timeRemaining === 0;
+        usageCount = session.usage_count || 0;
+      } else {
+        // Create new trial session
+        await supabase.from('ai_trial_sessions').insert({
+          session_id: sessionToken,
+          ai_endpoint: aiEndpoint,
+          trial_start: now.toISOString(),
+          usage_count: 0
+        });
       }
 
-      // Type assertion for the response data
-      const responseData = data as any;
-
-      // Update session state
       setSessionState({
         sessionToken,
-        timeRemaining: responseData?.time_remaining || 0,
-        usageCount: responseData?.usage_count || 0,
-        trialExpired: responseData?.trial_expired || false,
-        isNewSession: responseData?.is_new_session || false
+        timeRemaining,
+        usageCount,
+        trialExpired,
+        isNewSession: !session
       });
 
-      return responseData?.allowed || false;
+      return !trialExpired;
     } catch (error) {
       console.error('Error in checkTrialAccess:', error);
       return false;
@@ -77,26 +91,37 @@ export const useAnonymousSession = (): UseAnonymousSessionReturn => {
     try {
       const sessionToken = getSessionToken();
       
-      const { data, error } = await supabase.rpc('transfer_anonymous_session_to_user', {
-        p_session_token: sessionToken,
-        p_user_id: userId
-      });
+      // Update trial sessions to link to user
+      const { error: updateError } = await supabase
+        .from('ai_trial_sessions')
+        .update({ user_id: userId })
+        .eq('session_id', sessionToken);
 
-      if (error) {
-        console.error('Error transferring session:', error);
+      if (updateError) {
+        console.error('Error transferring session:', updateError);
         return { success: false };
       }
 
-      // Type assertion for the response data
-      const responseData = data as any;
+      // Get chat history for this session
+      const { data: chatHistory } = await supabase
+        .from('chat_history')
+        .select('*')
+        .eq('session_id', sessionToken)
+        .order('created_at', { ascending: true });
+
+      // Update chat history to link to user
+      await supabase
+        .from('chat_history')
+        .update({ user_id: userId })
+        .eq('session_id', sessionToken);
 
       // Clear local session after successful transfer
       localStorage.removeItem('anonymous_session_token');
       setSessionState(null);
 
       return {
-        success: responseData?.success || false,
-        conversationHistory: responseData?.conversation_history
+        success: true,
+        conversationHistory: chatHistory
       };
     } catch (error) {
       console.error('Error in transferToUser:', error);

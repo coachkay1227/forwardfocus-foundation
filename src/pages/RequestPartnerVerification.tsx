@@ -87,8 +87,9 @@ const RequestPartnerVerification = () => {
       // Sanitize inputs
       const sanitizedData = {
         user_id: user.id,
-        verification_type: formData.verificationType,
-        notes: sanitizeInput(`Organization: ${formData.organizationName}\n\nJustification: ${formData.justification}`),
+        organization_name: formData.organizationName,
+        organization_type: formData.verificationType,
+        notes: sanitizeInput(formData.justification),
         status: 'pending'
       };
 

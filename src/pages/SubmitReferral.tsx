@@ -84,11 +84,40 @@ const SubmitReferral = () => {
     }
     setLoading(true);
     try {
-      const { data, error } = await supabase.from('partner_referrals').insert({
+      // Get current user's partner ID
+      const { data: { user } } = await supabase.auth.getUser();
+      
+      if (!user) {
+        toast({
+          title: "Error",
+          description: "You must be logged in to submit referrals",
+          variant: "destructive"
+        });
+        return;
+      }
+
+      // Get partner profile
+      const { data: partner } = await supabase
+        .from('partners')
+        .select('id')
+        .eq('user_id', user.id)
+        .single();
+
+      if (!partner) {
+        toast({
+          title: "Error",
+          description: "Partner profile not found. Please complete partner registration first.",
+          variant: "destructive"
+        });
+        return;
+      }
+
+      const { error } = await supabase.from('partner_referrals').insert({
+        partner_id: partner.id,
         name: sanitizedName,
         contact_info: sanitizedContactInfo,
         notes: sanitizedNotes
-      }).select().single();
+      });
 
       if (error) {
         console.error('Error submitting referral:', error);
@@ -104,11 +133,10 @@ const SubmitReferral = () => {
       try {
         await supabase.functions.invoke('send-referral-notification', {
           body: {
-            referralId: data.id,
             name: sanitizedName,
             contactInfo: sanitizedContactInfo,
             notes: sanitizedNotes,
-            partnerEmail: 'partner@example.com' // TODO: Get actual partner email from auth
+            partnerEmail: user.email || 'partner@example.com'
           }
         });
       } catch (emailError) {

@@ -30,14 +30,14 @@ import partnerOrgsHero from "@/assets/partner-organizations-hero.jpg";
 interface Organization {
   id: string;
   name: string;
-  description: string;
-  address?: string;
-  city: string;
-  state_code: string;
-  phone?: string;
   email?: string;
-  website: string;
+  phone?: string;
+  website?: string;
+  address?: string;
+  city?: string;
+  state?: string;
   verified: boolean;
+  organization_type?: string;
   created_at: string;
   updated_at: string;
 }
@@ -124,30 +124,18 @@ const Organizations = () => {
 
   const fetchOrganizations = async () => {
     try {
-      let data, error;
-      
-      if (user) {
-        // All authenticated users use the new secure function with field-level access control
-        ({ data, error } = await supabase.rpc('get_organizations_secure'));
-      } else {
-        // Anonymous users get only public data (no contact info)
-        ({ data, error } = await supabase.rpc('get_safe_organizations_public'));
-      }
+      // Direct query to organizations table
+      const { data, error } = await supabase
+        .from('organizations')
+        .select('*')
+        .eq('verified', true)
+        .order('name', { ascending: true });
 
       if (error) {
-        // Handle rate limit errors gracefully
-        if (error.message.includes('rate limit')) {
-          toast({
-            title: "Rate Limit",
-            description: "Too many requests. Please wait a moment before trying again.",
-            variant: "destructive",
-          });
-        } else {
-          throw error;
-        }
-      } else {
-        setOrganizations(data || []);
+        throw error;
       }
+
+      setOrganizations(data || []);
     } catch (error) {
       console.error("Error fetching organizations:", error);
       toast({
@@ -167,8 +155,7 @@ const Organizations = () => {
     if (searchTerm.trim()) {
       filtered = filtered.filter(org =>
         org.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        org.description?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        org.city.toLowerCase().includes(searchTerm.toLowerCase())
+        org.city?.toLowerCase().includes(searchTerm.toLowerCase())
       );
     }
 
@@ -394,14 +381,14 @@ const Organizations = () => {
                     </div>
                   </div>
                   <CardDescription className="line-clamp-3 text-base leading-relaxed">
-                    {org.description || "Supporting the community with various services and programs."}
+                    {org.organization_type || "Supporting the community with various services and programs."}
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-3">
                   {/* Location */}
                   <div className="flex items-center gap-2 text-sm text-muted-foreground">
                     <MapPin className="h-4 w-4" />
-                    <span>{org.city}, {org.state_code}</span>
+                    <span>{org.city || 'N/A'}, {org.state || 'N/A'}</span>
                     {org.address && isAdmin && (
                       <span>• {org.address}</span>
                     )}

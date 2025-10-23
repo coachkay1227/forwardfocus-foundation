@@ -23,13 +23,15 @@ interface Resource {
   type: string;
   county: string;
   city: string;
-  state_code: string;
+  state: string;
+  state_code?: string;
   phone: string;
-  website: string;
+  website?: string;
+  website_url?: string;
   address: string;
   justice_friendly: boolean;
-  verified: string;
-  rating: number;
+  verified: boolean;
+  rating?: number;
   created_at: string;
   updated_at: string;
 }
@@ -89,7 +91,7 @@ const Search = () => {
           query = query.gte("created_at", new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString());
           break;
         case "partner":
-          query = query.eq("verified", "partner");
+          query = query.eq("verified", true);
           break;
       }
 
