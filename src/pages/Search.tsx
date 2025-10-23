@@ -18,22 +18,26 @@ type QuickFilter = "all" | "emergency" | "ongoing" | "new" | "partner";
 interface Resource {
   id: string;
   name: string;
+  title?: string;
   organization: string;
   description: string;
+  category: string;
   type: string;
   county: string;
   city: string;
   state: string;
-  state_code?: string;
+  state_code: string;
   phone: string;
-  website?: string;
-  website_url?: string;
+  email?: string;
+  website_url: string;
   address: string;
+  tags?: string[];
   justice_friendly: boolean;
   verified: boolean;
-  rating?: number;
+  rating: number;
   created_at: string;
   updated_at: string;
+  created_by?: string;
 }
 
 const Search = () => {

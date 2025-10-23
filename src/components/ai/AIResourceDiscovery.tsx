@@ -22,17 +22,21 @@ interface Message {
 interface Resource {
   id: string;
   name: string;
+  title?: string;
   organization: string;
+  category: string;
   type: string;
   city: string;
   county: string;
+  state?: string;
   description?: string;
   phone?: string;
-  website?: string;
+  website_url?: string;
   email?: string;
+  address?: string;
   verified: boolean;
   justice_friendly: boolean;
-  rating?: number;
+  rating: number;
 }
 
 interface AIResourceDiscoveryProps {
@@ -250,9 +254,9 @@ const AIResourceDiscovery: React.FC<AIResourceDiscoveryProps> = ({
                 </a>
               </Button>
             )}
-            {resource.website && (
+            {resource.website_url && (
               <Button size="sm" variant="outline" className="h-8 px-3 text-sm" asChild>
-                <a href={resource.website.startsWith('http') ? resource.website : `https://${resource.website}`} target="_blank" rel="noopener noreferrer">
+                <a href={resource.website_url.startsWith('http') ? resource.website_url : `https://${resource.website_url}`} target="_blank" rel="noopener noreferrer">
                   <Globe className="h-3 w-3 mr-2" />
                   Website
                 </a>

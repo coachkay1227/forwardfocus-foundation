@@ -6,20 +6,25 @@ import { toast } from "@/hooks/use-toast";
 type Resource = {
   id: string;
   name: string;
+  title?: string;
   organization: string;
+  category: string;
+  type: string;
+  description: string;
   phone?: string;
-  website?: string;
+  email?: string;
   website_url?: string;
   address?: string;
   city: string;
   state?: string;
+  state_code?: string;
   county?: string;
-  type: string;
+  tags?: string[];
   verified: boolean;
   justice_friendly: boolean;
-  rating?: number;
+  rating: number;
+  created_at: string;
   updated_at: string;
-  description: string;
 };
 
 const ResourceCard = ({ resource }: { resource: Resource }) => {
@@ -46,7 +51,7 @@ const ResourceCard = ({ resource }: { resource: Resource }) => {
               </Badge>
             )}
             <Badge variant="outline" className="inline-flex items-center gap-1 font-medium border-primary/20">
-              <Star className="size-3" /> {resource.rating?.toFixed(1) || 'N/A'}
+              <Star className="size-3" /> {resource.rating ? resource.rating.toFixed(1) : 'N/A'}
             </Badge>
             <span className="text-sm text-foreground/60">Updated {new Date(resource.updated_at).toLocaleDateString()}</span>
           </div>
@@ -54,12 +59,17 @@ const ResourceCard = ({ resource }: { resource: Resource }) => {
         <div className="flex flex-wrap gap-2">
           {resource.phone && (
             <Button asChild variant="secondary" className="shadow-sm">
-              <a href={resource.phone}><Phone className="h-4 w-4" /> Call</a>
+              <a href={`tel:${resource.phone}`}><Phone className="h-4 w-4" /> Call</a>
+            </Button>
+          )}
+          {resource.website_url && (
+            <Button asChild variant="secondary" className="shadow-sm">
+              <a href={resource.website_url} target="_blank" rel="noopener noreferrer">Visit Website</a>
             </Button>
           )}
           {resource.address && (
             <Button asChild variant="outline" className="shadow-sm">
-              <a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(resource.address)}`} target="_blank" rel="noopener">
+              <a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(resource.address)}`} target="_blank" rel="noopener noreferrer">
                 <MapPin className="h-4 w-4" /> Directions
               </a>
             </Button>

@@ -915,7 +915,9 @@ export type Database = {
           name: string
           organization: string | null
           phone: string | null
+          rating: number | null
           state: string | null
+          state_code: string | null
           tags: string[] | null
           title: string
           type: string | null
@@ -937,7 +939,9 @@ export type Database = {
           name: string
           organization?: string | null
           phone?: string | null
+          rating?: number | null
           state?: string | null
+          state_code?: string | null
           tags?: string[] | null
           title: string
           type?: string | null
@@ -959,7 +963,9 @@ export type Database = {
           name?: string
           organization?: string | null
           phone?: string | null
+          rating?: number | null
           state?: string | null
+          state_code?: string | null
           tags?: string[] | null
           title?: string
           type?: string | null

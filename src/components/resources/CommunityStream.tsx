@@ -1,15 +1,16 @@
 type Resource = {
   id: string;
   name: string;
+  title?: string;
   organization: string;
   city: string;
-  verified: string;
+  verified: boolean;
   updated_at: string;
 };
 
 const CommunityStream = ({ resources }: { resources: Resource[] }) => {
   const recent = [...resources].sort((a,b)=> new Date(b.updated_at).getTime()-new Date(a.updated_at).getTime()).slice(0,5);
-  const partnerAdds = resources.filter(r=>r.verified==='partner').slice(0,5);
+  const partnerAdds = resources.filter(r=>r.verified === true).slice(0,5);
 
   return (
     <section className="grid gap-4 md:grid-cols-3">
