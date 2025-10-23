@@ -42,9 +42,14 @@ export const useCalendlyPopup = () => {
     console.log('calendlyReady:', calendlyReady);
     console.log('window.Calendly:', window.Calendly);
     
-    if (!window.Calendly) {
-      console.error('Calendly not loaded');
+    if (!calendlyReady || !window.Calendly) {
+      console.error('Calendly not ready or not loaded');
       alert('Calendly is still loading. Please wait a moment and try again.');
+      return;
+    }
+    
+    if (!url || typeof url !== 'string') {
+      console.error('Invalid Calendly URL provided');
       return;
     }
     

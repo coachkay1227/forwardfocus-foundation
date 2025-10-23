@@ -4,7 +4,7 @@ import AskCoachKay from "@/components/ui/AskCoachKay";
 import { useCalendlyPopup } from "@/hooks/useCalendlyPopup";
 
 export const CoachKaySection = () => {
-  const { openCalendly } = useCalendlyPopup();
+  const { openCalendly, calendlyReady } = useCalendlyPopup();
   
   return (
     <section className="py-24 bg-gradient-to-br from-secondary/10 to-accent/10">
@@ -30,15 +30,18 @@ export const CoachKaySection = () => {
                   type="button"
                   size="lg" 
                   variant="outline" 
+                  disabled={!calendlyReady}
                   onClick={(e) => {
                     e.preventDefault();
                     e.stopPropagation();
-                    openCalendly('https://calendly.com/ffe_coach_kay');
+                    if (calendlyReady) {
+                      openCalendly('https://calendly.com/ffe_coach_kay');
+                    }
                   }}
                   className="w-full"
                 >
                   <Calendar className="h-5 w-5 mr-2" />
-                  Book Consultation
+                  {calendlyReady ? 'Book Consultation' : 'Loading...'}
                 </Button>
               </div>
             </div>

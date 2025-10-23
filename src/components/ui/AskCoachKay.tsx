@@ -31,7 +31,7 @@ const AskCoachKay = () => {
   const [showEmailModal, setShowEmailModal] = useState(false);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
-  const { openCalendly } = useCalendlyPopup();
+  const { openCalendly, calendlyReady } = useCalendlyPopup();
 
   return (
     <AIWithTrial aiEndpoint="coach-k">
@@ -69,7 +69,9 @@ const AskCoachKay = () => {
   };
 
   const handleOpenCalendly = () => {
-    openCalendly('https://calendly.com/ffe_coach_kay/free-call');
+    if (calendlyReady) {
+      openCalendly('https://calendly.com/ffe_coach_kay/free-call');
+    }
   };
 
   const sendMessage = async (messages: {role: string, content: string}[]) => {
@@ -207,11 +209,12 @@ const AskCoachKay = () => {
                         type="button"
                         variant="ghost"
                         size="sm"
+                        disabled={!calendlyReady}
                         onClick={handleOpenCalendly}
                         className="text-xs"
                       >
                         <Calendar className="h-4 w-4 mr-1" />
-                        Book Free Call
+                        {calendlyReady ? 'Book Free Call' : 'Loading...'}
                         <ExternalLink className="h-3 w-3 ml-1" />
                       </Button>
                       <Button

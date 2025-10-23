@@ -34,9 +34,10 @@ export default function CalendlyButton() {
     <button
       type="button"
       onClick={openCalendly}
-      className="bg-primary text-primary-foreground px-6 py-3 rounded-xl font-semibold shadow-md hover:bg-primary/90 transition-all duration-300"
+      disabled={!calendlyReady}
+      className="bg-primary text-primary-foreground px-6 py-3 rounded-xl font-semibold shadow-md hover:bg-primary/90 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
     >
-      Book a Session
+      {calendlyReady ? 'Book a Session' : 'Loading...'}
     </button>
   );
 }
