@@ -37,6 +37,7 @@ import Organizations from "./pages/Organizations";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsOfService from "./pages/TermsOfService";
 import DonationSuccess from "./pages/DonationSuccess";
+import SetupAdmin from "./pages/SetupAdmin";
 
 import { StateProvider } from "./contexts/StateContext";
 import { AnalyticsProvider } from "./components/layout/AnalyticsProvider";
@@ -77,6 +78,7 @@ const App = () => {
                   <Route path="/partner-signin" element={<PartnerSignIn />} />
                   <Route path="/partner-signup" element={<PartnerSignUp />} />
                   <Route path="/login" element={<Navigate to="/auth" replace />} />
+                  <Route path="/setup-admin" element={<SetupAdmin />} />
                   <Route path="/admin" element={<Admin />} />
           <Route path="/search" element={<Search />} />
           <Route path="/discover" element={<Discover />} />
