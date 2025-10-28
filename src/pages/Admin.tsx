@@ -9,6 +9,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
 import { maskContactInfo } from "@/lib/security";
 import { Eye, EyeOff, Shield } from "lucide-react";
+import { useAdminCheck } from "@/hooks/useAdminCheck";
 import { AdminSetupBanner } from "@/components/admin/AdminSetupBanner";
 import { RealtimeNotifications } from "@/components/admin/RealtimeNotifications";
 import { usePagination } from "@/hooks/usePagination";
@@ -104,75 +105,8 @@ interface BookingRequest {
 
 const Admin = () => {
   const { user, loading } = useAuth();
-  const [isAdmin, setIsAdmin] = useState(false);
-  const [checkingAdmin, setCheckingAdmin] = useState(true);
-  const [adminExists, setAdminExists] = useState<boolean | null>(null);
-  const [referrals, setReferrals] = useState<PartnerReferral[]>([]);
-  const [partnershipRequests, setPartnershipRequests] = useState<PartnershipRequest[]>([]);
-  const [contactSubmissions, setContactSubmissions] = useState<ContactSubmission[]>([]);
-  const [supportRequests, setSupportRequests] = useState<SupportRequest[]>([]);
-  const [bookingRequests, setBookingRequests] = useState<BookingRequest[]>([]);
-  const [loadingData, setLoadingData] = useState(true);
-  const [revealedContacts, setRevealedContacts] = useState<Set<string>>(new Set());
-
-  // Pagination hooks for each list
-  const referralsPagination = usePagination({ items: referrals, itemsPerPage: 10 });
-  const partnershipsPagination = usePagination({ items: partnershipRequests, itemsPerPage: 10 });
-  const contactsPagination = usePagination({ items: contactSubmissions, itemsPerPage: 10 });
-  const supportPagination = usePagination({ items: supportRequests, itemsPerPage: 10 });
-  const bookingsPagination = usePagination({ items: bookingRequests, itemsPerPage: 10 });
-
-  useEffect(() => {
-    document.title = "Admin Dashboard | Forward Focus Elevation";
-  }, []);
-
-  // Check if any admin exists in the system
-  useEffect(() => {
-    const checkIfAdminExists = async () => {
-      try {
-        const { data, error } = await supabase.rpc('check_admin_exists');
-        if (error) {
-          console.error('Error checking if admin exists:', error);
-          setAdminExists(false);
-        } else {
-          setAdminExists(data || false);
-        }
-      } catch (error) {
-        console.error('Error checking if admin exists:', error);
-        setAdminExists(false);
-      }
-    };
-
-    checkIfAdminExists();
-  }, []);
-
-  useEffect(() => {
-    const checkAdminStatus = async () => {
-      if (!user) {
-        setCheckingAdmin(false);
-        return;
-      }
-
-      try {
-        const { data, error } = await supabase.rpc('is_user_admin');
-        
-        if (error) {
-          console.error('Error checking admin status:', error);
-          setIsAdmin(false);
-        } else {
-          setIsAdmin(data || false);
-        }
-      } catch (error) {
-        console.error('Error checking admin status:', error);
-        setIsAdmin(false);
-      } finally {
-        setCheckingAdmin(false);
-      }
-    };
-
-    checkAdminStatus();
-  }, [user]);
-
+  const { isAdmin, isChecking: checkingAdmin } = useAdminCheck(user);
+  
   useEffect(() => {
     const fetchData = async () => {
       if (!isAdmin) return;

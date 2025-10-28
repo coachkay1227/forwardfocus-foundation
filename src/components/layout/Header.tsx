@@ -8,7 +8,7 @@ import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/s
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, NavigationMenuTrigger } from "@/components/ui/navigation-menu";
 import { useAuth } from "@/contexts/AuthContext";
-import { supabase } from "@/integrations/supabase/client";
+import { useAdminCheck } from "@/hooks/useAdminCheck";
 import { CrisisEmergencyBot } from "@/components/ai/CrisisEmergencyBot";
 
 const linkCls = ({
@@ -32,37 +32,20 @@ const Header = ({
   } = useAuth();
   const location = useLocation();
   const [open, setOpen] = useState(false);
-  const [isAdmin, setIsAdmin] = useState(false);
   const [hasScrolled, setHasScrolled] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("");
+  const { isAdmin } = useAdminCheck(user);
 
   useEffect(() => {
-    const checkAdminStatus = async () => {
-      if (!user) return setIsAdmin(false);
-      try {
-        const {
-          data
-        } = await supabase.rpc("is_user_admin");
-        setIsAdmin(Boolean(data));
-      } catch (e) {
-        console.error("Error checking admin status:", e);
-        setIsAdmin(false);
-      }
-    };
-    checkAdminStatus();
     const handleScroll = () => {
       setHasScrolled(window.scrollY > 0);
     };
     
-    
     window.addEventListener('scroll', handleScroll);
-    
     
     return () => {
       window.removeEventListener('scroll', handleScroll);
-      
     };
-  }, [user]);
+  }, []);
 
   // Hide header on auth pages
   if (location.pathname === '/auth' || location.pathname === '/register') {

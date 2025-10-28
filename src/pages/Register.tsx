@@ -161,6 +161,7 @@ const Register = () => {
           <img 
             src={learningCommunityImage} 
             alt="Diverse families learning together in a supportive community environment"
+            loading="lazy"
             className="w-full h-64 md:h-80 object-cover"
           />
         </div>

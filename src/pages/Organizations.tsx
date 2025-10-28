@@ -20,9 +20,9 @@ import {
   Calendar,
   ExternalLink
 } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
-import { useAuth } from "@/contexts/AuthContext";
-import { ContactAccessRequest } from "@/components/security/ContactAccessRequest";
+import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
+import { useAdminCheck } from "@/hooks/useAdminCheck";
 
 // Import hero image
 import partnerOrgsHero from "@/assets/partner-organizations-hero.jpg";

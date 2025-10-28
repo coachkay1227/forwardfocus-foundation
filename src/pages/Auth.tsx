@@ -155,6 +155,7 @@ const Auth = () => {
           <img 
             src={communityImage} 
             alt="Diverse families in a supportive community healing together"
+            loading="lazy"
             className="w-full h-64 md:h-80 object-cover"
           />
         </div>

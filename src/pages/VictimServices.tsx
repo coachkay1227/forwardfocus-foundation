@@ -254,6 +254,7 @@ export default function VictimServices() {
                 <img
                   src={healingCommunityImage}
                   alt="Diverse healing community supporting each other through trauma recovery"
+                  loading="lazy"
                   className="w-full h-80 object-cover"
                 />
                 <div className="absolute inset-0 bg-gradient-to-r from-osu-gray/90 to-osu-gray-dark/70 flex items-center">
