@@ -40,10 +40,6 @@ const Auth = () => {
     }
   }, [user, loading, transferToUser]);
 
-  useEffect(() => {
-    document.title = isLogin ? "Sign In | Forward Focus Elevation" : "Sign Up | Forward Focus Elevation";
-  }, [isLogin]);
-
   // Redirect if already authenticated
   if (user && !loading) {
     return <Navigate to="/" replace />;

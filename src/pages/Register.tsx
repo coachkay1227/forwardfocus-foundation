@@ -100,12 +100,12 @@ const Register = () => {
         // Send welcome email
         try {
           const welcomeResponse = await fetch(
-            'https://gzukhsqgkwljfvwkfuno.supabase.co/functions/v1/send-auth-email',
+            `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/send-auth-email`,
             {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd6dWtoc3Fna3dsamZ2d2tmdW5vIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU3MjQyOTMsImV4cCI6MjA3MTMwMDI5M30.Skon84aKH5K5TjW9pVnCI2A-6Z-9KrTYiNknpiqeCpk`,
+                'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
               },
               body: JSON.stringify({
                 email: email.trim().toLowerCase(),
@@ -118,9 +118,13 @@ const Register = () => {
           );
 
           const welcomeResult = await welcomeResponse.json();
-          console.log('Welcome email result:', welcomeResult);
+          if (import.meta.env.DEV) {
+            console.log('Welcome email result:', welcomeResult);
+          }
         } catch (error) {
-          console.error('Error sending welcome email:', error);
+          if (import.meta.env.DEV) {
+            console.error('Error sending welcome email:', error);
+          }
           // Don't fail registration if welcome email fails
         }
 
@@ -136,7 +140,9 @@ const Register = () => {
         navigate("/auth");
       }
     } catch (error: any) {
-      console.error("Registration error:", error);
+      if (import.meta.env.DEV) {
+        console.error("Registration error:", error);
+      }
       toast({
         title: "Registration Error",
         description: "An unexpected error occurred. Please try again.",
