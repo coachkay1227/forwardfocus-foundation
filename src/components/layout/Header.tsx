@@ -32,6 +32,7 @@ const Header = ({
   } = useAuth();
   const location = useLocation();
   const [open, setOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
   const [hasScrolled, setHasScrolled] = useState(false);
   const { isAdmin } = useAdminCheck(user);
 

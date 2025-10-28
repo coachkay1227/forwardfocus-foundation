@@ -21,8 +21,10 @@ import {
   ExternalLink
 } from "lucide-react";
 import { toast } from "sonner";
-import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/contexts/AuthContext";
+import { useToast } from "@/hooks/use-toast";
 import { useAdminCheck } from "@/hooks/useAdminCheck";
+import { ContactAccessRequest } from "@/components/security/ContactAccessRequest";
 
 // Import hero image
 import partnerOrgsHero from "@/assets/partner-organizations-hero.jpg";
@@ -49,8 +51,8 @@ const Organizations = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [cityFilter, setCityFilter] = useState("");
   const [verifiedFilter, setVerifiedFilter] = useState("");
-  const [isAdmin, setIsAdmin] = useState(false);
   const { user } = useAuth();
+  const { isAdmin } = useAdminCheck(user);
   const { toast } = useToast();
 
   // Redirect non-authenticated users or non-admins
@@ -95,28 +97,13 @@ const Organizations = () => {
 
   useEffect(() => {
     document.title = "Partner Organizations | Forward Focus Elevation";
-    checkAdminStatus();
-  }, [user]); // Re-fetch when user authentication status changes
+  }, []);
 
   useEffect(() => {
-    fetchOrganizations();
-  }, [user, isAdmin]); // Re-fetch when admin status changes
-
-  const checkAdminStatus = async () => {
-    if (user) {
-      try {
-        const { data, error } = await supabase.rpc('is_user_admin');
-        if (!error) {
-          setIsAdmin(data || false);
-        }
-      } catch (error) {
-        console.error('Error checking admin status:', error);
-        setIsAdmin(false);
-      }
-    } else {
-      setIsAdmin(false);
+    if (isAdmin) {
+      fetchOrganizations();
     }
-  };
+  }, [isAdmin]);
 
   useEffect(() => {
     filterOrganizations();

@@ -106,6 +106,20 @@ interface BookingRequest {
 const Admin = () => {
   const { user, loading } = useAuth();
   const { isAdmin, isChecking: checkingAdmin } = useAdminCheck(user);
+  const [referrals, setReferrals] = useState<PartnerReferral[]>([]);
+  const [partnershipRequests, setPartnershipRequests] = useState<PartnershipRequest[]>([]);
+  const [contactSubmissions, setContactSubmissions] = useState<ContactSubmission[]>([]);
+  const [supportRequests, setSupportRequests] = useState<SupportRequest[]>([]);
+  const [bookingRequests, setBookingRequests] = useState<BookingRequest[]>([]);
+  const [loadingData, setLoadingData] = useState(true);
+  const [revealedContacts, setRevealedContacts] = useState<Set<string>>(new Set());
+  const [adminExists, setAdminExists] = useState(false);
+  
+  const referralsPagination = usePagination({ items: referrals });
+  const partnershipsPagination = usePagination({ items: partnershipRequests });
+  const contactsPagination = usePagination({ items: contactSubmissions });
+  const supportPagination = usePagination({ items: supportRequests });
+  const bookingsPagination = usePagination({ items: bookingRequests });
   
   useEffect(() => {
     const fetchData = async () => {
