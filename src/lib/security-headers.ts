@@ -16,7 +16,7 @@ export const setupSecurityHeaders = () => {
     "upgrade-insecure-requests"
   ].join('; ');
 
-  // Enhanced security headers
+  // Enhanced security headers (relaxed CORS for Supabase connectivity)
   const securityHeaders = [
     { name: 'Content-Security-Policy', content: csp },
     { name: 'X-Content-Type-Options', content: 'nosniff' },
@@ -26,9 +26,8 @@ export const setupSecurityHeaders = () => {
     { name: 'Permissions-Policy', content: 'camera=(), microphone=(), location=(), payment=(), geolocation=()' },
     { name: 'Strict-Transport-Security', content: 'max-age=31536000; includeSubDomains; preload' },
     { name: 'X-Permitted-Cross-Domain-Policies', content: 'none' },
-    { name: 'Cross-Origin-Embedder-Policy', content: 'require-corp' },
-    { name: 'Cross-Origin-Opener-Policy', content: 'same-origin' },
-    { name: 'Cross-Origin-Resource-Policy', content: 'same-site' }
+    { name: 'Cross-Origin-Opener-Policy', content: 'same-origin' }
+    // Removed Cross-Origin-Embedder-Policy and Cross-Origin-Resource-Policy to allow Supabase connections
   ];
 
   // Add security-related meta tags if they don't exist

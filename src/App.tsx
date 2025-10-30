@@ -6,7 +6,6 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { SecurityProvider } from "@/components/security/SecurityProvider";
-import { SecurityHeaders } from "@/components/security/SecurityHeaders";
 import { SessionSecurityProvider } from "@/components/security/SessionSecurityProvider";
 import { EnhancedErrorBoundary } from "@/components/ui/enhanced-error-boundary";
 import { PageLoadingSkeleton } from "@/components/ui/loading-states";
@@ -62,7 +61,6 @@ const App = () => {
           <SessionSecurityProvider>
             <AuthProvider>
               {/* <AntiWhiteLabelProtection /> */}
-              <SecurityHeaders />
               <Toaster />
               <Sonner />
               <BrowserRouter>
