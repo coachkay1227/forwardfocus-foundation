@@ -105,9 +105,19 @@ const Auth = () => {
             variant: "destructive",
           });
         } else {
+          // Auto-subscribe to newsletter on successful signup
+          try {
+            const { supabase } = await import("@/integrations/supabase/client");
+            await supabase.functions.invoke('newsletter-signup', {
+              body: { email, source: 'signup_auto_capture' }
+            });
+          } catch (err) {
+            console.log('Newsletter signup failed:', err);
+          }
+          
           toast({
-            title: "Account Created",
-            description: "Please check your email to verify your account.",
+            title: "Welcome to Forward Focus!",
+            description: "Your account has been created. You can now sign in.",
           });
         }
       }
