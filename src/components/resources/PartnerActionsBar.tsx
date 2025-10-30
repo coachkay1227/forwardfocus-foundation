@@ -11,7 +11,7 @@ const PartnerActionsBar = () => {
         <NavLink to="/partners/add-resource">Add a Resource</NavLink>
       </Button>
       <Button asChild size="lg" variant="ghost">
-        <NavLink to="/partners">Partner Login</NavLink>
+        <NavLink to="/partner-signin">Partner Login</NavLink>
       </Button>
       <Button asChild size="lg">
         <NavLink to="/partners/request">Request Partnership</NavLink>

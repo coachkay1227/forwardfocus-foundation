@@ -3,9 +3,11 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Badge } from "@/components/ui/badge";
 import { MessageCircle, Send, Loader2, Bot, User } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
+import { useAuth } from "@/contexts/AuthContext";
 
 interface Message {
   role: 'user' | 'assistant';
@@ -13,6 +15,7 @@ interface Message {
 }
 
 export const PartnerSupportChatbot = () => {
+  const { user } = useAuth();
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
@@ -121,6 +124,11 @@ export const PartnerSupportChatbot = () => {
         <CardTitle className="flex items-center gap-2">
           <MessageCircle className="w-5 h-5 text-primary" />
           Partner Support Assistant
+          {user && (
+            <Badge variant="secondary" className="text-xs">
+              Authenticated
+            </Badge>
+          )}
         </CardTitle>
         <CardDescription>
           Ask questions about referrals, verification, or partner features

@@ -19,7 +19,8 @@ import {
   Building2,
   Handshake,
   Target,
-  Award
+  Award,
+  Bot
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
@@ -339,6 +340,29 @@ const Partners = () => {
           {/* Partner Network Tab */}
           <TabsContent value="network" className="space-y-4">
             {/* AI Partner Support Chatbot */}
+            {!user && (
+              <Card className="border-osu-scarlet/20 bg-gradient-to-r from-osu-scarlet/5 to-osu-gray/5 shadow-lg">
+                <CardContent className="p-4 text-center">
+                  <div className="flex flex-col items-center gap-3">
+                    <Bot className="h-8 w-8 text-osu-scarlet" />
+                    <div>
+                      <h3 className="font-semibold text-osu-scarlet mb-1">Try Our AI Partner Assistant</h3>
+                      <p className="text-sm text-osu-gray mb-3">
+                        Get instant answers about partnerships, referrals, and verification - no account required!
+                      </p>
+                    </div>
+                    <div className="flex gap-2">
+                      <Button asChild size="sm" variant="outline">
+                        <NavLink to="/partner-signin">Sign In</NavLink>
+                      </Button>
+                      <Button asChild size="sm" className="bg-gradient-to-r from-osu-scarlet to-osu-gray text-white">
+                        <NavLink to="/partner-signup">Become a Partner</NavLink>
+                      </Button>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
             <PartnerSupportChatbot />
             
             <div className="max-w-4xl mx-auto">
