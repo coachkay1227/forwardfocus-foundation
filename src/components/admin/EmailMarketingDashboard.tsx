@@ -16,6 +16,7 @@ import {
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { EmailCampaignForm } from "./EmailCampaignForm";
+import { MonetizationEarnings } from "./MonetizationEarnings";
 
 interface NewsletterSubscription {
   id: string;
@@ -233,6 +234,7 @@ export const EmailMarketingDashboard = () => {
         <TabsList>
           <TabsTrigger value="subscribers">Subscribers</TabsTrigger>
           <TabsTrigger value="campaigns">Campaigns</TabsTrigger>
+          <TabsTrigger value="earnings">💰 Earnings</TabsTrigger>
         </TabsList>
 
         <TabsContent value="subscribers" className="space-y-4">
@@ -350,6 +352,10 @@ export const EmailMarketingDashboard = () => {
               )}
             </CardContent>
           </Card>
+        </TabsContent>
+
+        <TabsContent value="earnings" className="space-y-4">
+          <MonetizationEarnings />
         </TabsContent>
       </Tabs>
     </div>

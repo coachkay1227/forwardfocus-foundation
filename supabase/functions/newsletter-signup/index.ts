@@ -99,6 +99,87 @@ const handler = async (req: Request): Promise<Response> => {
       if (insertError) throw insertError;
     }
 
+    // Get the subscription ID for SparkLoop/Beehiiv sync
+    const { data: subscription } = await supabaseClient
+      .from("newsletter_subscriptions")
+      .select("id")
+      .eq("email", email)
+      .single();
+
+    // Sync to SparkLoop (optional, non-blocking)
+    if (Deno.env.get("SPARKLOOP_API_KEY") && subscription?.id) {
+      try {
+        console.log('Syncing subscriber to SparkLoop...');
+        const sparkloopResponse = await fetch('https://api.sparkloop.app/v1/subscribers', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${Deno.env.get("SPARKLOOP_API_KEY")}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            email: email,
+            team_id: Deno.env.get("SPARKLOOP_TEAM_ID"),
+            custom_fields: {
+              name: name || '',
+              source: source || 'website'
+            }
+          })
+        });
+
+        if (sparkloopResponse.ok) {
+          const sparkloopData = await sparkloopResponse.json();
+          console.log('SparkLoop sync successful:', sparkloopData);
+          
+          await supabaseClient
+            .from('newsletter_subscriptions')
+            .update({ 
+              sparkloop_subscriber_id: sparkloopData.id,
+              sparkloop_referral_code: sparkloopData.referral_code 
+            })
+            .eq('id', subscription.id);
+        } else {
+          console.error('SparkLoop sync failed (non-critical):', await sparkloopResponse.text());
+        }
+      } catch (sparkloopError) {
+        console.error('SparkLoop sync error (non-critical):', sparkloopError);
+      }
+    }
+
+    // Sync to Beehiiv (optional, non-blocking)
+    if (Deno.env.get("BEEHIVE_API_KEY") && subscription?.id) {
+      try {
+        console.log('Syncing subscriber to Beehiiv...');
+        const beehiivResponse = await fetch('https://api.beehiiv.com/v2/publications/subscribers', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${Deno.env.get("BEEHIVE_API_KEY")}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            email: email,
+            custom_fields: {
+              name: name || '',
+              source: source || 'website'
+            }
+          })
+        });
+
+        if (beehiivResponse.ok) {
+          const beehiivData = await beehiivResponse.json();
+          console.log('Beehiiv sync successful:', beehiivData);
+          
+          await supabaseClient
+            .from('newsletter_subscriptions')
+            .update({ beehiiv_subscriber_id: beehiivData.id })
+            .eq('id', subscription.id);
+        } else {
+          console.error('Beehiiv sync failed (non-critical):', await beehiivResponse.text());
+        }
+      } catch (beehiivError) {
+        console.error('Beehiiv sync error (non-critical):', beehiivError);
+      }
+    }
+
     // Send welcome email
     try {
       await resend.emails.send({
