@@ -1,5 +1,8 @@
 project_id = "gzukhsqgkwljfvwkfuno"
 
+[functions.send-verification-email]
+verify_jwt = false
+
 [functions.ai-resource-discovery]
 verify_jwt = false
 

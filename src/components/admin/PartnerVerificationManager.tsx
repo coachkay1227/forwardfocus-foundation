@@ -72,12 +72,45 @@ export const PartnerVerificationManager: React.FC = () => {
         updateData.verified_by = (await supabase.auth.getUser()).data.user?.id;
       }
 
+      // Get the verification record with user email
+      const { data: verificationData, error: fetchError } = await supabase
+        .from('partner_verifications')
+        .select(`
+          *,
+          profiles(email, display_name)
+        `)
+        .eq('id', id)
+        .single();
+
+      if (fetchError) throw fetchError;
+
+      // Update verification status
       const { error } = await supabase
         .from('partner_verifications')
         .update(updateData)
         .eq('id', id);
 
       if (error) throw error;
+
+      // Send email notification
+      try {
+        const userEmail = (verificationData as any).profiles?.email;
+        if (userEmail) {
+          await supabase.functions.invoke('send-verification-email', {
+            body: {
+              userEmail,
+              organizationName: verificationData.organization_name,
+              status: newStatus,
+              adminNotes: notes,
+              verifiedAt: updateData.verified_at,
+            },
+          });
+          console.log(`Verification email sent to ${userEmail}`);
+        }
+      } catch (emailError) {
+        console.error('Failed to send verification email:', emailError);
+        // Don't fail the whole operation if email fails
+      }
 
       toast({
         title: "Success",
