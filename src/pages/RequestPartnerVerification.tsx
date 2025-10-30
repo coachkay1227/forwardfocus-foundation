@@ -228,25 +228,25 @@ const RequestPartnerVerification = () => {
       
       <div className="container py-12">
         <div className="max-w-2xl mx-auto">
-          {/* Verification Benefits */}
+          {/* Partnership Collaboration */}
           <Card className="mb-8 border-osu-gray/20 shadow-lg">
             <CardHeader className="bg-gradient-to-r from-osu-scarlet/5 to-osu-gray/5">
               <CardTitle className="flex items-center gap-2 text-osu-scarlet">
                 <CheckCircle className="h-5 w-5" />
-                Verified Partner Benefits
+                Partnership Collaboration
               </CardTitle>
               <CardDescription className="text-osu-gray">
-                What you'll gain as a verified partner
+                How we'll work together to create lasting impact
               </CardDescription>
             </CardHeader>
             <CardContent className="pt-4">
               <ul className="space-y-2 text-sm text-osu-gray">
-                <li>• Priority access to referrals and community connections</li>
-                <li>• Advanced analytics and impact tracking dashboard</li>
-                <li>• Direct messaging with other verified partners</li>
-                <li>• Featured listing in our partner directory</li>
-                <li>• Exclusive partner events and training opportunities</li>
-                <li>• Ability to submit and manage multiple resources</li>
+                <li>• <strong>Connect:</strong> Build relationships with families and other community partners</li>
+                <li>• <strong>Share:</strong> Contribute resources and expertise to strengthen our network</li>
+                <li>• <strong>Grow:</strong> Access training, tools, and support to amplify your mission</li>
+                <li>• <strong>Celebrate:</strong> Showcase success stories and community impact together</li>
+                <li>• <strong>Innovate:</strong> Join exclusive partner events to co-create solutions</li>
+                <li>• <strong>Lead:</strong> Get featured as a trusted voice in our partner directory</li>
               </ul>
             </CardContent>
           </Card>
