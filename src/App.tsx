@@ -21,6 +21,7 @@ import Auth from "./pages/Auth";
 import AuthDebug from "./pages/AuthDebug";
 
 // Lazy load secondary pages for better performance
+const Welcome = lazy(() => import("./pages/Welcome"));
 const VictimServices = lazy(() => import("./pages/VictimServices"));
 const LearnGrow = lazy(() => import("./pages/LearnGrow"));
 const AboutUs = lazy(() => import("./pages/AboutUs"));
@@ -71,6 +72,8 @@ const App = () => {
                       <Suspense fallback={<PageLoadingSkeleton />}>
                         <Routes>
                           <Route path="/" element={<Index />} />
+                          <Route path="/welcome" element={<Welcome />} />
+                          <Route path="/start" element={<Welcome />} />
                           <Route path="/help" element={<GetHelpNow />} />
                           <Route path="/ohio-resources" element={<Navigate to="/help" replace />} />
                           <Route path="/victim-services" element={<VictimServices />} />
