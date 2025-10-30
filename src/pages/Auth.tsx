@@ -71,9 +71,16 @@ const Auth = () => {
       if (isLogin) {
         const { error } = await signIn(email, password);
         if (error) {
+          const errorMsg = error.message || "An unknown error occurred";
+          const isNetworkError = errorMsg.toLowerCase().includes('fetch') || 
+                                  errorMsg.toLowerCase().includes('network') ||
+                                  errorMsg.toLowerCase().includes('cors');
+          
           toast({
             title: "Sign In Failed",
-            description: error.message,
+            description: isNetworkError 
+              ? `${errorMsg}. Please check your internet connection or visit /auth-debug for diagnostics.`
+              : errorMsg,
             variant: "destructive",
           });
         } else {
@@ -85,9 +92,16 @@ const Auth = () => {
       } else {
         const { error } = await signUp(email, password);
         if (error) {
+          const errorMsg = error.message || "An unknown error occurred";
+          const isNetworkError = errorMsg.toLowerCase().includes('fetch') || 
+                                  errorMsg.toLowerCase().includes('network') ||
+                                  errorMsg.toLowerCase().includes('cors');
+          
           toast({
             title: "Sign Up Failed",
-            description: error.message,
+            description: isNetworkError 
+              ? `${errorMsg}. Please check your internet connection or visit /auth-debug for diagnostics.`
+              : errorMsg,
             variant: "destructive",
           });
         } else {
@@ -97,6 +111,12 @@ const Auth = () => {
           });
         }
       }
+    } catch (err: any) {
+      toast({
+        title: "Error",
+        description: `Unexpected error: ${err.message}. Visit /auth-debug for diagnostics.`,
+        variant: "destructive",
+      });
     } finally {
       setAuthLoading(false);
     }

@@ -19,6 +19,7 @@ import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import GetHelpNow from "./pages/GetHelpNow";
 import Auth from "./pages/Auth";
+import AuthDebug from "./pages/AuthDebug";
 
 // Lazy load secondary pages for better performance
 const VictimServices = lazy(() => import("./pages/VictimServices"));
@@ -79,6 +80,7 @@ const App = () => {
                           <Route path="/about" element={<AboutUs />} />
                           <Route path="/support" element={<Support />} />
                           <Route path="/auth" element={<Auth />} />
+                          <Route path="/auth-debug" element={<AuthDebug />} />
                           <Route path="/register" element={<Register />} />
                           <Route path="/partner-signin" element={<PartnerSignIn />} />
                           <Route path="/partner-signup" element={<PartnerSignUp />} />
