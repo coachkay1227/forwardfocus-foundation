@@ -616,34 +616,40 @@ export type Database = {
           created_at: string
           email: string
           id: string
+          ip_address: string | null
           name: string | null
           status: string
           subscribed_at: string
           subscription_source: string | null
           unsubscribed_at: string | null
           updated_at: string
+          user_agent: string | null
         }
         Insert: {
           created_at?: string
           email: string
           id?: string
+          ip_address?: string | null
           name?: string | null
           status?: string
           subscribed_at?: string
           subscription_source?: string | null
           unsubscribed_at?: string | null
           updated_at?: string
+          user_agent?: string | null
         }
         Update: {
           created_at?: string
           email?: string
           id?: string
+          ip_address?: string | null
           name?: string | null
           status?: string
           subscribed_at?: string
           subscription_source?: string | null
           unsubscribed_at?: string | null
           updated_at?: string
+          user_agent?: string | null
         }
         Relationships: []
       }
