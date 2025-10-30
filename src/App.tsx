@@ -38,6 +38,7 @@ const SubmitReferral = lazy(() => import("./pages/SubmitReferral"));
 const AddResource = lazy(() => import("./pages/AddResource"));
 const RequestPartnership = lazy(() => import("./pages/RequestPartnership"));
 const RequestPartnerVerification = lazy(() => import("./pages/RequestPartnerVerification"));
+const RenewVerification = lazy(() => import("./pages/RenewVerification"));
 const Organizations = lazy(() => import("./pages/Organizations"));
 const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy"));
 const TermsOfService = lazy(() => import("./pages/TermsOfService"));
@@ -100,6 +101,7 @@ const App = () => {
                           <Route path="/partners/add-resource" element={<AddResource />} />
                           <Route path="/partners/request" element={<RequestPartnership />} />
                           <Route path="/partners/request-verification" element={<RequestPartnerVerification />} />
+                          <Route path="/partners/renew-verification" element={<RenewVerification />} />
                           <Route path="/RequestPartnership" element={<RequestPartnership />} />
                           <Route path="/organizations" element={<Organizations />} />
                           <Route path="/privacy" element={<PrivacyPolicy />} />

@@ -60,6 +60,7 @@ const PartnerDashboard = () => {
   const [submitting, setSubmitting] = useState(false);
   const [hasVerificationRequest, setHasVerificationRequest] = useState(false);
   const [checkingVerification, setCheckingVerification] = useState(true);
+  const [verificationExpiry, setVerificationExpiry] = useState<{ expires_at: string; status: string } | null>(null);
 
   useEffect(() => {
     document.title = "Partner Dashboard | Forward Focus Elevation";
@@ -76,11 +77,16 @@ const PartnerDashboard = () => {
     try {
       const { data, error } = await supabase
         .from('partner_verifications')
-        .select('id')
+        .select('id, status, expires_at')
         .eq('user_id', user?.id)
+        .order('created_at', { ascending: false })
+        .limit(1)
         .maybeSingle();
       
       setHasVerificationRequest(!!data);
+      if (data && data.status === 'approved' && data.expires_at) {
+        setVerificationExpiry({ expires_at: data.expires_at, status: data.status });
+      }
     } catch (error) {
       console.error('Error checking verification request:', error);
     } finally {
@@ -284,6 +290,64 @@ const PartnerDashboard = () => {
           {partner.verified ? "Verified Partner" : "Pending Verification"}
         </Badge>
       </div>
+
+      {/* Expiration Warning Banner */}
+      {verificationExpiry && (() => {
+        const daysLeft = Math.ceil((new Date(verificationExpiry.expires_at).getTime() - Date.now()) / (1000 * 60 * 60 * 24));
+        if (daysLeft <= 30 && daysLeft > 0) {
+          return (
+            <Card className={`mb-8 ${daysLeft <= 7 ? 'bg-gradient-to-r from-red-50 to-rose-50 border-red-200' : 'bg-gradient-to-r from-amber-50 to-orange-50 border-amber-200'}`}>
+              <CardContent className="py-6">
+                <div className="flex items-start justify-between gap-4">
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2 mb-2">
+                      <AlertCircle className={`h-5 w-5 ${daysLeft <= 7 ? 'text-red-600' : 'text-amber-600'}`} />
+                      <h3 className={`font-semibold ${daysLeft <= 7 ? 'text-red-900' : 'text-amber-900'}`}>
+                        {daysLeft <= 7 ? 'URGENT: ' : ''}Verification Expiring Soon
+                      </h3>
+                    </div>
+                    <p className={`text-sm ${daysLeft <= 7 ? 'text-red-800' : 'text-amber-800'} mb-4`}>
+                      Your partner verification expires in <strong>{daysLeft} days</strong> on {new Date(verificationExpiry.expires_at).toLocaleDateString()}. 
+                      Renew now to maintain uninterrupted access to the partner portal and referral system.
+                    </p>
+                    <Button 
+                      onClick={() => navigate('/partners/renew-verification')}
+                      className={daysLeft <= 7 ? 'bg-red-600 hover:bg-red-700 text-white' : 'bg-amber-600 hover:bg-amber-700 text-white'}
+                    >
+                      Renew Verification Now
+                    </Button>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          );
+        } else if (daysLeft <= 0) {
+          return (
+            <Card className="mb-8 bg-gradient-to-r from-red-50 to-rose-50 border-red-200">
+              <CardContent className="py-6">
+                <div className="flex items-start justify-between gap-4">
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2 mb-2">
+                      <AlertCircle className="h-5 w-5 text-red-600" />
+                      <h3 className="font-semibold text-red-900">Verification Expired</h3>
+                    </div>
+                    <p className="text-sm text-red-800 mb-4">
+                      Your partner verification has expired. Renew now to restore access to all partner features.
+                    </p>
+                    <Button 
+                      onClick={() => navigate('/partners/renew-verification')}
+                      className="bg-red-600 hover:bg-red-700 text-white"
+                    >
+                      Renew Verification
+                    </Button>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          );
+        }
+        return null;
+      })()}
 
       {/* Verification Request Banner */}
       {!checkingVerification && !hasVerificationRequest && (

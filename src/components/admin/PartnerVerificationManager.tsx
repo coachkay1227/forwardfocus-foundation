@@ -65,14 +65,19 @@ export const PartnerVerificationManager: React.FC = () => {
     notes: string
   ) => {
     try {
+      const currentUser = (await supabase.auth.getUser()).data.user;
       const updateData: any = { 
         status: newStatus,
-        notes: notes || null
+        notes: notes || null,
+        reviewed_at: new Date().toISOString(),
+        reviewed_by: currentUser?.id,
       };
 
+      // Set verified_at, verified_by, and expires_at when approving
       if (newStatus === 'approved') {
         updateData.verified_at = new Date().toISOString();
-        updateData.verified_by = (await supabase.auth.getUser()).data.user?.id;
+        updateData.verified_by = currentUser?.id;
+        updateData.expires_at = new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString(); // 1 year from now
       }
 
       // Get the verification record with user email

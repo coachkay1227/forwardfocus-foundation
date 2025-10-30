@@ -10,9 +10,10 @@ import { NavLink } from "react-router-dom";
 
 interface VerificationStatus {
   id: string;
-  status: 'pending' | 'approved' | 'denied';
+  status: 'pending' | 'approved' | 'denied' | 'expired';
   verification_type: string;
   verified_at?: string;
+  expires_at?: string;
   notes?: string;
 }
 
@@ -112,6 +113,18 @@ export const PartnerVerificationStatus = () => {
       return <Badge variant="outline" className="text-osu-gray border-osu-gray/30">Not Verified</Badge>;
     }
     
+    // Check expiration status if approved
+    if (verificationStatus.status === 'approved' && verificationStatus.expires_at) {
+      const daysLeft = Math.ceil((new Date(verificationStatus.expires_at).getTime() - Date.now()) / (1000 * 60 * 60 * 24));
+      if (daysLeft <= 0) {
+        return <Badge variant="destructive">Expired</Badge>;
+      } else if (daysLeft <= 7) {
+        return <Badge className="bg-red-100 text-red-800 border-red-200">Expiring Soon ({daysLeft} days)</Badge>;
+      } else if (daysLeft <= 30) {
+        return <Badge className="bg-yellow-100 text-yellow-800 border-yellow-200">Expiring ({daysLeft} days)</Badge>;
+      }
+    }
+    
     switch (verificationStatus.status) {
       case 'approved':
         return <Badge className="bg-green-100 text-green-800 border-green-200">Verified Partner</Badge>;
@@ -119,6 +132,8 @@ export const PartnerVerificationStatus = () => {
         return <Badge className="bg-yellow-100 text-yellow-800 border-yellow-200">Verification Pending</Badge>;
       case 'denied':
         return <Badge variant="destructive">Verification Denied</Badge>;
+      case 'expired':
+        return <Badge variant="destructive">Expired - Renewal Required</Badge>;
       default:
         return <Badge variant="outline" className="text-osu-gray border-osu-gray/30">Unknown Status</Badge>;
     }
@@ -164,9 +179,16 @@ export const PartnerVerificationStatus = () => {
           </p>
           
           {verificationStatus?.verified_at && (
-            <p className="text-xs text-osu-gray">
-              Verified on: {new Date(verificationStatus.verified_at).toLocaleDateString()}
-            </p>
+            <div className="space-y-1">
+              <p className="text-xs text-osu-gray">
+                Verified on: {new Date(verificationStatus.verified_at).toLocaleDateString()}
+              </p>
+              {verificationStatus.expires_at && (
+                <p className="text-xs text-osu-gray">
+                  Expires on: {new Date(verificationStatus.expires_at).toLocaleDateString()}
+                </p>
+              )}
+            </div>
           )}
           
           {!verificationStatus && (
