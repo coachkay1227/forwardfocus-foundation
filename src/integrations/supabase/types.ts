@@ -741,6 +741,9 @@ export type Database = {
       }
       partner_verifications: {
         Row: {
+          contact_email: string | null
+          contact_name: string | null
+          contact_phone: string | null
           created_at: string
           id: string
           notes: string | null
@@ -754,6 +757,9 @@ export type Database = {
           verification_documents: Json | null
         }
         Insert: {
+          contact_email?: string | null
+          contact_name?: string | null
+          contact_phone?: string | null
           created_at?: string
           id?: string
           notes?: string | null
@@ -767,6 +773,9 @@ export type Database = {
           verification_documents?: Json | null
         }
         Update: {
+          contact_email?: string | null
+          contact_name?: string | null
+          contact_phone?: string | null
           created_at?: string
           id?: string
           notes?: string | null

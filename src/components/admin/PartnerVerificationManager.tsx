@@ -11,6 +11,9 @@ import { Label } from '@/components/ui/label';
 interface PartnerVerification {
   id: string;
   user_id: string;
+  contact_name: string | null;
+  contact_email: string | null;
+  contact_phone: string | null;
   organization_name: string;
   organization_type: string;
   status: string;
@@ -93,24 +96,26 @@ export const PartnerVerificationManager: React.FC = () => {
       if (error) throw error;
 
       // Send email notification
-      try {
-        const userEmail = (verificationData as any).profiles?.email;
-        if (userEmail) {
-          await supabase.functions.invoke('send-verification-email', {
-            body: {
-              userEmail,
-              organizationName: verificationData.organization_name,
-              status: newStatus,
-              adminNotes: notes,
-              verifiedAt: updateData.verified_at,
-            },
-          });
-          console.log(`Verification email sent to ${userEmail}`);
+        try {
+          const userEmail = verificationData.contact_email || (verificationData as any).profiles?.email;
+          if (userEmail) {
+            await supabase.functions.invoke('send-verification-email', {
+              body: {
+                userEmail,
+                contactName: verificationData.contact_name,
+                contactPhone: verificationData.contact_phone,
+                organizationName: verificationData.organization_name,
+                status: newStatus,
+                adminNotes: notes,
+                verifiedAt: updateData.verified_at,
+              },
+            });
+            console.log(`Verification email sent to ${userEmail}`);
+          }
+        } catch (emailError) {
+          console.error('Failed to send verification email:', emailError);
+          // Don't fail the whole operation if email fails
         }
-      } catch (emailError) {
-        console.error('Failed to send verification email:', emailError);
-        // Don't fail the whole operation if email fails
-      }
 
       toast({
         title: "Success",
@@ -211,14 +216,26 @@ const VerificationCard: React.FC<VerificationCardProps> = ({
       <CardContent className="space-y-4">
         <div className="grid grid-cols-2 gap-4 text-sm">
           <div>
-            <Label className="text-muted-foreground">User</Label>
+            <Label className="text-muted-foreground">Contact Name</Label>
             <p className="font-medium">
-              {(verification as any).profiles?.display_name || verification.user_id}
+              {verification.contact_name || 'Not provided'}
             </p>
+          </div>
+          <div>
+            <Label className="text-muted-foreground">Contact Email</Label>
+            <p className="font-medium">{verification.contact_email || 'Not provided'}</p>
+          </div>
+          <div>
+            <Label className="text-muted-foreground">Contact Phone</Label>
+            <p className="font-medium">{verification.contact_phone || 'Not provided'}</p>
           </div>
           <div>
             <Label className="text-muted-foreground">Organization</Label>
             <p className="font-medium">{verification.organization_name}</p>
+          </div>
+          <div>
+            <Label className="text-muted-foreground">Organization Type</Label>
+            <p className="font-medium capitalize">{verification.organization_type}</p>
           </div>
           <div>
             <Label className="text-muted-foreground">Requested</Label>
@@ -227,6 +244,13 @@ const VerificationCard: React.FC<VerificationCardProps> = ({
             </p>
           </div>
         </div>
+
+        {verification.notes && (
+          <div className="pt-3 border-t">
+            <Label className="text-muted-foreground">Partnership Vision</Label>
+            <p className="text-sm mt-1 whitespace-pre-wrap">{verification.notes}</p>
+          </div>
+        )}
 
         {verification.status === 'pending' && (
           <div className="space-y-3 pt-4 border-t">
@@ -265,13 +289,6 @@ const VerificationCard: React.FC<VerificationCardProps> = ({
             >
               {isUpdating ? 'Updating...' : 'Update Verification'}
             </Button>
-          </div>
-        )}
-
-        {verification.notes && (
-          <div className="pt-3 border-t">
-            <Label className="text-muted-foreground">Notes</Label>
-            <p className="text-sm mt-1">{verification.notes}</p>
           </div>
         )}
       </CardContent>

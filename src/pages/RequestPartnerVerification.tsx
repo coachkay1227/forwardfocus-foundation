@@ -15,10 +15,35 @@ const RequestPartnerVerification = () => {
   const { user } = useAuth();
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
+    contactName: '',
+    contactPhone: '',
+    contactEmail: '',
     verificationType: 'partner',
     organizationName: '',
-    justification: ''
+    partnershipVision: ''
   });
+
+  // Pre-fill email from user profile
+  useEffect(() => {
+    const fetchUserEmail = async () => {
+      if (user) {
+        const { data } = await supabase
+          .from('profiles')
+          .select('email, full_name')
+          .eq('id', user.id)
+          .single();
+        
+        if (data) {
+          setFormData(prev => ({
+            ...prev,
+            contactEmail: data.email || '',
+            contactName: data.full_name || ''
+          }));
+        }
+      }
+    };
+    fetchUserEmail();
+  }, [user]);
 
   useEffect(() => {
     document.title = "Request Partner Verification | Forward Focus";
@@ -41,7 +66,8 @@ const RequestPartnerVerification = () => {
     }
 
     // Validate required fields
-    if (!formData.organizationName || !formData.justification) {
+    if (!formData.contactName || !formData.contactEmail || !formData.contactPhone || 
+        !formData.organizationName || !formData.partnershipVision) {
       toast({
         title: "Missing Information",
         description: "Please fill in all required fields.",
@@ -50,10 +76,32 @@ const RequestPartnerVerification = () => {
       return;
     }
 
-    if (formData.justification.length < 50) {
+    // Validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.contactEmail)) {
       toast({
-        title: "Justification Too Short",
-        description: "Please provide at least 50 characters explaining why you should be verified.",
+        title: "Invalid Email",
+        description: "Please provide a valid email address.",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    // Validate phone format (basic validation)
+    const phoneRegex = /^[\d\s\-\(\)\+\.ext]+$/;
+    if (!phoneRegex.test(formData.contactPhone)) {
+      toast({
+        title: "Invalid Phone Number",
+        description: "Please provide a valid phone number.",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    if (formData.partnershipVision.length < 50) {
+      toast({
+        title: "Tell Us More",
+        description: "Please share at least 50 characters about your partnership vision.",
         variant: "destructive"
       });
       return;
@@ -87,9 +135,12 @@ const RequestPartnerVerification = () => {
       // Sanitize inputs
       const sanitizedData = {
         user_id: user.id,
-        organization_name: formData.organizationName,
+        contact_name: sanitizeInput(formData.contactName),
+        contact_email: sanitizeInput(formData.contactEmail),
+        contact_phone: sanitizeInput(formData.contactPhone),
+        organization_name: sanitizeInput(formData.organizationName),
         organization_type: formData.verificationType,
-        notes: sanitizeInput(formData.justification),
+        notes: sanitizeInput(formData.partnershipVision),
         status: 'pending'
       };
 
@@ -109,9 +160,12 @@ const RequestPartnerVerification = () => {
       
       // Clear form
       setFormData({
+        contactName: '',
+        contactPhone: '',
+        contactEmail: '',
         verificationType: 'partner',
         organizationName: '',
-        justification: ''
+        partnershipVision: ''
       });
 
     } catch (error) {
@@ -163,10 +217,10 @@ const RequestPartnerVerification = () => {
               <Shield className="h-10 w-10 text-white" />
             </div>
             <h1 className="font-heading text-4xl md:text-5xl font-bold mb-4 text-white">
-              Request Partner Verification
+              Let's Build Something Together
             </h1>
             <p className="text-xl text-white">
-              Join our network of verified community partners
+              Join our network of partners creating real impact in our communities
             </p>
           </div>
         </div>
@@ -209,6 +263,53 @@ const RequestPartnerVerification = () => {
               <form onSubmit={onSubmit} className="space-y-6">
                 <div>
                   <label className="block text-sm font-semibold mb-2 text-osu-scarlet">
+                    Full Name *
+                  </label>
+                  <Input 
+                    required 
+                    placeholder="Your full name" 
+                    value={formData.contactName}
+                    onChange={(e) => handleInputChange('contactName', e.target.value)}
+                    className="h-12 border-osu-gray/30 focus:border-osu-scarlet focus:ring-osu-scarlet/20" 
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-semibold mb-2 text-osu-scarlet">
+                    Email Address *
+                  </label>
+                  <Input 
+                    required 
+                    type="email"
+                    placeholder="your.email@organization.org" 
+                    value={formData.contactEmail}
+                    onChange={(e) => handleInputChange('contactEmail', e.target.value)}
+                    className="h-12 border-osu-gray/30 focus:border-osu-scarlet focus:ring-osu-scarlet/20" 
+                  />
+                  <p className="text-xs text-osu-gray mt-1">
+                    We'll use this email to communicate about your verification
+                  </p>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-semibold mb-2 text-osu-scarlet">
+                    Phone Number *
+                  </label>
+                  <Input 
+                    required 
+                    type="tel"
+                    placeholder="(555) 123-4567 ext. 123" 
+                    value={formData.contactPhone}
+                    onChange={(e) => handleInputChange('contactPhone', e.target.value)}
+                    className="h-12 border-osu-gray/30 focus:border-osu-scarlet focus:ring-osu-scarlet/20" 
+                  />
+                  <p className="text-xs text-osu-gray mt-1">
+                    Include extension if applicable
+                  </p>
+                </div>
+
+                <div className="pt-4 border-t border-osu-gray/20">
+                  <label className="block text-sm font-semibold mb-2 text-osu-scarlet">
                     Verification Type
                   </label>
                   <Select 
@@ -243,27 +344,31 @@ const RequestPartnerVerification = () => {
 
                 <div>
                   <label className="block text-sm font-semibold mb-2 text-osu-scarlet">
-                    Justification for Verification *
+                    How Can We Partner? *
                   </label>
                   <Textarea 
                     required 
-                    placeholder="Explain your organization's mission, services provided to justice-impacted individuals, track record, and why you should be verified as a partner. Include specific examples of your work in the community."
-                    value={formData.justification}
-                    onChange={(e) => handleInputChange('justification', e.target.value)}
+                    placeholder="Tell us about your partnership vision:
+• How can we support your mission?
+• What resources or connections would benefit your community?
+• How can your organization help justice-impacted individuals?
+• What makes your approach unique and impactful?"
+                    value={formData.partnershipVision}
+                    onChange={(e) => handleInputChange('partnershipVision', e.target.value)}
                     className="min-h-32 border-osu-gray/30 focus:border-osu-scarlet focus:ring-osu-scarlet/20" 
                   />
                   <p className="text-xs text-osu-gray mt-1">
-                    Minimum 50 characters required ({formData.justification.length}/50)
+                    Share your vision with us ({formData.partnershipVision.length}/50 characters minimum)
                   </p>
                 </div>
 
                 <Button 
                   type="submit" 
-                  disabled={loading || formData.justification.length < 50} 
+                  disabled={loading || formData.partnershipVision.length < 50} 
                   size="lg" 
                   className="w-full h-12 bg-gradient-to-r from-osu-scarlet to-osu-gray hover:from-osu-scarlet/90 hover:to-osu-gray/90 text-white shadow-lg"
                 >
-                  {loading ? "Submitting Request..." : "Submit Verification Request"}
+                  {loading ? "Submitting Partnership Request..." : "Start Our Partnership"}
                 </Button>
               </form>
             </CardContent>

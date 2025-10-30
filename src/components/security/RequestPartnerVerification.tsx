@@ -3,6 +3,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -10,12 +11,37 @@ import { useAuth } from '@/contexts/AuthContext';
 
 export const RequestPartnerVerification: React.FC = () => {
   const [verificationRequest, setVerificationRequest] = useState({
+    contact_name: '',
+    contact_email: '',
+    contact_phone: '',
     verification_type: 'partner',
     notes: ''
   });
   const [loading, setLoading] = useState(false);
   const { user } = useAuth();
   const { toast } = useToast();
+
+  // Pre-fill email from user profile
+  React.useEffect(() => {
+    const fetchUserEmail = async () => {
+      if (user) {
+        const { data } = await supabase
+          .from('profiles')
+          .select('email, full_name')
+          .eq('id', user.id)
+          .single();
+        
+        if (data) {
+          setVerificationRequest(prev => ({
+            ...prev,
+            contact_email: data.email || '',
+            contact_name: data.full_name || ''
+          }));
+        }
+      }
+    };
+    fetchUserEmail();
+  }, [user]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -36,6 +62,9 @@ export const RequestPartnerVerification: React.FC = () => {
         .from('partner_verifications')
         .insert({
           user_id: user.id,
+          contact_name: verificationRequest.contact_name,
+          contact_email: verificationRequest.contact_email,
+          contact_phone: verificationRequest.contact_phone,
           organization_name: 'Pending Organization Name',
           organization_type: verificationRequest.verification_type,
           notes: verificationRequest.notes || null,
@@ -51,6 +80,9 @@ export const RequestPartnerVerification: React.FC = () => {
 
       // Reset form
       setVerificationRequest({
+        contact_name: '',
+        contact_email: '',
+        contact_phone: '',
         verification_type: 'partner',
         notes: ''
       });
@@ -90,6 +122,47 @@ export const RequestPartnerVerification: React.FC = () => {
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
+            <Label htmlFor="contact-name">Full Name *</Label>
+            <Input
+              id="contact-name"
+              required
+              value={verificationRequest.contact_name}
+              onChange={(e) => 
+                setVerificationRequest(prev => ({ ...prev, contact_name: e.target.value }))
+              }
+              placeholder="Your full name"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="contact-email">Email Address *</Label>
+            <Input
+              id="contact-email"
+              type="email"
+              required
+              value={verificationRequest.contact_email}
+              onChange={(e) => 
+                setVerificationRequest(prev => ({ ...prev, contact_email: e.target.value }))
+              }
+              placeholder="your.email@organization.org"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="contact-phone">Phone Number *</Label>
+            <Input
+              id="contact-phone"
+              type="tel"
+              required
+              value={verificationRequest.contact_phone}
+              onChange={(e) => 
+                setVerificationRequest(prev => ({ ...prev, contact_phone: e.target.value }))
+              }
+              placeholder="(555) 123-4567"
+            />
+          </div>
+
+          <div className="space-y-2">
             <Label htmlFor="verification-type">Verification Type</Label>
             <Select
               value={verificationRequest.verification_type}
@@ -110,14 +183,17 @@ export const RequestPartnerVerification: React.FC = () => {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="notes">Justification</Label>
+            <Label htmlFor="notes">How Can We Partner?</Label>
             <Textarea
               id="notes"
               value={verificationRequest.notes}
               onChange={(e) => 
                 setVerificationRequest(prev => ({ ...prev, notes: e.target.value }))
               }
-              placeholder="Please explain why you need access to partner contact information. Include details about your organization, role, and intended use of the data."
+              placeholder="Tell us about your partnership vision:
+• How can we support your mission?
+• What resources would benefit your community?
+• How will you help justice-impacted individuals?"
               className="min-h-[120px]"
             />
           </div>

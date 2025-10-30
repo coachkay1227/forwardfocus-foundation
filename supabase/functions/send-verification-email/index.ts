@@ -10,6 +10,8 @@ const corsHeaders = {
 
 interface VerificationEmailRequest {
   userEmail: string;
+  contactName?: string;
+  contactPhone?: string;
   organizationName: string;
   status: string;
   adminNotes?: string;
@@ -23,7 +25,15 @@ const handler = async (req: Request): Promise<Response> => {
   }
 
   try {
-    const { userEmail, organizationName, status, adminNotes, verifiedAt }: VerificationEmailRequest = await req.json();
+    const { 
+      userEmail, 
+      contactName,
+      contactPhone,
+      organizationName, 
+      status, 
+      adminNotes,
+      verifiedAt 
+    }: VerificationEmailRequest = await req.json();
 
     console.log(`Sending verification email to: ${userEmail}, Status: ${status}`);
 
