@@ -113,7 +113,15 @@ const Admin = () => {
   const [bookingRequests, setBookingRequests] = useState<BookingRequest[]>([]);
   const [loadingData, setLoadingData] = useState(true);
   const [revealedContacts, setRevealedContacts] = useState<Set<string>>(new Set());
-  const [adminExists, setAdminExists] = useState(false);
+  const [adminExists, setAdminExists] = useState<boolean | null>(null);
+  const [partnerStats, setPartnerStats] = useState({ 
+    total_partners: 0, 
+    verified_partners: 0, 
+    pending_partners: 0, 
+    total_referrals: 0,
+    total_success_stories: 0,
+    published_success_stories: 0
+  });
   
   const referralsPagination = usePagination({ items: referrals });
   const partnershipsPagination = usePagination({ items: partnershipRequests });
@@ -121,11 +129,32 @@ const Admin = () => {
   const supportPagination = usePagination({ items: supportRequests });
   const bookingsPagination = usePagination({ items: bookingRequests });
   
+  // Check if admin exists in system
+  useEffect(() => {
+    const checkAdmin = async () => {
+      try {
+        const { data } = await supabase.rpc('check_admin_exists');
+        setAdminExists(data || false);
+      } catch (error) {
+        console.error('Error checking admin exists:', error);
+        setAdminExists(false);
+      }
+    };
+    checkAdmin();
+  }, []);
+
   useEffect(() => {
     const fetchData = async () => {
       if (!isAdmin) return;
 
+      setLoadingData(true);
       try {
+        // Fetch partner stats first for dashboard summary
+        const { data: stats } = await supabase.rpc('get_partner_stats_detailed');
+        if (stats && stats.length > 0) {
+          setPartnerStats(stats[0]);
+        }
+
         const [referralsRes, requestsRes, contactsRes, supportRes, bookingsRes] = await Promise.all([
           supabase.from('partner_referrals').select('*').order('created_at', { ascending: false }),
           supabase.from('partnership_requests').select('*').order('created_at', { ascending: false }),
@@ -357,22 +386,92 @@ const Admin = () => {
         </div>
         <RealtimeNotifications />
       </div>
+
+      {/* Quick Stats Summary */}
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 mb-8">
+        <Card>
+          <CardHeader className="pb-3">
+            <CardTitle className="text-sm font-medium text-muted-foreground">Total Partners</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{partnerStats.total_partners}</div>
+            <p className="text-xs text-muted-foreground mt-1">
+              {partnerStats.verified_partners} verified
+            </p>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader className="pb-3">
+            <CardTitle className="text-sm font-medium text-muted-foreground">Pending Verification</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{partnerStats.pending_partners}</div>
+            <p className="text-xs text-muted-foreground mt-1">
+              Require review
+            </p>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader className="pb-3">
+            <CardTitle className="text-sm font-medium text-muted-foreground">Total Referrals</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{partnerStats.total_referrals}</div>
+            <p className="text-xs text-muted-foreground mt-1">
+              All time
+            </p>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader className="pb-3">
+            <CardTitle className="text-sm font-medium text-muted-foreground">Success Stories</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{partnerStats.published_success_stories || 0}</div>
+            <p className="text-xs text-muted-foreground mt-1">
+              Published stories
+            </p>
+          </CardContent>
+        </Card>
+      </div>
       
       <AdminSetupBanner />
       
       <Tabs defaultValue="management" className="space-y-6">
-        <TabsList className="grid w-full grid-cols-5 lg:grid-cols-11">
-          <TabsTrigger value="launch">Launch</TabsTrigger>
-          <TabsTrigger value="management">Partner</TabsTrigger>
-          <TabsTrigger value="verifications">Verify</TabsTrigger>
-          <TabsTrigger value="submissions">Forms</TabsTrigger>
-          <TabsTrigger value="support">Support</TabsTrigger>
-          <TabsTrigger value="bookings">Bookings</TabsTrigger>
-          <TabsTrigger value="organizations">Orgs</TabsTrigger>
-          <TabsTrigger value="stories">Stories</TabsTrigger>
-          <TabsTrigger value="analytics">Analytics</TabsTrigger>
-          <TabsTrigger value="email">Email</TabsTrigger>
-          <TabsTrigger value="security">Security</TabsTrigger>
+        <TabsList className="flex flex-wrap justify-start gap-1 h-auto bg-muted/50 p-1">
+          <TabsTrigger value="launch" className="data-[state=active]:bg-background">
+            🚀 Launch
+          </TabsTrigger>
+          <TabsTrigger value="management" className="data-[state=active]:bg-background">
+            🤝 Partners
+          </TabsTrigger>
+          <TabsTrigger value="verifications" className="data-[state=active]:bg-background">
+            ✓ Verify
+          </TabsTrigger>
+          <TabsTrigger value="stories" className="data-[state=active]:bg-background">
+            📖 Stories
+          </TabsTrigger>
+          <TabsTrigger value="submissions" className="data-[state=active]:bg-background">
+            📋 Forms
+          </TabsTrigger>
+          <TabsTrigger value="support" className="data-[state=active]:bg-background">
+            💬 Support
+          </TabsTrigger>
+          <TabsTrigger value="bookings" className="data-[state=active]:bg-background">
+            📅 Bookings
+          </TabsTrigger>
+          <TabsTrigger value="analytics" className="data-[state=active]:bg-background">
+            📊 Analytics
+          </TabsTrigger>
+          <TabsTrigger value="email" className="data-[state=active]:bg-background">
+            📧 Email
+          </TabsTrigger>
+          <TabsTrigger value="security" className="data-[state=active]:bg-background">
+            🔒 Security
+          </TabsTrigger>
+          <TabsTrigger value="organizations" className="data-[state=active]:bg-background">
+            🏢 Orgs
+          </TabsTrigger>
         </TabsList>
 
         <TabsContent value="launch">

@@ -44,6 +44,7 @@ const DonationSuccess = lazy(() => import("./pages/DonationSuccess"));
 const SetupAdmin = lazy(() => import("./pages/SetupAdmin"));
 const AdminGuide = lazy(() => import("./pages/AdminGuide"));
 const SuccessStories = lazy(() => import("./pages/SuccessStories"));
+const SetupGuide = lazy(() => import("./pages/SetupGuide"));
 
 const queryClient = new QueryClient();
 
@@ -85,6 +86,7 @@ const App = () => {
                           <Route path="/partner-dashboard" element={<PartnerDashboard />} />
                           <Route path="/login" element={<Navigate to="/auth" replace />} />
                           <Route path="/setup-admin" element={<SetupAdmin />} />
+                          <Route path="/setup-guide" element={<SetupGuide />} />
                           <Route path="/admin" element={<Admin />} />
                           <Route path="/admin-guide" element={<AdminGuide />} />
                           <Route path="/success-stories" element={<SuccessStories />} />
