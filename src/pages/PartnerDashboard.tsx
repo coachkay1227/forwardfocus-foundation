@@ -17,7 +17,8 @@ import {
   Copy,
   Award,
   BarChart3,
-  FileText
+  FileText,
+  AlertCircle
 } from "lucide-react";
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
 import { Input } from "@/components/ui/input";
@@ -57,6 +58,8 @@ const PartnerDashboard = () => {
   const [loading, setLoading] = useState(true);
   const [referralForm, setReferralForm] = useState({ name: "", contact_info: "", notes: "" });
   const [submitting, setSubmitting] = useState(false);
+  const [hasVerificationRequest, setHasVerificationRequest] = useState(false);
+  const [checkingVerification, setCheckingVerification] = useState(true);
 
   useEffect(() => {
     document.title = "Partner Dashboard | Forward Focus Elevation";
@@ -65,8 +68,25 @@ const PartnerDashboard = () => {
   useEffect(() => {
     if (user) {
       fetchPartnerData();
+      checkVerificationRequest();
     }
   }, [user]);
+
+  const checkVerificationRequest = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('partner_verifications')
+        .select('id')
+        .eq('user_id', user?.id)
+        .maybeSingle();
+      
+      setHasVerificationRequest(!!data);
+    } catch (error) {
+      console.error('Error checking verification request:', error);
+    } finally {
+      setCheckingVerification(false);
+    }
+  };
 
   useEffect(() => {
     if (partner) {
@@ -264,6 +284,31 @@ const PartnerDashboard = () => {
           {partner.verified ? "Verified Partner" : "Pending Verification"}
         </Badge>
       </div>
+
+      {/* Verification Request Banner */}
+      {!checkingVerification && !hasVerificationRequest && (
+        <Card className="mb-8 bg-gradient-to-r from-amber-50 to-orange-50 border-amber-200">
+          <CardContent className="py-6">
+            <div className="flex items-start justify-between gap-4">
+              <div className="flex-1">
+                <div className="flex items-center gap-2 mb-2">
+                  <AlertCircle className="h-5 w-5 text-amber-600" />
+                  <h3 className="font-semibold text-amber-900">Complete Your Partner Verification</h3>
+                </div>
+                <p className="text-sm text-amber-800 mb-4">
+                  Unlock all partnership features by completing your verification request. This helps us ensure quality connections and builds trust in our network.
+                </p>
+                <Button 
+                  onClick={() => navigate('/partners/request-verification')}
+                  className="bg-amber-600 hover:bg-amber-700 text-white"
+                >
+                  Complete Verification Now
+                </Button>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      )}
 
       {/* Stats Cards */}
       <div className="grid gap-4 md:grid-cols-4 mb-8">

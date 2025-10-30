@@ -30,13 +30,13 @@ const RequestPartnerVerification = () => {
   useEffect(() => {
     const fetchUserProfile = async () => {
       if (user) {
-        const { data } = await supabase
+        const { data, error } = await supabase
           .from('profiles')
           .select('email, full_name, phone')
           .eq('id', user.id)
-          .single();
+          .maybeSingle();
         
-        if (data) {
+        if (!error && data) {
           setFormData(prev => ({
             ...prev,
             contactEmail: data.email || '',
