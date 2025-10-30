@@ -4,15 +4,18 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import { toast } from "@/hooks/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { sanitizeInput } from "@/lib/security";
-import { NavLink } from "react-router-dom";
-import { AlertCircle, Shield, CheckCircle } from "lucide-react";
+import { NavLink, useLocation } from "react-router-dom";
+import { AlertCircle, Shield, CheckCircle, Sparkles } from "lucide-react";
 
 const RequestPartnerVerification = () => {
   const { user } = useAuth();
+  const location = useLocation();
+  const fromSignup = location.state?.fromSignup || false;
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     contactName: '',
@@ -23,13 +26,13 @@ const RequestPartnerVerification = () => {
     partnershipVision: ''
   });
 
-  // Pre-fill email from user profile
+  // Pre-fill email and name from user profile
   useEffect(() => {
-    const fetchUserEmail = async () => {
+    const fetchUserProfile = async () => {
       if (user) {
         const { data } = await supabase
           .from('profiles')
-          .select('email, full_name')
+          .select('email, full_name, phone')
           .eq('id', user.id)
           .single();
         
@@ -37,12 +40,13 @@ const RequestPartnerVerification = () => {
           setFormData(prev => ({
             ...prev,
             contactEmail: data.email || '',
-            contactName: data.full_name || ''
+            contactName: data.full_name || '',
+            contactPhone: data.phone || ''
           }));
         }
       }
     };
-    fetchUserEmail();
+    fetchUserProfile();
   }, [user]);
 
   useEffect(() => {
@@ -228,6 +232,16 @@ const RequestPartnerVerification = () => {
       
       <div className="container py-12">
         <div className="max-w-2xl mx-auto">
+          {/* Welcome Message for New Signups */}
+          {fromSignup && (
+            <Alert className="mb-6 bg-gradient-to-r from-green-50 to-blue-50 border-green-200">
+              <Sparkles className="h-5 w-5 text-green-600" />
+              <AlertDescription className="text-green-900">
+                <strong>Welcome aboard!</strong> Complete your partner verification below to unlock all partnership features.
+              </AlertDescription>
+            </Alert>
+          )}
+
           {/* Partnership Collaboration */}
           <Card className="mb-8 border-osu-gray/20 shadow-lg">
             <CardHeader className="bg-gradient-to-r from-osu-scarlet/5 to-osu-gray/5">

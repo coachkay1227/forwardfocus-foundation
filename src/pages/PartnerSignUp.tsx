@@ -11,6 +11,8 @@ import { PasswordStrengthIndicator } from "@/components/security/PasswordStrengt
 import AuthLayout from "@/components/layout/AuthLayout";
 
 const PartnerSignUp = () => {
+  const [fullName, setFullName] = useState("");
+  const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -40,10 +42,22 @@ const PartnerSignUp = () => {
     setLoading(true);
 
     // Validation
-    if (!email || !password || !confirmPassword || !organizationName) {
+    if (!fullName || !phone || !email || !password || !confirmPassword || !organizationName) {
       toast({
         title: "Missing Information",
         description: "Please fill in all required fields",
+        variant: "destructive",
+      });
+      setLoading(false);
+      return;
+    }
+
+    // Validate phone format
+    const phoneRegex = /^[\d\s\-\(\)\+\.ext]+$/;
+    if (!phoneRegex.test(phone)) {
+      toast({
+        title: "Invalid Phone Number",
+        description: "Please provide a valid phone number",
         variant: "destructive",
       });
       setLoading(false);
@@ -71,7 +85,7 @@ const PartnerSignUp = () => {
     }
 
     try {
-      const { error } = await signUp(email, password);
+      const { error } = await signUp(email, password, { full_name: fullName, phone });
       if (error) {
         toast({
           title: "Sign Up Failed",
@@ -81,9 +95,10 @@ const PartnerSignUp = () => {
       } else {
         toast({
           title: "Account Created!",
-          description: "Welcome to the Partner Portal. Please check your email to verify your account.",
+          description: "Let's complete your partner verification to get started.",
         });
-        navigate("/partner-dashboard");
+        // Redirect to verification request with state indicating new signup
+        navigate("/partners/request-verification", { state: { fromSignup: true } });
       }
     } catch (error) {
       toast({
@@ -124,7 +139,31 @@ const PartnerSignUp = () => {
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="organizationName">Organization Name</Label>
+              <Label htmlFor="fullName">Full Name *</Label>
+              <Input
+                id="fullName"
+                type="text"
+                placeholder="Your full name"
+                value={fullName}
+                onChange={(e) => setFullName(e.target.value)}
+                required
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="phone">Phone Number *</Label>
+              <Input
+                id="phone"
+                type="tel"
+                placeholder="(555) 123-4567"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                required
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="organizationName">Organization Name *</Label>
               <Input
                 id="organizationName"
                 type="text"
@@ -136,7 +175,7 @@ const PartnerSignUp = () => {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="email">Email Address *</Label>
               <Input
                 id="email"
                 type="email"

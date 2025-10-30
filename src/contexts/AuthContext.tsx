@@ -6,7 +6,7 @@ type AuthContextType = {
   user: User | null;
   session: Session | null;
   loading: boolean;
-  signUp: (email: string, password: string) => Promise<{ error: any }>;
+  signUp: (email: string, password: string, metadata?: { full_name?: string; phone?: string }) => Promise<{ error: any }>;
   signIn: (email: string, password: string) => Promise<{ error: any }>;
   signInWithGoogle: () => Promise<{ error: any }>;
   signInWithApple: () => Promise<{ error: any }>;
@@ -60,7 +60,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     return () => subscription.unsubscribe();
   }, []);
 
-  const signUp = async (email: string, password: string) => {
+  const signUp = async (email: string, password: string, metadata?: { full_name?: string; phone?: string }) => {
     const redirectUrl = `${window.location.origin}/`;
     
     const { data, error } = await supabase.auth.signUp({
@@ -78,6 +78,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         .upsert({
           id: data.user.id,
           email: data.user.email!,
+          full_name: metadata?.full_name || null,
+          phone: metadata?.phone || null,
           created_at: new Date().toISOString(),
           updated_at: new Date().toISOString()
         }, {
