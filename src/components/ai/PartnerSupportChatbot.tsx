@@ -119,7 +119,7 @@ export const PartnerSupportChatbot = () => {
   };
 
   return (
-    <Card className="h-[600px] flex flex-col">
+    <Card className="h-[600px] max-h-[70vh] md:max-h-[600px] flex flex-col">
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <MessageCircle className="w-5 h-5 text-primary" />
@@ -134,8 +134,8 @@ export const PartnerSupportChatbot = () => {
           Ask questions about referrals, verification, or partner features
         </CardDescription>
       </CardHeader>
-      <CardContent className="flex-1 flex flex-col p-0">
-        <ScrollArea className="flex-1 p-4">
+      <CardContent className="flex-1 flex flex-col p-0 min-h-0">
+        <ScrollArea className="h-[400px] md:h-[450px] p-2 md:p-4">
           <div className="space-y-4">
             {messages.length === 0 && (
               <div className="text-center py-8 text-muted-foreground">
@@ -155,13 +155,13 @@ export const PartnerSupportChatbot = () => {
                   </div>
                 )}
                 <div
-                  className={`max-w-[80%] rounded-lg p-3 ${
+                  className={`max-w-[85%] md:max-w-[80%] rounded-lg p-3 ${
                     msg.role === 'user'
                       ? 'bg-primary text-primary-foreground'
                       : 'bg-muted'
                   }`}
                 >
-                  <p className="text-sm whitespace-pre-wrap">{msg.content}</p>
+                  <p className="text-sm whitespace-pre-wrap break-words">{msg.content}</p>
                 </div>
                 {msg.role === 'user' && (
                   <div className="w-8 h-8 rounded-full bg-secondary/10 flex items-center justify-center flex-shrink-0">
