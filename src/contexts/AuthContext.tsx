@@ -28,6 +28,25 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         setSession(session);
         setUser(session?.user ?? null);
         setLoading(false);
+        
+        // Create profile for OAuth sign-ins after successful auth
+        if (event === 'SIGNED_IN' && session?.user) {
+          setTimeout(() => {
+            supabase
+              .from('profiles')
+              .upsert({
+                id: session.user.id,
+                email: session.user.email!,
+                created_at: new Date().toISOString(),
+                updated_at: new Date().toISOString()
+              }, {
+                onConflict: 'id'
+              })
+              .then(({ error }) => {
+                if (error) console.error('Profile creation error:', error);
+              });
+          }, 0);
+        }
       }
     );
 
@@ -44,13 +63,32 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const signUp = async (email: string, password: string) => {
     const redirectUrl = `${window.location.origin}/`;
     
-    const { error } = await supabase.auth.signUp({
+    const { data, error } = await supabase.auth.signUp({
       email,
       password,
       options: {
         emailRedirectTo: redirectUrl
       }
     });
+    
+    // Create profile after successful signup
+    if (!error && data.user) {
+      const { error: profileError } = await supabase
+        .from('profiles')
+        .upsert({
+          id: data.user.id,
+          email: data.user.email!,
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString()
+        }, {
+          onConflict: 'id'
+        });
+      
+      if (profileError) {
+        console.error('Profile creation error:', profileError);
+      }
+    }
+    
     return { error };
   };
 
