@@ -5,6 +5,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { AnimatedCounter } from "@/components/ui/AnimatedCounter";
 import { NewsletterSignup } from "@/components/home/NewsletterSignup";
+import { NewsletterModal } from "@/components/home/NewsletterModal";
 import { 
   ArrowRight, 
   Heart, 
@@ -72,7 +73,7 @@ const Welcome = () => {
       description: "Find resources, support, and guidance for your journey",
       action: "Explore Resources",
       link: "/help",
-      color: "from-blue-500 to-blue-600"
+      color: "from-osu-scarlet to-osu-scarlet-dark"
     },
     {
       icon: HandHeart,
@@ -80,7 +81,7 @@ const Welcome = () => {
       description: "Volunteer, donate, or share your expertise with our community",
       action: "Get Involved",
       link: "/support",
-      color: "from-green-500 to-green-600"
+      color: "from-osu-gray to-osu-gray-dark"
     },
     {
       icon: Briefcase,
@@ -88,19 +89,22 @@ const Welcome = () => {
       description: "Join our network of verified community partners",
       action: "Become a Partner",
       link: "/partner-signup",
-      color: "from-purple-500 to-purple-600"
+      color: "from-osu-scarlet-light to-osu-scarlet"
     }
   ];
 
   const stats = [
-    { value: 10000, suffix: "+", label: "Families Helped" },
-    { value: 500, suffix: "+", label: "Community Resources" },
-    { value: 150, suffix: "+", label: "Verified Partners" },
-    { value: 99, suffix: "%", label: "Satisfaction Rate" }
+    { value: 50, suffix: " States", label: "Nationwide Network" },
+    { value: 24, suffix: "/7", label: "Crisis Support Available" },
+    { value: 100, suffix: "%", label: "Free Resources" },
+    { value: 0, suffix: "", label: "No Hidden Fees" }
   ];
 
   return (
     <main id="main" className="min-h-screen">
+      {/* Newsletter Modal - Auto-opens after 3 seconds */}
+      <NewsletterModal />
+
       {/* Hero Section with Animated Background */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-osu-scarlet via-osu-gray to-osu-scarlet">
         {/* Animated Background Overlay */}
@@ -325,41 +329,46 @@ const Welcome = () => {
         </div>
       </section>
 
-      {/* Newsletter Signup with Incentive */}
-      <section className="py-20 bg-gradient-to-b from-primary/5 to-background">
+      {/* Newsletter Signup Section - MOVED TO TOP PRIORITY */}
+      <section className="py-20 bg-gradient-to-b from-background to-primary/5">
         <div className="container px-4">
           <div className="max-w-3xl mx-auto">
-            <Card className="bg-gradient-to-br from-primary/10 to-primary/5 border-primary/20">
+            <Card className="bg-gradient-to-br from-osu-scarlet/10 via-osu-gray/5 to-osu-scarlet/5 border-osu-scarlet/20 shadow-xl">
               <CardContent className="p-8 md:p-12 space-y-6 text-center">
-                <div className="inline-block p-4 bg-primary/10 rounded-full">
-                  <Sparkles className="h-12 w-12 text-primary" />
+                <div className="inline-block p-4 bg-gradient-to-br from-osu-scarlet to-osu-scarlet-dark rounded-full shadow-lg">
+                  <Sparkles className="h-12 w-12 text-white" />
                 </div>
                 <h2 className="font-heading text-3xl md:text-4xl font-bold text-foreground">
-                  Get Your Free Resource Guide
+                  Stay Connected with Our Community
                 </h2>
-                <p className="text-lg text-muted-foreground max-w-xl mx-auto">
-                  Join <AnimatedCounter end={5000} suffix="+" /> subscribers and receive our comprehensive 
-                  reentry resource guide, plus weekly tips, success stories, and community updates.
+                <p className="text-lg text-muted-foreground max-w-xl mx-auto leading-relaxed">
+                  Subscribe to receive curated resources, success stories, and connections to newsletters 
+                  and support networks in your realm—all tailored to justice-impacted families.
                 </p>
                 
                 <div className="max-w-md mx-auto">
                   <NewsletterSignup />
                 </div>
 
-                <div className="flex items-center justify-center gap-4 text-sm text-muted-foreground pt-4">
+                <div className="flex items-center justify-center gap-4 text-sm text-muted-foreground pt-4 flex-wrap">
                   <span className="flex items-center gap-1">
-                    <CheckCircle className="h-4 w-4 text-primary" />
+                    <CheckCircle className="h-4 w-4 text-osu-scarlet" />
                     No spam
                   </span>
                   <span className="flex items-center gap-1">
-                    <CheckCircle className="h-4 w-4 text-primary" />
+                    <CheckCircle className="h-4 w-4 text-osu-scarlet" />
                     Unsubscribe anytime
                   </span>
                   <span className="flex items-center gap-1">
-                    <Shield className="h-4 w-4 text-primary" />
+                    <Shield className="h-4 w-4 text-osu-scarlet" />
                     Privacy protected
                   </span>
                 </div>
+                
+                <p className="text-xs text-muted-foreground/70 pt-2 leading-relaxed">
+                  We partner with SparkLoop and Beehiiv to connect you with relevant resources and newsletters 
+                  that support justice-impacted communities.
+                </p>
               </CardContent>
             </Card>
           </div>

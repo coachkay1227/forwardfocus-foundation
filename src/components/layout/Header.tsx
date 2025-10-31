@@ -256,8 +256,8 @@ const Header = ({
                     </DropdownMenuContent>
                   </DropdownMenu> : null}
 
-                  {/* Get Involved CTA */}
-                  <Button size="sm" asChild className="bg-[hsl(var(--osu-scarlet))] hover:bg-[hsl(var(--osu-scarlet-dark))] text-white font-medium px-4 py-2 rounded-lg shadow-sm hover:shadow-md transition-all duration-200">
+                  {/* Get Involved CTA - 3D Gold Styling */}
+                  <Button size="sm" asChild className="get-involved-gold-button">
                     <NavLink to="/support">Get Involved</NavLink>
                   </Button>
                 </div>
