@@ -29,6 +29,7 @@ const LaunchInstructions = lazy(() => import("@/components/admin/LaunchInstructi
 const PartnerVerificationManager = lazy(() => import("@/components/admin/PartnerVerificationManager").then(m => ({ default: m.PartnerVerificationManager })));
 const SuccessStoriesManager = lazy(() => import("@/components/admin/SuccessStoriesManager").then(m => ({ default: m.SuccessStoriesManager })));
 const MarketingImageGenerator = lazy(() => import("@/components/ai/MarketingImageGenerator").then(m => ({ default: m.MarketingImageGenerator })));
+const PreLaunchChecklist = lazy(() => import("@/components/admin/PreLaunchChecklist").then(m => ({ default: m.PreLaunchChecklist })));
 
 const ComponentLoader = () => (
   <div className="space-y-4">
@@ -484,6 +485,7 @@ const Admin = () => {
                 </p>
               </div>
               
+              <PreLaunchChecklist />
               <AdminSetup />
               <LaunchChecklist />
               <LaunchInstructions />
