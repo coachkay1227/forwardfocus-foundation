@@ -9,6 +9,7 @@ import { Navigate, Link } from "react-router-dom";
 import { Eye, EyeOff } from "lucide-react";
 import communityImage from "@/assets/diverse-families-healing.jpg";
 import AuthLayout from "@/components/layout/AuthLayout";
+import { supabase } from "@/integrations/supabase/client";
 
 const Auth = () => {
   const { user, signIn, signUp, signInWithGoogle, signInWithApple, loading } = useAuth();
@@ -19,6 +20,7 @@ const Auth = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [authLoading, setAuthLoading] = useState(false);
+  const [isResettingPassword, setIsResettingPassword] = useState(false);
   const { transferToUser } = useAnonymousSession();
 
   useEffect(() => {
@@ -164,6 +166,45 @@ const Auth = () => {
     }
   };
 
+  const handleForgotPassword = async () => {
+    if (!email) {
+      toast({
+        title: "Email Required",
+        description: "Please enter your email address to reset your password.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsResettingPassword(true);
+    try {
+      const { error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: `${window.location.origin}/auth`,
+      });
+
+      if (error) {
+        toast({
+          title: "Password Reset Failed",
+          description: error.message,
+          variant: "destructive",
+        });
+      } else {
+        toast({
+          title: "Check Your Email",
+          description: "We've sent you a password reset link. Please check your email and follow the instructions.",
+        });
+      }
+    } catch (err: any) {
+      toast({
+        title: "Error",
+        description: err.message || "Failed to send password reset email.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsResettingPassword(false);
+    }
+  };
+
   if (loading) {
     return (
       <AuthLayout>
@@ -284,7 +325,21 @@ const Auth = () => {
                 </div>
               )}
               
-              <Button 
+              {isLogin && (
+                <div className="text-right">
+                  <Button
+                    type="button"
+                    variant="link"
+                    onClick={handleForgotPassword}
+                    disabled={isResettingPassword}
+                    className="text-xs text-muted-foreground hover:text-primary p-0 h-auto"
+                  >
+                    {isResettingPassword ? "Sending..." : "Forgot Password?"}
+                  </Button>
+                </div>
+              )}
+              
+              <Button
                 type="submit" 
                 disabled={authLoading}
                 variant="premium"
