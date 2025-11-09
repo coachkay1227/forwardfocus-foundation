@@ -1414,7 +1414,65 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      bookings_secure: {
+        Row: {
+          booking_type: string | null
+          created_at: string | null
+          duration_minutes: number | null
+          email: string | null
+          id: string | null
+          name: string | null
+          notes: string | null
+          phone: string | null
+          reminder_sent: boolean | null
+          scheduled_date: string | null
+          scheduled_time: string | null
+          status: string | null
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          booking_type?: string | null
+          created_at?: string | null
+          duration_minutes?: number | null
+          email?: never
+          id?: string | null
+          name?: never
+          notes?: string | null
+          phone?: never
+          reminder_sent?: boolean | null
+          scheduled_date?: string | null
+          scheduled_time?: string | null
+          status?: string | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          booking_type?: string | null
+          created_at?: string | null
+          duration_minutes?: number | null
+          email?: never
+          id?: string | null
+          name?: never
+          notes?: string | null
+          phone?: never
+          reminder_sent?: boolean | null
+          scheduled_date?: string | null
+          scheduled_time?: string | null
+          status?: string | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "bookings_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Functions: {
       approve_admin_contact_access: {
@@ -1498,6 +1556,7 @@ export type Database = {
         Returns: boolean
       }
       is_user_admin: { Args: never; Returns: boolean }
+      log_profile_access: { Args: never; Returns: undefined }
       request_admin_contact_access: {
         Args: {
           p_access_purpose: string
