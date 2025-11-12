@@ -155,6 +155,69 @@ Here are the resources I found for you:`;
 
     console.log('AI Response generated successfully');
 
+    // Check if we need web search fallback
+    let webResources: any[] = [];
+    const minCuratedResults = 3;
+    const needsFallback = relevantResources.length < minCuratedResults;
+
+    if (needsFallback) {
+      console.log(`Only ${relevantResources.length} curated results found, triggering web search fallback`);
+      
+      try {
+        // Build Ohio-specific search query
+        let webSearchQuery = `Ohio ${query} verified organizations with phone numbers and websites`;
+        if (county) {
+          webSearchQuery += ` in ${county} County`;
+        } else if (location) {
+          webSearchQuery += ` in ${location}`;
+        }
+        webSearchQuery += " site:.org OR site:.gov OR site:ohio.gov";
+
+        const perplexityResponse = await fetch('https://api.perplexity.ai/chat/completions', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${Deno.env.get('PERPLEXITY_API_KEY')}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            model: 'llama-3.1-sonar-small-128k-online',
+            messages: [
+              {
+                role: 'system',
+                content: 'You are a resource finder. Extract contact information (name, phone, website, description) for Ohio social services and return as JSON array.'
+              },
+              {
+                role: 'user',
+                content: webSearchQuery
+              }
+            ],
+            temperature: 0.2,
+            max_tokens: 1000
+          }),
+        });
+
+        if (perplexityResponse.ok) {
+          const perplexityData = await perplexityResponse.json();
+          const webResponse = perplexityData.choices[0].message.content;
+          
+          // Parse the web response and create web resources
+          webResources = [{
+            name: 'Web Search Results',
+            description: webResponse,
+            type: 'web_search',
+            verified: false,
+            source: 'perplexity'
+          }];
+          
+          console.log(`Added ${webResources.length} web search results`);
+        } else {
+          console.error('Perplexity API error:', await perplexityResponse.text());
+        }
+      } catch (webError) {
+        console.error('Web search fallback error:', webError);
+      }
+    }
+
     // Log usage analytics
     const responseTime = Date.now() - startTime;
     try {
@@ -170,8 +233,10 @@ Here are the resources I found for you:`;
 
     return new Response(JSON.stringify({
       response: aiResponse,
-      resources: relevantResources,
-      totalFound: resources?.length || 0
+      curatedResources: relevantResources,
+      webResources: webResources,
+      totalFound: resources?.length || 0,
+      usedWebFallback: needsFallback && webResources.length > 0
     }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });

@@ -16,27 +16,30 @@ interface Message {
   type: 'user' | 'ai';
   content: string;
   timestamp: Date;
-  resources?: Resource[];
+  curatedResources?: Resource[];
+  webResources?: Resource[];
+  usedWebFallback?: boolean;
 }
 
 interface Resource {
-  id: string;
+  id?: string;
   name: string;
   title?: string;
-  organization: string;
-  category: string;
-  type: string;
-  city: string;
-  county: string;
+  organization?: string;
+  category?: string;
+  type?: string;
+  city?: string;
+  county?: string;
   state?: string;
   description?: string;
   phone?: string;
   website_url?: string;
   email?: string;
   address?: string;
-  verified: boolean;
-  justice_friendly: boolean;
-  rating: number;
+  verified?: boolean;
+  justice_friendly?: boolean;
+  rating?: number;
+  source?: 'database' | 'perplexity';
 }
 
 interface AIResourceDiscoveryProps {
@@ -102,7 +105,9 @@ const AIResourceDiscovery: React.FC<AIResourceDiscoveryProps> = ({
         type: 'ai',
         content: formatAIResponse(data.response || 'I found some resources for you.'),
         timestamp: new Date(),
-        resources: data.resources || []
+        curatedResources: data.curatedResources || [],
+        webResources: data.webResources || [],
+        usedWebFallback: data.usedWebFallback || false
       };
 
       setMessages(prev => [...prev, aiMessage]);
@@ -166,7 +171,8 @@ const AIResourceDiscovery: React.FC<AIResourceDiscoveryProps> = ({
           type: 'ai',
           content,
           timestamp: new Date(),
-          resources: fallbackResources || []
+          curatedResources: fallbackResources || [],
+          webResources: []
         };
 
         setMessages(prev => [...prev, aiMessage]);
@@ -210,7 +216,9 @@ const AIResourceDiscovery: React.FC<AIResourceDiscoveryProps> = ({
         <div className="flex items-start justify-between">
           <div>
             <CardTitle className="text-base font-semibold text-foreground">{resource.name}</CardTitle>
-            <p className="text-sm text-muted-foreground">{resource.organization}</p>
+            {resource.organization && (
+              <p className="text-sm text-muted-foreground">{resource.organization}</p>
+            )}
           </div>
           <div className="flex gap-1 flex-wrap">
             {resource.verified && (
@@ -227,11 +235,15 @@ const AIResourceDiscovery: React.FC<AIResourceDiscoveryProps> = ({
       </CardHeader>
       <CardContent className="pt-0">
         <div className="space-y-3">
-          <div className="flex items-center gap-2 text-sm text-muted-foreground">
-            <MapPin className="h-4 w-4" />
-            <span>{resource.city}, {resource.county} County</span>
-            <Badge variant="outline" className="text-xs">{resource.type}</Badge>
-          </div>
+          {resource.city && resource.county && (
+            <div className="flex items-center gap-2 text-sm text-muted-foreground">
+              <MapPin className="h-4 w-4" />
+              <span>{resource.city}, {resource.county} County</span>
+              {resource.type && (
+                <Badge variant="outline" className="text-xs">{resource.type}</Badge>
+              )}
+            </div>
+          )}
           
           {resource.description && (
             <p className="text-sm text-foreground leading-relaxed">{resource.description}</p>
@@ -263,6 +275,34 @@ const AIResourceDiscovery: React.FC<AIResourceDiscoveryProps> = ({
               </Button>
             )}
           </div>
+        </div>
+      </CardContent>
+    </Card>
+  );
+
+  const WebResourceCard = ({ resource }: { resource: Resource }) => (
+    <Card className="mb-3 border-l-4 border-l-orange-500 shadow-sm bg-orange-50/50 dark:bg-orange-950/20">
+      <CardHeader className="pb-3">
+        <div className="flex items-start justify-between">
+          <div className="flex-1">
+            <div className="flex items-center gap-2 mb-1">
+              <Globe className="h-4 w-4 text-orange-600" />
+              <CardTitle className="text-base font-semibold text-foreground">{resource.name}</CardTitle>
+            </div>
+            <Badge variant="outline" className="text-xs border-orange-500 text-orange-700 dark:text-orange-400">
+              Web Result - Not Verified
+            </Badge>
+          </div>
+        </div>
+      </CardHeader>
+      <CardContent className="pt-0">
+        <div className="space-y-3">
+          {resource.description && (
+            <p className="text-sm text-foreground leading-relaxed">{resource.description}</p>
+          )}
+          <p className="text-xs text-muted-foreground italic border-l-2 border-orange-300 pl-2">
+            ℹ️ This result was found via web search. Please verify credentials and services before use.
+          </p>
         </div>
       </CardContent>
     </Card>
@@ -381,16 +421,38 @@ const AIResourceDiscovery: React.FC<AIResourceDiscoveryProps> = ({
                         )}
                       </div>
                       
-                      {message.resources && message.resources.length > 0 && (
+                      {message.curatedResources && message.curatedResources.length > 0 && (
                         <div className="space-y-3">
                           <h4 className="text-base font-semibold text-foreground flex items-center gap-2">
-                            <MapPin className="h-4 w-4" />
-                            Recommended Resources ({message.resources.length})
+                            <Shield className="h-4 w-4 text-primary" />
+                            Verified Partners ({message.curatedResources.length})
                           </h4>
                           <div className="space-y-3">
-                            {message.resources.map((resource) => (
-                              <ResourceCard key={resource.id} resource={resource} />
+                            {message.curatedResources.map((resource, idx) => (
+                              <ResourceCard key={resource.id || idx} resource={resource} />
                             ))}
+                          </div>
+                        </div>
+                      )}
+                      
+                      {message.webResources && message.webResources.length > 0 && (
+                        <div className="space-y-3 mt-4">
+                          <div className="flex items-center gap-2">
+                            <Globe className="h-4 w-4 text-orange-600" />
+                            <h4 className="text-base font-semibold text-foreground">
+                              Additional Web Results ({message.webResources.length})
+                            </h4>
+                          </div>
+                          <div className="bg-orange-50/30 dark:bg-orange-950/10 border border-orange-200 dark:border-orange-800 rounded-lg p-3">
+                            <p className="text-xs text-muted-foreground mb-3">
+                              ⚠️ These results were found via web search and have not been verified by Forward Focus. 
+                              Please confirm credentials and services before using.
+                            </p>
+                            <div className="space-y-3">
+                              {message.webResources.map((resource, idx) => (
+                                <WebResourceCard key={idx} resource={resource} />
+                              ))}
+                            </div>
                           </div>
                         </div>
                       )}
