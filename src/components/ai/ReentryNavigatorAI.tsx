@@ -7,6 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import { supabase } from '@/integrations/supabase/client';
 import { parseTextForLinks, formatAIResponse, type ParsedTextSegment } from '@/lib/text-parser';
 import EmailChatHistoryModal from './EmailChatHistoryModal';
+import DOMPurify from 'dompurify';
 
 interface Message {
   id: string;
@@ -358,10 +359,16 @@ const ReentryNavigatorAI: React.FC<ReentryNavigatorAIProps> = ({ isOpen, onClose
                             {segment.type === 'text' ? (
                               <span 
                                 dangerouslySetInnerHTML={{ 
-                                  __html: segment.content
-                                    .replace(/\*\*(.*?)\*\*/g, '<strong class="font-semibold">$1</strong>')
-                                    .replace(/\*(.*?)\*/g, '<em class="italic">$1</em>')
-                                    .replace(/\n/g, '<br />')
+                                  __html: DOMPurify.sanitize(
+                                    segment.content
+                                      .replace(/\*\*(.*?)\*\*/g, '<strong class="font-semibold">$1</strong>')
+                                      .replace(/\*(.*?)\*/g, '<em class="italic">$1</em>')
+                                      .replace(/\n/g, '<br />'),
+                                    { 
+                                      ALLOWED_TAGS: ['strong', 'em', 'br'],
+                                      ALLOWED_ATTR: []
+                                    }
+                                  )
                                 }} 
                               />
                             ) : (

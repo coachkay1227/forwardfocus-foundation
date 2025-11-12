@@ -1,70 +1,75 @@
 project_id = "gzukhsqgkwljfvwkfuno"
 
+# Webhooks - Public (validate signatures instead)
 [functions.sparkloop-webhook]
 verify_jwt = false
 
 [functions.beehiiv-webhook]
 verify_jwt = false
 
-[functions.check-verification-expiration]
-verify_jwt = false
-
-[functions.send-verification-email]
-verify_jwt = false
-
-[functions.ai-resource-discovery]
-verify_jwt = false
-
-[functions.chat]
-verify_jwt = false
-
-[functions.coach-k]
-verify_jwt = false
-
-[functions.create-donation-payment]
-verify_jwt = false
-
-[functions.crisis-emergency-ai]
-verify_jwt = false
-
-[functions.crisis-support-ai]
-verify_jwt = false
-
-[functions.newsletter-signup]
-verify_jwt = false
-
-[functions.reentry-navigator-ai]
-verify_jwt = false
-
-[functions.send-auth-email]
-verify_jwt = false
-
+# Public contact/signup forms - Should have rate limiting
 [functions.send-contact-email]
-verify_jwt = false
-
-[functions.send-newsletter]
 verify_jwt = false
 
 [functions.send-partnership-email]
 verify_jwt = false
 
-[functions.send-referral-notification]
-verify_jwt = false
-
 [functions.send-support-email]
 verify_jwt = false
 
-[functions.victim-support-ai]
+[functions.newsletter-signup]
 verify_jwt = false
 
-[functions.ai-recommend-resources]
+[functions.create-donation-payment]
 verify_jwt = false
 
-[functions.partner-support-chat]
+# Auth-related - Can be public for password resets
+[functions.send-auth-email]
 verify_jwt = false
+
+# Admin operations - Require authentication
+[functions.check-verification-expiration]
+verify_jwt = true
+
+[functions.send-verification-email]
+verify_jwt = true
+
+[functions.send-newsletter]
+verify_jwt = true
+
+[functions.send-referral-notification]
+verify_jwt = true
 
 [functions.generate-success-story]
-verify_jwt = false
+verify_jwt = true
 
 [functions.generate-marketing-image]
-verify_jwt = false
+verify_jwt = true
+
+# AI endpoints - Require authentication to prevent abuse
+[functions.ai-resource-discovery]
+verify_jwt = true
+
+[functions.chat]
+verify_jwt = true
+
+[functions.coach-k]
+verify_jwt = true
+
+[functions.crisis-emergency-ai]
+verify_jwt = true
+
+[functions.crisis-support-ai]
+verify_jwt = true
+
+[functions.reentry-navigator-ai]
+verify_jwt = true
+
+[functions.victim-support-ai]
+verify_jwt = true
+
+[functions.ai-recommend-resources]
+verify_jwt = true
+
+[functions.partner-support-chat]
+verify_jwt = true
