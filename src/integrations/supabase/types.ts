@@ -662,6 +662,8 @@ export type Database = {
           status: string
           subscribed_at: string
           subscription_source: string | null
+          token_expires_at: string | null
+          unsubscribe_token: string | null
           unsubscribed_at: string | null
           updated_at: string
           user_agent: string | null
@@ -675,6 +677,8 @@ export type Database = {
           status?: string
           subscribed_at?: string
           subscription_source?: string | null
+          token_expires_at?: string | null
+          unsubscribe_token?: string | null
           unsubscribed_at?: string | null
           updated_at?: string
           user_agent?: string | null
@@ -688,6 +692,8 @@ export type Database = {
           status?: string
           subscribed_at?: string
           subscription_source?: string | null
+          token_expires_at?: string | null
+          unsubscribe_token?: string | null
           unsubscribed_at?: string | null
           updated_at?: string
           user_agent?: string | null

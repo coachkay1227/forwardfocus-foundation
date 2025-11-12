@@ -2,6 +2,14 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { Mail, CheckCircle, AlertCircle } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
@@ -11,6 +19,9 @@ export const NewsletterSignup = () => {
   const [name, setName] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isSubscribed, setIsSubscribed] = useState(false);
+  const [unsubscribeEmail, setUnsubscribeEmail] = useState("");
+  const [isUnsubscribing, setIsUnsubscribing] = useState(false);
+  const [showUnsubscribeDialog, setShowUnsubscribeDialog] = useState(false);
   const { toast } = useToast();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -56,6 +67,49 @@ export const NewsletterSignup = () => {
       });
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const handleUnsubscribe = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!unsubscribeEmail) {
+      toast({
+        title: "Email Required",
+        description: "Please enter your email address",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsUnsubscribing(true);
+
+    try {
+      const { data, error } = await supabase.functions.invoke('request-newsletter-unsubscribe', {
+        body: {
+          email: unsubscribeEmail.trim(),
+        }
+      });
+
+      if (error) throw error;
+
+      toast({
+        title: "Verification Email Sent",
+        description: data.message || "Please check your email to confirm unsubscription.",
+      });
+
+      setUnsubscribeEmail("");
+      setShowUnsubscribeDialog(false);
+
+    } catch (error: any) {
+      console.error('Unsubscribe request error:', error);
+      toast({
+        title: "Request Failed",
+        description: error.message || "Failed to process unsubscribe request. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsUnsubscribing(false);
     }
   };
 
@@ -130,9 +184,74 @@ export const NewsletterSignup = () => {
           </Button>
         </form>
         
-        <p className="text-xs text-muted-foreground/80 mt-3 text-center">
-          We respect your privacy. Unsubscribe at any time.
-        </p>
+        <div className="flex items-center justify-between mt-4 pt-3 border-t border-border/50">
+          <p className="text-xs text-muted-foreground/80">
+            We respect your privacy.
+          </p>
+          
+          <Dialog open={showUnsubscribeDialog} onOpenChange={setShowUnsubscribeDialog}>
+            <DialogTrigger asChild>
+              <Button 
+                variant="ghost" 
+                size="sm" 
+                className="text-xs h-auto py-1 px-2 text-muted-foreground hover:text-foreground"
+              >
+                Unsubscribe
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-md">
+              <DialogHeader>
+                <DialogTitle>Unsubscribe from Newsletter</DialogTitle>
+                <DialogDescription>
+                  Enter your email address to receive a verification link for unsubscribing.
+                </DialogDescription>
+              </DialogHeader>
+              
+              <form onSubmit={handleUnsubscribe} className="space-y-4">
+                <div>
+                  <Input
+                    type="email"
+                    placeholder="Enter your email address"
+                    value={unsubscribeEmail}
+                    onChange={(e) => setUnsubscribeEmail(e.target.value)}
+                    required
+                    className="w-full"
+                  />
+                </div>
+                
+                <div className="flex gap-2">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => setShowUnsubscribeDialog(false)}
+                    className="flex-1"
+                  >
+                    Cancel
+                  </Button>
+                  <Button 
+                    type="submit" 
+                    disabled={isUnsubscribing}
+                    variant="destructive"
+                    className="flex-1"
+                  >
+                    {isUnsubscribing ? (
+                      <div className="flex items-center gap-2">
+                        <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                        Sending...
+                      </div>
+                    ) : (
+                      "Send Verification Email"
+                    )}
+                  </Button>
+                </div>
+                
+                <p className="text-xs text-muted-foreground text-center">
+                  You'll receive an email with a link to confirm your unsubscription.
+                </p>
+              </form>
+            </DialogContent>
+          </Dialog>
+        </div>
       </CardContent>
     </Card>
   );

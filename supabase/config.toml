@@ -20,6 +20,12 @@ verify_jwt = false
 [functions.newsletter-signup]
 verify_jwt = false
 
+[functions.request-newsletter-unsubscribe]
+verify_jwt = false
+
+[functions.verify-newsletter-unsubscribe]
+verify_jwt = false
+
 [functions.create-donation-payment]
 verify_jwt = false
 
