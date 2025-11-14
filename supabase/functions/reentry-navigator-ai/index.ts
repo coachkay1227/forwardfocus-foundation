@@ -38,7 +38,7 @@ serve(async (req) => {
       .from('resources')
       .select('*')
       .or('type.ilike.%housing%,type.ilike.%employment%,type.ilike.%job training%,type.ilike.%education%,type.ilike.%reentry%,type.ilike.%legal aid%,type.ilike.%mental health%,type.ilike.%substance abuse%,type.ilike.%healthcare%,type.ilike.%transportation%')
-      .eq('verified', 'verified')
+      .eq('verified', true)
       .limit(20);
 
     if (location) {
