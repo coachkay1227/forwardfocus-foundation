@@ -18,6 +18,7 @@ import { useToast } from "@/hooks/use-toast";
 import { EmailCampaignForm } from "./EmailCampaignForm";
 import { MonetizationEarnings } from "./MonetizationEarnings";
 import { NewsletterUnsubscribeMonitor } from "./NewsletterUnsubscribeMonitor";
+import { ReminderEmailManager } from "./ReminderEmailManager";
 
 interface NewsletterSubscription {
   id: string;
@@ -235,6 +236,7 @@ export const EmailMarketingDashboard = () => {
         <TabsList>
           <TabsTrigger value="subscribers">Subscribers</TabsTrigger>
           <TabsTrigger value="campaigns">Campaigns</TabsTrigger>
+          <TabsTrigger value="reminders">📧 Reminders</TabsTrigger>
           <TabsTrigger value="unsubscribe">Unsubscribe Monitor</TabsTrigger>
           <TabsTrigger value="earnings">💰 Earnings</TabsTrigger>
         </TabsList>
@@ -354,6 +356,10 @@ export const EmailMarketingDashboard = () => {
               )}
             </CardContent>
           </Card>
+        </TabsContent>
+
+        <TabsContent value="reminders" className="space-y-4">
+          <ReminderEmailManager />
         </TabsContent>
 
         <TabsContent value="unsubscribe" className="space-y-4">
