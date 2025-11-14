@@ -4,7 +4,7 @@ import { Resend } from "npm:resend@4.0.0";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
+  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type, x-cron-token",
 };
 
 interface ReminderType {
@@ -26,26 +26,44 @@ const handler = async (req: Request): Promise<Response> => {
 
     const resend = new Resend(Deno.env.get("RESEND_API_KEY"));
 
-    // Verify admin authentication
+    // Dual authentication: Admin JWT OR Cron Token
+    const cronToken = req.headers.get("x-cron-token");
+    const cronSecretToken = Deno.env.get("CRON_SECRET_TOKEN");
     const authHeader = req.headers.get("Authorization");
-    if (!authHeader) {
-      throw new Error("Authentication required");
+    
+    let isAuthenticated = false;
+    let authSource = "";
+    let userId: string | null = null;
+
+    // Check cron token first (for automated jobs)
+    if (cronToken && cronToken === cronSecretToken) {
+      isAuthenticated = true;
+      authSource = "cron_automated";
+      console.log("✅ Cron-triggered email send authenticated");
+    } 
+    // Fall back to JWT authentication (for manual dashboard triggers)
+    else if (authHeader) {
+      const token = authHeader.replace("Bearer ", "");
+      const { data: userData, error: userError } = await supabaseClient.auth.getUser(token);
+      
+      if (!userError && userData.user) {
+        const { data: userRoles } = await supabaseClient
+          .from('user_roles')
+          .select('role')
+          .eq('user_id', userData.user.id);
+
+        const isAdmin = userRoles?.some(role => role.role === 'admin');
+        if (isAdmin) {
+          isAuthenticated = true;
+          authSource = "admin_manual";
+          userId = userData.user.id;
+          console.log("✅ Admin-triggered email send authenticated");
+        }
+      }
     }
 
-    const token = authHeader.replace("Bearer ", "");
-    const { data: userData, error: userError } = await supabaseClient.auth.getUser(token);
-    if (userError || !userData.user) {
-      throw new Error("Invalid authentication");
-    }
-
-    const { data: userRoles } = await supabaseClient
-      .from('user_roles')
-      .select('role')
-      .eq('user_id', userData.user.id);
-
-    const isAdmin = userRoles?.some(role => role.role === 'admin');
-    if (!isAdmin) {
-      throw new Error("Admin privileges required");
+    if (!isAuthenticated) {
+      throw new Error("Authentication required: Provide valid admin JWT or cron token");
     }
 
     const { reminderType }: { reminderType: ReminderType } = await req.json();
@@ -118,17 +136,60 @@ const handler = async (req: Request): Promise<Response> => {
 
     console.log(`Reminders sent: ${successCount} success, ${failureCount} failures`);
 
+    // Log to audit_logs for monitoring
+    try {
+      await supabaseClient.from('audit_logs').insert({
+        user_id: userId, // null for cron jobs
+        action: `EMAIL_CAMPAIGN_${reminderType.type.toUpperCase()}`,
+        resource_type: 'email_campaign',
+        details: {
+          auth_source: authSource,
+          email_type: reminderType.type,
+          subject: reminderType.subject || subject,
+          recipients_total: subscribers.length,
+          sent_count: successCount,
+          failed_count: failureCount,
+          timestamp: new Date().toISOString()
+        },
+        severity: failureCount > 0 ? 'warn' : 'info'
+      });
+    } catch (logError) {
+      console.error("Failed to log audit entry:", logError);
+    }
+
     return new Response(
       JSON.stringify({ 
         success: true, 
         message: `Reminders sent to ${successCount} subscribers`,
-        stats: { success: successCount, failures: failureCount }
+        stats: { success: successCount, failures: failureCount },
+        auth_source: authSource
       }),
       { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
 
   } catch (error: any) {
     console.error("Reminder email error:", error);
+    
+    // Log error to security_alerts for critical failures
+    try {
+      const supabaseClient = createClient(
+        Deno.env.get("SUPABASE_URL") ?? "",
+        Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? ""
+      );
+      
+      await supabaseClient.from('security_alerts').insert({
+        alert_type: 'email_campaign_failure',
+        severity: 'high',
+        description: `Email campaign failed: ${error.message}`,
+        metadata: {
+          error: error.message,
+          timestamp: new Date().toISOString()
+        }
+      });
+    } catch (alertError) {
+      console.error("Failed to create security alert:", alertError);
+    }
+    
     return new Response(
       JSON.stringify({ error: error.message || "Failed to send reminders" }),
       { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }

@@ -79,3 +79,7 @@ verify_jwt = true
 
 [functions.partner-support-chat]
 verify_jwt = true
+
+# Email Automation - Public with token authentication
+[functions.send-reminder-emails]
+verify_jwt = false
