@@ -410,6 +410,41 @@ export type Database = {
         }
         Relationships: []
       }
+      email_campaign_settings: {
+        Row: {
+          created_at: string | null
+          id: string
+          setting_key: string
+          setting_value: Json
+          updated_at: string | null
+          updated_by: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          setting_key: string
+          setting_value?: Json
+          updated_at?: string | null
+          updated_by?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          setting_key?: string
+          setting_value?: Json
+          updated_at?: string | null
+          updated_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "email_campaign_settings_updated_by_fkey"
+            columns: ["updated_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       email_campaigns: {
         Row: {
           click_count: number | null
@@ -463,6 +498,145 @@ export type Database = {
           {
             foreignKeyName: "email_campaigns_created_by_fkey"
             columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      email_preferences: {
+        Row: {
+          created_at: string | null
+          friday_recap: boolean | null
+          id: string
+          monday_newsletter: boolean | null
+          subscriber_id: string
+          sunday_community_call: boolean | null
+          updated_at: string | null
+          wednesday_collective: boolean | null
+        }
+        Insert: {
+          created_at?: string | null
+          friday_recap?: boolean | null
+          id?: string
+          monday_newsletter?: boolean | null
+          subscriber_id: string
+          sunday_community_call?: boolean | null
+          updated_at?: string | null
+          wednesday_collective?: boolean | null
+        }
+        Update: {
+          created_at?: string | null
+          friday_recap?: boolean | null
+          id?: string
+          monday_newsletter?: boolean | null
+          subscriber_id?: string
+          sunday_community_call?: boolean | null
+          updated_at?: string | null
+          wednesday_collective?: boolean | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "email_preferences_subscriber_id_fkey"
+            columns: ["subscriber_id"]
+            isOneToOne: true
+            referencedRelation: "newsletter_subscriptions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      email_send_queue: {
+        Row: {
+          created_at: string | null
+          email_content: string
+          email_type: string
+          error_message: string | null
+          id: string
+          last_attempt_at: string | null
+          max_retries: number | null
+          recipient_email: string
+          recipient_name: string | null
+          retry_count: number | null
+          scheduled_for: string | null
+          sent_at: string | null
+          status: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          email_content: string
+          email_type: string
+          error_message?: string | null
+          id?: string
+          last_attempt_at?: string | null
+          max_retries?: number | null
+          recipient_email: string
+          recipient_name?: string | null
+          retry_count?: number | null
+          scheduled_for?: string | null
+          sent_at?: string | null
+          status?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          email_content?: string
+          email_type?: string
+          error_message?: string | null
+          id?: string
+          last_attempt_at?: string | null
+          max_retries?: number | null
+          recipient_email?: string
+          recipient_name?: string | null
+          retry_count?: number | null
+          scheduled_for?: string | null
+          sent_at?: string | null
+          status?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      email_templates: {
+        Row: {
+          content_blocks: Json
+          created_at: string | null
+          id: string
+          is_active: boolean | null
+          last_edited_by: string | null
+          subject: string
+          template_name: string
+          updated_at: string | null
+          variables: Json
+          version: number | null
+        }
+        Insert: {
+          content_blocks?: Json
+          created_at?: string | null
+          id?: string
+          is_active?: boolean | null
+          last_edited_by?: string | null
+          subject: string
+          template_name: string
+          updated_at?: string | null
+          variables?: Json
+          version?: number | null
+        }
+        Update: {
+          content_blocks?: Json
+          created_at?: string | null
+          id?: string
+          is_active?: boolean | null
+          last_edited_by?: string | null
+          subject?: string
+          template_name?: string
+          updated_at?: string | null
+          variables?: Json
+          version?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "email_templates_last_edited_by_fkey"
+            columns: ["last_edited_by"]
             isOneToOne: false
             referencedRelation: "profiles"
             referencedColumns: ["id"]
@@ -658,9 +832,11 @@ export type Database = {
           email: string
           id: string
           ip_address: string | null
+          last_login_at: string | null
           name: string | null
           status: string
           subscribed_at: string
+          subscriber_type: string | null
           subscription_source: string | null
           token_expires_at: string | null
           unsubscribe_token: string | null
@@ -673,9 +849,11 @@ export type Database = {
           email: string
           id?: string
           ip_address?: string | null
+          last_login_at?: string | null
           name?: string | null
           status?: string
           subscribed_at?: string
+          subscriber_type?: string | null
           subscription_source?: string | null
           token_expires_at?: string | null
           unsubscribe_token?: string | null
@@ -688,9 +866,11 @@ export type Database = {
           email?: string
           id?: string
           ip_address?: string | null
+          last_login_at?: string | null
           name?: string | null
           status?: string
           subscribed_at?: string
+          subscriber_type?: string | null
           subscription_source?: string | null
           token_expires_at?: string | null
           unsubscribe_token?: string | null
