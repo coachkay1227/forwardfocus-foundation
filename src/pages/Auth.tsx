@@ -21,6 +21,7 @@ const Auth = () => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [authLoading, setAuthLoading] = useState(false);
   const [isResettingPassword, setIsResettingPassword] = useState(false);
+  const [subscribeToNewsletter, setSubscribeToNewsletter] = useState(true);
   const { transferToUser } = useAnonymousSession();
 
   useEffect(() => {
@@ -107,19 +108,35 @@ const Auth = () => {
             variant: "destructive",
           });
         } else {
-          // Auto-subscribe to newsletter on successful signup
+          // Subscribe to newsletter if opted in
+          if (subscribeToNewsletter) {
+            try {
+              const { supabase } = await import("@/integrations/supabase/client");
+              await supabase.functions.invoke('newsletter-signup', {
+                body: { email, source: 'signup_opt_in' }
+              });
+            } catch (err) {
+              console.log('Newsletter signup failed:', err);
+            }
+          }
+          
+          // Send welcome email
           try {
             const { supabase } = await import("@/integrations/supabase/client");
-            await supabase.functions.invoke('newsletter-signup', {
-              body: { email, source: 'signup_auto_capture' }
+            await supabase.functions.invoke('send-auth-email', {
+              body: { 
+                email, 
+                type: 'welcome',
+                userData: { name: email.split('@')[0] }
+              }
             });
           } catch (err) {
-            console.log('Newsletter signup failed:', err);
+            console.log('Welcome email failed:', err);
           }
           
           toast({
             title: "Welcome to Forward Focus!",
-            description: "Your account has been created. You can now sign in.",
+            description: "Your account has been created. Check your email for next steps!",
           });
         }
       }
@@ -336,6 +353,21 @@ const Auth = () => {
                   >
                     {isResettingPassword ? "Sending..." : "Forgot Password?"}
                   </Button>
+                </div>
+              )}
+              
+              {!isLogin && (
+                <div className="flex items-start space-x-2 pt-2">
+                  <input
+                    type="checkbox"
+                    id="newsletter"
+                    checked={subscribeToNewsletter}
+                    onChange={(e) => setSubscribeToNewsletter(e.target.checked)}
+                    className="mt-1 h-4 w-4 rounded border-border text-primary focus:ring-primary"
+                  />
+                  <label htmlFor="newsletter" className="text-sm text-muted-foreground leading-tight cursor-pointer">
+                    Subscribe to <strong>Coach Kay News</strong> newsletter for weekly resources, success stories, and empowerment tips
+                  </label>
                 </div>
               )}
               
