@@ -20,6 +20,9 @@ import { MonetizationEarnings } from "./MonetizationEarnings";
 import { NewsletterUnsubscribeMonitor } from "./NewsletterUnsubscribeMonitor";
 import { ReminderEmailManager } from "./ReminderEmailManager";
 import { AutomatedEmailMonitor } from "./AutomatedEmailMonitor";
+import { EmailTemplateEditor } from "./EmailTemplateEditor";
+import { EmailQueueMonitor } from "./EmailQueueMonitor";
+import { TestEmailSender } from "./TestEmailSender";
 
 interface NewsletterSubscription {
   id: string;
@@ -360,8 +363,14 @@ export const EmailMarketingDashboard = () => {
         </TabsContent>
 
         <TabsContent value="reminders" className="space-y-4">
-          <AutomatedEmailMonitor />
           <ReminderEmailManager />
+          <EmailQueueMonitor />
+          <AutomatedEmailMonitor />
+        </TabsContent>
+
+        <TabsContent value="templates" className="space-y-4">
+          <EmailTemplateEditor />
+          <TestEmailSender />
         </TabsContent>
 
         <TabsContent value="unsubscribe" className="space-y-4">

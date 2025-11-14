@@ -1,14 +1,77 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
+import { Badge } from "@/components/ui/badge";
 import { toast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
-import { Mail, Calendar, Send } from "lucide-react";
+import { Mail, Calendar, Send, AlertCircle } from "lucide-react";
 
 export const ReminderEmailManager = () => {
   const [sending, setSending] = useState<string | null>(null);
+  const [sundayEmailActive, setSundayEmailActive] = useState(false);
+  const [loadingSettings, setLoadingSettings] = useState(true);
 
-  const sendReminder = async (type: 'site_usage' | 'booking_coaching' | 'weekly_engagement') => {
+  useEffect(() => {
+    loadSettings();
+  }, []);
+
+  const loadSettings = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('email_campaign_settings')
+        .select('setting_value')
+        .eq('setting_key', 'sunday_email_active')
+        .single();
+
+      if (error && error.code !== 'PGRST116') throw error;
+      
+      if (data) {
+        setSundayEmailActive(data.setting_value as boolean);
+      }
+    } catch (error: any) {
+      console.error('Error loading settings:', error);
+    } finally {
+      setLoadingSettings(false);
+    }
+  };
+
+  const toggleSundayEmail = async (enabled: boolean) => {
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) throw new Error("Not authenticated");
+
+      const { error } = await supabase
+        .from('email_campaign_settings')
+        .upsert({
+          setting_key: 'sunday_email_active',
+          setting_value: enabled,
+          updated_by: user.id,
+          updated_at: new Date().toISOString()
+        }, {
+          onConflict: 'setting_key'
+        });
+
+      if (error) throw error;
+
+      setSundayEmailActive(enabled);
+      toast({
+        title: enabled ? "Sunday Emails Activated" : "Sunday Emails Deactivated",
+        description: enabled 
+          ? "Sunday community call emails will now be sent automatically via cron"
+          : "Sunday community call emails are now inactive",
+      });
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: error.message || "Failed to update settings",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const sendReminder = async (type: 'site_usage' | 'booking_coaching' | 'weekly_engagement' | 'community_call') => {
     setSending(type);
     try {
       const { data: { session } } = await supabase.auth.getSession();
@@ -19,10 +82,12 @@ export const ReminderEmailManager = () => {
           reminderType: {
             type,
             subject: type === 'site_usage' 
-              ? "Don't Miss Out! Continue Your Growth Journey" 
+              ? "📚 This Week's Resources & Tools - Forward Focus Elevation" 
               : type === 'booking_coaching'
-              ? "Ready for Your Next Breakthrough? Book a Session"
-              : "This Week's Resources & Support"
+              ? "💫 The Collective: Your Community Awaits"
+              : type === 'weekly_engagement'
+              ? "🌟 Week in Review + What's Coming"
+              : "🎙️ Tonight at 6 PM: Weekly Community Call"
           }
         },
         headers: {
