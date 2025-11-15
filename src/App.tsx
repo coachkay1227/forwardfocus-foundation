@@ -28,6 +28,7 @@ const AboutUs = lazy(() => import("./pages/AboutUs"));
 const Support = lazy(() => import("./pages/Support"));
 const Register = lazy(() => import("./pages/Register"));
 const UnsubscribeConfirm = lazy(() => import("./pages/UnsubscribeConfirm"));
+const EmailPreferences = lazy(() => import("./pages/EmailPreferences"));
 const PartnerSignIn = lazy(() => import("./pages/PartnerSignIn"));
 const PartnerSignUp = lazy(() => import("./pages/PartnerSignUp"));
 const PartnerDashboard = lazy(() => import("./pages/PartnerDashboard"));
@@ -109,6 +110,7 @@ const App = () => {
                           <Route path="/terms" element={<TermsOfService />} />
                           <Route path="/donation-success" element={<DonationSuccess />} />
                           <Route path="/verify-unsubscribe" element={<UnsubscribeConfirm />} />
+                          <Route path="/email-preferences" element={<EmailPreferences />} />
                           <Route path="/resources/:id" element={<Navigate to="/help" replace />} />
                           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                           <Route path="*" element={<NotFound />} />
