@@ -1,9 +1,5 @@
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
-
-const corsHeaders = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
-};
+import { corsHeaders, handleCorsPreFlight, errorResponse, successResponse, verifyWebhookSignature } from '../_shared/utils.ts';
 
 interface BeehiivWebhookPayload {
   subscriber_email: string;
@@ -14,17 +10,25 @@ interface BeehiivWebhookPayload {
 }
 
 Deno.serve(async (req) => {
-  if (req.method === 'OPTIONS') {
-    return new Response(null, { headers: corsHeaders });
-  }
+  const corsResponse = handleCorsPreFlight(req);
+  if (corsResponse) return corsResponse;
 
   try {
+    // Optional signature verification (backward compatible)
+    const signature = req.headers.get('x-beehiiv-signature');
+    const secret = Deno.env.get('BEEHIIV_WEBHOOK_SECRET');
+    const rawBody = await req.text();
+    
+    const isValidSignature = await verifyWebhookSignature(rawBody, signature, secret);
+    if (!isValidSignature) {
+      return errorResponse('Invalid webhook signature', 401);
+    }
+
+    const webhookData: BeehiivWebhookPayload = JSON.parse(rawBody);
     const supabaseAdmin = createClient(
       Deno.env.get('SUPABASE_URL')!,
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
     );
-
-    const webhookData: BeehiivWebhookPayload = await req.json();
     
     console.log('Beehiiv webhook received:', webhookData);
 
@@ -37,10 +41,7 @@ Deno.serve(async (req) => {
 
     if (subscriberError || !subscriber) {
       console.error('Subscriber not found:', webhookData.subscriber_email);
-      return new Response(
-        JSON.stringify({ error: 'Subscriber not found' }),
-        { status: 404, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-      );
+      return errorResponse('Subscriber not found', 404);
     }
 
     // Record the earning
@@ -74,20 +75,13 @@ Deno.serve(async (req) => {
 
     console.log(`✅ Beehiiv earning recorded: $${webhookData.earnings_amount} from ${webhookData.partner_newsletter}`);
 
-    return new Response(
-      JSON.stringify({ 
-        success: true, 
-        message: 'Earning recorded successfully',
-        amount: webhookData.earnings_amount 
-      }),
-      { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-    );
+    return successResponse({ 
+      success: true, 
+      message: 'Earning recorded successfully',
+      amount: webhookData.earnings_amount 
+    });
 
   } catch (error) {
-    console.error('Beehiiv webhook error:', error);
-    return new Response(
-      JSON.stringify({ error: error.message }),
-      { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-    );
+    return errorResponse(error.message);
   }
 });
