@@ -130,8 +130,9 @@ export const PartnerSupportChatbot = () => {
             </Badge>
           )}
         </CardTitle>
-        <CardDescription>
-          Ask questions about referrals, verification, or partner features
+        <CardDescription className="space-y-2">
+          <span className="block">Ask questions about referrals, verification, or partner features</span>
+          <span className="text-xs text-muted-foreground italic">This assistant provides general guidance about partner features.</span>
         </CardDescription>
       </CardHeader>
       <CardContent className="flex-1 flex flex-col p-0 min-h-0">
