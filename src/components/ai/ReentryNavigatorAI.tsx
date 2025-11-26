@@ -358,6 +358,13 @@ const ReentryNavigatorAI: React.FC<ReentryNavigatorAIProps> = ({ isOpen, onClose
           </div>
         </div>
 
+        {/* Disclaimer */}
+        <div className="bg-amber-50 dark:bg-amber-950/20 border-l-4 border-amber-500 px-4 py-3">
+          <p className="text-xs text-amber-900 dark:text-amber-200 leading-relaxed">
+            <strong>Important:</strong> This AI provides general guidance and resource information. It is not a substitute for professional legal, medical, or emergency services. If you're in crisis, call <strong>988</strong> or <strong>911</strong>.
+          </p>
+        </div>
+
         {/* Messages */}
         <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-background/50">
           {messages.map((message) => (
