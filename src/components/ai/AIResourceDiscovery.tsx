@@ -81,23 +81,31 @@ const AIResourceDiscovery: React.FC<AIResourceDiscoveryProps> = ({
 
   const sendMessage = async (query: string) => {
     try {
-      const { data, error } = await supabase.functions.invoke('ai-resource-discovery', {
-        body: {
+      const supabaseUrl = 'https://gzukhsqgkwljfvwkfuno.supabase.co';
+      const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd6dWtoc3FnandsamZ2d2tmdW5vIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzM4NzI1NjgsImV4cCI6MjA0OTQ0ODU2OH0.JQFvEtO86TdTU_B_xqZAa8-hA-fhQJ_AjWbvHEUaxFw';
+
+      const response = await fetch(`${supabaseUrl}/functions/v1/ai-resource-discovery`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${supabaseAnonKey}`
+        },
+        body: JSON.stringify({
           query,
           location: location,
           county: county,
           resourceType: undefined,
           limit: 10
-        }
+        })
       });
 
-      if (error) {
-        throw new Error(`Function error: ${error.message}`);
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error('AI Resource Discovery error:', errorText);
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
 
-      if (!data) {
-        throw new Error('No response data');
-      }
+      const data = await response.json();
 
       // Create AI message with the response
       const aiMessage: Message = {
