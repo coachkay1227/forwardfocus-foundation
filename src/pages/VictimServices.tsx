@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { AiErrorBoundary } from "@/components/ui/AiErrorBoundary";
 import type { LucideIcon } from "lucide-react";
 import {
   ChevronRight,
@@ -379,7 +380,9 @@ export default function VictimServices() {
       </main>
 
       {/* Modals */}
-      <VictimSupportAI isOpen={showVictimAI} onClose={() => setShowVictimAI(false)} />
+      <AiErrorBoundary>
+        <VictimSupportAI isOpen={showVictimAI} onClose={() => setShowVictimAI(false)} />
+      </AiErrorBoundary>
       <SignupModal
         isOpen={showSignupModal}
         onClose={() => setShowSignupModal(false)}

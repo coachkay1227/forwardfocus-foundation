@@ -67,7 +67,7 @@ const VictimSupportAI: React.FC<VictimSupportAIProps> = ({ isOpen, onClose, init
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd6dWtoc3Fna3dsamZ2d2tmdW5vIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU3MjQyOTMsImV4cCI6MjA3MTMwMDI5M30.Skon84aKH5K5TjW9pVnCI2A-6Z-9KrTYiNknpiqeCpk`
+          'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`
         },
         body: JSON.stringify({
           query: messages[messages.length - 1].content,
@@ -198,6 +198,19 @@ const VictimSupportAI: React.FC<VictimSupportAIProps> = ({ isOpen, onClose, init
           >
             <X className="h-4 w-4" />
           </Button>
+        </div>
+
+        {/* Static Safety Disclaimer */}
+        <div className="bg-destructive/10 border-l-4 border-destructive px-4 py-2 mx-4">
+          <div className="flex gap-2">
+            <Shield className="h-4 w-4 text-destructive flex-shrink-0 mt-0.5" />
+            <div className="text-xs space-y-1">
+              <p className="font-semibold text-foreground">If you're in immediate danger, call 911</p>
+              <p className="text-muted-foreground">
+                <strong>24/7 Crisis:</strong> 988 (suicide/crisis) • Text HOME to 741741
+              </p>
+            </div>
+          </div>
         </div>
 
         {/* Support Categories */}

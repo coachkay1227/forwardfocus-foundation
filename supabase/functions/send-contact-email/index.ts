@@ -1,4 +1,5 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2.57.2";
 import { Resend } from "npm:resend@4.0.0";
 
 const resend = new Resend(Deno.env.get("RESEND_API_KEY"));
@@ -24,9 +25,53 @@ const handler = async (req: Request): Promise<Response> => {
   }
 
   try {
+    // Simple fail-open rate limiting
+    const clientIP = req.headers.get("x-forwarded-for")?.split(',')[0].trim() || 
+                     req.headers.get("x-real-ip") || 
+                     "unknown";
+    
+    // Check rate limit (fail-open: if check fails, allow request)
+    try {
+      const supabaseClient = createClient(
+        Deno.env.get("SUPABASE_URL") ?? "",
+        Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? ""
+      );
+
+      const fiveMinutesAgo = new Date(Date.now() - 5 * 60 * 1000).toISOString();
+      
+      const { data: recentRequests, error } = await supabaseClient
+        .from("audit_logs")
+        .select("id")
+        .eq("action", "CONTACT_FORM_SUBMIT")
+        .eq("ip_address", clientIP)
+        .gte("created_at", fiveMinutesAgo);
+
+      if (!error && recentRequests && recentRequests.length >= 5) {
+        console.log(`Rate limit exceeded for IP: ${clientIP}`);
+        return new Response(
+          JSON.stringify({ 
+            success: false,
+            error: "Too many requests. Please wait a few minutes before trying again."
+          }),
+          {
+            status: 429,
+            headers: {
+              "Content-Type": "application/json",
+              ...corsHeaders,
+            },
+          }
+        );
+      }
+    } catch (rateLimitError) {
+      // Fail open: log error but allow request to proceed
+      console.error("Rate limit check failed (allowing request):", rateLimitError);
+    }
+
     const { name, email, subject, message, type }: ContactEmailRequest = await req.json();
     
     console.log("Processing email request:", { name, email, subject, type });
+
+    const resend = new Resend(Deno.env.get("RESEND_API_KEY"));
 
     // Send confirmation to user
     const userEmailResponse = await resend.emails.send({
@@ -73,7 +118,7 @@ const handler = async (req: Request): Promise<Response> => {
     // Send notification to admin/Coach Kay
     const adminEmailResponse = await resend.emails.send({
       from: "Forward Focus Contact <noreply@ffeservices.net>",
-      to: ["support@ffeservices.net"], // Updated to match your domain
+      to: ["support@ffeservices.net"],
       subject: `New ${type} inquiry from ${name}`,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
@@ -99,6 +144,25 @@ const handler = async (req: Request): Promise<Response> => {
     });
 
     console.log("Email sent successfully:", { userEmailResponse, adminEmailResponse });
+
+    // Log successful contact form submission (for rate limiting)
+    try {
+      const supabaseClient = createClient(
+        Deno.env.get("SUPABASE_URL") ?? "",
+        Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? ""
+      );
+
+      await supabaseClient
+        .from("audit_logs")
+        .insert({
+          action: "CONTACT_FORM_SUBMIT",
+          ip_address: clientIP,
+          details: { email, type, subject },
+          severity: "info"
+        });
+    } catch (logError) {
+      console.error("Failed to log contact form (non-critical):", logError);
+    }
 
     return new Response(
       JSON.stringify({ 

@@ -74,7 +74,7 @@ const CrisisSupportAI: React.FC<CrisisSupportAIProps> = ({ isOpen, onClose, init
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd6dWtoc3Fna3dsamZ2d2tmdW5vIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU3MjQyOTMsImV4cCI6MjA3MTMwMDI5M30.Skon84aKH5K5TjW9pVnCI2A-6Z-9KrTYiNknpiqeCpk`
+          'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`
         },
         body: JSON.stringify({
           query: createPersonalizedQuery(userQuery),
@@ -243,6 +243,19 @@ const CrisisSupportAI: React.FC<CrisisSupportAIProps> = ({ isOpen, onClose, init
             <div>
               <h3 className="font-bold text-lg" id="crisis-support-title">Alex - Crisis Support</h3>
               <p className="text-sm opacity-90" id="crisis-support-description">Your compassionate crisis companion, available 24/7</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Static Safety Disclaimer */}
+        <div className="bg-destructive/10 border-l-4 border-destructive px-4 py-2 mx-4 mt-2">
+          <div className="flex gap-2">
+            <Phone className="h-4 w-4 text-destructive flex-shrink-0 mt-0.5" />
+            <div className="text-xs space-y-1">
+              <p className="font-semibold text-foreground">This is NOT a replacement for emergency services</p>
+              <p className="text-muted-foreground">
+                <strong>Immediate danger:</strong> Call 911 now • <strong>Crisis:</strong> 988 or text HOME to 741741
+              </p>
             </div>
           </div>
         </div>

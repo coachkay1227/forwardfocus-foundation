@@ -112,7 +112,7 @@ const ReentryNavigatorAI: React.FC<ReentryNavigatorAIProps> = ({ isOpen, onClose
   const sendMessage = async (userQuery: string) => {
     try {
       const supabaseUrl = 'https://gzukhsqgkwljfvwkfuno.supabase.co';
-      const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd6dWtoc3FnandsamZ2d2tmdW5vIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzM4NzI1NjgsImV4cCI6MjA0OTQ0ODU2OH0.JQFvEtO86TdTU_B_xqZAa8-hA-fhQJ_AjWbvHEUaxFw';
+      const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
       const response = await fetch(`${supabaseUrl}/functions/v1/reentry-navigator-ai`, {
         method: 'POST',

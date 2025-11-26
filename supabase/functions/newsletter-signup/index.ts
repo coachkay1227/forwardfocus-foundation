@@ -20,6 +20,48 @@ const handler = async (req: Request): Promise<Response> => {
   }
 
   try {
+    // Simple fail-open rate limiting
+    const clientIP = req.headers.get("x-forwarded-for")?.split(',')[0].trim() || 
+                     req.headers.get("x-real-ip") || 
+                     "unknown";
+    
+    // Check rate limit (fail-open: if check fails, allow request)
+    try {
+      const supabaseRateLimitClient = createClient(
+        Deno.env.get("SUPABASE_URL") ?? "",
+        Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? ""
+      );
+
+      const fiveMinutesAgo = new Date(Date.now() - 5 * 60 * 1000).toISOString();
+      
+      const { data: recentSignups, error } = await supabaseRateLimitClient
+        .from("audit_logs")
+        .select("id")
+        .eq("action", "NEWSLETTER_SIGNUP")
+        .eq("ip_address", clientIP)
+        .gte("created_at", fiveMinutesAgo);
+
+      if (!error && recentSignups && recentSignups.length >= 3) {
+        console.log(`Newsletter signup rate limit exceeded for IP: ${clientIP}`);
+        return new Response(
+          JSON.stringify({ 
+            success: false,
+            error: "Too many signup attempts. Please wait a few minutes before trying again."
+          }),
+          {
+            status: 429,
+            headers: {
+              "Content-Type": "application/json",
+              ...corsHeaders,
+            },
+          }
+        );
+      }
+    } catch (rateLimitError) {
+      // Fail open: log error but allow request to proceed
+      console.error("Rate limit check failed (allowing request):", rateLimitError);
+    }
+
     const supabaseClient = createClient(
       Deno.env.get("SUPABASE_URL") ?? "",
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? ""
@@ -226,6 +268,20 @@ const handler = async (req: Request): Promise<Response> => {
     } catch (emailError) {
       console.error("Failed to send welcome email:", emailError);
       // Don't fail the entire request if email fails
+    }
+
+    // Log successful newsletter signup (for rate limiting)
+    try {
+      await supabaseClient
+        .from("audit_logs")
+        .insert({
+          action: "NEWSLETTER_SIGNUP",
+          ip_address: clientIP,
+          details: { email, source },
+          severity: "info"
+        });
+    } catch (logError) {
+      console.error("Failed to log newsletter signup (non-critical):", logError);
     }
 
     return new Response(
