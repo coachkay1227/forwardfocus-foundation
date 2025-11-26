@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { AiErrorBoundary } from "@/components/ui/AiErrorBoundary";
 import CrisisSupportAI from "@/components/ai/CrisisSupportAI";
 import AIResourceDiscovery from "@/components/ai/AIResourceDiscovery";
 import { AIResourceRecommendations } from "@/components/ai/AIResourceRecommendations";
@@ -49,16 +50,20 @@ export default function GetHelpNow() {
       </main>
 
       {/* Modals */}
-      <CrisisSupportAI 
-        isOpen={showCrisisAI} 
-        onClose={() => setShowCrisisAI(false)} 
-      />
-      <AIResourceDiscovery 
-        isOpen={showAIDiscovery} 
-        onClose={() => setShowAIDiscovery(false)} 
-        initialQuery=""
-        location="Ohio"
-      />
+      <AiErrorBoundary>
+        <CrisisSupportAI 
+          isOpen={showCrisisAI} 
+          onClose={() => setShowCrisisAI(false)} 
+        />
+      </AiErrorBoundary>
+      <AiErrorBoundary>
+        <AIResourceDiscovery 
+          isOpen={showAIDiscovery} 
+          onClose={() => setShowAIDiscovery(false)} 
+          initialQuery=""
+          location="Ohio"
+        />
+      </AiErrorBoundary>
     </>
   );
 }
