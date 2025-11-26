@@ -24,7 +24,7 @@ export const HeroSection = ({ selectedState, onShowStateModal, onShowAIDiscovery
             Empowering justice-impacted families with the tools to rebuild and thrive.
           </p>
 
-          <div className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto mb-8 items-center justify-center">
+          <div className="flex flex-col sm:flex-row gap-4 max-w-2xl mx-auto mb-8 items-center justify-center">
             <Button size="lg" variant="osu-gray" asChild>
               <Link 
                 to="/help" 
@@ -41,7 +41,18 @@ export const HeroSection = ({ selectedState, onShowStateModal, onShowAIDiscovery
               className="bg-osu-gray/20 border-osu-gray/30 text-white hover:bg-osu-gray/30"
               onClick={onShowAIDiscovery}
             >
-              AI Discovery
+              Search Resources
+            </Button>
+
+            <Button 
+              size="lg" 
+              variant="outline" 
+              className="bg-osu-gray/20 border-osu-gray/30 text-white hover:bg-osu-gray/30"
+              asChild
+            >
+              <Link to="/about" aria-label="Connect with Coach Kay">
+                Connect with Coach Kay
+              </Link>
             </Button>
           </div>
 

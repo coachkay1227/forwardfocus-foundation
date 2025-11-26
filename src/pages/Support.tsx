@@ -17,6 +17,17 @@ const Support = () => {
 
   useEffect(() => {
     document.title = "Get Involved | Forward Focus Elevation";
+    
+    // Add meta description for SEO
+    const metaDescription = document.querySelector('meta[name="description"]');
+    if (metaDescription) {
+      metaDescription.setAttribute('content', 'Support Forward Focus Elevation through donations, sponsorships, speaking engagements, or corporate training. Multiple ways to invest in second chances.');
+    } else {
+      const meta = document.createElement('meta');
+      meta.name = 'description';
+      meta.content = 'Support Forward Focus Elevation through donations, sponsorships, speaking engagements, or corporate training. Multiple ways to invest in second chances.';
+      document.head.appendChild(meta);
+    }
   }, []);
 
   const sponsorshipUrl = "https://collect.crowded.me/collection/219ea37a-28de-4930-b00f-dceb78a90e10";
