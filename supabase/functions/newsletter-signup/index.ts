@@ -69,10 +69,38 @@ const handler = async (req: Request): Promise<Response> => {
 
     const resend = new Resend(Deno.env.get("RESEND_API_KEY"));
 
-    const { email, name, source = "website" }: NewsletterSignupRequest = await req.json();
+    const requestBody: NewsletterSignupRequest = await req.json();
+    const { email, name, source = "website" } = requestBody;
 
-    if (!email) {
-      throw new Error("Email is required");
+    // SEC4: Input validation
+    if (!email || typeof email !== 'string' || email.trim().length === 0) {
+      return new Response(
+        JSON.stringify({ success: false, error: "Email is required" }),
+        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+    
+    // Basic email format validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email) || email.length > 255) {
+      return new Response(
+        JSON.stringify({ success: false, error: "Valid email address is required (max 255 characters)" }),
+        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+    
+    if (name && (typeof name !== 'string' || name.length > 100)) {
+      return new Response(
+        JSON.stringify({ success: false, error: "Name must be less than 100 characters" }),
+        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+    
+    if (source && (typeof source !== 'string' || source.length > 50)) {
+      return new Response(
+        JSON.stringify({ success: false, error: "Source must be less than 50 characters" }),
+        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
     }
 
     console.log(`Newsletter signup attempt for: ${email}`);
