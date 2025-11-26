@@ -81,14 +81,19 @@ const AIResourceDiscovery: React.FC<AIResourceDiscoveryProps> = ({
 
   const sendMessage = async (query: string) => {
     try {
-      const supabaseUrl = 'https://gzukhsqgkwljfvwkfuno.supabase.co';
-      const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd6dWtoc3FnandsamZ2d2tmdW5vIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzM4NzI1NjgsImV4cCI6MjA0OTQ0ODU2OH0.JQFvEtO86TdTU_B_xqZAa8-hA-fhQJ_AjWbvHEUaxFw';
+      const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+      const supabaseKey = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
+
+      if (!supabaseUrl || !supabaseKey) {
+        console.error('Supabase configuration missing in AIResourceDiscovery');
+        throw new Error('Service temporarily unavailable');
+      }
 
       const response = await fetch(`${supabaseUrl}/functions/v1/ai-resource-discovery`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${supabaseAnonKey}`
+          'Authorization': `Bearer ${supabaseKey}`
         },
         body: JSON.stringify({
           query,

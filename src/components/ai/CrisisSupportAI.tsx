@@ -67,14 +67,22 @@ const CrisisSupportAI: React.FC<CrisisSupportAIProps> = ({ isOpen, onClose, init
 
   const sendMessage = async (userQuery: string) => {
     try {
+      const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+      const supabaseKey = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
+
+      if (!supabaseUrl || !supabaseKey) {
+        console.error('Supabase configuration missing in CrisisSupportAI');
+        throw new Error('Service temporarily unavailable');
+      }
+
       // Determine urgency level based on content
       const urgencyLevel = determineUrgency(userQuery);
       
-      const response = await fetch(`https://gzukhsqgkwljfvwkfuno.supabase.co/functions/v1/crisis-support-ai`, {
+      const response = await fetch(`${supabaseUrl}/functions/v1/crisis-support-ai`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`
+          'Authorization': `Bearer ${supabaseKey}`
         },
         body: JSON.stringify({
           query: createPersonalizedQuery(userQuery),

@@ -111,14 +111,19 @@ const ReentryNavigatorAI: React.FC<ReentryNavigatorAIProps> = ({ isOpen, onClose
 
   const sendMessage = async (userQuery: string) => {
     try {
-      const supabaseUrl = 'https://gzukhsqgkwljfvwkfuno.supabase.co';
-      const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+      const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+      const supabaseKey = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
+
+      if (!supabaseUrl || !supabaseKey) {
+        console.error('Supabase configuration missing in ReentryNavigatorAI');
+        throw new Error('Service temporarily unavailable');
+      }
 
       const response = await fetch(`${supabaseUrl}/functions/v1/reentry-navigator-ai`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${supabaseAnonKey}`
+          'Authorization': `Bearer ${supabaseKey}`
         },
         body: JSON.stringify({
           query: userQuery,
