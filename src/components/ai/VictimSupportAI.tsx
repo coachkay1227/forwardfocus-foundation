@@ -63,11 +63,19 @@ const VictimSupportAI: React.FC<VictimSupportAIProps> = ({ isOpen, onClose, init
 
   const sendMessage = async (messages: {role: string, content: string}[]) => {
     try {
-      const response = await fetch(`https://gzukhsqgkwljfvwkfuno.supabase.co/functions/v1/victim-support-ai`, {
+      const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+      const supabaseKey = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
+
+      if (!supabaseUrl || !supabaseKey) {
+        console.error('Supabase configuration missing in VictimSupportAI');
+        throw new Error('Service temporarily unavailable');
+      }
+
+      const response = await fetch(`${supabaseUrl}/functions/v1/victim-support-ai`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`
+          'Authorization': `Bearer ${supabaseKey}`
         },
         body: JSON.stringify({
           query: messages[messages.length - 1].content,

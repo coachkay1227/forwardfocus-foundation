@@ -43,11 +43,19 @@ const ChatbotPopup = () => {
 
   const sendMessage = async (messages: {role: string, content: string}[]) => {
     try {
-      const response = await fetch(`https://gzukhsqgkwljfvwkfuno.supabase.co/functions/v1/coach-k`, {
+      const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+      const supabaseKey = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
+
+      if (!supabaseUrl || !supabaseKey) {
+        console.error('Supabase configuration missing in ChatbotPopup');
+        throw new Error('Service temporarily unavailable');
+      }
+
+      const response = await fetch(`${supabaseUrl}/functions/v1/coach-k`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd6dWtoc3Fna3dsamZ2d2tmdW5vIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU3MjQyOTMsImV4cCI6MjA3MTMwMDI5M30.Skon84aKH5K5TjW9pVnCI2A-6Z-9KrTYiNknpiqeCpk`
+          'Authorization': `Bearer ${supabaseKey}`
         },
         body: JSON.stringify({
           messages
