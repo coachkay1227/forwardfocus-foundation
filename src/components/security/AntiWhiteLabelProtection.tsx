@@ -80,25 +80,6 @@ export const AntiWhiteLabelProtection = () => {
       
       // Disable page functionality
       document.body.style.overflow = 'hidden';
-      
-      // Send violation report (if possible)
-      try {
-        fetch('https://gzukhsqgkwljfvwkfuno.supabase.co/functions/v1/report-violation', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            domain: currentDomain,
-            timestamp: new Date().toISOString(),
-            userAgent: navigator.userAgent,
-            referrer: document.referrer
-          })
-        }).catch(() => {
-          // Fail silently if reporting fails
-          console.warn('Could not report violation');
-        });
-      } catch (e) {
-        // Fail silently
-      }
     }
 
     // Watermark removed per user request
