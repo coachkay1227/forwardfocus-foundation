@@ -67,7 +67,44 @@ const handler = async (req: Request): Promise<Response> => {
       console.error("Rate limit check failed (allowing request):", rateLimitError);
     }
 
-    const { name, email, subject, message, type }: ContactEmailRequest = await req.json();
+    const requestBody: ContactEmailRequest = await req.json();
+    const { name, email, subject, message, type } = requestBody;
+    
+    // SEC4: Input validation
+    if (!name || typeof name !== 'string' || name.trim().length === 0 || name.length > 100) {
+      return new Response(
+        JSON.stringify({ success: false, error: "Name is required and must be less than 100 characters" }),
+        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+    
+    if (!email || typeof email !== 'string' || !email.includes('@') || email.length > 255) {
+      return new Response(
+        JSON.stringify({ success: false, error: "Valid email is required (max 255 characters)" }),
+        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+    
+    if (!subject || typeof subject !== 'string' || subject.trim().length === 0 || subject.length > 200) {
+      return new Response(
+        JSON.stringify({ success: false, error: "Subject is required and must be less than 200 characters" }),
+        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+    
+    if (!message || typeof message !== 'string' || message.trim().length === 0 || message.length > 10000) {
+      return new Response(
+        JSON.stringify({ success: false, error: "Message is required and must be less than 10,000 characters" }),
+        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+    
+    if (!type || !['contact', 'coaching', 'booking'].includes(type)) {
+      return new Response(
+        JSON.stringify({ success: false, error: "Invalid request type" }),
+        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
     
     console.log("Processing email request:", { name, email, subject, type });
 

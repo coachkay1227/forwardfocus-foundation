@@ -24,14 +24,48 @@ serve(async (req: Request) => {
   try {
     const supabaseClient = createClient(supabaseUrl, supabaseServiceKey);
     
-    const { subscriberId, preferences, unsubscribeAll } = await req.json() as {
+    const requestBody = await req.json() as {
       subscriberId: string;
       preferences?: EmailPreferences;
       unsubscribeAll?: boolean;
     };
+    const { subscriberId, preferences, unsubscribeAll } = requestBody;
 
-    if (!subscriberId) {
-      throw new Error("Subscriber ID is required");
+    // SEC4: Input validation
+    if (!subscriberId || typeof subscriberId !== 'string') {
+      return new Response(
+        JSON.stringify({ error: "Subscriber ID is required" }),
+        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+    
+    // Validate UUID format
+    const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+    if (!uuidRegex.test(subscriberId)) {
+      return new Response(
+        JSON.stringify({ error: "Invalid subscriber ID format" }),
+        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+    
+    // Validate preferences if provided
+    if (preferences) {
+      const validKeys = ['monday_newsletter', 'wednesday_collective', 'friday_recap', 'sunday_community_call'];
+      const providedKeys = Object.keys(preferences);
+      
+      if (providedKeys.some(key => !validKeys.includes(key))) {
+        return new Response(
+          JSON.stringify({ error: "Invalid preference keys provided" }),
+          { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        );
+      }
+      
+      if (providedKeys.some(key => typeof preferences[key as keyof EmailPreferences] !== 'boolean')) {
+        return new Response(
+          JSON.stringify({ error: "Preference values must be boolean" }),
+          { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        );
+      }
     }
 
     // Verify subscriber exists
