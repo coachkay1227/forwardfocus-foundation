@@ -217,6 +217,14 @@ const AskCoachKay = () => {
                     </div>
                   </div>
                 </DialogHeader>
+
+                {/* Disclaimer */}
+                <div className="bg-amber-50 dark:bg-amber-950/20 border-l-4 border-amber-500 px-4 py-3 mx-6">
+                  <p className="text-xs text-amber-900 dark:text-amber-200 leading-relaxed">
+                    <strong>Important:</strong> This AI provides guidance and resources, not professional counseling or emergency services. If you're in crisis, call <strong>988</strong> or <strong>911</strong>.
+                  </p>
+                </div>
+
                 <div className="space-y-4">
                   <ScrollArea className="h-96 pr-4" ref={scrollAreaRef}>
                     <div className="space-y-4">
