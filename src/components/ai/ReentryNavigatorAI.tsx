@@ -111,20 +111,31 @@ const ReentryNavigatorAI: React.FC<ReentryNavigatorAIProps> = ({ isOpen, onClose
 
   const sendMessage = async (userQuery: string) => {
     try {
-      const { data, error } = await supabase.functions.invoke('reentry-navigator-ai', {
-        body: {
+      const supabaseUrl = 'https://gzukhsqgkwljfvwkfuno.supabase.co';
+      const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd6dWtoc3FnandsamZ2d2tmdW5vIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzM4NzI1NjgsImV4cCI6MjA0OTQ0ODU2OH0.JQFvEtO86TdTU_B_xqZAa8-hA-fhQJ_AjWbvHEUaxFw';
+
+      const response = await fetch(`${supabaseUrl}/functions/v1/reentry-navigator-ai`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${supabaseAnonKey}`
+        },
+        body: JSON.stringify({
           query: userQuery,
           reentryStage,
           priorityNeeds: [],
           selectedCoach: selectedCoach,
           previousContext: conversationContext.slice(-6), // Keep last 6 messages for context
-        }
+        })
       });
 
-      if (error) {
-        console.error('Reentry Navigator AI error:', error);
-        throw error;
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error('Reentry Navigator AI error:', errorText);
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
+
+      const data = await response.json();
 
       const formattedResponse = formatAIResponse(data.response);
       
