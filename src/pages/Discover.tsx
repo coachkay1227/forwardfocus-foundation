@@ -3,6 +3,7 @@ import { useSearchParams, NavLink } from "react-router-dom";
 import AIResourceDiscovery from "@/components/ai/AIResourceDiscovery";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
 import { Bot, Sparkles, ArrowLeft } from "lucide-react";
 
 // Import hero image
@@ -13,10 +14,62 @@ const Discover = () => {
   const [searchParams] = useSearchParams();
   const [county] = useState(searchParams.get("county") || "");
   const [showAIDiscovery, setShowAIDiscovery] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     document.title = "AI Resource Discovery | Forward Focus Elevation";
+    
+    // Simulate initial load
+    const timer = setTimeout(() => setLoading(false), 300);
+    return () => clearTimeout(timer);
   }, []);
+
+  if (loading) {
+    return (
+      <main id="main" className="min-h-screen bg-gradient-osu-subtle">
+        {/* Hero Skeleton */}
+        <div className="bg-gradient-osu-primary border-b border-osu-scarlet/20 mb-12">
+          <div className="container py-16">
+            <div className="max-w-4xl mx-auto text-center space-y-6">
+              <Skeleton className="h-14 w-3/4 mx-auto bg-white/20" />
+              <Skeleton className="h-6 w-full mx-auto bg-white/20" />
+              <Skeleton className="h-6 w-2/3 mx-auto bg-white/20" />
+            </div>
+          </div>
+        </div>
+        
+        <div className="container">
+          <div className="max-w-7xl mx-auto">
+            <Skeleton className="h-10 w-48 mb-6" />
+            
+            {/* Hero Image Skeleton */}
+            <Skeleton className="h-64 w-full rounded-2xl mb-12" />
+
+            {/* Cards Grid Skeleton */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              {[...Array(2)].map((_, i) => (
+                <Card key={i}>
+                  <CardHeader className="space-y-2">
+                    <Skeleton className="h-6 w-48" />
+                    <Skeleton className="h-4 w-full" />
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <Skeleton className="h-20 w-full" />
+                    <div className="space-y-2">
+                      {[...Array(4)].map((_, j) => (
+                        <Skeleton key={j} className="h-4 w-full" />
+                      ))}
+                    </div>
+                    <Skeleton className="h-10 w-full" />
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </div>
+        </div>
+      </main>
+    );
+  }
 
   return (
     <main id="main" className="min-h-screen bg-gradient-osu-subtle">
