@@ -19,6 +19,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 // Lazy load heavy components for better performance
 const SecurityMonitoringDashboard = lazy(() => import("@/components/security/SecurityMonitoringDashboard").then(m => ({ default: m.SecurityMonitoringDashboard })));
 const EmailMarketingDashboard = lazy(() => import("@/components/admin/EmailMarketingDashboard").then(m => ({ default: m.EmailMarketingDashboard })));
+const EmailDeliverabilityDashboard = lazy(() => import("@/components/admin/EmailDeliverabilityDashboard").then(m => ({ default: m.default })));
 const ContactAccessManager = lazy(() => import("@/components/security/ContactAccessManager").then(m => ({ default: m.ContactAccessManager })));
 const JustificationManager = lazy(() => import("@/components/admin/JustificationManager").then(m => ({ default: m.JustificationManager })));
 const UserAnalyticsDashboard = lazy(() => import("@/components/admin/UserAnalyticsDashboard").then(m => ({ default: m.UserAnalyticsDashboard })));
@@ -996,6 +997,7 @@ const Admin = () => {
         <TabsContent value="email">
           <Suspense fallback={<ComponentLoader />}>
             <div className="space-y-6">
+              <EmailDeliverabilityDashboard />
               <EmailMarketingDashboard />
               <MarketingImageGenerator />
             </div>

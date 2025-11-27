@@ -1,6 +1,9 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.57.2";
 import { Resend } from "npm:resend@4.0.0";
+import React from 'npm:react@18.3.1';
+import { renderAsync } from 'npm:@react-email/components@0.0.22';
+import { ContactConfirmation } from '../_shared/email-templates/ContactConfirmation.tsx';
 
 const resend = new Resend(Deno.env.get("RESEND_API_KEY"));
 
@@ -110,47 +113,47 @@ const handler = async (req: Request): Promise<Response> => {
 
     const resend = new Resend(Deno.env.get("RESEND_API_KEY"));
 
+    // Render React Email template
+    const emailHtml = await renderAsync(
+      React.createElement(ContactConfirmation, {
+        name,
+        subject,
+        type,
+      })
+    );
+
     // Send confirmation to user
     const userEmailResponse = await resend.emails.send({
       from: "Forward Focus Elevation <support@ffeservices.net>",
       to: [email],
       subject: "Thank you for reaching out to Forward Focus Elevation",
-      html: `
-        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
-          <div style="background: linear-gradient(135deg, #8B5CF6, #06B6D4); padding: 30px; border-radius: 10px; text-align: center; margin-bottom: 30px;">
-            <h1 style="color: white; margin: 0; font-size: 24px;">Forward Focus Elevation</h1>
-            <p style="color: rgba(255,255,255,0.9); margin: 10px 0 0 0;">Empowering Justice-Impacted Families</p>
-          </div>
-          
-          <h2 style="color: #374151; margin-bottom: 20px;">Thank you for contacting us, ${name}!</h2>
-          
-          <div style="background: #F3F4F6; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
-            <p style="color: #374151; margin: 0;">We have received your message regarding:</p>
-            <p style="color: #6B7280; margin: 10px 0 0 0; font-style: italic;">"${subject}"</p>
-          </div>
-          
-          <p style="color: #374151; line-height: 1.6;">
-            ${type === 'coaching' 
-              ? "Coach Kay will personally review your inquiry and respond within 24-48 hours. In the meantime, feel free to explore our learning community and resources."
-              : type === 'booking'
-              ? "We'll be in touch within 24 hours to schedule your consultation. Please check your calendar for availability in the coming week."
-              : "We'll get back to you as soon as possible, typically within 24-48 hours."
-            }
-          </p>
-          
-          <div style="background: linear-gradient(135deg, #8B5CF6, #06B6D4); padding: 20px; border-radius: 8px; margin: 30px 0; text-align: center;">
-            <p style="color: white; margin: 0 0 15px 0;">While you wait, explore our community resources:</p>
-            <a href="https://ffeservices.net/learn" style="background: white; color: #8B5CF6; padding: 12px 24px; text-decoration: none; border-radius: 6px; display: inline-block; font-weight: bold; margin-right: 10px;">Learning Community</a>
-            <a href="https://ffeservices.net/victim-services" style="background: rgba(255,255,255,0.2); color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; display: inline-block; font-weight: bold;">Healing Hub</a>
-          </div>
-          
-          <p style="color: #6B7280; font-size: 14px; margin-top: 30px;">
-            Best regards,<br>
-            The Forward Focus Elevation Team
-          </p>
-        </div>
-      `,
+      html: emailHtml,
     });
+
+    // Store Resend email ID for tracking
+    const resendEmailId = userEmailResponse.data?.id;
+    
+    // Update contact submission with email ID
+    if (resendEmailId) {
+      try {
+        const supabaseClient = createClient(
+          Deno.env.get("SUPABASE_URL") ?? "",
+          Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? ""
+        );
+
+        await supabaseClient
+          .from("contact_submissions")
+          .update({ 
+            resend_email_id: resendEmailId,
+            email_status: 'sent'
+          })
+          .eq("email", email)
+          .order("created_at", { ascending: false })
+          .limit(1);
+      } catch (updateError) {
+        console.error("Failed to update contact submission with email ID (non-critical):", updateError);
+      }
+    }
 
     // Send notification to admin/Coach Kay
     const adminEmailResponse = await resend.emails.send({
