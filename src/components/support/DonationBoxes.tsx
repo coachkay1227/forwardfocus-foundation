@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Heart, DollarSign, Loader2 } from "lucide-react";
 import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
@@ -23,6 +24,7 @@ interface DonationBoxesProps {
 
 export default function DonationBoxes({}: DonationBoxesProps) {
   const [loadingOption, setLoadingOption] = useState<string | null>(null);
+  const [paymentError, setPaymentError] = useState<string | null>(null);
   const { toast } = useToast();
 
   const handleDonationClick = async (option: typeof donationOptions[0]) => {
@@ -42,6 +44,7 @@ export default function DonationBoxes({}: DonationBoxesProps) {
     }
 
     setLoadingOption(option.name);
+    setPaymentError(null); // Clear any previous errors
     
     try {
       const { data, error } = await supabase.functions.invoke('create-donation-payment', {
@@ -61,6 +64,7 @@ export default function DonationBoxes({}: DonationBoxesProps) {
       }
     } catch (error) {
       console.error("Payment error:", error);
+      setPaymentError('Payment creation failed. Please try again.');
       toast({
         title: "Payment Error",
         description: "Unable to process payment. Please try again.",
@@ -75,6 +79,22 @@ export default function DonationBoxes({}: DonationBoxesProps) {
 
   return (
     <div className="space-y-6">
+      {/* Error Alert with Retry */}
+      {paymentError && (
+        <Alert variant="destructive">
+          <AlertDescription className="flex justify-between items-center">
+            <span>{paymentError}</span>
+            <Button 
+              size="sm" 
+              variant="outline"
+              onClick={() => setPaymentError(null)}
+            >
+              Dismiss
+            </Button>
+          </AlertDescription>
+        </Alert>
+      )}
+
       {/* Featured Option */}
       <Card className="border-2 border-osu-scarlet bg-gradient-to-br from-osu-scarlet/5 to-osu-scarlet/10 hover:shadow-lg transition-all duration-300">
         <CardContent className="p-6 text-center">
