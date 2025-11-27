@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useState } from "react";
 import { useStateContext } from "@/contexts/StateContext";
 import AIResourceDiscovery from "@/components/ai/AIResourceDiscovery";
 import StateModal from "@/components/ui/StateModal";
@@ -6,37 +6,44 @@ import { HeroSection } from "@/components/home/HeroSection";
 import { TestimonialsSection } from "@/components/home/TestimonialsSection";
 import { PathwaysSection } from "@/components/home/PathwaysSection";
 import { CallToActionSection } from "@/components/home/CallToActionSection";
+import { SEOHead } from "@/components/seo/SEOHead";
+import { StructuredData } from "@/components/seo/StructuredData";
 
 import { STATES } from "@/data/states";
 import diverseCommunityMeeting from "@/assets/diverse-community-meeting.jpg";
+
 const Index = () => {
   const [showAIDiscovery, setShowAIDiscovery] = useState(false);
   const [showStateModal, setShowStateModal] = useState(false);
   const { selectedState, setSelectedState } = useStateContext();
 
-  // SEO setup
-  useEffect(() => {
-    document.title = "Forward Focus Elevation | Empowering Justice-Impacted Families";
-    const desc = "Empowering justice-impacted families with the tools to rebuild and thrive. AI-enhanced guidance and comprehensive resources for justice-impacted individuals, families, and crime victims.";
-    let meta = document.querySelector('meta[name="description"]');
-    if (!meta) {
-      meta = document.createElement("meta");
-      meta.setAttribute("name", "description");
-      document.head.appendChild(meta);
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Forward Focus Elevation",
+    "url": "https://forwardfocus.lovable.app",
+    "logo": "https://forwardfocus.lovable.app/logo-new.png",
+    "description": "Empowering justice-impacted families with the tools to rebuild and thrive",
+    "sameAs": [],
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "contactType": "Support",
+      "areaServed": "US"
     }
-    meta.setAttribute("content", desc);
-    let canonical = document.querySelector('link[rel="canonical"]') as HTMLLinkElement | null;
-    if (!canonical) {
-      canonical = document.createElement("link");
-      canonical.setAttribute("rel", "canonical");
-      canonical.href = window.location.href;
-      document.head.appendChild(canonical);
-    }
-  }, []);
+  };
 
   const stateForAI = selectedState?.name ?? "Ohio";
+  
   return (
-    <main id="main" className="min-h-screen bg-background">
+    <>
+      <SEOHead
+        title="Empowering Justice-Impacted Families"
+        description="Empowering justice-impacted families with the tools to rebuild and thrive. AI-enhanced guidance and comprehensive resources for justice-impacted individuals, families, and crime victims."
+        path="/"
+      />
+      <StructuredData data={structuredData} />
+      
+      <main id="main" className="min-h-screen bg-background">
       <HeroSection 
         selectedState={selectedState}
         onShowStateModal={() => setShowStateModal(true)}
@@ -94,7 +101,8 @@ const Index = () => {
           }
         }} 
       />
-    </main>
+      </main>
+    </>
   );
 };
 export default Index;

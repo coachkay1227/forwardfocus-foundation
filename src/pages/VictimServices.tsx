@@ -1,5 +1,7 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { AiErrorBoundary } from "@/components/ui/AiErrorBoundary";
+import { SEOHead } from "@/components/seo/SEOHead";
+import { StructuredData } from "@/components/seo/StructuredData";
 import type { LucideIcon } from "lucide-react";
 import {
   ChevronRight,
@@ -35,27 +37,6 @@ import VictimSupportAI from "@/components/ai/VictimSupportAI";
 import DailyHealingToolkit from "@/components/healing/DailyHealingToolkit";
 import diverseFamiliesImage from "@/assets/diverse-families-healing.jpg";
 import healingCommunityImage from "@/assets/healing-community.jpg";
-
-// SEO helpers
-const ensureMeta = (name: string, content: string) => {
-  let tag = document.querySelector(`meta[name="${name}"]`) as HTMLMetaElement | null;
-  if (!tag) {
-    tag = document.createElement("meta");
-    tag.setAttribute("name", name);
-    document.head.appendChild(tag);
-  }
-  tag.setAttribute("content", content);
-};
-
-const ensureCanonical = () => {
-  let link = document.querySelector('link[rel="canonical"]') as HTMLLinkElement | null;
-  if (!link) {
-    link = document.createElement("link");
-    link.setAttribute("rel", "canonical");
-    document.head.appendChild(link);
-  }
-  link.setAttribute("href", window.location.href);
-};
 
 
 // Resource Card Component  
@@ -111,33 +92,27 @@ export default function VictimServices() {
   const [showSignupModal, setShowSignupModal] = useState(false);
   const [isSignedUp, setIsSignedUp] = useState(false);
 
-  useEffect(() => {
-    document.title = "Healing & Safety Hub | Forward Focus Elevation";
-    ensureMeta("description", "Comprehensive support for crime victims: crisis intervention, advocacy, legal aid, and trauma-informed healing resources. Find immediate help and long-term recovery support.");
-    ensureCanonical();
-
-    // JSON-LD structured data
-    const jsonLd = {
-      "@context": "https://schema.org",
-      "@type": "WebPage",
-      name: "Healing & Safety Hub",
-      description: "Comprehensive support for crime victims: crisis intervention, advocacy, legal aid, and trauma-informed healing resources.",
-      url: window.location.href,
-      provider: {
-        "@type": "Organization",
-        name: "Forward Focus Elevation"
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "MedicalWebPage",
+    "name": "Healing & Safety Hub",
+    "description": "Comprehensive support for crime victims: crisis intervention, advocacy, legal aid, and trauma-informed healing resources",
+    "url": "https://forwardfocus.lovable.app/victim-services",
+    "medicalAudience": [
+      {
+        "@type": "MedicalAudience",
+        "name": "Crime Victims and Survivors"
       }
-    };
-
-    const script = document.createElement("script");
-    script.type = "application/ld+json";
-    script.textContent = JSON.stringify(jsonLd);
-    document.head.appendChild(script);
-
-    return () => {
-      document.head.removeChild(script);
-    };
-  }, []);
+    ],
+    "about": {
+      "@type": "MedicalCondition",
+      "name": "Trauma Recovery"
+    },
+    "provider": {
+      "@type": "Organization",
+      "name": "Forward Focus Elevation"
+    }
+  };
 
   const handleSignup = () => {
     setIsSignedUp(true);
@@ -194,6 +169,13 @@ export default function VictimServices() {
 
   return (
     <>
+      <SEOHead
+        title="Healing & Safety Hub"
+        description="Comprehensive support for crime victims: crisis intervention, advocacy, legal aid, and trauma-informed healing resources. Find immediate help and long-term recovery support."
+        path="/victim-services"
+      />
+      <StructuredData data={structuredData} />
+      
       <main id="main" className="min-h-screen">
         {/* Skip to content link */}
         <a 
