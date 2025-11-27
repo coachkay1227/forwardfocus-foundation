@@ -53,7 +53,11 @@ const Support = () => {
               >
                 Donate
               </Button>
-              <Button size="lg" className="bg-osu-gray hover:bg-osu-gray-dark text-white">
+              <Button 
+                size="lg" 
+                className="bg-osu-gray hover:bg-osu-gray-dark text-white"
+                onClick={() => window.open(sponsorshipUrl, '_blank', 'noopener,noreferrer')}
+              >
                 Sponsor
               </Button>
             </div>
