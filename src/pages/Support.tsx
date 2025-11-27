@@ -117,7 +117,7 @@ const Support = () => {
                     <h4 className="font-semibold text-foreground mb-2">Pay Any Amount</h4>
                     <p className="text-sm text-foreground/70 mb-3">Custom sponsorship levels to match your impact goals</p>
                     <Button 
-                      onClick={() => window.open(sponsorshipUrl, '_blank')}
+                      onClick={() => window.open(sponsorshipUrl, '_blank', 'noopener,noreferrer')}
                       className="bg-osu-scarlet hover:bg-osu-scarlet-dark text-osu-scarlet-foreground"
                       size="sm"
                     >
