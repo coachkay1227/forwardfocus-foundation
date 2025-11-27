@@ -4,6 +4,7 @@ import { useAnonymousSession } from "@/hooks/useAnonymousSession";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
 import { toast } from "@/hooks/use-toast";
 import { Navigate, Link } from "react-router-dom";
 import { Eye, EyeOff } from "lucide-react";
@@ -243,10 +244,17 @@ const Auth = () => {
     return (
       <AuthLayout>
         <div className="col-span-full flex items-center justify-center">
-          <div className="text-center">
-            <div className="animate-spin h-8 w-8 border-4 border-primary border-t-transparent rounded-full mx-auto"></div>
-            <p className="mt-2 text-muted-foreground text-sm">Loading...</p>
-          </div>
+          <Card className="w-full max-w-md mx-4">
+            <CardHeader>
+              <Skeleton className="h-8 w-3/4 mb-2" />
+              <Skeleton className="h-4 w-full" />
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <Skeleton className="h-10 w-full" />
+              <Skeleton className="h-10 w-full" />
+              <Skeleton className="h-10 w-full" />
+            </CardContent>
+          </Card>
         </div>
       </AuthLayout>
     );
