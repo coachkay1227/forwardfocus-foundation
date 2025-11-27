@@ -46,11 +46,21 @@ export const SessionSecurityProvider = ({ children }: SessionSecurityProviderPro
     const tabId = sessionStorage.getItem('tab-id') || crypto.randomUUID();
     sessionStorage.setItem('tab-id', tabId);
 
-    // Detect suspicious activity patterns
+    // Detect suspicious activity patterns with time-based reset
+    const now = Date.now();
+    const lastReset = parseInt(localStorage.getItem('activity-reset') || '0');
+    const RESET_INTERVAL = 60 * 60 * 1000; // Reset counter every hour
+    
+    // Reset counter if an hour has passed
+    if (now - lastReset > RESET_INTERVAL) {
+      localStorage.setItem('activity-count', '0');
+      localStorage.setItem('activity-reset', now.toString());
+    }
+    
     const activityCount = parseInt(localStorage.getItem('activity-count') || '0');
-    if (activityCount > 1000) {
-      console.warn('High activity detected - potential bot/script');
-      // Could trigger additional security measures
+    // Significantly increased threshold to 10000 to prevent false positives during normal usage
+    if (activityCount > 10000 && process.env.NODE_ENV === 'development') {
+      console.warn('Unusually high activity detected in current session hour - potential automated access');
     }
     localStorage.setItem('activity-count', (activityCount + 1).toString());
   };
