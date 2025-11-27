@@ -1,5 +1,6 @@
 // Anti-Whitelabeling Protection System
 // Prevents unauthorized copying and hosting of the platform
+import { SUPPORT_EMAIL } from '@/config/contact';
 
 interface DomainConfig {
   allowedDomains: string[];
@@ -92,7 +93,7 @@ class AntiWhitelabelProtection {
       <p>This platform is protected by copyright and licensing agreements.</p>
       <p>Domain: <strong>${window.location.hostname}</strong> is not authorized.</p>
       <p>${AUTHORIZED_CONFIG.copyrightNotice}</p>
-      <p>For licensing inquiries, contact: support@ffeservices.net</p>
+      <p>For licensing inquiries, contact: ${SUPPORT_EMAIL}</p>
     `;
     
     document.body.appendChild(overlay);

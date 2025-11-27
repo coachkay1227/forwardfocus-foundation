@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { FileText, Calendar, Mail } from "lucide-react";
+import { SUPPORT_EMAIL } from "@/config/contact";
 
 const TermsOfService = () => {
   useEffect(() => {
@@ -146,10 +147,10 @@ const TermsOfService = () => {
                 <div className="flex items-center gap-2">
                   <Mail className="h-5 w-5 text-osu-scarlet" />
                   <a 
-                    href="mailto:support@ffeservices.net" 
+                    href={`mailto:${SUPPORT_EMAIL}`} 
                     className="text-osu-scarlet hover:text-osu-scarlet-dark hover:underline font-semibold transition-colors"
                   >
-                    support@ffeservices.net
+                    {SUPPORT_EMAIL}
                   </a>
                 </div>
               </div>

@@ -11,6 +11,7 @@ import AIConsultationForm from "@/components/support/AIConsultationForm";
 import CorporateTrainingForm from "@/components/support/CorporateTrainingForm";
 import ContactForm from "@/components/forms/ContactForm";
 import { useCalendlyPopup } from "@/hooks/useCalendlyPopup";
+import { SUPPORT_EMAIL } from "@/config/contact";
 const Support = () => {
   const [activeDialog, setActiveDialog] = useState<string | null>(null);
   const { openCalendly, calendlyReady } = useCalendlyPopup();
@@ -265,7 +266,7 @@ const Support = () => {
                     <div className="space-y-6">
                       <div className="flex items-center gap-4 text-lg">
                         <Mail className="h-6 w-6 text-muted-foreground" />
-                        <span className="text-foreground">support@ffeservices.net</span>
+                        <span className="text-foreground">{SUPPORT_EMAIL}</span>
                       </div>
                       <div className="flex items-center gap-4 text-lg">
                         <Phone className="h-6 w-6 text-muted-foreground" />
