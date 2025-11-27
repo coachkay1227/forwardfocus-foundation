@@ -1,4 +1,4 @@
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import logoTransparent from "@/assets/logo-transparent.png";
 import { useState, useEffect } from "react";
 import { Menu, User, LogOut, Search, Globe, Phone, ChevronDown, X } from "lucide-react";
@@ -31,6 +31,7 @@ const Header = ({
     signOut
   } = useAuth();
   const location = useLocation();
+  const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [hasScrolled, setHasScrolled] = useState(false);
@@ -235,6 +236,16 @@ const Header = ({
             {/* Auth Links - Columns 10-12 */}
             <div className="hidden md:flex col-span-3 items-center justify-end">
               <div className="flex items-center gap-2">
+                {!user && (
+                  <Button 
+                    variant="ghost" 
+                    size="sm"
+                    onClick={() => navigate('/auth')}
+                    className="mr-2 text-foreground font-medium"
+                  >
+                    Sign In
+                  </Button>
+                )}
                 {user ? <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                       <Button variant="ghost" size="sm" className="text-foreground font-medium">
