@@ -154,8 +154,8 @@ const PrivacyPolicy = () => {
                 <div className="bg-osu-gray-light/20 p-4 rounded-lg mx-auto max-w-md flex justify-center border border-osu-scarlet/20">
                   <div className="flex items-center gap-2">
                     <Mail className="h-5 w-5 text-osu-scarlet" />
-                    <a href="mailto:support@ffe.services" className="text-osu-scarlet hover:text-osu-scarlet-dark hover:underline font-semibold transition-colors">
-                      support@ffe.services
+                    <a href="mailto:support@ffeservices.net" className="text-osu-scarlet hover:text-osu-scarlet-dark hover:underline font-semibold transition-colors">
+                      support@ffeservices.net
                     </a>
                   </div>
                 </div>
