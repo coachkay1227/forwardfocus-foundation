@@ -416,6 +416,102 @@ export type Database = {
         }
         Relationships: []
       }
+      email_automation_queue: {
+        Row: {
+          created_at: string
+          error_message: string | null
+          id: string
+          resend_email_id: string | null
+          rule_id: string
+          scheduled_for: string
+          sent_at: string | null
+          status: string | null
+          trigger_data: Json | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          error_message?: string | null
+          id?: string
+          resend_email_id?: string | null
+          rule_id: string
+          scheduled_for: string
+          sent_at?: string | null
+          status?: string | null
+          trigger_data?: Json | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          error_message?: string | null
+          id?: string
+          resend_email_id?: string | null
+          rule_id?: string
+          scheduled_for?: string
+          sent_at?: string | null
+          status?: string | null
+          trigger_data?: Json | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "email_automation_queue_rule_id_fkey"
+            columns: ["rule_id"]
+            isOneToOne: false
+            referencedRelation: "email_automation_rules"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "email_automation_queue_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      email_automation_rules: {
+        Row: {
+          conditions: Json | null
+          created_at: string
+          delay_minutes: number | null
+          email_subject: string
+          email_type: string
+          enabled: boolean | null
+          id: string
+          rule_name: string
+          trigger_type: string
+          updated_at: string
+        }
+        Insert: {
+          conditions?: Json | null
+          created_at?: string
+          delay_minutes?: number | null
+          email_subject: string
+          email_type: string
+          enabled?: boolean | null
+          id?: string
+          rule_name: string
+          trigger_type: string
+          updated_at?: string
+        }
+        Update: {
+          conditions?: Json | null
+          created_at?: string
+          delay_minutes?: number | null
+          email_subject?: string
+          email_type?: string
+          enabled?: boolean | null
+          id?: string
+          rule_name?: string
+          trigger_type?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       email_campaign_settings: {
         Row: {
           created_at: string | null
@@ -1724,6 +1820,10 @@ export type Database = {
       }
       is_user_admin: { Args: never; Returns: boolean }
       log_profile_access: { Args: never; Returns: undefined }
+      queue_automation_email: {
+        Args: { p_rule_name: string; p_trigger_data?: Json; p_user_id: string }
+        Returns: string
+      }
       request_admin_contact_access: {
         Args: {
           p_access_purpose: string
