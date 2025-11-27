@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { AiErrorBoundary } from "@/components/ui/AiErrorBoundary";
 import CrisisSupportAI from "@/components/ai/CrisisSupportAI";
 import AIResourceDiscovery from "@/components/ai/AIResourceDiscovery";
@@ -7,34 +7,40 @@ import { HelpHeroSection } from "@/components/help/HelpHeroSection";
 import { EmergencySupportSection } from "@/components/help/EmergencySupportSection";
 import { AIPoweredHelpSection } from "@/components/help/AIPoweredHelpSection";
 import { SpecializedSupportSection } from "@/components/help/SpecializedSupportSection";
+import { SEOHead } from "@/components/seo/SEOHead";
+import { StructuredData } from "@/components/seo/StructuredData";
 
 export default function GetHelpNow() {
   const [showCrisisAI, setShowCrisisAI] = useState(false);
   const [showAIDiscovery, setShowAIDiscovery] = useState(false);
 
-  useEffect(() => {
-    document.title = "Get Help Now | Immediate Crisis Support | Forward Focus Elevation";
-    const desc = "Immediate crisis support and emergency resources. Get help now with 24/7 crisis lines, AI-powered guidance, and direct connections to emergency services.";
-    
-    let meta = document.querySelector('meta[name="description"]') as HTMLMetaElement | null;
-    if (!meta) {
-      meta = document.createElement("meta");
-      meta.setAttribute("name", "description");
-      document.head.appendChild(meta);
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "Get Help Now - Immediate Crisis Support",
+    "description": "Immediate crisis support and emergency resources with 24/7 crisis lines and AI-powered guidance",
+    "url": "https://forwardfocus.lovable.app/help",
+    "provider": {
+      "@type": "Organization",
+      "name": "Forward Focus Elevation"
+    },
+    "offers": {
+      "@type": "Offer",
+      "availability": "https://schema.org/InStock",
+      "price": "0",
+      "priceCurrency": "USD"
     }
-    meta.setAttribute("content", desc);
-
-    let link = document.querySelector('link[rel="canonical"]') as HTMLLinkElement | null;
-    if (!link) {
-      link = document.createElement("link");
-      link.setAttribute("rel", "canonical");
-      document.head.appendChild(link);
-    }
-    link.setAttribute("href", `${window.location.origin}/help`);
-  }, []);
+  };
 
   return (
     <>
+      <SEOHead
+        title="Get Help Now - Immediate Crisis Support"
+        description="Immediate crisis support and emergency resources. Get help now with 24/7 crisis lines, AI-powered guidance, and direct connections to emergency services."
+        path="/help"
+      />
+      <StructuredData data={structuredData} />
+      
       <main id="main" className="min-h-screen">
         <HelpHeroSection />
         

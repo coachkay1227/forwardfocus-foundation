@@ -4,6 +4,8 @@ import { Badge } from "@/components/ui/badge";
 import { Award, Star, TrendingUp, Quote } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
+import { SEOHead } from "@/components/seo/SEOHead";
+import { StructuredData } from "@/components/seo/StructuredData";
 
 interface SuccessStory {
   id: string;
@@ -20,8 +22,19 @@ export default function SuccessStories() {
   const [stories, setStories] = useState<SuccessStory[]>([]);
   const [loading, setLoading] = useState(true);
 
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "name": "Success Stories",
+    "description": "Real stories of transformation, resilience, and success from our community",
+    "url": "https://forwardfocus.lovable.app/success-stories",
+    "publisher": {
+      "@type": "Organization",
+      "name": "Forward Focus Elevation"
+    }
+  };
+
   useEffect(() => {
-    document.title = "Success Stories | Forward Focus Elevation";
     loadStories();
 
     // Set up realtime subscription
@@ -82,7 +95,16 @@ export default function SuccessStories() {
   const regularStories = stories.filter(s => !s.featured);
 
   return (
-    <main id="main" className="min-h-screen">
+    <>
+      <SEOHead
+        title="Success Stories"
+        description="Real stories of transformation, resilience, and success from our community. Read inspiring success stories from individuals who have overcome challenges and rebuilt their lives."
+        path="/success-stories"
+        type="article"
+      />
+      <StructuredData data={structuredData} />
+      
+      <main id="main" className="min-h-screen">
       {/* Hero Section */}
       <section className="relative bg-gradient-to-br from-primary via-primary/90 to-primary/80 text-white py-20">
         <div className="container">
@@ -209,6 +231,7 @@ export default function SuccessStories() {
           </div>
         )}
       </div>
-    </main>
+      </main>
+    </>
   );
 }
