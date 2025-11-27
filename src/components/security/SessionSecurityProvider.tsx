@@ -59,7 +59,7 @@ export const SessionSecurityProvider = ({ children }: SessionSecurityProviderPro
     
     const activityCount = parseInt(localStorage.getItem('activity-count') || '0');
     // Significantly increased threshold to 10000 to prevent false positives during normal usage
-    if (activityCount > 10000 && process.env.NODE_ENV === 'development') {
+    if (activityCount > 10000 && import.meta.env.DEV) {
       console.warn('Unusually high activity detected in current session hour - potential automated access');
     }
     localStorage.setItem('activity-count', (activityCount + 1).toString());
