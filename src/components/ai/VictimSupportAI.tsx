@@ -7,6 +7,8 @@ import { Badge } from '@/components/ui/badge';
 import { supabase } from '@/integrations/supabase/client';
 import EmailChatHistoryModal from './EmailChatHistoryModal';
 
+const MAX_MESSAGE_LENGTH = 4000;
+
 interface Message {
   id: string;
   type: 'user' | 'ai';
@@ -351,17 +353,23 @@ const VictimSupportAI: React.FC<VictimSupportAIProps> = ({ isOpen, onClose, init
           </div>
           
           {/* Input */}
-          <div className="flex gap-2">
-            <Input
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              placeholder="Share what support you need..."
-              onKeyDown={(e) => e.key === 'Enter' && handleSend()}
-              disabled={isLoading}
-            />
-            <Button onClick={handleSend} disabled={isLoading || !input.trim()}>
-              <Send className="h-4 w-4" />
-            </Button>
+          <div className="space-y-1">
+            <div className="flex gap-2">
+              <Input
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                placeholder="Share what support you need..."
+                onKeyDown={(e) => e.key === 'Enter' && handleSend()}
+                disabled={isLoading}
+                maxLength={MAX_MESSAGE_LENGTH}
+              />
+              <Button onClick={handleSend} disabled={isLoading || !input.trim()}>
+                <Send className="h-4 w-4" />
+              </Button>
+            </div>
+            <div className="text-xs text-muted-foreground text-right">
+              {input.length} / {MAX_MESSAGE_LENGTH}
+            </div>
           </div>
           <p className="text-xs text-muted-foreground mt-2">
             This conversation is private and confidential • Trauma-informed support
