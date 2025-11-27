@@ -384,27 +384,33 @@ export type Database = {
         Row: {
           created_at: string
           email: string
+          email_status: string | null
           id: string
           message: string
           name: string
+          resend_email_id: string | null
           status: string | null
           subject: string | null
         }
         Insert: {
           created_at?: string
           email: string
+          email_status?: string | null
           id?: string
           message: string
           name: string
+          resend_email_id?: string | null
           status?: string | null
           subject?: string | null
         }
         Update: {
           created_at?: string
           email?: string
+          email_status?: string | null
           id?: string
           message?: string
           name?: string
+          resend_email_id?: string | null
           status?: string | null
           subject?: string | null
         }
@@ -503,6 +509,39 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      email_events: {
+        Row: {
+          created_at: string
+          email_id: string
+          email_type: string | null
+          event_data: Json | null
+          event_type: string
+          id: string
+          recipient_email: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          email_id: string
+          email_type?: string | null
+          event_data?: Json | null
+          event_type: string
+          id?: string
+          recipient_email: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          email_id?: string
+          email_type?: string | null
+          event_data?: Json | null
+          event_type?: string
+          id?: string
+          recipient_email?: string
+          updated_at?: string
+        }
+        Relationships: []
       }
       email_preferences: {
         Row: {
