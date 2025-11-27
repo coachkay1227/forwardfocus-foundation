@@ -14,6 +14,7 @@ interface StrengthCheck {
 const strengthChecks: StrengthCheck[] = [
   { label: "At least 8 characters", test: (p) => p.length >= 8 },
   { label: "Contains uppercase letter", test: (p) => /[A-Z]/.test(p) },
+  { label: "Contains lowercase letter", test: (p) => /[a-z]/.test(p) },
   { label: "Contains number", test: (p) => /[0-9]/.test(p) },
 ];
 
