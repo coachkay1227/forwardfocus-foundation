@@ -7,7 +7,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { SecurityProvider } from "@/components/security/SecurityProvider";
 import { SessionSecurityProvider } from "@/components/security/SessionSecurityProvider";
-import { EnhancedErrorBoundary } from "@/components/ui/enhanced-error-boundary";
+import { BrandedErrorBoundary } from "@/components/ui/BrandedErrorBoundary";
 import { PageLoadingSkeleton } from "@/components/ui/loading-states";
 import Layout from "./components/layout/Layout";
 import { StateProvider } from "./contexts/StateContext";
@@ -59,7 +59,7 @@ const App = () => {
   }, []);
 
   return (
-  <EnhancedErrorBoundary>
+  <BrandedErrorBoundary>
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
         <SecurityProvider>
@@ -125,7 +125,7 @@ const App = () => {
         </SecurityProvider>
       </TooltipProvider>
     </QueryClientProvider>
-  </EnhancedErrorBoundary>
+  </BrandedErrorBoundary>
   );
 };
 
