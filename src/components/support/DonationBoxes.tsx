@@ -25,9 +25,11 @@ interface DonationBoxesProps {
 export default function DonationBoxes({}: DonationBoxesProps) {
   const [loadingOption, setLoadingOption] = useState<string | null>(null);
   const [paymentError, setPaymentError] = useState<string | null>(null);
+  const [lastAttemptedOption, setLastAttemptedOption] = useState<typeof donationOptions[0] | null>(null);
   const { toast } = useToast();
 
   const handleDonationClick = async (option: typeof donationOptions[0]) => {
+    setLastAttemptedOption(option);
     if (option.amount === "custom") {
       // For custom amounts, we'll redirect to external crowdfunding for now
       window.open("https://collect.crowded.me/collection/1ce13f25-4d6e-4f06-b463-13606ff31f2b", '_blank', 'noopener,noreferrer');
@@ -87,9 +89,12 @@ export default function DonationBoxes({}: DonationBoxesProps) {
             <Button 
               size="sm" 
               variant="outline"
-              onClick={() => setPaymentError(null)}
+              onClick={() => {
+                setPaymentError(null);
+                if (lastAttemptedOption) handleDonationClick(lastAttemptedOption);
+              }}
             >
-              Dismiss
+              Retry
             </Button>
           </AlertDescription>
         </Alert>
