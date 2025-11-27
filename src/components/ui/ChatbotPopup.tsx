@@ -5,6 +5,8 @@ import { Input } from "@/components/ui/input";
 import { MessageCircle, Send, Bot, User } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
+const MAX_MESSAGE_LENGTH = 4000;
+
 interface Message {
   id: string;
   text: string;
@@ -215,17 +217,23 @@ const ChatbotPopup = () => {
               ))}
             </div>
           </ScrollArea>
-          <div className="flex gap-2">
-            <Input
-              placeholder="Type your message..."
-              value={inputMessage}
-              onChange={(e) => setInputMessage(e.target.value)}
-              onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
-              className="flex-1"
-            />
-            <Button onClick={handleSendMessage} size="icon">
-              <Send className="h-4 w-4" />
-            </Button>
+          <div className="space-y-1">
+            <div className="flex gap-2">
+              <Input
+                placeholder="Type your message..."
+                value={inputMessage}
+                onChange={(e) => setInputMessage(e.target.value)}
+                onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
+                className="flex-1"
+                maxLength={MAX_MESSAGE_LENGTH}
+              />
+              <Button onClick={handleSendMessage} size="icon">
+                <Send className="h-4 w-4" />
+              </Button>
+            </div>
+            <div className="text-xs text-muted-foreground text-right">
+              {inputMessage.length} / {MAX_MESSAGE_LENGTH}
+            </div>
           </div>
         </div>
       </DialogContent>

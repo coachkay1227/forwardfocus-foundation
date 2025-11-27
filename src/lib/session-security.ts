@@ -40,7 +40,9 @@ class SessionSecurityManager {
       const data = await response.json();
       this.ipAddress = data.ip;
     } catch (error) {
-      console.warn('Could not get IP address for session validation');
+      if (import.meta.env.DEV) {
+        console.warn('Could not get IP address for session validation');
+      }
     }
   }
 
@@ -79,7 +81,9 @@ class SessionSecurityManager {
       
       if (data.session) {
         this.sessionStartTime = Date.now();
-        console.log('Session rotated successfully');
+        if (import.meta.env.DEV) {
+          console.log('Session rotated successfully');
+        }
         
         // Log security event
         this.logSecurityEvent('session_rotated', {
@@ -155,7 +159,9 @@ class SessionSecurityManager {
   }
 
   private handleSecurityThreat(validation: SessionValidationResult) {
-    console.warn('High security risk detected:', validation.warnings);
+    if (import.meta.env.DEV) {
+      console.warn('High security risk detected:', validation.warnings);
+    }
     
     // Log security threat
     this.logSecurityEvent('security_threat_detected', {
@@ -172,7 +178,9 @@ class SessionSecurityManager {
   }
 
   private async handleSessionError(reason: string) {
-    console.log('Handling session error:', reason);
+    if (import.meta.env.DEV) {
+      console.log('Handling session error:', reason);
+    }
     
     try {
       // Log the security event
@@ -209,7 +217,9 @@ class SessionSecurityManager {
       }
       
       // Log to console for development
-      console.log('Security Event:', eventType, data);
+      if (import.meta.env.DEV) {
+        console.log('Security Event:', eventType, data);
+      }
       
     } catch (error) {
       console.error('Failed to log security event:', error);

@@ -14,6 +14,8 @@ interface Message {
   content: string;
   timestamp: Date;
 }
+const MAX_MESSAGE_LENGTH = 4000;
+
 const AskCoachKay = () => {
   const [messages, setMessages] = useState<Message[]>([{
     id: '1',
@@ -241,11 +243,16 @@ const AskCoachKay = () => {
                         </div>)}
                     </div>
                   </ScrollArea>
-                  <div className="flex gap-2">
-                    <Input placeholder={canUseAI ? "What's going on today? How can I help?" : "Sign up to continue chatting..."} value={inputMessage} onChange={e => setInputMessage(e.target.value)} onKeyPress={e => e.key === 'Enter' && handleSendMessage()} className="flex-1" disabled={isLoading || !canUseAI} />
-                    <Button onClick={handleSendMessage} size="icon" disabled={isLoading || !canUseAI}>
-                      <Send className="h-4 w-4" />
-                    </Button>
+                  <div className="space-y-1">
+                    <div className="flex gap-2">
+                      <Input placeholder={canUseAI ? "What's going on today? How can I help?" : "Sign up to continue chatting..."} value={inputMessage} onChange={e => setInputMessage(e.target.value)} onKeyPress={e => e.key === 'Enter' && handleSendMessage()} className="flex-1" disabled={isLoading || !canUseAI} maxLength={MAX_MESSAGE_LENGTH} />
+                      <Button onClick={handleSendMessage} size="icon" disabled={isLoading || !canUseAI}>
+                        <Send className="h-4 w-4" />
+                      </Button>
+                    </div>
+                    <div className="text-xs text-muted-foreground text-right">
+                      {inputMessage.length} / {MAX_MESSAGE_LENGTH}
+                    </div>
                   </div>
                   <div className="text-xs text-muted-foreground text-center">
                     💙 Emotional Support • 🗺️ Site Navigation • 📋 Programs • 🔍 Resources • 📅 Coaching Consults
