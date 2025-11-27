@@ -146,10 +146,10 @@ const TermsOfService = () => {
                 <div className="flex items-center gap-2">
                   <Mail className="h-5 w-5 text-osu-scarlet" />
                   <a 
-                    href="mailto:support@ffe.services" 
+                    href="mailto:support@ffeservices.net" 
                     className="text-osu-scarlet hover:text-osu-scarlet-dark hover:underline font-semibold transition-colors"
                   >
-                    support@ffe.services
+                    support@ffeservices.net
                   </a>
                 </div>
               </div>
