@@ -3,6 +3,7 @@ import { BookOpen, CheckCircle, Users, MessageSquare, MapPin, Phone, FileText, D
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Skeleton } from "@/components/ui/skeleton";
 import { CommunityApplication } from "@/components/learn/CommunityApplication";
 import { PathwayVisual } from "@/components/learn/PathwayVisual";
 import ReentryNavigatorAI from "@/components/ai/ReentryNavigatorAI";
@@ -10,6 +11,7 @@ import ReentryNavigatorAI from "@/components/ai/ReentryNavigatorAI";
 export default function CommunityLearning() {
   const [showApplication, setShowApplication] = useState(false);
   const [showReentryAI, setShowReentryAI] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [selectedCoach, setSelectedCoach] = useState<{
     name: string;
     specialty: string;
@@ -41,6 +43,10 @@ export default function CommunityLearning() {
       canonical.setAttribute('href', 'https://ffeservices.net/learn');
       document.head.appendChild(canonical);
     }
+
+    // Simulate initial load
+    const timer = setTimeout(() => setLoading(false), 300);
+    return () => clearTimeout(timer);
   }, []);
 
   const supportCoaches = [
@@ -130,6 +136,64 @@ export default function CommunityLearning() {
       }
     ]
   };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background font-sans">
+        {/* Hero Skeleton */}
+        <header className="relative bg-gradient-osu-primary text-white overflow-hidden">
+          <div className="relative container py-24 md:py-32">
+            <div className="max-w-full px-4 md:max-w-5xl mx-auto text-center space-y-8">
+              <Skeleton className="h-8 w-32 mx-auto bg-white/20" />
+              <Skeleton className="h-16 w-3/4 mx-auto bg-white/20" />
+              <Skeleton className="h-6 w-2/3 mx-auto bg-white/20" />
+              <div className="flex justify-center gap-4">
+                <Skeleton className="h-12 w-32 bg-white/20" />
+                <Skeleton className="h-12 w-32 bg-white/20" />
+                <Skeleton className="h-12 w-32 bg-white/20" />
+              </div>
+              <Skeleton className="h-12 w-64 mx-auto bg-white/20" />
+            </div>
+          </div>
+        </header>
+
+        <main className="container py-24 space-y-16">
+          <div className="max-w-6xl mx-auto px-4">
+            {/* Coaches Grid Skeleton */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
+              {[...Array(6)].map((_, i) => (
+                <Card key={i} className="p-6">
+                  <div className="flex items-start gap-4">
+                    <Skeleton className="h-12 w-12 rounded-xl" />
+                    <div className="flex-1 space-y-2">
+                      <Skeleton className="h-6 w-24" />
+                      <Skeleton className="h-4 w-32" />
+                      <Skeleton className="h-16 w-full" />
+                      <Skeleton className="h-8 w-20" />
+                    </div>
+                  </div>
+                </Card>
+              ))}
+            </div>
+
+            {/* Learning Groups Skeleton */}
+            <div className="space-y-8">
+              <Skeleton className="h-12 w-64 mx-auto" />
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {[...Array(8)].map((_, i) => (
+                  <Card key={i} className="p-6 space-y-4">
+                    <Skeleton className="h-12 w-12 rounded-xl" />
+                    <Skeleton className="h-6 w-3/4" />
+                    <Skeleton className="h-16 w-full" />
+                  </Card>
+                ))}
+              </div>
+            </div>
+          </div>
+        </main>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background font-sans">
