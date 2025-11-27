@@ -9,6 +9,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
 
+const MAX_MESSAGE_LENGTH = 4000;
+
 interface Message {
   role: 'user' | 'assistant';
   content: string;
@@ -174,7 +176,7 @@ export const PartnerSupportChatbot = () => {
             <div ref={scrollRef} />
           </div>
         </ScrollArea>
-        <div className="p-4 border-t">
+        <div className="p-4 border-t space-y-1">
           <div className="flex gap-2">
             <Input
               value={input}
@@ -182,6 +184,7 @@ export const PartnerSupportChatbot = () => {
               onKeyPress={(e) => e.key === 'Enter' && !e.shiftKey && sendMessage()}
               placeholder="Type your question..."
               disabled={loading}
+              maxLength={MAX_MESSAGE_LENGTH}
             />
             <Button onClick={sendMessage} disabled={loading || !input.trim()} size="icon">
               {loading ? (
@@ -190,6 +193,9 @@ export const PartnerSupportChatbot = () => {
                 <Send className="w-4 h-4" />
               )}
             </Button>
+          </div>
+          <div className="text-xs text-muted-foreground text-right">
+            {input.length} / {MAX_MESSAGE_LENGTH}
           </div>
         </div>
       </CardContent>

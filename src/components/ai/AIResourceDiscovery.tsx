@@ -11,6 +11,8 @@ import { supabase } from '@/integrations/supabase/client';
 import { parseTextForLinks, formatAIResponse } from '@/lib/text-parser';
 import EmailChatHistoryModal from './EmailChatHistoryModal';
 
+const MAX_MESSAGE_LENGTH = 4000;
+
 interface Message {
   id: string;
   type: 'user' | 'ai';
@@ -501,7 +503,7 @@ const AIResourceDiscovery: React.FC<AIResourceDiscoveryProps> = ({
             <div ref={messagesEndRef} />
           </ScrollArea>
           
-          <div className="p-4 border-t border-border bg-background/95 backdrop-blur-sm flex-shrink-0 space-y-3">
+          <div className="p-4 border-t border-border bg-background/95 backdrop-blur-sm flex-shrink-0 space-y-1">
             <div className="flex gap-2">
               <Input
                 value={inputValue}
@@ -510,6 +512,7 @@ const AIResourceDiscovery: React.FC<AIResourceDiscoveryProps> = ({
                 onKeyPress={(e) => e.key === 'Enter' && !isLoading && handleSend()}
                 disabled={isLoading}
                 className="flex-1"
+                maxLength={MAX_MESSAGE_LENGTH}
               />
               <Button 
                 onClick={() => handleSend()} 
@@ -523,6 +526,9 @@ const AIResourceDiscovery: React.FC<AIResourceDiscoveryProps> = ({
                   <Send className="h-4 w-4" />
                 )}
               </Button>
+            </div>
+            <div className="text-xs text-muted-foreground text-right">
+              {inputValue.length} / {MAX_MESSAGE_LENGTH}
             </div>
             
             {/* Bottom Action Buttons */}

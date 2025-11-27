@@ -7,6 +7,8 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Badge } from "@/components/ui/badge";
 import EmailChatHistoryModal from '@/components/ai/EmailChatHistoryModal';
 
+const MAX_MESSAGE_LENGTH = 4000;
+
 interface Message {
   id: string;
   text: string;
@@ -299,32 +301,38 @@ export const CrisisEmergencyBot = ({ trigger }: CrisisEmergencyBotProps) => {
               </div>
             </div>
             
-            <div className="flex gap-2">
-              <Input
-                value={inputValue}
-                onChange={(e) => setInputValue(e.target.value)}
-                onKeyPress={handleKeyPress}
-                placeholder="Tell me what's happening..."
-                disabled={!isConnected || isLoading}
-                className="flex-1"
-              />
-              <Button
-                onClick={handleVoiceToggle}
-                variant="outline"
-                size="icon"
-                className={isListening ? "bg-destructive/10" : ""}
-                disabled
-                title="Voice feature coming soon"
-              >
-                {isListening ? <MicOff className="h-4 w-4" /> : <Mic className="h-4 w-4" />}
-              </Button>
-              <Button 
-                onClick={handleSendMessage}
-                disabled={!inputValue.trim() || !isConnected || isLoading}
-                size="icon"
-              >
-                <Send className="h-4 w-4" />
-              </Button>
+            <div className="space-y-1">
+              <div className="flex gap-2">
+                <Input
+                  value={inputValue}
+                  onChange={(e) => setInputValue(e.target.value)}
+                  onKeyPress={handleKeyPress}
+                  placeholder="Tell me what's happening..."
+                  disabled={!isConnected || isLoading}
+                  className="flex-1"
+                  maxLength={MAX_MESSAGE_LENGTH}
+                />
+                <Button
+                  onClick={handleVoiceToggle}
+                  variant="outline"
+                  size="icon"
+                  className={isListening ? "bg-destructive/10" : ""}
+                  disabled
+                  title="Voice feature coming soon"
+                >
+                  {isListening ? <MicOff className="h-4 w-4" /> : <Mic className="h-4 w-4" />}
+                </Button>
+                <Button 
+                  onClick={handleSendMessage}
+                  disabled={!inputValue.trim() || !isConnected || isLoading}
+                  size="icon"
+                >
+                  <Send className="h-4 w-4" />
+                </Button>
+              </div>
+              <div className="text-xs text-muted-foreground text-right">
+                {inputValue.length} / {MAX_MESSAGE_LENGTH}
+              </div>
             </div>
             
             <div className="flex items-center justify-between text-xs text-muted-foreground">

@@ -9,6 +9,8 @@ import { parseTextForLinks, formatAIResponse, type ParsedTextSegment } from '@/l
 import EmailChatHistoryModal from './EmailChatHistoryModal';
 import DOMPurify from 'dompurify';
 
+const MAX_MESSAGE_LENGTH = 4000;
+
 interface Message {
   id: string;
   type: 'user' | 'ai';
@@ -543,17 +545,23 @@ const ReentryNavigatorAI: React.FC<ReentryNavigatorAIProps> = ({ isOpen, onClose
           </div>
           
           {/* Input */}
-          <div className="flex gap-2">
-            <Input
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              placeholder={selectedCoach ? `What can ${selectedCoach.name.split(' ')[1]} help you with today?` : "What can Coach Kay help you with today?"}
-              onKeyDown={(e) => e.key === 'Enter' && handleSend()}
-              disabled={isLoading}
-            />
-            <Button onClick={handleSend} disabled={isLoading || !input.trim()}>
-              <Send className="h-4 w-4" />
-            </Button>
+          <div className="space-y-1">
+            <div className="flex gap-2">
+              <Input
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                placeholder={selectedCoach ? `What can ${selectedCoach.name.split(' ')[1]} help you with today?` : "What can Coach Kay help you with today?"}
+                onKeyDown={(e) => e.key === 'Enter' && handleSend()}
+                disabled={isLoading}
+                maxLength={MAX_MESSAGE_LENGTH}
+              />
+              <Button onClick={handleSend} disabled={isLoading || !input.trim()}>
+                <Send className="h-4 w-4" />
+              </Button>
+            </div>
+            <div className="text-xs text-muted-foreground text-right">
+              {input.length} / {MAX_MESSAGE_LENGTH}
+            </div>
           </div>
           <div className="flex items-center justify-between mt-3">
             <p className="text-xs text-muted-foreground">

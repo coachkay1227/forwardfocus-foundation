@@ -9,6 +9,8 @@ import { supabase } from '@/integrations/supabase/client';
 import { parseTextForLinks, ParsedTextSegment } from '@/lib/text-parser';
 import EmailChatHistoryModal from './EmailChatHistoryModal';
 
+const MAX_MESSAGE_LENGTH = 4000;
+
 interface Message {
   id: string;
   type: 'user' | 'ai';
@@ -394,18 +396,24 @@ const CrisisSupportAI: React.FC<CrisisSupportAIProps> = ({ isOpen, onClose, init
           </div>
           
           {/* Input */}
-          <div className="flex gap-2">
-            <Input
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              placeholder="Tell Alex what's on your mind..."
-              onKeyDown={(e) => e.key === 'Enter' && !e.shiftKey && handleSend()}
-              disabled={isLoading}
-              className="flex-1 h-11 sm:h-12"
-            />
-            <Button onClick={handleSend} disabled={isLoading || !input.trim()} className="shrink-0 h-11 w-11 sm:h-12 sm:w-12">
-              <Send className="h-4 w-4" />
-            </Button>
+          <div className="space-y-1">
+            <div className="flex gap-2">
+              <Input
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                placeholder="Tell Alex what's on your mind..."
+                onKeyDown={(e) => e.key === 'Enter' && !e.shiftKey && handleSend()}
+                disabled={isLoading}
+                className="flex-1 h-11 sm:h-12"
+                maxLength={MAX_MESSAGE_LENGTH}
+              />
+              <Button onClick={handleSend} disabled={isLoading || !input.trim()} className="shrink-0 h-11 w-11 sm:h-12 sm:w-12">
+                <Send className="h-4 w-4" />
+              </Button>
+            </div>
+            <div className="text-xs text-muted-foreground text-right">
+              {input.length} / {MAX_MESSAGE_LENGTH}
+            </div>
           </div>
           <div className="flex items-center justify-between text-xs text-muted-foreground">
             <span>Alex is here 24/7 • Confidential • Trauma-informed support</span>
