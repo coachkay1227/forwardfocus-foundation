@@ -10,6 +10,8 @@ import { Eye, EyeOff } from "lucide-react";
 import communityImage from "@/assets/diverse-families-healing.jpg";
 import AuthLayout from "@/components/layout/AuthLayout";
 import { supabase } from "@/integrations/supabase/client";
+import { PasswordStrengthIndicator } from "@/components/security/PasswordStrengthIndicator";
+import { authFormSchema } from "@/lib/validationSchemas";
 
 const Auth = () => {
   const { user, signIn, signUp, signInWithGoogle, signInWithApple, loading } = useAuth();
@@ -57,6 +59,21 @@ const Auth = () => {
         variant: "destructive",
       });
       return;
+    }
+
+    // Validate password strength for signup
+    if (!isLogin) {
+      try {
+        authFormSchema.parse({ email, password });
+      } catch (error: any) {
+        const errorMessage = error.errors?.[0]?.message || "Password does not meet requirements";
+        toast({
+          title: "Password Requirements Not Met",
+          description: errorMessage,
+          variant: "destructive",
+        });
+        return;
+      }
     }
 
     if (!isLogin && password !== confirmPassword) {
@@ -308,6 +325,9 @@ const Auth = () => {
                     )}
                   </Button>
                 </div>
+                {!isLogin && password && (
+                  <PasswordStrengthIndicator password={password} />
+                )}
               </div>
 
               {!isLogin && (
