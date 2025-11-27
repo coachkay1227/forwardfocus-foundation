@@ -300,6 +300,7 @@ const Auth = () => {
                   placeholder="your@email.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
+                  autoFocus={true}
                   required
                   className="h-10 text-sm"
                 />
