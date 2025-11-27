@@ -68,7 +68,7 @@ const App = () => {
               {/* <AntiWhiteLabelProtection /> */}
               <Toaster />
               <Sonner />
-              <BrowserRouter>
+              <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
                 <AnalyticsProvider>
                   <StateProvider>
                     <Layout>
