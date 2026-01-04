@@ -14,7 +14,7 @@ const NotFound = () => {
 
   const popularPages = [
     { name: "Home", path: "/" },
-    { name: "Get Help Now", path: "/get-help-now" },
+    { name: "Get Help Now", path: "/help" },
     { name: "Learn & Grow", path: "/learn" },
     { name: "Discover Resources", path: "/discover" },
   ];
