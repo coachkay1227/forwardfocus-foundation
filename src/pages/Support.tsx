@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
@@ -12,27 +12,21 @@ import CorporateTrainingForm from "@/components/support/CorporateTrainingForm";
 import ContactForm from "@/components/forms/ContactForm";
 import { useCalendlyPopup } from "@/hooks/useCalendlyPopup";
 import { SUPPORT_EMAIL } from "@/config/contact";
+import { SEOHead } from "@/components/seo/SEOHead";
+
 const Support = () => {
   const [activeDialog, setActiveDialog] = useState<string | null>(null);
   const { openCalendly, calendlyReady } = useCalendlyPopup();
 
-  useEffect(() => {
-    document.title = "Get Involved | Forward Focus Elevation";
-    
-    // Add meta description for SEO
-    const metaDescription = document.querySelector('meta[name="description"]');
-    if (metaDescription) {
-      metaDescription.setAttribute('content', 'Support Forward Focus Elevation through donations, sponsorships, speaking engagements, or corporate training. Multiple ways to invest in second chances.');
-    } else {
-      const meta = document.createElement('meta');
-      meta.name = 'description';
-      meta.content = 'Support Forward Focus Elevation through donations, sponsorships, speaking engagements, or corporate training. Multiple ways to invest in second chances.';
-      document.head.appendChild(meta);
-    }
-  }, []);
-
   const sponsorshipUrl = "https://collect.crowded.me/collection/219ea37a-28de-4930-b00f-dceb78a90e10";
+  
   return (
+    <>
+      <SEOHead
+        title="Get Involved"
+        description="Support Forward Focus Elevation through donations, sponsorships, speaking engagements, or corporate training. Multiple ways to invest in second chances."
+        path="/support"
+      />
     <main id="main">
       {/* Hero Section */}
       <header className="relative bg-gradient-osu-primary text-white overflow-hidden">
@@ -322,6 +316,7 @@ const Support = () => {
         </div>
       </div>
     </main>
+    </>
   );
 };
 export default Support;
