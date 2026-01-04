@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Heart, Users, Shield, CheckCircle, Target, Brain, MessageSquare, BookOpen, Home, Phone, ArrowRight, Star, Calendar, Award, Linkedin, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -6,51 +6,33 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import ContactForm from "@/components/forms/ContactForm";
 import ChatbotPopup from "@/components/ui/ChatbotPopup";
 import { CoachKaySection } from "@/components/home/CoachKaySection";
-
+import { SEOHead } from "@/components/seo/SEOHead";
+import { StructuredData } from "@/components/seo/StructuredData";
 
 // Import images
 import coachKayProfessional from "@/assets/coach-kay-professional.jpg";
 import diverseCommunityMeeting from "@/assets/diverse-community-meeting.jpg";
+
 export default function AboutUs() {
   const [showConsultation, setShowConsultation] = useState(false);
-  useEffect(() => {
-    document.title = "About Forward Focus Elevation | Empowering Justice-Impacted Families";
-    const desc = "We exist to empower justice-impacted individuals and families to rebuild, thrive, and rise — with dignity, hope, and community. AI-powered platform with human support.";
-    let meta = document.querySelector('meta[name="description"]') as HTMLMetaElement | null;
-    if (!meta) {
-      meta = document.createElement("meta");
-      meta.setAttribute("name", "description");
-      document.head.appendChild(meta);
-    }
-    meta.setAttribute("content", desc);
-    let link = document.querySelector('link[rel="canonical"]') as HTMLLinkElement | null;
-    if (!link) {
-      link = document.createElement("link");
-      link.setAttribute("rel", "canonical");
-      document.head.appendChild(link);
-    }
-    link.setAttribute("href", `${window.location.origin}/about`);
-
-    // JSON-LD Organization structured data
-    const ld = document.createElement('script');
-    ld.type = 'application/ld+json';
-    ld.text = JSON.stringify({
-      '@context': 'https://schema.org',
-      '@type': 'Organization',
-      name: 'Forward Focus Elevation',
-      url: window.location.origin,
-      description: 'Empowering justice-impacted individuals and families to rebuild, thrive, and rise with dignity, hope, and community.',
-      areaServed: 'Ohio',
-      serviceType: ['Healing & Safety Hub', 'Reentry Community', 'AI-Powered Guidance', 'Trauma Recovery Support']
-    });
-    document.head.appendChild(ld);
-    return () => {
-      if (document.head.contains(ld)) {
-        document.head.removeChild(ld);
-      }
-    };
-  }, []);
-  return <main id="main">
+  return <>
+      <SEOHead
+        title="About Forward Focus Elevation | Empowering Justice-Impacted Families"
+        description="We exist to empower justice-impacted individuals and families to rebuild, thrive, and rise — with dignity, hope, and community. AI-powered platform with human support."
+        path="/about"
+      />
+      <StructuredData
+        data={{
+          "@context": "https://schema.org",
+          "@type": "Organization",
+          name: "Forward Focus Elevation",
+          url: "https://forwardfocus.lovable.app",
+          description: "Empowering justice-impacted individuals and families to rebuild, thrive, and rise with dignity, hope, and community.",
+          areaServed: "Ohio",
+          serviceType: ["Healing & Safety Hub", "Reentry Community", "AI-Powered Guidance", "Trauma Recovery Support"]
+        }}
+      />
+      <main id="main">
       {/* Hero Section */}
       <header className="relative bg-gradient-osu-primary text-white overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-muted/90 via-osu-scarlet/80 to-osu-scarlet-dark/70"></div>
@@ -258,5 +240,6 @@ export default function AboutUs() {
           </div>
         </section>
       </div>
-    </main>;
+    </main>
+  </>;
 }

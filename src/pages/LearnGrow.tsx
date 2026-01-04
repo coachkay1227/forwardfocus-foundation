@@ -7,6 +7,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { CommunityApplication } from "@/components/learn/CommunityApplication";
 import { PathwayVisual } from "@/components/learn/PathwayVisual";
 import ReentryNavigatorAI from "@/components/ai/ReentryNavigatorAI";
+import { SEOHead } from "@/components/seo/SEOHead";
 
 export default function CommunityLearning() {
   const [showApplication, setShowApplication] = useState(false);
@@ -19,31 +20,6 @@ export default function CommunityLearning() {
   } | undefined>(undefined);
 
   useEffect(() => {
-    // Set page title and meta description for SEO
-    document.title = "Learn & Grow | Community Learning & Reentry Support | Forward Focus Elevation";
-    
-    // Update meta description
-    const metaDescription = document.querySelector('meta[name="description"]');
-    if (metaDescription) {
-      metaDescription.setAttribute('content', 'Join our supportive community learning collective. Access AI-powered reentry navigation, educational modules, and personalized coaching for justice-impacted individuals and families.');
-    } else {
-      const meta = document.createElement('meta');
-      meta.name = 'description';
-      meta.content = 'Join our supportive community learning collective. Access AI-powered reentry navigation, educational modules, and personalized coaching for justice-impacted individuals and families.';
-      document.head.appendChild(meta);
-    }
-
-    // Update canonical link
-    let canonical = document.querySelector('link[rel="canonical"]');
-    if (canonical) {
-      canonical.setAttribute('href', 'https://ffeservices.net/learn');
-    } else {
-      canonical = document.createElement('link');
-      canonical.setAttribute('rel', 'canonical');
-      canonical.setAttribute('href', 'https://ffeservices.net/learn');
-      document.head.appendChild(canonical);
-    }
-
     // Simulate initial load
     const timer = setTimeout(() => setLoading(false), 300);
     return () => clearTimeout(timer);
@@ -197,6 +173,11 @@ export default function CommunityLearning() {
 
   return (
     <div className="min-h-screen bg-background font-sans">
+      <SEOHead
+        title="Learn & Grow | Community Learning & Reentry Support"
+        description="Join our supportive community learning collective. Access AI-powered reentry navigation, educational modules, and personalized coaching for justice-impacted individuals and families."
+        path="/learn"
+      />
       {/* Hero Section with Premium Branding */}
       <header className="relative bg-gradient-osu-primary text-white overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-muted/90 via-osu-scarlet/80 to-osu-scarlet-dark/70"></div>
