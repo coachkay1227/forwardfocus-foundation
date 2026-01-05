@@ -1,6 +1,8 @@
 // Branded Email Template System for Forward Focus Elevation
 // OSU Scarlet themed email templates with dynamic variables
 
+import { SITE_CONFIG, getSiteUrl } from './site-config.ts';
+
 interface EmailVariables {
   firstName?: string;
   email?: string;
@@ -24,7 +26,6 @@ interface EmailVariables {
 
 const OSU_SCARLET = '#BB0000';
 const OSU_GRAY = '#666666';
-const LOGO_URL = 'https://mdwkkgancoocvkmecwkm.supabase.co/storage/v1/object/public/assets/logo-new.png';
 
 export function getBaseTemplate(content: string, variables: EmailVariables): string {
   const firstName = variables.firstName || 'Friend';
@@ -37,7 +38,7 @@ export function getBaseTemplate(content: string, variables: EmailVariables): str
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Forward Focus Elevation</title>
+  <title>${SITE_CONFIG.name}</title>
   <style>
     body { margin: 0; padding: 0; font-family: 'Inter', Arial, sans-serif; background-color: #f5f5f5; }
     table { border-collapse: collapse; }
@@ -70,7 +71,7 @@ export function getBaseTemplate(content: string, variables: EmailVariables): str
           <!-- Header -->
           <tr>
             <td class="header">
-              <img src="${LOGO_URL}" alt="Forward Focus Elevation" />
+              <img src="${SITE_CONFIG.logoUrl}" alt="${SITE_CONFIG.name}" />
             </td>
           </tr>
           
@@ -89,7 +90,7 @@ export function getBaseTemplate(content: string, variables: EmailVariables): str
                 <a href="${preferencesLink}">Manage Email Preferences</a> | 
                 <a href="${unsubscribeLink}">Unsubscribe</a>
               </p>
-              <p style="margin: 0 0 10px 0;"><strong>Forward Focus Elevation</strong> | Powered by Coach Kay</p>
+              <p style="margin: 0 0 10px 0;"><strong>${SITE_CONFIG.name}</strong> | Powered by Coach Kay</p>
               <p style="margin: 0; color: #999;">
                 Empowering communities through healing, growth, and transformation.
               </p>
@@ -123,7 +124,7 @@ export function getMondayNewsletterTemplate(variables: EmailVariables): string {
         We've added <strong>${resourcesCount} new verified resources</strong> to help you on your journey. 
         Explore housing, employment, legal aid, and more.
       </p>
-      <a href="https://your-domain.com/search" class="button">Browse Resources</a>
+      <a href="${getSiteUrl('/search')}" class="button">Browse Resources</a>
     </div>
     ` : ''}
 
@@ -133,7 +134,7 @@ export function getMondayNewsletterTemplate(variables: EmailVariables): string {
         Our Reentry Navigator AI is here 24/7 to help you find resources, answer questions, 
         and guide you through reentry challenges. It's completely free!
       </p>
-      <a href="https://your-domain.com/learn-grow" class="button">Chat with AI Navigator</a>
+      <a href="${getSiteUrl('/learn')}" class="button">Chat with AI Navigator</a>
     </div>
 
     <div class="section">
@@ -142,7 +143,7 @@ export function getMondayNewsletterTemplate(variables: EmailVariables): string {
         Take a moment for yourself. Access guided breathing exercises, healing frequencies, 
         and mindfulness tools designed for your wellbeing.
       </p>
-      <a href="https://your-domain.com/learn-grow#healing" class="button">Visit Healing Hub</a>
+      <a href="${getSiteUrl('/learn#healing')}" class="button">Visit Healing Hub</a>
     </div>
 
     <div class="section">
@@ -151,7 +152,7 @@ export function getMondayNewsletterTemplate(variables: EmailVariables): string {
         Coach Kay has <strong>${coachAvailability}</strong> this week. Schedule your 1-on-1 coaching 
         session or join a group session to connect with others on similar journeys.
       </p>
-      <a href="https://your-domain.com/" class="button">Book with Coach Kay</a>
+      <a href="${getSiteUrl('/')}" class="button">Book with Coach Kay</a>
     </div>
 
     <div class="divider"></div>
@@ -161,7 +162,7 @@ export function getMondayNewsletterTemplate(variables: EmailVariables): string {
       Help us continue providing free resources and support to our community.
     </p>
     <p style="text-align: center;">
-      <a href="https://your-domain.com/support#donate" class="button">Make a Donation</a>
+      <a href="${getSiteUrl('/support#donate')}" class="button">Make a Donation</a>
     </p>
   `;
 
@@ -193,7 +194,7 @@ export function getWednesdayCollectiveTemplate(variables: EmailVariables): strin
         Next session: <strong>${nextSession}</strong><br>
         Join Coach Kay and fellow community members for coaching, support, and real talk.
       </p>
-      <a href="https://your-domain.com/" class="button">Reserve Your Spot</a>
+      <a href="${getSiteUrl('/')}" class="button">Reserve Your Spot</a>
     </div>
 
     <div class="section">
@@ -202,7 +203,7 @@ export function getWednesdayCollectiveTemplate(variables: EmailVariables): strin
         Connect with others who understand your journey. Our peer support network is here 
         for encouragement, advice, and solidarity.
       </p>
-      <a href="https://your-domain.com/get-help-now" class="button">Get Support Now</a>
+      <a href="${getSiteUrl('/help')}" class="button">Get Support Now</a>
     </div>
 
     <div class="section">
@@ -211,7 +212,7 @@ export function getWednesdayCollectiveTemplate(variables: EmailVariables): strin
         Your journey can inspire others. Submit your success story and help someone else 
         see what's possible.
       </p>
-      <a href="https://your-domain.com/success-stories" class="button">Share Your Story</a>
+      <a href="${getSiteUrl('/success-stories')}" class="button">Share Your Story</a>
     </div>
   `;
 
@@ -249,7 +250,7 @@ export function getFridayRecapTemplate(variables: EmailVariables): string {
         See what's helping our community most this week. From housing assistance to 
         employment programs, discover what others are finding helpful.
       </p>
-      <a href="https://your-domain.com/search" class="button">Explore Resources</a>
+      <a href="${getSiteUrl('/search')}" class="button">Explore Resources</a>
     </div>
 
     <div class="section">
@@ -275,7 +276,7 @@ export function getFridayRecapTemplate(variables: EmailVariables): string {
       If you need immediate help, our crisis resources are always available.
     </p>
     <p style="text-align: center;">
-      <a href="https://your-domain.com/get-help-now" class="button">Get Help Now</a>
+      <a href="${getSiteUrl('/help')}" class="button">Get Help Now</a>
     </p>
   `;
 
