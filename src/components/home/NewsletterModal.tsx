@@ -63,7 +63,7 @@ export const NewsletterModal = () => {
             </li>
             <li className="flex items-start gap-3">
               <CheckCircle className="h-6 w-6 text-osu-gray-light flex-shrink-0 mt-0.5" />
-              <span className="text-base">Recommendations for partner newsletters that share our mission</span>
+              <span className="text-base">Updates on new resources and community events</span>
             </li>
           </ul>
           
@@ -72,8 +72,7 @@ export const NewsletterModal = () => {
           </div>
           
           <p className="text-xs text-white/70 text-center px-4 leading-relaxed">
-            We partner with SparkLoop and Beehiiv to connect you with additional resources. 
-            You'll only receive recommendations relevant to justice-impacted communities and families.
+            We respect your privacy. Unsubscribe anytime with one click.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-3 justify-center pt-2">
