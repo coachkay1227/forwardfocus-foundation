@@ -118,6 +118,24 @@ const Admin = () => {
   const [loadingData, setLoadingData] = useState(true);
   const [revealedContacts, setRevealedContacts] = useState<Set<string>>(new Set());
   const [adminExists, setAdminExists] = useState<boolean | null>(null);
+  const [loadingTimeout, setLoadingTimeout] = useState(false);
+
+  // Debug logging for admin state
+  useEffect(() => {
+    console.log('Admin page state:', { 
+      loading, 
+      checkingAdmin, 
+      adminExists, 
+      user: !!user, 
+      isAdmin 
+    });
+  }, [loading, checkingAdmin, adminExists, user, isAdmin]);
+
+  // Loading timeout detection
+  useEffect(() => {
+    const timeout = setTimeout(() => setLoadingTimeout(true), 8000);
+    return () => clearTimeout(timeout);
+  }, []);
   const [partnerStats, setPartnerStats] = useState({ 
     total_partners: 0, 
     verified_partners: 0, 
@@ -356,7 +374,19 @@ const Admin = () => {
       <main id="main" className="container py-12 flex items-center justify-center min-h-[400px]">
         <div className="text-center">
           <div className="animate-spin h-8 w-8 border-4 border-primary border-t-transparent rounded-full mx-auto"></div>
-          <p className="mt-2 text-muted-foreground">Loading...</p>
+          <p className="mt-2 text-muted-foreground">
+            {loadingTimeout ? 'Still loading... This may indicate a connection issue.' : 'Loading...'}
+          </p>
+          {loadingTimeout && (
+            <div className="mt-4 p-4 bg-muted rounded-lg text-sm text-left max-w-md mx-auto">
+              <p className="font-medium mb-2">Troubleshooting:</p>
+              <ul className="list-disc list-inside space-y-1 text-muted-foreground">
+                <li>Check your internet connection</li>
+                <li>Ensure you're logged in with an admin account</li>
+                <li>Try refreshing the page</li>
+              </ul>
+            </div>
+          )}
         </div>
       </main>
     );
