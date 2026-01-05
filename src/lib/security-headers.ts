@@ -1,14 +1,15 @@
 // Enhanced security headers and configuration for the application
 export const setupSecurityHeaders = () => {
   // Enhanced Content Security Policy
+  // Enhanced CSP - external APIs removed (calls routed through edge functions)
   const csp = [
     "default-src 'self'",
-    "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://unpkg.com https://js.stripe.com",
-    "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+    "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://unpkg.com https://js.stripe.com https://assets.calendly.com",
+    "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://assets.calendly.com",
     "font-src 'self' https://fonts.gstatic.com data:",
     "img-src 'self' data: blob: https: https://*.supabase.co",
-    "connect-src 'self' https://*.supabase.co wss://*.supabase.co https://api.openai.com https://api.stripe.com",
-    "frame-src 'none'",
+    "connect-src 'self' https://*.supabase.co wss://*.supabase.co https://assets.calendly.com",
+    "frame-src https://calendly.com https://js.stripe.com",
     "object-src 'none'",
     "base-uri 'self'",
     "form-action 'self'",
