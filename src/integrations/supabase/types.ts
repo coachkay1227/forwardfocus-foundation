@@ -899,47 +899,6 @@ export type Database = {
           },
         ]
       }
-      monetization_earnings: {
-        Row: {
-          created_at: string
-          earnings_amount: number
-          id: string
-          partner_newsletter: string
-          payout_status: string | null
-          platform: string
-          subscriber_id: string | null
-          transaction_id: string | null
-        }
-        Insert: {
-          created_at?: string
-          earnings_amount: number
-          id?: string
-          partner_newsletter: string
-          payout_status?: string | null
-          platform: string
-          subscriber_id?: string | null
-          transaction_id?: string | null
-        }
-        Update: {
-          created_at?: string
-          earnings_amount?: number
-          id?: string
-          partner_newsletter?: string
-          payout_status?: string | null
-          platform?: string
-          subscriber_id?: string | null
-          transaction_id?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "monetization_earnings_subscriber_id_fkey"
-            columns: ["subscriber_id"]
-            isOneToOne: false
-            referencedRelation: "newsletter_subscriptions"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
       newsletter_subscribers: {
         Row: {
           created_at: string
