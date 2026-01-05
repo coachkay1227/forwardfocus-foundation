@@ -1,4 +1,5 @@
 import { Helmet } from 'react-helmet-async';
+import { SITE_CONFIG, getSiteUrl, getImageUrl } from '@/config/site';
 
 interface SEOHeadProps {
   title: string;
@@ -15,9 +16,10 @@ export const SEOHead = ({
   image = '/logo-new.png',
   type = 'website' 
 }: SEOHeadProps) => {
-  const url = `https://forwardfocus.lovable.app${path}`;
-  const siteName = 'Forward Focus Elevation';
+  const url = getSiteUrl(path);
+  const siteName = SITE_CONFIG.name;
   const fullTitle = `${title} | ${siteName}`;
+  const imageUrl = getImageUrl(image);
 
   return (
     <Helmet>
@@ -32,7 +34,7 @@ export const SEOHead = ({
       <meta property="og:description" content={description} />
       <meta property="og:url" content={url} />
       <meta property="og:site_name" content={siteName} />
-      <meta property="og:image" content={`https://forwardfocus.lovable.app${image}`} />
+      <meta property="og:image" content={imageUrl} />
       <meta property="og:image:width" content="1200" />
       <meta property="og:image:height" content="630" />
 
@@ -40,7 +42,7 @@ export const SEOHead = ({
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:title" content={fullTitle} />
       <meta name="twitter:description" content={description} />
-      <meta name="twitter:image" content={`https://forwardfocus.lovable.app${image}`} />
+      <meta name="twitter:image" content={imageUrl} />
     </Helmet>
   );
 };
