@@ -26,6 +26,10 @@ verify_jwt = false
 [functions.send-auth-email]
 verify_jwt = false
 
+# Stripe webhook - Public but uses signature verification
+[functions.stripe-webhook]
+verify_jwt = false
+
 # Admin operations - Require authentication
 [functions.check-verification-expiration]
 verify_jwt = true
