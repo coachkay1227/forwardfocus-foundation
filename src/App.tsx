@@ -13,6 +13,8 @@ import { PageLoadingSkeleton } from "@/components/ui/loading-states";
 import Layout from "./components/layout/Layout";
 import { StateProvider } from "./contexts/StateContext";
 import { AnalyticsProvider } from "./components/layout/AnalyticsProvider";
+import ProtectedRoute from "./components/auth/ProtectedRoute";
+import AuthenticatedRoute from "./components/auth/AuthenticatedRoute";
 
 // Eager load critical pages
 import Index from "./pages/Index";
@@ -91,13 +93,17 @@ const App = () => {
                           <Route path="/register" element={<Register />} />
                           <Route path="/partner-signin" element={<PartnerSignIn />} />
                           <Route path="/partner-signup" element={<PartnerSignUp />} />
-                          <Route path="/partner-dashboard" element={<PartnerDashboard />} />
+                          <Route path="/partner-dashboard" element={<AuthenticatedRoute><PartnerDashboard /></AuthenticatedRoute>} />
                           <Route path="/login" element={<Navigate to="/auth" replace />} />
                           <Route path="/setup-admin" element={<SetupAdmin />} />
                           <Route path="/setup-guide" element={<SetupGuide />} />
-                          <Route path="/admin" element={<Admin />} />
+                          <Route path="/admin" element={<ProtectedRoute requiredRole="admin"><Admin /></ProtectedRoute>} />
+                          <Route path="/admin/*" element={<ProtectedRoute requiredRole="admin"><Navigate to="/admin" replace /></ProtectedRoute>} />
                           <Route path="/admin-guide" element={<AdminGuide />} />
                           <Route path="/success-stories" element={<SuccessStories />} />
+                          <Route path="/dashboard" element={<AuthenticatedRoute><Navigate to="/" replace /></AuthenticatedRoute>} />
+                          <Route path="/dashboard/*" element={<AuthenticatedRoute><Navigate to="/" replace /></AuthenticatedRoute>} />
+                          <Route path="/portal/*" element={<AuthenticatedRoute><Navigate to="/" replace /></AuthenticatedRoute>} />
                           <Route path="/search" element={<Search />} />
                           <Route path="/discover" element={<Discover />} />
                           <Route path="/partners" element={<Partners />} />

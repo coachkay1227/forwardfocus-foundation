@@ -8,9 +8,19 @@ const NotFound = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
+  // Check if this is a sensitive route - don't log details
+  const isSensitiveRoute = location.pathname.startsWith('/admin') || 
+                           location.pathname.startsWith('/dashboard') ||
+                           location.pathname.startsWith('/portal');
+
   useEffect(() => {
-    console.error("404 Error: User attempted to access non-existent route:", location.pathname);
-  }, [location.pathname]);
+    // Sanitized logging - don't reveal admin structure
+    if (isSensitiveRoute) {
+      console.error("404 Error: Protected route access attempted");
+    } else {
+      console.error("404 Error: Page not found");
+    }
+  }, [isSensitiveRoute]);
 
   const popularPages = [
     { name: "Home", path: "/" },
