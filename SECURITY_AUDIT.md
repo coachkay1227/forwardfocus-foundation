@@ -107,9 +107,12 @@ The Supabase database linter found no security warnings. This indicates:
 1. **Email/Password Authentication**
    - ✅ Password strength validation (8+ chars, uppercase, number)
    - ✅ Password indicator component
-   - ✅ Rate limiting on login attempts
+   - ✅ Rate limiting on login attempts (5 per 15 min per IP)
+   - ✅ Account lockout after 10 failed attempts (30 min)
+   - ✅ CAPTCHA after 3 failed attempts
    - ✅ Session management with Supabase Auth
-   - Security Rating: **HIGH**
+   - ✅ Failed login attempt logging
+   - Security Rating: **CRITICAL - SECURE**
 
 2. **Partner Authentication**
    - ✅ Separate sign-in/sign-up flows
@@ -122,6 +125,8 @@ The Supabase database linter found no security warnings. This indicates:
    - ✅ Admin status check on every request
    - ✅ First admin setup process
    - ✅ Operation rate limiting (30 ops/min)
+   - ✅ IP whitelisting capability
+   - ✅ Login attempt monitoring dashboard
    - Security Rating: **CRITICAL - SECURE**
 
 ### Authorization Controls

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useAnonymousSession } from "@/hooks/useAnonymousSession";
+import { useAuthSecurity } from "@/hooks/useAuthSecurity";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -12,10 +13,13 @@ import communityImage from "@/assets/diverse-families-healing.jpg";
 import AuthLayout from "@/components/layout/AuthLayout";
 import { supabase } from "@/integrations/supabase/client";
 import { PasswordStrengthIndicator } from "@/components/security/PasswordStrengthIndicator";
+import { SimpleCaptcha } from "@/components/security/SimpleCaptcha";
+import { RateLimitWarning } from "@/components/security/RateLimitWarning";
 import { authFormSchema } from "@/lib/validationSchemas";
 
 const Auth = () => {
   const { user, signIn, signUp, signInWithGoogle, signInWithApple, loading } = useAuth();
+  const { rateLimitStatus, checkRateLimit, recordLoginAttempt } = useAuthSecurity();
   const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -25,6 +29,8 @@ const Auth = () => {
   const [authLoading, setAuthLoading] = useState(false);
   const [isResettingPassword, setIsResettingPassword] = useState(false);
   const [subscribeToNewsletter, setSubscribeToNewsletter] = useState(true);
+  const [captchaVerified, setCaptchaVerified] = useState(false);
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
   const { transferToUser } = useAnonymousSession();
 
   useEffect(() => {
@@ -62,6 +68,37 @@ const Auth = () => {
       return;
     }
 
+    // Check rate limit before proceeding
+    const status = await checkRateLimit(email);
+    
+    if (status.isLockedOut) {
+      toast({
+        title: "Account Locked",
+        description: "Your account has been temporarily locked due to too many failed attempts.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (status.isRateLimited) {
+      toast({
+        title: "Too Many Attempts",
+        description: "Please wait before trying again.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // Require CAPTCHA if threshold reached
+    if (status.requiresCaptcha && !captchaVerified) {
+      toast({
+        title: "Security Verification Required",
+        description: "Please complete the security verification below.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     // Validate password strength for signup
     if (!isLogin) {
       try {
@@ -92,6 +129,9 @@ const Auth = () => {
       if (isLogin) {
         const { error } = await signIn(email, password);
         if (error) {
+          // Record failed login attempt
+          await recordLoginAttempt(email, false, error.message);
+          
           const errorMsg = error.message || "An unknown error occurred";
           const isNetworkError = errorMsg.toLowerCase().includes('fetch') || 
                                   errorMsg.toLowerCase().includes('network') ||
@@ -104,7 +144,14 @@ const Auth = () => {
               : errorMsg,
             variant: "destructive",
           });
+          
+          // Reset captcha after failed attempt
+          setCaptchaVerified(false);
+          setCaptchaToken(null);
         } else {
+          // Record successful login
+          await recordLoginAttempt(email, true);
+          
           toast({
             title: "Welcome back!",
             description: "You have successfully signed in.",
@@ -289,6 +336,17 @@ const Auth = () => {
           </CardHeader>
           
           <CardContent className="p-6 pt-2 space-y-5">
+            {/* Rate Limit Warning */}
+            {rateLimitStatus && (
+              <RateLimitWarning
+                isRateLimited={rateLimitStatus.isRateLimited}
+                attemptsRemaining={rateLimitStatus.attemptsRemaining}
+                resetAt={rateLimitStatus.resetAt}
+                isLockedOut={rateLimitStatus.isLockedOut}
+                lockoutUntil={rateLimitStatus.lockoutUntil}
+              />
+            )}
+
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-2">
                 <label htmlFor="email" className="text-sm font-medium text-foreground">
@@ -405,10 +463,18 @@ const Auth = () => {
                   </label>
                 </div>
               )}
+
+              {/* CAPTCHA - shown after 3 failed attempts */}
+              {isLogin && rateLimitStatus?.requiresCaptcha && !captchaVerified && (
+                <SimpleCaptcha
+                  onVerify={setCaptchaVerified}
+                  onTokenGenerated={setCaptchaToken}
+                />
+              )}
               
               <Button
                 type="submit" 
-                disabled={authLoading}
+                disabled={authLoading || rateLimitStatus?.isRateLimited || rateLimitStatus?.isLockedOut || (rateLimitStatus?.requiresCaptcha && !captchaVerified)}
                 variant="premium"
                 className="w-full h-10 text-sm font-medium"
                 tabIndex={0}
