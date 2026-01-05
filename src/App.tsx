@@ -82,9 +82,14 @@ const App = () => {
                           <Route path="/welcome" element={<Welcome />} />
                           <Route path="/start" element={<Welcome />} />
                           <Route path="/help" element={<GetHelpNow />} />
+                          <Route path="/get-help-now" element={<Navigate to="/help" replace />} />
                           <Route path="/ohio-resources" element={<Navigate to="/help" replace />} />
                           <Route path="/victim-services" element={<VictimServices />} />
+                          <Route path="/healing-hub" element={<Navigate to="/victim-services" replace />} />
+                          <Route path="/healing" element={<Navigate to="/victim-services" replace />} />
                           <Route path="/learn" element={<LearnGrow />} />
+                          <Route path="/the-collective" element={<Navigate to="/learn" replace />} />
+                          <Route path="/collective" element={<Navigate to="/learn" replace />} />
                           <Route path="/community" element={<Navigate to="/learn" replace />} />
                           <Route path="/about" element={<AboutUs />} />
                           <Route path="/support" element={<Support />} />
