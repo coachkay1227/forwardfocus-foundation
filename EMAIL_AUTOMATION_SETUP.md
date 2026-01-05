@@ -24,10 +24,7 @@ Your email automation system is fully implemented and ready for launch. This doc
 ### 2. **Newsletter Subscription** (Opt-in on Signup)
 - **Trigger**: User checks "Subscribe to Coach Kay News" during signup
 - **Default**: Checked (opt-out model)
-- **Integration**: 
-  - Supabase `newsletter_subscriptions` table
-  - SparkLoop sync (monetization)
-  - Beehiiv sync (newsletter management)
+- **Integration**: Supabase `newsletter_subscriptions` table
   
 **Status**: ✅ Automated opt-in with checkbox
 
@@ -83,7 +80,6 @@ Your email automation system is fully implemented and ready for launch. This doc
 
 3. **Monitoring**
    - Check "Unsubscribe Monitor" tab for unsubscribe requests
-   - Check "💰 Earnings" tab for monetization metrics
    - View subscriber stats on main dashboard
 
 ---
@@ -99,9 +95,14 @@ Every 5-7 days    → Site Usage Reminder (for inactive users)
 ```
 
 ### How to Automate:
-Since Lovable Cloud doesn't have built-in cron scheduling, you can use:
+You can use external services for scheduled automation:
 
-1. **Option 1: External Cron Service (Recommended)**
+1. **Option 1: n8n (Recommended)**
+   - Self-hosted or cloud workflow automation
+   - Create scheduled workflows to trigger edge functions
+   - Supports complex logic and AI integrations
+
+2. **Option 2: External Cron Service**
    - Use [cron-job.org](https://cron-job.org) (free)
    - Set up HTTP requests to your edge functions
    - Example cron expressions:
@@ -111,15 +112,10 @@ Since Lovable Cloud doesn't have built-in cron scheduling, you can use:
      0 10 * * 5   → Friday 10 AM (Coaching)
      ```
 
-2. **Option 2: Zapier/Make.com**
+3. **Option 3: Zapier/Make.com**
    - Create scheduled workflows
    - Trigger edge function via HTTP request
    - More flexible scheduling options
-
-3. **Option 3: GitHub Actions**
-   - Set up `.github/workflows/email-reminders.yml`
-   - Schedule via cron syntax
-   - Free for public repos
 
 ---
 
@@ -135,8 +131,6 @@ Since Lovable Cloud doesn't have built-in cron scheduling, you can use:
 ### Test 2: Newsletter Subscription
 - [ ] Sign up with newsletter checkbox checked
 - [ ] Verify entry in `newsletter_subscriptions` table
-- [ ] Check SparkLoop dashboard (may take 5-10 min)
-- [ ] Check Beehiiv dashboard (verify sync)
 - [ ] Try unchecking newsletter option and signup
 - [ ] Verify no newsletter subscription created
 
@@ -174,7 +168,6 @@ supabase/functions/
 ```
 newsletter_subscriptions       # All newsletter subscribers
 email_campaigns               # Campaign tracking
-monetization_earnings         # SparkLoop/Beehiiv earnings
 audit_logs                    # Email sending logs
 ```
 
@@ -208,7 +201,6 @@ All emails follow the FFE brand guidelines:
 - Recent signups (last 7 days)
 - Unsubscribe rate
 - Campaign performance
-- Monetization earnings (SparkLoop/Beehiiv)
 
 ### Where to Monitor:
 ```
@@ -216,8 +208,7 @@ All emails follow the FFE brand guidelines:
 ├── Subscribers      # View all subscribers
 ├── Campaigns        # Email campaign history
 ├── Reminders        # Send reminder emails
-├── Unsubscribe      # Monitor unsubscribe requests
-└── Earnings         # Monetization tracking
+└── Unsubscribe      # Monitor unsubscribe requests
 ```
 
 ---
@@ -225,9 +216,9 @@ All emails follow the FFE brand guidelines:
 ## 🚨 Troubleshooting
 
 ### Email Not Sending?
-1. Check `RESEND_API_KEY` in Supabase secrets
+1. Check `RESEND_API_KEY` in backend secrets
 2. Verify domain in Resend dashboard
-3. Check edge function logs in Supabase
+3. Check edge function logs
 4. Ensure user is admin (for reminder emails)
 
 ### Welcome Email Not Received?
@@ -237,10 +228,9 @@ All emails follow the FFE brand guidelines:
 4. Test with different email provider (Gmail, Outlook, etc.)
 
 ### Newsletter Subscription Not Working?
-1. Check `newsletter_subscriptions` table in Supabase
+1. Check `newsletter_subscriptions` table
 2. Verify checkbox is checked during signup
 3. Check edge function logs for `newsletter-signup`
-4. Ensure SparkLoop/Beehiiv API keys are correct
 
 ---
 
@@ -252,15 +242,13 @@ All emails follow the FFE brand guidelines:
 - [x] Reminder email templates created
 - [x] Admin dashboard for sending
 - [x] Unsubscribe flow implemented
-- [x] Monetization integrations (SparkLoop/Beehiiv)
 - [x] Brand-consistent design
 - [x] Mobile-responsive templates
 
 ### 📝 Post-Launch Tasks:
-- [ ] Set up automated scheduling (cron-job.org or Zapier)
+- [ ] Set up automated scheduling (n8n, cron-job.org, or Zapier)
 - [ ] Monitor unsubscribe rates (adjust frequency if >2%)
 - [ ] A/B test subject lines for engagement
-- [ ] Track monetization earnings weekly
 - [ ] Create monthly newsletter content calendar
 
 ---
@@ -268,11 +256,11 @@ All emails follow the FFE brand guidelines:
 ## 📞 Support
 
 For technical issues:
-- Check Supabase edge function logs
+- Check edge function logs
 - Review Resend dashboard for delivery logs
 - Contact support@ffeservices.net
 
 ---
 
-**Last Updated**: November 2024  
+**Last Updated**: January 2026  
 **Status**: ✅ PRODUCTION READY

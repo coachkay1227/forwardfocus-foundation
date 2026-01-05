@@ -1,12 +1,5 @@
 project_id = "mdwkkgancoocvkmecwkm"
 
-# Webhooks - Public (validate signatures instead)
-[functions.sparkloop-webhook]
-verify_jwt = false
-
-[functions.beehiiv-webhook]
-verify_jwt = false
-
 # Public contact/signup forms - Should have rate limiting
 [functions.send-contact-email]
 verify_jwt = false

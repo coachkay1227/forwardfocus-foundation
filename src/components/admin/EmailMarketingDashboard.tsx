@@ -16,7 +16,6 @@ import {
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { EmailCampaignForm } from "./EmailCampaignForm";
-import { MonetizationEarnings } from "./MonetizationEarnings";
 import { NewsletterUnsubscribeMonitor } from "./NewsletterUnsubscribeMonitor";
 import { ReminderEmailManager } from "./ReminderEmailManager";
 import { AutomatedEmailMonitor } from "./AutomatedEmailMonitor";
@@ -242,7 +241,6 @@ export const EmailMarketingDashboard = () => {
           <TabsTrigger value="campaigns">Campaigns</TabsTrigger>
           <TabsTrigger value="reminders">📧 Reminders</TabsTrigger>
           <TabsTrigger value="unsubscribe">Unsubscribe Monitor</TabsTrigger>
-          <TabsTrigger value="earnings">💰 Earnings</TabsTrigger>
         </TabsList>
 
         <TabsContent value="subscribers" className="space-y-4">
@@ -375,10 +373,6 @@ export const EmailMarketingDashboard = () => {
 
         <TabsContent value="unsubscribe" className="space-y-4">
           <NewsletterUnsubscribeMonitor />
-        </TabsContent>
-
-        <TabsContent value="earnings" className="space-y-4">
-          <MonetizationEarnings />
         </TabsContent>
       </Tabs>
     </div>
