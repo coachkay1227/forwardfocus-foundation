@@ -63,17 +63,35 @@ const PrivacyPolicy = () => {
                     </p>
                   </div>
                   <div>
-                    <h3 className="font-semibold text-lg mb-2 text-osu-scarlet">Non-Personal Information:</h3>
+                    <h3 className="font-semibold text-lg mb-2 text-osu-scarlet">Usage & Analytics Data:</h3>
                     <p className="text-base leading-relaxed text-navy-900/80">
-                      We collect anonymous data such as browser type, IP address, and device information 
-                      to improve our website and services.
+                      We automatically collect information about how you interact with our website, including 
+                      pages visited, time spent on pages, click patterns, and navigation paths. This helps us 
+                      improve our services and user experience.
+                    </p>
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-lg mb-2 text-osu-scarlet">Technical Information:</h3>
+                    <p className="text-base leading-relaxed text-navy-900/80">
+                      We collect IP addresses, browser type, device information, operating system, and 
+                      approximate geographic location (city/region level) to improve website functionality, 
+                      security, and to prevent fraud.
+                    </p>
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-lg mb-2 text-osu-scarlet">AI Interaction Data:</h3>
+                    <p className="text-base leading-relaxed text-navy-900/80">
+                      When you use our AI-powered tools (resource finder, crisis support, coaching), we may 
+                      store conversation history to improve our services. This data is anonymized and not 
+                      linked to your personal identity unless you are logged in.
                     </p>
                   </div>
                   <div>
                     <h3 className="font-semibold text-lg mb-2 text-osu-scarlet">Cookies & Tracking Technologies:</h3>
                     <p className="text-base leading-relaxed text-navy-900/80">
-                      Forward Focus Elevation uses cookies to enhance user experience, analyze website 
-                      traffic, and personalize content. You can manage cookie settings in your browser.
+                      Forward Focus Elevation uses cookies and similar technologies to enhance user experience, 
+                      analyze website traffic, maintain session state, and personalize content. You can manage 
+                      cookie settings in your browser.
                     </p>
                   </div>
                 </div>
@@ -127,10 +145,31 @@ const PrivacyPolicy = () => {
               {/* 6. Your Choices & Rights */}
               <section className="bg-gradient-to-r from-cream/10 to-osu-gray-light/10 p-6 rounded-lg border border-osu-gray/20">
                 <h2 className="font-heading text-2xl font-semibold mb-4 text-osu-scarlet">6. Your Choices & Rights</h2>
+                <p className="text-base leading-relaxed text-navy-900/80 mb-4">
+                  You have the following rights regarding your personal information:
+                </p>
                 <ul className="list-disc pl-6 space-y-2 text-base leading-relaxed text-navy-900/80 text-center list-none">
                   <li>You can opt out of marketing emails at any time by clicking "unsubscribe."</li>
                   <li>You may request to access, update, or delete your personal information by contacting Forward Focus Elevation.</li>
+                  <li>You may request a copy of the data we have collected about you.</li>
+                  <li>You can disable cookies in your browser settings, though this may limit some website functionality.</li>
                 </ul>
+                <div className="mt-6 p-4 bg-osu-scarlet/5 rounded-lg border border-osu-scarlet/20">
+                  <h3 className="font-semibold text-lg mb-2 text-osu-scarlet">California Residents (CCPA)</h3>
+                  <p className="text-base leading-relaxed text-navy-900/80">
+                    California residents have additional rights under the California Consumer Privacy Act (CCPA), 
+                    including the right to know what personal information is collected, request deletion, and 
+                    opt out of the sale of personal information. We do not sell personal information.
+                  </p>
+                </div>
+                <div className="mt-4 p-4 bg-osu-scarlet/5 rounded-lg border border-osu-scarlet/20">
+                  <h3 className="font-semibold text-lg mb-2 text-osu-scarlet">European Residents (GDPR)</h3>
+                  <p className="text-base leading-relaxed text-navy-900/80">
+                    If you are located in the European Economic Area, you have rights under GDPR including 
+                    access, rectification, erasure, restriction of processing, data portability, and the 
+                    right to object. Contact us to exercise these rights.
+                  </p>
+                </div>
               </section>
 
               <Separator className="bg-osu-gray-light" />
