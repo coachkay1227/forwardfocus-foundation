@@ -21,17 +21,106 @@ interface ReentryQuery {
   previousContext?: Array<{role: string, content: string}>;
 }
 
+// Rate limiting configuration
+const RATE_LIMIT_MAX_REQUESTS = 10;
+const RATE_LIMIT_WINDOW_MINUTES = 5;
+
+async function checkRateLimit(supabase: any, identifier: string, endpoint: string): Promise<{ limited: boolean; remaining: number }> {
+  try {
+    const { data, error } = await supabase.rpc('check_ai_rate_limit', {
+      p_identifier: identifier,
+      p_endpoint: endpoint,
+      p_max_requests: RATE_LIMIT_MAX_REQUESTS,
+      p_window_minutes: RATE_LIMIT_WINDOW_MINUTES
+    });
+
+    if (error) {
+      console.error('Rate limit check error:', error);
+      return { limited: false, remaining: RATE_LIMIT_MAX_REQUESTS };
+    }
+
+    const result = data?.[0] || { is_rate_limited: false, current_count: 0 };
+    return {
+      limited: result.is_rate_limited,
+      remaining: Math.max(0, RATE_LIMIT_MAX_REQUESTS - result.current_count)
+    };
+  } catch (err) {
+    console.error('Rate limit error:', err);
+    return { limited: false, remaining: RATE_LIMIT_MAX_REQUESTS };
+  }
+}
+
+async function recordRequest(supabase: any, identifier: string, endpoint: string): Promise<void> {
+  try {
+    await supabase.rpc('record_ai_request', {
+      p_identifier: identifier,
+      p_endpoint: endpoint
+    });
+  } catch (err) {
+    console.error('Failed to record request:', err);
+  }
+}
+
+function getClientIdentifier(req: Request, authHeader: string | null): string {
+  if (authHeader && authHeader.startsWith('Bearer ')) {
+    try {
+      const token = authHeader.split(' ')[1];
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      if (payload.sub) return `user:${payload.sub}`;
+    } catch (e) {
+      // Fall through to IP
+    }
+  }
+  
+  const forwarded = req.headers.get('x-forwarded-for');
+  const ip = forwarded ? forwarded.split(',')[0].trim() : 'unknown';
+  return `ip:${ip}`;
+}
+
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
   }
 
-  try {
-    const { query, location, county, reentryStage = 'recently_released', priorityNeeds = [], selectedCoach, previousContext = [] }: ReentryQuery = await req.json();
+  const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
+  const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
+  const supabase = createClient(supabaseUrl, supabaseKey);
 
-    const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
-    const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
-    const supabase = createClient(supabaseUrl, supabaseKey);
+  try {
+    // Rate limiting check
+    const authHeader = req.headers.get('authorization');
+    const identifier = getClientIdentifier(req, authHeader);
+    const endpoint = 'reentry-navigator-ai';
+
+    const rateLimit = await checkRateLimit(supabase, identifier, endpoint);
+    
+    if (rateLimit.limited) {
+      console.log(`Rate limit exceeded for ${identifier}`);
+      
+      await supabase.from('audit_logs').insert({
+        action: 'AI_RATE_LIMIT_EXCEEDED',
+        resource_type: 'ai_endpoint',
+        details: { endpoint, identifier },
+        severity: 'warn'
+      });
+
+      return new Response(JSON.stringify({
+        error: 'Rate limit exceeded. Please wait a few minutes before trying again.',
+        supportMessage: 'For immediate reentry support, please call 211 for resource navigation.',
+        retryAfter: RATE_LIMIT_WINDOW_MINUTES * 60
+      }), {
+        status: 429,
+        headers: { 
+          ...corsHeaders, 
+          'Content-Type': 'application/json',
+          'Retry-After': String(RATE_LIMIT_WINDOW_MINUTES * 60)
+        },
+      });
+    }
+
+    await recordRequest(supabase, identifier, endpoint);
+
+    const { query, location, county, reentryStage = 'recently_released', priorityNeeds = [], selectedCoach, previousContext = [] }: ReentryQuery = await req.json();
 
     // Enhanced resource filtering for reentry services
     let resourceQuery = supabase
@@ -123,6 +212,7 @@ serve(async (req) => {
       reentryStage,
       priorityNeeds,
       totalResources: resources?.length || 0,
+      rateLimitRemaining: rateLimit.remaining - 1,
       keyServices: {
         housing: "Transitional and permanent housing options",
         employment: "Job training and fair-chance employers", 
@@ -201,7 +291,7 @@ Remember: Every person deserves a second chance and the support to rebuild their
   if (!coach) return basePrompt;
 
   // Coach-specific personality additions
-  const coachPrompts = {
+  const coachPrompts: Record<string, string> = {
     'Coach Dana': `
 
 **As Coach Dana - Housing Transition Specialist:**
@@ -315,5 +405,5 @@ Your mental health is just as important as your physical wellbeing. I'm here to 
 "Healing isn't linear, and that's okay. I'm here to support you through every step of your mental wellness journey."`
   };
 
-  return basePrompt + (coachPrompts[coach.name as keyof typeof coachPrompts] || '');
+  return basePrompt + (coachPrompts[coach.name] || '');
 }

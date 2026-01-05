@@ -85,6 +85,27 @@ export type Database = {
           },
         ]
       }
+      ai_rate_limits: {
+        Row: {
+          created_at: string
+          endpoint: string
+          id: string
+          identifier: string
+        }
+        Insert: {
+          created_at?: string
+          endpoint: string
+          id?: string
+          identifier: string
+        }
+        Update: {
+          created_at?: string
+          endpoint?: string
+          id?: string
+          identifier?: string
+        }
+        Relationships: []
+      }
       ai_trial_sessions: {
         Row: {
           ai_endpoint: string
@@ -173,6 +194,53 @@ export type Database = {
           {
             foreignKeyName: "analytics_events_user_id_fkey"
             columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      api_key_rotation_tracking: {
+        Row: {
+          created_at: string
+          id: string
+          is_critical: boolean | null
+          key_description: string | null
+          key_name: string
+          last_rotated_at: string | null
+          notes: string | null
+          rotated_by: string | null
+          rotation_interval_days: number
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          is_critical?: boolean | null
+          key_description?: string | null
+          key_name: string
+          last_rotated_at?: string | null
+          notes?: string | null
+          rotated_by?: string | null
+          rotation_interval_days?: number
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_critical?: boolean | null
+          key_description?: string | null
+          key_name?: string
+          last_rotated_at?: string | null
+          notes?: string | null
+          rotated_by?: string | null
+          rotation_interval_days?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "api_key_rotation_tracking_rotated_by_fkey"
+            columns: ["rotated_by"]
             isOneToOne: false
             referencedRelation: "profiles"
             referencedColumns: ["id"]
@@ -1643,18 +1711,24 @@ export type Database = {
         Row: {
           created_at: string
           id: string
+          mfa_required: boolean | null
+          mfa_verified_at: string | null
           role: Database["public"]["Enums"]["app_role"]
           user_id: string
         }
         Insert: {
           created_at?: string
           id?: string
+          mfa_required?: boolean | null
+          mfa_verified_at?: string | null
           role: Database["public"]["Enums"]["app_role"]
           user_id: string
         }
         Update: {
           created_at?: string
           id?: string
+          mfa_required?: boolean | null
+          mfa_verified_at?: string | null
           role?: Database["public"]["Enums"]["app_role"]
           user_id?: string
         }
@@ -1814,6 +1888,19 @@ export type Database = {
         Returns: boolean
       }
       check_admin_operation_limit: { Args: never; Returns: boolean }
+      check_ai_rate_limit: {
+        Args: {
+          p_endpoint: string
+          p_identifier: string
+          p_max_requests?: number
+          p_window_minutes?: number
+        }
+        Returns: {
+          current_count: number
+          is_rate_limited: boolean
+          reset_at: string
+        }[]
+      }
       check_login_rate_limit: {
         Args: { p_email?: string; p_ip_address: string }
         Returns: {
@@ -1826,6 +1913,7 @@ export type Database = {
         }[]
       }
       cleanup_old_login_attempts: { Args: never; Returns: number }
+      cleanup_old_rate_limits: { Args: never; Returns: number }
       create_first_admin_user: { Args: { admin_email: string }; Returns: Json }
       detect_advanced_suspicious_activity: {
         Args: never
@@ -1904,6 +1992,10 @@ export type Database = {
       log_profile_access: { Args: never; Returns: undefined }
       queue_automation_email: {
         Args: { p_rule_name: string; p_trigger_data?: Json; p_user_id: string }
+        Returns: string
+      }
+      record_ai_request: {
+        Args: { p_endpoint: string; p_identifier: string }
         Returns: string
       }
       record_login_attempt: {

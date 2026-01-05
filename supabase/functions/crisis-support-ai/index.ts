@@ -15,6 +15,65 @@ interface CrisisQuery {
   previousContext?: Array<{role: string, content: string}>;
 }
 
+// Rate limiting configuration
+const RATE_LIMIT_MAX_REQUESTS = 10;
+const RATE_LIMIT_WINDOW_MINUTES = 5;
+
+async function checkRateLimit(supabase: any, identifier: string, endpoint: string): Promise<{ limited: boolean; remaining: number }> {
+  try {
+    const { data, error } = await supabase.rpc('check_ai_rate_limit', {
+      p_identifier: identifier,
+      p_endpoint: endpoint,
+      p_max_requests: RATE_LIMIT_MAX_REQUESTS,
+      p_window_minutes: RATE_LIMIT_WINDOW_MINUTES
+    });
+
+    if (error) {
+      console.error('Rate limit check error:', error);
+      // Fail open - allow request if rate limit check fails
+      return { limited: false, remaining: RATE_LIMIT_MAX_REQUESTS };
+    }
+
+    const result = data?.[0] || { is_rate_limited: false, current_count: 0 };
+    return {
+      limited: result.is_rate_limited,
+      remaining: Math.max(0, RATE_LIMIT_MAX_REQUESTS - result.current_count)
+    };
+  } catch (err) {
+    console.error('Rate limit error:', err);
+    return { limited: false, remaining: RATE_LIMIT_MAX_REQUESTS };
+  }
+}
+
+async function recordRequest(supabase: any, identifier: string, endpoint: string): Promise<void> {
+  try {
+    await supabase.rpc('record_ai_request', {
+      p_identifier: identifier,
+      p_endpoint: endpoint
+    });
+  } catch (err) {
+    console.error('Failed to record request:', err);
+  }
+}
+
+function getClientIdentifier(req: Request, authHeader: string | null): string {
+  // Try to get user ID from JWT
+  if (authHeader && authHeader.startsWith('Bearer ')) {
+    try {
+      const token = authHeader.split(' ')[1];
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      if (payload.sub) return `user:${payload.sub}`;
+    } catch (e) {
+      // Fall through to IP
+    }
+  }
+  
+  // Fall back to IP address
+  const forwarded = req.headers.get('x-forwarded-for');
+  const ip = forwarded ? forwarded.split(',')[0].trim() : 'unknown';
+  return `ip:${ip}`;
+}
+
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
@@ -22,20 +81,54 @@ serve(async (req) => {
 
   const startTime = Date.now();
   let errorCount = 0;
+  const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
+  const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
+  const supabase = createClient(supabaseUrl, supabaseKey);
 
   try {
-    const { query, location, county, urgencyLevel = 'moderate', previousContext = [] }: CrisisQuery = await req.json();
+    // Rate limiting check
+    const authHeader = req.headers.get('authorization');
+    const identifier = getClientIdentifier(req, authHeader);
+    const endpoint = 'crisis-support-ai';
 
-    const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
-    const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
-    const supabase = createClient(supabaseUrl, supabaseKey);
+    const rateLimit = await checkRateLimit(supabase, identifier, endpoint);
+    
+    if (rateLimit.limited) {
+      console.log(`Rate limit exceeded for ${identifier}`);
+      
+      // Log rate limit event
+      await supabase.from('audit_logs').insert({
+        action: 'AI_RATE_LIMIT_EXCEEDED',
+        resource_type: 'ai_endpoint',
+        details: { endpoint, identifier },
+        severity: 'warn'
+      });
+
+      return new Response(JSON.stringify({
+        error: 'Rate limit exceeded. Please wait a few minutes before trying again.',
+        supportMessage: 'For immediate crisis support, please call 988 (Suicide & Crisis Lifeline) or 911.',
+        retryAfter: RATE_LIMIT_WINDOW_MINUTES * 60
+      }), {
+        status: 429,
+        headers: { 
+          ...corsHeaders, 
+          'Content-Type': 'application/json',
+          'Retry-After': String(RATE_LIMIT_WINDOW_MINUTES * 60)
+        },
+      });
+    }
+
+    // Record this request
+    await recordRequest(supabase, identifier, endpoint);
+
+    const { query, location, county, urgencyLevel = 'moderate', previousContext = [] }: CrisisQuery = await req.json();
 
     // Enhanced resource filtering for crisis situations
     let resourceQuery = supabase
       .from('resources')
       .select('*')
       .or('type.ilike.%crisis%,type.ilike.%emergency%,type.ilike.%mental health%,type.ilike.%suicide%,type.ilike.%domestic violence%,type.ilike.%substance abuse%')
-      .eq('verified', 'verified')
+      .eq('verified', true)
       .limit(15);
 
     if (location) {
@@ -105,11 +198,35 @@ Remember: You're Alex, a trusted companion who believes in people's strength and
       }),
     });
 
+    // Filter resources based on query context and urgency
+    const relevantResources = resources?.filter(resource => {
+      const queryLower = query.toLowerCase();
+      const resourceName = resource.name?.toLowerCase() || '';
+      const resourceDesc = resource.description?.toLowerCase() || '';
+      const resourceType = resource.type?.toLowerCase() || '';
+      
+      // Crisis-specific resource matching
+      if (queryLower.includes('suicide') || queryLower.includes('self-harm')) {
+        return resourceType.includes('crisis') || resourceType.includes('mental health');
+      }
+      if (queryLower.includes('domestic violence') || queryLower.includes('abuse')) {
+        return resourceType.includes('domestic violence') || resourceType.includes('crisis');
+      }
+      if (queryLower.includes('addiction') || queryLower.includes('substance')) {
+        return resourceType.includes('substance abuse') || resourceType.includes('mental health');
+      }
+      
+      return resourceName.includes(queryLower) || 
+             resourceDesc.includes(queryLower) || 
+             resourceType.includes('crisis') ||
+             resourceType.includes('emergency');
+    })?.slice(0, 8) || [];
+
     if (!openAIResponse.ok) {
       console.error('OpenAI API error:', await openAIResponse.text());
       errorCount++;
       
-      // Instead of throwing, return a compassionate fallback response
+      // Log usage analytics
       const responseTime = Date.now() - startTime;
       try {
         await supabase.rpc('log_ai_usage', {
@@ -146,30 +263,6 @@ I'm searching for local Ohio resources that can provide you with immediate suppo
     const aiData = await openAIResponse.json();
     const aiMessage = aiData.choices[0].message.content;
 
-    // Filter resources based on query context and urgency
-    const relevantResources = resources?.filter(resource => {
-      const queryLower = query.toLowerCase();
-      const resourceName = resource.name?.toLowerCase() || '';
-      const resourceDesc = resource.description?.toLowerCase() || '';
-      const resourceType = resource.type?.toLowerCase() || '';
-      
-      // Crisis-specific resource matching
-      if (queryLower.includes('suicide') || queryLower.includes('self-harm')) {
-        return resourceType.includes('crisis') || resourceType.includes('mental health');
-      }
-      if (queryLower.includes('domestic violence') || queryLower.includes('abuse')) {
-        return resourceType.includes('domestic violence') || resourceType.includes('crisis');
-      }
-      if (queryLower.includes('addiction') || queryLower.includes('substance')) {
-        return resourceType.includes('substance abuse') || resourceType.includes('mental health');
-      }
-      
-      return resourceName.includes(queryLower) || 
-             resourceDesc.includes(queryLower) || 
-             resourceType.includes('crisis') ||
-             resourceType.includes('emergency');
-    })?.slice(0, 8) || [];
-
     // Log usage analytics
     const responseTime = Date.now() - startTime;
     try {
@@ -187,7 +280,8 @@ I'm searching for local Ohio resources that can provide you with immediate suppo
       response: aiMessage,
       resources: relevantResources,
       urgencyLevel,
-      totalResources: resources?.length || 0
+      totalResources: resources?.length || 0,
+      rateLimitRemaining: rateLimit.remaining - 1
     }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });
@@ -221,17 +315,13 @@ I'm searching for local Ohio resources that can provide you with immediate suppo
 I'm searching our database for local Ohio resources that can help you...`;
 
     // Try to get basic crisis resources as fallback
-    const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
-    const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
-    const supabase = createClient(supabaseUrl, supabaseKey);
-    
     let fallbackResources = [];
     try {
       const { data: dbResources } = await supabase
         .from('resources')
         .select('*')
         .or('type.ilike.%crisis%,type.ilike.%emergency%,type.ilike.%mental health%')
-        .eq('verified', 'verified')
+        .eq('verified', true)
         .limit(5);
       fallbackResources = dbResources || [];
     } catch (dbError) {

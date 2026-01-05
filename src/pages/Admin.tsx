@@ -33,6 +33,8 @@ const SuccessStoriesManager = lazy(() => import("@/components/admin/SuccessStori
 const MarketingImageGenerator = lazy(() => import("@/components/ai/MarketingImageGenerator").then(m => ({ default: m.MarketingImageGenerator })));
 const PreLaunchChecklist = lazy(() => import("@/components/admin/PreLaunchChecklist").then(m => ({ default: m.PreLaunchChecklist })));
 const LoginSecurityMonitor = lazy(() => import("@/components/admin/LoginSecurityMonitor").then(m => ({ default: m.LoginSecurityMonitor })));
+const ApiKeyRotationManager = lazy(() => import("@/components/admin/ApiKeyRotationManager").then(m => ({ default: m.ApiKeyRotationManager })));
+const MFASettings = lazy(() => import("@/components/admin/MFASettings").then(m => ({ default: m.MFASettings })));
 
 const ComponentLoader = () => (
   <div className="space-y-4">
@@ -1056,8 +1058,31 @@ const Admin = () => {
         <TabsContent value="security">
           <Suspense fallback={<ComponentLoader />}>
             <div className="space-y-6">
-              <LoginSecurityMonitor />
-              <SecurityMonitoringDashboard />
+              <h2 className="font-heading text-2xl font-semibold">Security Management</h2>
+              <Tabs defaultValue="login-security" className="space-y-6">
+                <TabsList className="grid w-full grid-cols-4">
+                  <TabsTrigger value="login-security">Login Security</TabsTrigger>
+                  <TabsTrigger value="api-keys">API Keys</TabsTrigger>
+                  <TabsTrigger value="mfa">MFA Settings</TabsTrigger>
+                  <TabsTrigger value="monitoring">Monitoring</TabsTrigger>
+                </TabsList>
+                
+                <TabsContent value="login-security">
+                  <LoginSecurityMonitor />
+                </TabsContent>
+                
+                <TabsContent value="api-keys">
+                  <ApiKeyRotationManager />
+                </TabsContent>
+                
+                <TabsContent value="mfa">
+                  <MFASettings />
+                </TabsContent>
+                
+                <TabsContent value="monitoring">
+                  <SecurityMonitoringDashboard />
+                </TabsContent>
+              </Tabs>
             </div>
           </Suspense>
         </TabsContent>

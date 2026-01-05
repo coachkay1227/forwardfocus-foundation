@@ -16,24 +16,113 @@ interface VictimSupportQuery {
   previousContext?: Array<{role: string, content: string}>;
 }
 
+// Rate limiting configuration
+const RATE_LIMIT_MAX_REQUESTS = 10;
+const RATE_LIMIT_WINDOW_MINUTES = 5;
+
+async function checkRateLimit(supabase: any, identifier: string, endpoint: string): Promise<{ limited: boolean; remaining: number }> {
+  try {
+    const { data, error } = await supabase.rpc('check_ai_rate_limit', {
+      p_identifier: identifier,
+      p_endpoint: endpoint,
+      p_max_requests: RATE_LIMIT_MAX_REQUESTS,
+      p_window_minutes: RATE_LIMIT_WINDOW_MINUTES
+    });
+
+    if (error) {
+      console.error('Rate limit check error:', error);
+      return { limited: false, remaining: RATE_LIMIT_MAX_REQUESTS };
+    }
+
+    const result = data?.[0] || { is_rate_limited: false, current_count: 0 };
+    return {
+      limited: result.is_rate_limited,
+      remaining: Math.max(0, RATE_LIMIT_MAX_REQUESTS - result.current_count)
+    };
+  } catch (err) {
+    console.error('Rate limit error:', err);
+    return { limited: false, remaining: RATE_LIMIT_MAX_REQUESTS };
+  }
+}
+
+async function recordRequest(supabase: any, identifier: string, endpoint: string): Promise<void> {
+  try {
+    await supabase.rpc('record_ai_request', {
+      p_identifier: identifier,
+      p_endpoint: endpoint
+    });
+  } catch (err) {
+    console.error('Failed to record request:', err);
+  }
+}
+
+function getClientIdentifier(req: Request, authHeader: string | null): string {
+  if (authHeader && authHeader.startsWith('Bearer ')) {
+    try {
+      const token = authHeader.split(' ')[1];
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      if (payload.sub) return `user:${payload.sub}`;
+    } catch (e) {
+      // Fall through to IP
+    }
+  }
+  
+  const forwarded = req.headers.get('x-forwarded-for');
+  const ip = forwarded ? forwarded.split(',')[0].trim() : 'unknown';
+  return `ip:${ip}`;
+}
+
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
   }
 
-  try {
-    const { query, location, county, victimType, traumaLevel = 'ongoing', previousContext = [] }: VictimSupportQuery = await req.json();
+  const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
+  const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
+  const supabase = createClient(supabaseUrl, supabaseKey);
 
-    const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
-    const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
-    const supabase = createClient(supabaseUrl, supabaseKey);
+  try {
+    // Rate limiting check
+    const authHeader = req.headers.get('authorization');
+    const identifier = getClientIdentifier(req, authHeader);
+    const endpoint = 'victim-support-ai';
+
+    const rateLimit = await checkRateLimit(supabase, identifier, endpoint);
+    
+    if (rateLimit.limited) {
+      console.log(`Rate limit exceeded for ${identifier}`);
+      
+      await supabase.from('audit_logs').insert({
+        action: 'AI_RATE_LIMIT_EXCEEDED',
+        resource_type: 'ai_endpoint',
+        details: { endpoint, identifier },
+        severity: 'warn'
+      });
+
+      return new Response(JSON.stringify({
+        error: 'Rate limit exceeded. Please wait a few minutes before trying again.',
+        supportMessage: 'For immediate victim support, please call the National Domestic Violence Hotline at 1-800-799-7233.',
+        retryAfter: RATE_LIMIT_WINDOW_MINUTES * 60
+      }), {
+        status: 429,
+        headers: { 
+          ...corsHeaders, 
+          'Content-Type': 'application/json',
+          'Retry-After': String(RATE_LIMIT_WINDOW_MINUTES * 60)
+        },
+      });
+    }
+
+    await recordRequest(supabase, identifier, endpoint);
+
+    const { query, location, county, victimType, traumaLevel = 'ongoing', previousContext = [] }: VictimSupportQuery = await req.json();
 
     // Enhanced resource filtering for victim services
     let resourceQuery = supabase
       .from('resources')
       .select('*')
       .or('type.ilike.%victim%,type.ilike.%legal aid%,type.ilike.%compensation%,type.ilike.%counseling%,type.ilike.%trauma%,type.ilike.%advocacy%,type.ilike.%domestic violence%,type.ilike.%sexual assault%')
-      .eq('verified', 'verified')
+      .eq('verified', true)
       .limit(15);
 
     if (location) {
@@ -164,6 +253,7 @@ Remember: You're supporting someone on their healing journey across Ohio's 88 co
       victimType,
       traumaLevel,
       totalResources: resources?.length || 0,
+      rateLimitRemaining: rateLimit.remaining - 1,
       supportServices: {
         domesticViolence: "1-800-799-7233",
         sexualAssault: "1-800-656-4673", 
@@ -178,7 +268,12 @@ Remember: You're supporting someone on their healing journey across Ohio's 88 co
     console.error('Victim Support AI error:', error);
     return new Response(JSON.stringify({ 
       error: 'I apologize for the technical difficulty. Let me connect you with local Ohio victim services and family justice centers in your area that can provide immediate support.',
-      resources: []
+      resources: [],
+      supportServices: {
+        domesticViolence: "1-800-799-7233",
+        sexualAssault: "1-800-656-4673", 
+        crisisSupport: "988"
+      }
     }), {
       status: 500,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
