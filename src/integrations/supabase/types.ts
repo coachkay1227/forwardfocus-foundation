@@ -14,6 +14,77 @@ export type Database = {
   }
   public: {
     Tables: {
+      account_lockouts: {
+        Row: {
+          created_at: string
+          email: string
+          failed_attempts: number
+          id: string
+          locked_at: string
+          lockout_reason: string | null
+          unlock_at: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          failed_attempts?: number
+          id?: string
+          locked_at?: string
+          lockout_reason?: string | null
+          unlock_at: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          failed_attempts?: number
+          id?: string
+          locked_at?: string
+          lockout_reason?: string | null
+          unlock_at?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      admin_ip_whitelist: {
+        Row: {
+          added_by: string | null
+          created_at: string
+          description: string | null
+          id: string
+          ip_address: string
+          is_active: boolean
+          updated_at: string
+        }
+        Insert: {
+          added_by?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          ip_address: string
+          is_active?: boolean
+          updated_at?: string
+        }
+        Update: {
+          added_by?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          ip_address?: string
+          is_active?: boolean
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "admin_ip_whitelist_added_by_fkey"
+            columns: ["added_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       ai_trial_sessions: {
         Row: {
           ai_endpoint: string
@@ -899,6 +970,39 @@ export type Database = {
           },
         ]
       }
+      login_attempts: {
+        Row: {
+          attempt_type: string
+          created_at: string
+          email: string | null
+          failure_reason: string | null
+          id: string
+          ip_address: string | null
+          success: boolean
+          user_agent: string | null
+        }
+        Insert: {
+          attempt_type?: string
+          created_at?: string
+          email?: string | null
+          failure_reason?: string | null
+          id?: string
+          ip_address?: string | null
+          success?: boolean
+          user_agent?: string | null
+        }
+        Update: {
+          attempt_type?: string
+          created_at?: string
+          email?: string | null
+          failure_reason?: string | null
+          id?: string
+          ip_address?: string | null
+          success?: boolean
+          user_agent?: string | null
+        }
+        Relationships: []
+      }
       newsletter_subscribers: {
         Row: {
           created_at: string
@@ -1705,7 +1809,23 @@ export type Database = {
         Returns: boolean
       }
       check_admin_exists: { Args: never; Returns: boolean }
+      check_admin_ip_whitelist: {
+        Args: { p_ip_address: string }
+        Returns: boolean
+      }
       check_admin_operation_limit: { Args: never; Returns: boolean }
+      check_login_rate_limit: {
+        Args: { p_email?: string; p_ip_address: string }
+        Returns: {
+          attempts_remaining: number
+          is_locked_out: boolean
+          is_rate_limited: boolean
+          lockout_until: string
+          requires_captcha: boolean
+          reset_at: string
+        }[]
+      }
+      cleanup_old_login_attempts: { Args: never; Returns: number }
       create_first_admin_user: { Args: { admin_email: string }; Returns: Json }
       detect_advanced_suspicious_activity: {
         Args: never
@@ -1784,6 +1904,17 @@ export type Database = {
       log_profile_access: { Args: never; Returns: undefined }
       queue_automation_email: {
         Args: { p_rule_name: string; p_trigger_data?: Json; p_user_id: string }
+        Returns: string
+      }
+      record_login_attempt: {
+        Args: {
+          p_attempt_type?: string
+          p_email: string
+          p_failure_reason?: string
+          p_ip_address: string
+          p_success: boolean
+          p_user_agent: string
+        }
         Returns: string
       }
       request_admin_contact_access: {

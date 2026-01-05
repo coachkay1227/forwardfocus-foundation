@@ -32,6 +32,7 @@ const PartnerVerificationManager = lazy(() => import("@/components/admin/Partner
 const SuccessStoriesManager = lazy(() => import("@/components/admin/SuccessStoriesManager").then(m => ({ default: m.SuccessStoriesManager })));
 const MarketingImageGenerator = lazy(() => import("@/components/ai/MarketingImageGenerator").then(m => ({ default: m.MarketingImageGenerator })));
 const PreLaunchChecklist = lazy(() => import("@/components/admin/PreLaunchChecklist").then(m => ({ default: m.PreLaunchChecklist })));
+const LoginSecurityMonitor = lazy(() => import("@/components/admin/LoginSecurityMonitor").then(m => ({ default: m.LoginSecurityMonitor })));
 
 const ComponentLoader = () => (
   <div className="space-y-4">
@@ -1024,7 +1025,10 @@ const Admin = () => {
 
         <TabsContent value="security">
           <Suspense fallback={<ComponentLoader />}>
-            <SecurityMonitoringDashboard />
+            <div className="space-y-6">
+              <LoginSecurityMonitor />
+              <SecurityMonitoringDashboard />
+            </div>
           </Suspense>
         </TabsContent>
       </Tabs>
