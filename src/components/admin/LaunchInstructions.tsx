@@ -21,18 +21,26 @@ export const LaunchInstructions = () => {
           <div className="grid gap-4">
             
             {/* Step 1: Leaked Password Protection */}
-            <div className="flex items-start space-x-3 p-4 border rounded-lg">
-              <Shield className="h-5 w-5 text-orange-500 mt-0.5" />
+            <div className="flex items-start space-x-3 p-4 border rounded-lg border-red-200 bg-red-50">
+              <Shield className="h-5 w-5 text-red-500 mt-0.5" />
               <div className="flex-1">
-                <h4 className="font-medium">Enable Leaked Password Protection</h4>
-                <p className="text-sm text-muted-foreground mb-2">
-                  Navigate to Supabase Dashboard → Authentication → Settings
+                <h4 className="font-medium text-red-800">🔐 Enable Leaked Password Protection (CRITICAL)</h4>
+                <p className="text-sm text-red-700 mb-2">
+                  This prevents users from signing up with passwords that have been exposed in data breaches.
                 </p>
-                <Badge variant="outline" className="text-orange-600 border-orange-200">
-                  Manual Step Required
+                <div className="text-xs bg-white p-3 rounded border border-red-200 mb-2 space-y-1">
+                  <p><strong>Steps:</strong></p>
+                  <ol className="list-decimal list-inside space-y-1 text-red-700">
+                    <li>Go to Lovable Cloud → Authentication → Settings</li>
+                    <li>Find "Leaked Password Protection" section</li>
+                    <li>Enable "Warning Mode" first for monitoring</li>
+                    <li>After 1 week, enable "Strict Mode" to block leaked passwords</li>
+                  </ol>
+                </div>
+                <Badge variant="destructive">
+                  Security Critical - Manual Step Required
                 </Badge>
               </div>
-              <ExternalLink className="h-4 w-4 text-muted-foreground" />
             </div>
 
             {/* Step 2: URL Configuration */}
