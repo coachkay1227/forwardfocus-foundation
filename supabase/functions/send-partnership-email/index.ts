@@ -29,7 +29,7 @@ const handler = async (req: Request): Promise<Response> => {
 
     // Send confirmation to partner organization
     const partnerEmailResponse = await resend.emails.send({
-      from: "Forward Focus Elevation <support@ffeservices.net>",
+      from: "Forward Focus Elevation <support@forward-focus-elevation.org>",
       to: [email],
       subject: "Partnership Request Received - Forward Focus Elevation",
       html: `
@@ -69,7 +69,7 @@ const handler = async (req: Request): Promise<Response> => {
           <p style="color: #6B7280; font-size: 14px; margin-top: 30px;">
             Best regards,<br>
             The Forward Focus Elevation Partnership Team<br>
-            Email: support@ffeservices.net
+            Email: support@forward-focus-elevation.org
           </p>
         </div>
       `,
@@ -77,8 +77,8 @@ const handler = async (req: Request): Promise<Response> => {
 
     // Send notification to support team
     const supportEmailResponse = await resend.emails.send({
-      from: "Partnership Requests <noreply@ffeservices.net>",
-      to: ["support@ffeservices.net"],
+      from: "Partnership Requests <noreply@forward-focus-elevation.org>",
+      to: ["support@forward-focus-elevation.org"],
       subject: `New Partnership Request from ${name}`,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">

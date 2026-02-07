@@ -10,14 +10,14 @@ const config: AntiWhiteLabelConfig = {
   allowedDomains: [
     'localhost',
     '127.0.0.1', 
-    'ffeservices.net',
-    'www.ffeservices.net',
-    'gzukhsqgkwljfvwkfuno.supabase.co',
+    'forward-focus-elevation.org',
+    'www.forward-focus-elevation.org',
+    'mdwkkgancoocvkmecwkm.supabase.co',
     'lovable.app', // Allow Lovable preview domains
     'lovableproject.com' // Allow all Lovable project domains
   ],
-  brandName: 'FFE Services',
-  copyrightNotice: '© 2025 FFE Services. All rights reserved. Unauthorized use prohibited.'
+  brandName: 'Forward Focus Elevation',
+  copyrightNotice: '© 2025 Forward Focus Elevation. All rights reserved. Unauthorized use prohibited.'
 };
 
 export const AntiWhiteLabelProtection = () => {

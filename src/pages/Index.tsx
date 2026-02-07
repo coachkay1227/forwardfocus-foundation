@@ -21,8 +21,8 @@ const Index = () => {
     "@context": "https://schema.org",
     "@type": "Organization",
     "name": "Forward Focus Elevation",
-    "url": "https://forwardfocus.lovable.app",
-    "logo": "https://forwardfocus.lovable.app/logo-new.png",
+    "url": "https://forward-focus-elevation.org",
+    "logo": "https://forward-focus-elevation.org/logo-new.png",
     "description": "Empowering justice-impacted families with the tools to rebuild and thrive",
     "sameAs": [],
     "contactPoint": {

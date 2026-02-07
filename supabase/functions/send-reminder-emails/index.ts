@@ -116,7 +116,7 @@ const handler = async (req: Request): Promise<Response> => {
       await Promise.all(batch.map(async (subscriber) => {
         try {
           await resend.emails.send({
-            from: "Coach Kay <support@ffeservices.net>",
+            from: "Coach Kay <support@forward-focus-elevation.org>",
             to: [subscriber.email],
             subject,
             html: emailContent.replace(/{{name}}/g, subscriber.name || 'Friend'),
@@ -229,7 +229,7 @@ function generateSiteUsageEmail(): string {
         </div>
         
         <div style="text-align: center; margin-top: 30px;">
-          <a href="https://ffeservices.net" 
+          <a href="https://forward-focus-elevation.org" 
              style="background: linear-gradient(135deg, #8B5CF6, #06B6D4); color: white; padding: 15px 35px; text-decoration: none; border-radius: 8px; display: inline-block; font-weight: bold; font-size: 16px;">
             Return to Your Journey →
           </a>
@@ -238,7 +238,7 @@ function generateSiteUsageEmail(): string {
       
       <div style="text-align: center; padding: 20px; color: #6B7280; font-size: 12px;">
         <p>Forward Focus Elevation | Empowering Justice-Impacted Families</p>
-        <p><a href="https://ffeservices.net/unsubscribe?email={{email}}" style="color: #8B5CF6;">Unsubscribe</a></p>
+        <p><a href="https://forward-focus-elevation.org/unsubscribe?email={{email}}" style="color: #8B5CF6;">Unsubscribe</a></p>
       </div>
     </div>
   `;
@@ -269,7 +269,7 @@ function generateBookingReminderEmail(): string {
         </div>
         
         <div style="text-align: center; margin-top: 30px;">
-          <a href="https://ffeservices.net" 
+          <a href="https://forward-focus-elevation.org" 
              style="background: linear-gradient(135deg, #8B5CF6, #06B6D4); color: white; padding: 15px 35px; text-decoration: none; border-radius: 8px; display: inline-block; font-weight: bold; font-size: 16px;">
             Book Your Session Now →
           </a>
@@ -282,7 +282,7 @@ function generateBookingReminderEmail(): string {
       
       <div style="text-align: center; padding: 20px; color: #6B7280; font-size: 12px;">
         <p>Forward Focus Elevation | Empowering Justice-Impacted Families</p>
-        <p><a href="https://ffeservices.net/unsubscribe?email={{email}}" style="color: #8B5CF6;">Unsubscribe</a></p>
+        <p><a href="https://forward-focus-elevation.org/unsubscribe?email={{email}}" style="color: #8B5CF6;">Unsubscribe</a></p>
       </div>
     </div>
   `;
@@ -320,7 +320,7 @@ function generateWeeklyEngagementEmail(): string {
         </div>
         
         <div style="text-align: center; margin-top: 30px;">
-          <a href="https://ffeservices.net" 
+          <a href="https://forward-focus-elevation.org" 
              style="background: linear-gradient(135deg, #8B5CF6, #06B6D4); color: white; padding: 15px 35px; text-decoration: none; border-radius: 8px; display: inline-block; font-weight: bold; font-size: 16px;">
             Explore This Week's Resources →
           </a>
@@ -330,13 +330,13 @@ function generateWeeklyEngagementEmail(): string {
       <div style="background: #EEF2FF; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
         <p style="margin: 0; color: #4338CA; font-weight: 600; text-align: center;">💜 Support Our Mission</p>
         <p style="margin: 10px 0 0 0; color: #4338CA; text-align: center; font-size: 14px;">
-          Help us reach more families - <a href="https://ffeservices.net/support" style="color: #8B5CF6;">Donate Today</a>
+          Help us reach more families - <a href="https://forward-focus-elevation.org/support" style="color: #8B5CF6;">Donate Today</a>
         </p>
       </div>
       
       <div style="text-align: center; padding: 20px; color: #6B7280; font-size: 12px;">
         <p>Forward Focus Elevation | Empowering Justice-Impacted Families</p>
-        <p><a href="https://ffeservices.net/unsubscribe?email={{email}}" style="color: #8B5CF6;">Unsubscribe</a></p>
+        <p><a href="https://forward-focus-elevation.org/unsubscribe?email={{email}}" style="color: #8B5CF6;">Unsubscribe</a></p>
       </div>
     </div>
   `;

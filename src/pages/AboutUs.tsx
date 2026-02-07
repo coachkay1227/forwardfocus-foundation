@@ -26,7 +26,7 @@ export default function AboutUs() {
           "@context": "https://schema.org",
           "@type": "Organization",
           name: "Forward Focus Elevation",
-          url: "https://forwardfocus.lovable.app",
+          url: "https://forward-focus-elevation.org",
           description: "Empowering justice-impacted individuals and families to rebuild, thrive, and rise with dignity, hope, and community.",
           areaServed: "Ohio",
           serviceType: ["Healing & Safety Hub", "Reentry Community", "AI-Powered Guidance", "Trauma Recovery Support"]

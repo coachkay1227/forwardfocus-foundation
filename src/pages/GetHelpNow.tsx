@@ -19,7 +19,7 @@ export default function GetHelpNow() {
     "@type": "WebPage",
     "name": "Get Help Now - Immediate Crisis Support",
     "description": "Immediate crisis support and emergency resources with 24/7 crisis lines and AI-powered guidance",
-    "url": "https://forwardfocus.lovable.app/help",
+    "url": "https://forward-focus-elevation.org/help",
     "provider": {
       "@type": "Organization",
       "name": "Forward Focus Elevation"

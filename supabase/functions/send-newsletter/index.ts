@@ -117,7 +117,7 @@ const handler = async (req: Request): Promise<Response> => {
       await Promise.all(batch.map(async (recipient) => {
         try {
           await resend.emails.send({
-            from: "Forward Focus Elevation <support@ffeservices.net>",
+            from: "Forward Focus Elevation <support@forward-focus-elevation.org>",
             to: [recipient.email],
             subject,
             html: `
@@ -134,17 +134,17 @@ const handler = async (req: Request): Promise<Response> => {
                 <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #ddd; text-align: center;">
                   <p style="color: #666; font-size: 14px; margin: 10px 0;">
                     <strong>Need Support?</strong><br>
-                    Visit our <a href="https://ffeservices.net/get-help-now" style="color: #bb0000;">Get Help Now</a> page for resources and AI-powered guidance.
+                    Visit our <a href="https://forward-focus-elevation.org/get-help-now" style="color: #bb0000;">Get Help Now</a> page for resources and AI-powered guidance.
                   </p>
                   
                   <div style="margin-top: 20px;">
-                    <a href="https://ffeservices.net" style="color: #bb0000; text-decoration: none; margin: 0 10px;">Website</a>
-                    <a href="https://ffeservices.net/learn-grow" style="color: #bb0000; text-decoration: none; margin: 0 10px;">Learning</a>
-                    <a href="https://ffeservices.net/partners" style="color: #bb0000; text-decoration: none; margin: 0 10px;">Partners</a>
+                    <a href="https://forward-focus-elevation.org" style="color: #bb0000; text-decoration: none; margin: 0 10px;">Website</a>
+                    <a href="https://forward-focus-elevation.org/learn-grow" style="color: #bb0000; text-decoration: none; margin: 0 10px;">Learning</a>
+                    <a href="https://forward-focus-elevation.org/partners" style="color: #bb0000; text-decoration: none; margin: 0 10px;">Partners</a>
                   </div>
                   
                   <p style="color: #999; font-size: 12px; margin-top: 20px;">
-                    You can <a href="https://ffeservices.net/unsubscribe?email=${encodeURIComponent(recipient.email)}" style="color: #999;">unsubscribe</a> at any time.
+                    You can <a href="https://forward-focus-elevation.org/unsubscribe?email=${encodeURIComponent(recipient.email)}" style="color: #999;">unsubscribe</a> at any time.
                   </p>
                 </div>
               </div>

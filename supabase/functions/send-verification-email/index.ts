@@ -64,7 +64,7 @@ const handler = async (req: Request): Promise<Response> => {
           </ul>
 
           <div style="margin: 30px 0;">
-            <a href="${Deno.env.get('VITE_SUPABASE_URL') || 'https://ffeservices.net'}/partner-dashboard" 
+            <a href="${Deno.env.get('VITE_SUPABASE_URL') || 'https://forward-focus-elevation.org'}/partner-dashboard"
                style="background-color: #16a34a; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; display: inline-block; font-weight: 600;">
               Access Your Partner Dashboard
             </a>
@@ -72,14 +72,14 @@ const handler = async (req: Request): Promise<Response> => {
 
           <p style="font-size: 14px; color: #6b7280; margin-top: 30px;">
             If you have any questions, feel free to reach out to our team at 
-            <a href="mailto:support@ffeservices.net" style="color: #2563eb;">support@ffeservices.net</a>
+            <a href="mailto:support@forward-focus-elevation.org" style="color: #2563eb;">support@forward-focus-elevation.org</a>
           </p>
 
           <hr style="border: none; border-top: 1px solid #e5e7eb; margin: 30px 0;">
           
           <p style="font-size: 12px; color: #9ca3af; text-align: center;">
-            FFE Services - Supporting Justice-Impacted Individuals<br>
-            <a href="https://ffeservices.net" style="color: #2563eb;">ffeservices.net</a>
+            Forward Focus Elevation - Supporting Justice-Impacted Individuals<br>
+            <a href="https://forward-focus-elevation.org" style="color: #2563eb;">forward-focus-elevation.org</a>
           </p>
         </div>
       `;
@@ -90,7 +90,7 @@ const handler = async (req: Request): Promise<Response> => {
           <h1 style="color: #1f2937; font-size: 24px; margin-bottom: 20px;">Partner Verification Update</h1>
           
           <p style="font-size: 16px; line-height: 1.6; color: #374151;">
-            Thank you for your interest in becoming a verified partner with FFE Services for <strong>${organizationName}</strong>.
+            Thank you for your interest in becoming a verified partner with Forward Focus Elevation for <strong>${organizationName}</strong>.
           </p>
           
           <p style="font-size: 16px; line-height: 1.6; color: #374151;">
@@ -106,14 +106,14 @@ const handler = async (req: Request): Promise<Response> => {
 
           <h2 style="color: #1f2937; font-size: 18px; margin-top: 30px;">What You Can Do:</h2>
           <ul style="line-height: 1.8; color: #374151;">
-            <li>Review our <a href="https://ffeservices.net/partners" style="color: #2563eb;">partner requirements</a></li>
+            <li>Review our <a href="https://forward-focus-elevation.org/partners" style="color: #2563eb;">partner requirements</a></li>
             <li>Ensure your organization meets verification criteria</li>
             <li>Reapply with additional documentation if available</li>
             <li>Contact our support team for guidance</li>
           </ul>
 
           <div style="margin: 30px 0;">
-            <a href="https://ffeservices.net/partners" 
+            <a href="https://forward-focus-elevation.org/partners" 
                style="background-color: #2563eb; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; display: inline-block; font-weight: 600;">
               Learn More About Requirements
             </a>
@@ -121,14 +121,14 @@ const handler = async (req: Request): Promise<Response> => {
 
           <p style="font-size: 14px; color: #6b7280; margin-top: 30px;">
             Have questions? Contact us at 
-            <a href="mailto:support@ffeservices.net" style="color: #2563eb;">support@ffeservices.net</a>
+            <a href="mailto:support@forward-focus-elevation.org" style="color: #2563eb;">support@forward-focus-elevation.org</a>
           </p>
 
           <hr style="border: none; border-top: 1px solid #e5e7eb; margin: 30px 0;">
           
           <p style="font-size: 12px; color: #9ca3af; text-align: center;">
-            FFE Services - Supporting Justice-Impacted Individuals<br>
-            <a href="https://ffeservices.net" style="color: #2563eb;">ffeservices.net</a>
+            Forward Focus Elevation - Supporting Justice-Impacted Individuals<br>
+            <a href="https://forward-focus-elevation.org" style="color: #2563eb;">forward-focus-elevation.org</a>
           </p>
         </div>
       `;
@@ -156,7 +156,7 @@ const handler = async (req: Request): Promise<Response> => {
           </ul>
 
           <div style="margin: 30px 0;">
-            <a href="${Deno.env.get('VITE_SUPABASE_URL') || 'https://ffeservices.net'}/partner-dashboard" 
+            <a href="${Deno.env.get('VITE_SUPABASE_URL') || 'https://forward-focus-elevation.org'}/partner-dashboard" 
                style="background-color: #2563eb; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; display: inline-block; font-weight: 600;">
               Check Application Status
             </a>
@@ -164,14 +164,14 @@ const handler = async (req: Request): Promise<Response> => {
 
           <p style="font-size: 14px; color: #6b7280; margin-top: 30px;">
             Questions about your application? Contact us at 
-            <a href="mailto:support@ffeservices.net" style="color: #2563eb;">support@ffeservices.net</a>
+            <a href="mailto:support@forward-focus-elevation.org" style="color: #2563eb;">support@forward-focus-elevation.org</a>
           </p>
 
           <hr style="border: none; border-top: 1px solid #e5e7eb; margin: 30px 0;">
           
           <p style="font-size: 12px; color: #9ca3af; text-align: center;">
-            FFE Services - Supporting Justice-Impacted Individuals<br>
-            <a href="https://ffeservices.net" style="color: #2563eb;">ffeservices.net</a>
+            Forward Focus Elevation - Supporting Justice-Impacted Individuals<br>
+            <a href="https://forward-focus-elevation.org" style="color: #2563eb;">forward-focus-elevation.org</a>
           </p>
         </div>
       `;

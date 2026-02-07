@@ -15,4 +15,4 @@ Disallow: /setup-admin
 Disallow: /setup-guide
 
 # Sitemap location
-Sitemap: https://forwardfocus.lovable.app/sitemap.xml
+Sitemap: https://forward-focus-elevation.org/sitemap.xml

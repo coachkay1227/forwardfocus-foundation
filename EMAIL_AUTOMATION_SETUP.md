@@ -173,8 +173,8 @@ audit_logs                    # Email sending logs
 
 ### Email Provider
 - **Resend.com** via `RESEND_API_KEY`
-- From: `support@ffeservices.net` or `Coach Kay <support@ffeservices.net>`
-- Domain: `ffeservices.net` (must be verified in Resend)
+- From: `support@forward-focus-elevation.org` or `Coach Kay <support@forward-focus-elevation.org>`
+- Domain: `forward-focus-elevation.org` (must be verified in Resend)
 
 ---
 
@@ -258,7 +258,7 @@ All emails follow the FFE brand guidelines:
 For technical issues:
 - Check edge function logs
 - Review Resend dashboard for delivery logs
-- Contact support@ffeservices.net
+- Contact support@forward-focus-elevation.org
 
 ---
 
