@@ -39,7 +39,7 @@ export const InactivityEmail = ({ name, daysSinceLastActivity }: InactivityEmail
     </Text>
 
     <Section style={ctaSection}>
-      <Button style={button} href="https://ffeservices.net/learn">
+      <Button style={button} href="https://forward-focus-elevation.org/learn">
         Continue Your Journey
       </Button>
     </Section>

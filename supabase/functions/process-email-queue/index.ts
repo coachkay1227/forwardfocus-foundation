@@ -69,7 +69,7 @@ serve(async (req: Request) => {
 
         // Send email via Resend
         const { data, error } = await resend.emails.send({
-          from: "Forward Focus Elevation <onboarding@resend.dev>",
+          from: "Forward Focus Elevation <support@forward-focus-elevation.org>",
           to: [email.recipient_email],
           subject: getSubjectForType(email.email_type),
           html: email.email_content,

@@ -32,7 +32,7 @@ export const WelcomeEmail = ({ name }: WelcomeEmailProps) => (
     </Text>
 
     <Section style={ctaSection}>
-      <Button style={button} href="https://ffeservices.net/learn">
+      <Button style={button} href="https://forward-focus-elevation.org/learn">
         Start Your Journey
       </Button>
     </Section>
