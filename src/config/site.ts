@@ -13,7 +13,7 @@ const IS_PRODUCTION = true;
 // Domain configurations
 const DOMAINS = {
   preview: "forwardfocus.lovable.app",
-  production: "ffeservices.net",
+  production: "forward-focus-elevation.org",
 } as const;
 
 // Get the active domain based on environment
@@ -74,8 +74,8 @@ export const SITE_CONFIG = {
     "lovable.app",
     "lovable.dev",
     "forwardfocus.lovable.app",
-    "ffeservices.net",
-    "www.ffeservices.net",
+    "forward-focus-elevation.org",
+    "www.forward-focus-elevation.org",
   ],
 } as const;
 

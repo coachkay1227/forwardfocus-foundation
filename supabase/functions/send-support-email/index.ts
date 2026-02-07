@@ -67,7 +67,7 @@ const handler = async (req: Request): Promise<Response> => {
 
     // Send confirmation email to user
     const userEmailResponse = await resend.emails.send({
-      from: "Forward Focus Elevation <noreply@ffeservices.net>",
+      from: "Forward Focus Elevation <noreply@forward-focus-elevation.org>",
       to: [data.email],
       subject: `Thank you for your ${getTypeDisplayName(type)}`,
       html: htmlContent,
@@ -77,8 +77,8 @@ const handler = async (req: Request): Promise<Response> => {
 
     // Send admin notification
     const adminEmailResponse = await resend.emails.send({
-      from: "Forward Focus Elevation <noreply@ffeservices.net>",
-      to: ["support@ffeservices.net"],
+      from: "Forward Focus Elevation <noreply@forward-focus-elevation.org>",
+      to: ["support@forward-focus-elevation.org"],
       subject: subject,
       html: adminNotification,
     });
@@ -139,7 +139,7 @@ function generateSpeakerApplicationEmail(data: any): string {
         </ul>
       </div>
       
-      <p style="color: #666;">If you have any questions, feel free to reply to this email or contact us at support@ffeservices.net</p>
+      <p style="color: #666;">If you have any questions, feel free to reply to this email or contact us at support@forward-focus-elevation.org</p>
       
       <div style="text-align: center; padding: 20px; border-top: 1px solid #ddd; color: #999; margin-top: 30px;">
         <p><strong>Forward Focus Elevation</strong><br>

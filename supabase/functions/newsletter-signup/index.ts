@@ -174,7 +174,7 @@ const handler = async (req: Request): Promise<Response> => {
     // Send welcome email
     try {
       await resend.emails.send({
-        from: "Forward Focus Elevation <support@ffeservices.net>",
+        from: "Forward Focus Elevation <support@forward-focus-elevation.org>",
         to: [email],
         subject: "Welcome to Forward Focus Elevation Newsletter!",
         html: `
@@ -197,7 +197,7 @@ const handler = async (req: Request): Promise<Response> => {
             
             <div style="background-color: #f5f5f5; padding: 15px; border-radius: 8px; margin: 20px 0;">
               <p style="margin: 0;"><strong>Need immediate support?</strong></p>
-              <p style="margin: 5px 0 0 0;">Visit our <a href="https://ffeservices.net/get-help-now" style="color: #bb0000;">Get Help Now</a> page for crisis resources and AI-powered guidance.</p>
+              <p style="margin: 5px 0 0 0;">Visit our <a href="https://forward-focus-elevation.org/get-help-now" style="color: #bb0000;">Get Help Now</a> page for crisis resources and AI-powered guidance.</p>
             </div>
             
             <p>Thank you for being part of our mission to build stronger, more supportive communities.</p>
@@ -207,7 +207,7 @@ const handler = async (req: Request): Promise<Response> => {
             
             <hr style="margin: 30px 0; border: none; border-top: 1px solid #ddd;">
             <p style="font-size: 12px; color: #666; text-align: center;">
-              You can <a href="https://ffeservices.net/unsubscribe?email=${encodeURIComponent(email)}" style="color: #666;">unsubscribe</a> at any time.
+              You can <a href="https://forward-focus-elevation.org/unsubscribe?email=${encodeURIComponent(email)}" style="color: #666;">unsubscribe</a> at any time.
             </p>
           </div>
         `,

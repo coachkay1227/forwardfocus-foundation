@@ -97,7 +97,7 @@ export default function VictimServices() {
     "@type": "MedicalWebPage",
     "name": "Healing & Safety Hub",
     "description": "Comprehensive support for crime victims: crisis intervention, advocacy, legal aid, and trauma-informed healing resources",
-    "url": "https://forwardfocus.lovable.app/victim-services",
+    "url": "https://forward-focus-elevation.org/victim-services",
     "medicalAudience": [
       {
         "@type": "MedicalAudience",

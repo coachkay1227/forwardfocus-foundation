@@ -15,13 +15,12 @@ const AUTHORIZED_CONFIG: DomainConfig = {
     '127.0.0.1',
     'lovable.app',
     'lovableproject.com',
-    'ffeservices.net',
-    'www.ffeservices.net',
-    'freedomfamilieseducation.com',
-    'gzukhsqgkwljfvwkfuno.supabase.co'
+    'forward-focus-elevation.org',
+    'www.forward-focus-elevation.org',
+    'mdwkkgancoocvkmecwkm.supabase.co'
   ],
-  brandName: 'Freedom Families Education',
-  copyrightNotice: '© 2025 Freedom Families Education Services. All rights reserved.',
+  brandName: 'Forward Focus Elevation',
+  copyrightNotice: '© 2025 Forward Focus Elevation. All rights reserved.',
   licenseKey: 'FFE-2025-AUTHORIZED'
 };
 

@@ -50,7 +50,7 @@ const handler = async (req: Request): Promise<Response> => {
 
     // Send email to user
     const emailResponse = await resend.emails.send({
-      from: "Forward Focus Elevation <welcome@ffeservices.net>",
+      from: "Forward Focus Elevation <welcome@forward-focus-elevation.org>",
       to: [email],
       subject: subject,
       html: emailContent,
@@ -130,11 +130,11 @@ function generateWelcomeEmail(email: string, name?: string): string {
       <div style="background: linear-gradient(135deg, #8B5CF6, #06B6D4); padding: 25px; border-radius: 10px; text-align: center; margin-bottom: 25px;">
         <p style="color: white; margin: 0 0 20px 0; font-size: 18px; font-weight: 600;">Ready to explore?</p>
         <div style="display: flex; flex-direction: column; gap: 10px; max-width: 400px; margin: 0 auto;">
-          <a href="https://ffeservices.net/learn" 
+          <a href="https://forward-focus-elevation.org/learn" 
              style="background: white; color: #8B5CF6; padding: 15px 25px; text-decoration: none; border-radius: 8px; display: block; font-weight: bold; font-size: 16px;">
             Start Learning →
           </a>
-          <a href="https://ffeservices.net/victim-services" 
+          <a href="https://forward-focus-elevation.org/victim-services" 
              style="background: rgba(255,255,255,0.2); color: white; padding: 15px 25px; text-decoration: none; border-radius: 8px; display: block; font-weight: bold; font-size: 16px; border: 2px solid white;">
             Healing Hub →
           </a>
@@ -152,8 +152,8 @@ function generateWelcomeEmail(email: string, name?: string): string {
         <h3 style="color: #374151; margin-top: 0;">Need Help Getting Started?</h3>
         <p style="color: #6B7280; margin-bottom: 15px;">Our support team is here to help you make the most of your experience.</p>
         <ul style="color: #6B7280; line-height: 1.6;">
-          <li>Email us at <strong>support@ffeservices.net</strong></li>
-          <li>Check out our <a href="https://ffeservices.net/about" style="color: #8B5CF6;">About Us</a> page to learn more about our mission</li>
+          <li>Email us at <strong>support@forward-focus-elevation.org</strong></li>
+          <li>Check out our <a href="https://forward-focus-elevation.org/about" style="color: #8B5CF6;">About Us</a> page to learn more about our mission</li>
           <li>Join our community discussions and connect with others</li>
         </ul>
       </div>
@@ -162,7 +162,7 @@ function generateWelcomeEmail(email: string, name?: string): string {
         <p style="margin: 0 0 10px 0; font-size: 18px; font-weight: 600; color: #374151;">Forward Focus Elevation</p>
         <p style="margin: 0; font-size: 14px;">Empowering Justice-Impacted Families Through AI-Powered Education</p>
         <p style="margin: 10px 0 0 0; font-size: 12px;">
-          This email was sent to ${email}. If you have any questions, contact us at support@ffeservices.net
+          This email was sent to ${email}. If you have any questions, contact us at support@forward-focus-elevation.org
         </p>
       </div>
     </div>
@@ -184,7 +184,7 @@ function generatePasswordResetEmail(email: string): string {
       </div>
       
       <div style="text-align: center; margin: 30px 0;">
-        <p style="color: #6B7280;">If you need help, contact us at support@ffeservices.net</p>
+        <p style="color: #6B7280;">If you need help, contact us at support@forward-focus-elevation.org</p>
       </div>
     </div>
   `;
@@ -205,7 +205,7 @@ function generateEmailChangeEmail(email: string): string {
       </div>
       
       <div style="text-align: center; margin: 30px 0;">
-        <p style="color: #6B7280;">If you have any questions, contact us at support@ffeservices.net</p>
+        <p style="color: #6B7280;">If you have any questions, contact us at support@forward-focus-elevation.org</p>
       </div>
     </div>
   `;

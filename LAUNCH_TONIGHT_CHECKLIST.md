@@ -64,7 +64,7 @@
 ### Immediate Actions:
 1. **Verify Resend Domain**
    - Go to https://resend.com/domains
-   - Ensure `ffeservices.net` is verified (green checkmark)
+   - Ensure `forward-focus-elevation.org` is verified (green checkmark)
    - If not, add DNS records provided by Resend
 
 2. **Test All Email Types**
@@ -160,7 +160,7 @@ Resolve any HIGH or CRITICAL findings
 2. **Email Issues**
    - Check Resend dashboard for delivery logs
    - Pause automated sends if needed
-   - Contact support@ffeservices.net
+   - Contact support@forward-focus-elevation.org
 
 3. **Database Issues**
    - Review audit_logs table
@@ -249,7 +249,7 @@ We're thrilled to announce that Forward Focus Elevation is now live!
 🎁 Special Launch Offer:
 [Add any launch promotions here]
 
-Get started today: https://ffeservices.net
+Get started today: https://forward-focus-elevation.org
 
 With gratitude,
 Coach Kay & the FFE Team

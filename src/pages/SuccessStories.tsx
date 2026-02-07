@@ -27,7 +27,7 @@ export default function SuccessStories() {
     "@type": "CollectionPage",
     "name": "Success Stories",
     "description": "Real stories of transformation, resilience, and success from our community",
-    "url": "https://forwardfocus.lovable.app/success-stories",
+    "url": "https://forward-focus-elevation.org/success-stories",
     "publisher": {
       "@type": "Organization",
       "name": "Forward Focus Elevation"

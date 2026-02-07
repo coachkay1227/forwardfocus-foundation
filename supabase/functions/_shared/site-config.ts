@@ -5,10 +5,10 @@
 
 export const SITE_CONFIG = {
   // Production domain
-  domain: "ffeservices.net",
+  domain: "forward-focus-elevation.org",
   
   // Full base URL
-  baseUrl: "https://ffeservices.net",
+  baseUrl: "https://forward-focus-elevation.org",
   
   // Site identity
   name: "Forward Focus Elevation",
