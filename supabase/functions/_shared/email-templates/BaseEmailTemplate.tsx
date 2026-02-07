@@ -52,15 +52,15 @@ export const BaseEmailTemplate = ({
             The Forward Focus Elevation Team
           </Text>
           <Text style={footerLinks}>
-            <Link href="https://ffeservices.net/learn" style={link}>
+            <Link href="https://forward-focus-elevation.org/learn" style={link}>
               Learning Community
             </Link>
             {' • '}
-            <Link href="https://ffeservices.net/victim-services" style={link}>
+            <Link href="https://forward-focus-elevation.org/victim-services" style={link}>
               Healing Hub
             </Link>
             {' • '}
-            <Link href="https://ffeservices.net/support" style={link}>
+            <Link href="https://forward-focus-elevation.org/support" style={link}>
               Get Support
             </Link>
           </Text>

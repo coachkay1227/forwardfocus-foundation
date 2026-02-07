@@ -38,7 +38,7 @@ export const MilestoneEmail = ({ name, milestoneTitle }: MilestoneEmailProps) =>
     </Text>
 
     <Section style={ctaSection}>
-      <Button style={button} href="https://ffeservices.net/learn">
+      <Button style={button} href="https://forward-focus-elevation.org/learn">
         Continue Learning
       </Button>
     </Section>

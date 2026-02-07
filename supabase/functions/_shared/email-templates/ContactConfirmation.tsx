@@ -39,10 +39,10 @@ export const ContactConfirmation = ({
       <Section style={ctaSection}>
         <Text style={ctaText}>While you wait, explore our community resources:</Text>
         <div style={buttonContainer}>
-          <Button style={button} href="https://ffeservices.net/learn">
+          <Button style={button} href="https://forward-focus-elevation.org/learn">
             Learning Community
           </Button>
-          <Button style={buttonSecondary} href="https://ffeservices.net/victim-services">
+          <Button style={buttonSecondary} href="https://forward-focus-elevation.org/victim-services">
             Healing Hub
           </Button>
         </div>
