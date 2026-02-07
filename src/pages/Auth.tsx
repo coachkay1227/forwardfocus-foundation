@@ -28,7 +28,7 @@ const Auth = () => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [authLoading, setAuthLoading] = useState(false);
   const [isResettingPassword, setIsResettingPassword] = useState(false);
-  const [subscribeToNewsletter, setSubscribeToNewsletter] = useState(true);
+  
   const [captchaVerified, setCaptchaVerified] = useState(false);
   const [captchaToken, setCaptchaToken] = useState<string | null>(null);
   const { transferToUser } = useAnonymousSession();
@@ -173,17 +173,6 @@ const Auth = () => {
             variant: "destructive",
           });
         } else {
-          // Subscribe to newsletter if opted in
-          if (subscribeToNewsletter) {
-            try {
-              const { supabase } = await import("@/integrations/supabase/client");
-              await supabase.functions.invoke('newsletter-signup', {
-                body: { email, source: 'signup_opt_in' }
-              });
-            } catch (err) {
-              console.log('Newsletter signup failed:', err);
-            }
-          }
           
           // Send welcome email
           try {
@@ -447,23 +436,6 @@ const Auth = () => {
                   </Button>
                 </div>
               )}
-              
-              {!isLogin && (
-                <div className="flex items-start space-x-2 pt-2">
-                  <input
-                    type="checkbox"
-                    id="newsletter"
-                    checked={subscribeToNewsletter}
-                    onChange={(e) => setSubscribeToNewsletter(e.target.checked)}
-                    className="mt-1 h-4 w-4 rounded border-border text-primary focus:ring-primary"
-                    tabIndex={0}
-                  />
-                  <label htmlFor="newsletter" className="text-sm text-muted-foreground leading-tight cursor-pointer">
-                    Subscribe to <strong>Coach Kay News</strong> newsletter for weekly resources, success stories, and empowerment tips
-                  </label>
-                </div>
-              )}
-
               {/* CAPTCHA - shown after 3 failed attempts */}
               {isLogin && rateLimitStatus?.requiresCaptcha && !captchaVerified && (
                 <SimpleCaptcha
