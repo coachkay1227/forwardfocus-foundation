@@ -4,8 +4,6 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { AnimatedCounter } from "@/components/ui/AnimatedCounter";
-import { NewsletterSignup } from "@/components/home/NewsletterSignup";
-import { NewsletterModal } from "@/components/home/NewsletterModal";
 import { 
   ArrowRight, 
   Heart, 
@@ -102,9 +100,6 @@ const Welcome = () => {
 
   return (
     <main id="main" className="min-h-screen">
-      {/* Newsletter Modal - Auto-opens after 3 seconds */}
-      <NewsletterModal />
-
       {/* Hero Section with Animated Background */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-osu-scarlet via-osu-gray to-osu-scarlet">
         {/* Animated Background Overlay */}
@@ -329,7 +324,7 @@ const Welcome = () => {
         </div>
       </section>
 
-      {/* Newsletter Signup Section - MOVED TO TOP PRIORITY */}
+      {/* Community Support Section */}
       <section className="py-20 bg-gradient-to-b from-background to-primary/5">
         <div className="container px-4">
           <div className="max-w-3xl mx-auto">
@@ -342,33 +337,43 @@ const Welcome = () => {
                   Stay Connected with Our Community
                 </h2>
                 <p className="text-lg text-muted-foreground max-w-xl mx-auto leading-relaxed">
-                  Subscribe to receive curated resources, success stories, and connections to newsletters 
-                  and support networks in your realm—all tailored to justice-impacted families.
+                  Access curated resources, success stories, and support networks—all tailored to justice-impacted families.
                 </p>
                 
-                <div className="max-w-md mx-auto">
-                  <NewsletterSignup />
+                <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
+                  <Button 
+                    size="lg"
+                    className="bg-gradient-to-r from-osu-scarlet to-osu-scarlet-dark hover:from-osu-scarlet-dark hover:to-osu-scarlet text-white"
+                    onClick={() => navigate("/help")}
+                  >
+                    <Heart className="mr-2 h-5 w-5" />
+                    Get Resources
+                  </Button>
+                  <Button 
+                    size="lg"
+                    variant="outline"
+                    className="border-osu-scarlet text-osu-scarlet hover:bg-osu-scarlet/10"
+                    onClick={() => navigate("/support")}
+                  >
+                    <Users className="mr-2 h-5 w-5" />
+                    Support Our Mission
+                  </Button>
                 </div>
 
                 <div className="flex items-center justify-center gap-4 text-sm text-muted-foreground pt-4 flex-wrap">
                   <span className="flex items-center gap-1">
                     <CheckCircle className="h-4 w-4 text-osu-scarlet" />
-                    No spam
+                    Free resources
                   </span>
                   <span className="flex items-center gap-1">
                     <CheckCircle className="h-4 w-4 text-osu-scarlet" />
-                    Unsubscribe anytime
+                    24/7 support
                   </span>
                   <span className="flex items-center gap-1">
                     <Shield className="h-4 w-4 text-osu-scarlet" />
                     Privacy protected
                   </span>
                 </div>
-                
-                <p className="text-xs text-muted-foreground/70 pt-2 leading-relaxed">
-                  We partner with SparkLoop and Beehiiv to connect you with relevant resources and newsletters 
-                  that support justice-impacted communities.
-                </p>
               </CardContent>
             </Card>
           </div>
