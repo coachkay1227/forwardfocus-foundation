@@ -2,7 +2,6 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Home, Search, ArrowLeft } from "lucide-react";
-import logo from "@/assets/logo-transparent.png";
 
 const NotFound = () => {
   const location = useLocation();
@@ -25,7 +24,7 @@ const NotFound = () => {
   const popularPages = [
     { name: "Home", path: "/" },
     { name: "Get Help Now", path: "/help" },
-    { name: "Learn & Grow", path: "/learn" },
+    { name: "Focus Flow Elevation Hub", path: "/learn" },
     { name: "Discover Resources", path: "/discover" },
   ];
 
@@ -35,7 +34,7 @@ const NotFound = () => {
         {/* Logo */}
         <div className="mb-8 flex justify-center">
           <img 
-            src={logo} 
+            src="/logo-new.png"
             alt="Forward Focus Elevation" 
             className="h-20 w-auto"
           />

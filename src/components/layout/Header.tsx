@@ -1,5 +1,4 @@
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
-import logoTransparent from "@/assets/logo-transparent.png";
 import { useState, useEffect } from "react";
 import { Menu, User, LogOut, Search, Globe, Phone, ChevronDown, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -147,7 +146,7 @@ const Header = ({
             <div className="col-span-10 md:col-span-2 flex justify-center md:justify-start">
               <NavLink to="/" className="flex items-center md:hover:scale-105 transition-all duration-300 group">
                 <img 
-                  src={logoTransparent} 
+                  src="/logo-new.png"
                   alt="Forward Focus Elevation" 
                   className="h-32 w-auto drop-shadow-2xl filter brightness-105 contrast-105 group-hover:scale-105 group-hover:drop-shadow-2xl transition-all duration-300" 
                 />
@@ -276,7 +275,7 @@ const Header = ({
 
             {/* Mobile Get Involved - Column 12 */}
             <div className="col-span-1 md:hidden flex justify-end">
-              <Button size="sm" asChild className="bg-[hsl(var(--osu-scarlet))] hover:bg-[hsl(var(--osu-scarlet-dark))] text-white font-medium px-3 py-2 rounded-lg">
+              <Button size="sm" asChild className="get-involved-gold-button border-none px-3 py-2">
                 <NavLink to="/support">Join</NavLink>
               </Button>
             </div>

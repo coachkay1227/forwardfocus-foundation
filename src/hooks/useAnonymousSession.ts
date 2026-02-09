@@ -3,7 +3,7 @@ import { supabase } from '@/integrations/supabase/client';
 
 interface AnonymousSessionState {
   sessionToken: string;
-  timeRemaining: number;
+  turnsRemaining: number;
   usageCount: number;
   trialExpired: boolean;
   isNewSession: boolean;
@@ -13,7 +13,6 @@ interface UseAnonymousSessionReturn {
   sessionState: AnonymousSessionState | null;
   checkTrialAccess: (aiEndpoint: string, conversationData?: any) => Promise<boolean>;
   transferToUser: (userId: string) => Promise<{ success: boolean; conversationHistory?: any }>;
-  timeRemainingFormatted: string;
 }
 
 export const useAnonymousSession = (): UseAnonymousSessionReturn => {
@@ -27,14 +26,6 @@ export const useAnonymousSession = (): UseAnonymousSessionReturn => {
       localStorage.setItem('anonymous_session_token', token);
     }
     return token;
-  }, []);
-
-  // Format time remaining as MM:SS
-  const formatTimeRemaining = useCallback((seconds: number): string => {
-    if (seconds <= 0) return "00:00";
-    const minutes = Math.floor(seconds / 60);
-    const remainingSeconds = seconds % 60;
-    return `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
   }, []);
 
   // Check if user can access AI (for trial users)
@@ -73,13 +64,9 @@ export const useAnonymousSession = (): UseAnonymousSessionReturn => {
         return false;
       }
 
-      const now = new Date();
-      const trialEnd = new Date(sessionData.trial_end);
-      const timeLeft = Math.floor((trialEnd.getTime() - now.getTime()) / 1000);
-
       setSessionState({
         sessionToken,
-        timeRemaining: Math.max(0, timeLeft),
+        turnsRemaining: Math.max(0, 5 - sessionData.usage_count),
         usageCount: sessionData.usage_count,
         trialExpired: sessionData.is_expired,
         isNewSession: sessionData.usage_count === 1
@@ -135,7 +122,7 @@ export const useAnonymousSession = (): UseAnonymousSessionReturn => {
     if (sessionToken) {
       setSessionState({
         sessionToken,
-        timeRemaining: 180, // 3 minutes default
+        turnsRemaining: 5,
         usageCount: 0,
         trialExpired: false,
         isNewSession: true
@@ -146,7 +133,6 @@ export const useAnonymousSession = (): UseAnonymousSessionReturn => {
   return {
     sessionState,
     checkTrialAccess,
-    transferToUser,
-    timeRemainingFormatted: formatTimeRemaining(sessionState?.timeRemaining || 0)
+    transferToUser
   };
 };

@@ -1,16 +1,17 @@
 import { useState, useEffect } from "react";
-import { BookOpen, CheckCircle, Users, MessageSquare, MapPin, Phone, FileText, DollarSign, Heart, Brain, GraduationCap, Home, Briefcase, Scale, HeartHandshake, PiggyBank, Shield, Bot, Target, ArrowRight } from "lucide-react";
+import { BookOpen, CheckCircle, Users, MessageSquare, MapPin, Phone, FileText, DollarSign, Heart, Brain, GraduationCap, Home, Briefcase, Scale, HeartHandshake, PiggyBank, Shield, Bot, Target, ArrowRight, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
-import { CommunityApplication } from "@/components/learn/CommunityApplication";
+import { VettingQuestionnaire } from "@/components/learn/VettingQuestionnaire";
 import { PathwayVisual } from "@/components/learn/PathwayVisual";
 import ReentryNavigatorAI from "@/components/ai/ReentryNavigatorAI";
 import { SEOHead } from "@/components/seo/SEOHead";
+import { SITE_CONFIG } from "@/config/site";
 
 export default function CommunityLearning() {
-  const [showApplication, setShowApplication] = useState(false);
+  const [showVetting, setShowVetting] = useState(false);
   const [showReentryAI, setShowReentryAI] = useState(false);
   const [loading, setLoading] = useState(true);
   const [selectedCoach, setSelectedCoach] = useState<{
@@ -174,8 +175,8 @@ export default function CommunityLearning() {
   return (
     <div className="min-h-screen bg-background font-sans">
       <SEOHead
-        title="Learn & Grow | Community Learning & Reentry Support"
-        description="Join our supportive community learning collective. Access AI-powered reentry navigation, educational modules, and personalized coaching for justice-impacted individuals and families."
+        title={`${SITE_CONFIG.services.collective} | AI & Life Transformation Hub`}
+        description="Welcome to The Collective. Access AI-powered life transformation tools, educational modules, and personalized coaching for justice-impacted individuals and families."
         path="/learn"
       />
       {/* Hero Section with Premium Branding */}
@@ -184,14 +185,14 @@ export default function CommunityLearning() {
         <div className="relative container py-24 md:py-32">
           <div className="max-w-full px-4 md:max-w-5xl mx-auto text-center">
             <div className="flex items-center justify-center gap-3 mb-8">
-              <Users className="h-8 w-8 text-white" />
-              <span className="text-sm uppercase tracking-wider font-medium bg-white/10 backdrop-blur-sm border border-white/20 px-4 py-2 rounded-full">The Collective</span>
+              <Sparkles className="h-8 w-8 text-white" />
+              <span className="text-sm uppercase tracking-widest font-bold bg-white/10 backdrop-blur-md border border-white/30 px-6 py-2 rounded-full shadow-inner">{SITE_CONFIG.services.collective}</span>
             </div>
             <h1 className="font-heading text-5xl md:text-7xl font-bold mb-8 leading-tight">
-              Welcome to the Collective
+              AI & Life <br className="hidden md:block" /> Transformation
             </h1>
-            <p className="text-lg md:text-xl mb-12 text-white/90 leading-relaxed max-w-3xl mx-auto">
-              Whether you're rebuilding, reconnecting, or just figuring it out day by day, you don't have to do it alone.
+            <p className="text-lg md:text-2xl mb-12 text-white/90 leading-relaxed max-w-3xl mx-auto font-light">
+              The world's first trauma-informed digital ecosystem specifically designed to turn your next chapter into your greatest success story.
             </p>
             
             <div className="flex items-center justify-center gap-6 text-sm mb-12 flex-wrap">
@@ -210,7 +211,7 @@ export default function CommunityLearning() {
             </div>
 
             <div className="flex justify-center">
-              <Button onClick={() => setShowReentryAI(true)} variant="secondary" size="lg" className="bg-white text-osu-scarlet hover:bg-white/90 shadow-lg hover:shadow-xl transition-all duration-300">
+              <Button onClick={() => setShowReentryAI(true)} size="lg" className="get-involved-gold-button border-none shadow-xl">
                 <Bot className="h-5 w-5 mr-2" />
                 Access Your Reentry Navigator
               </Button>
@@ -232,10 +233,10 @@ export default function CommunityLearning() {
             <div className="text-center space-y-8">
               <div className="space-y-4">
                 <h2 className="font-heading text-4xl md:text-5xl font-bold text-foreground">
-                  Your Reentry Success Navigator
+                  AI Life Transformation Navigator
                 </h2>
                 <p className="text-lg text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-                  Personalized guidance specifically designed for reentry challenges. Get support for housing, employment, legal matters, and family reconnection available 24/7.
+                  Personalized guidance specifically designed for second chances. Get support for housing, employment, legal matters, and mindfulness-based success available 24/7.
                 </p>
               </div>
               
@@ -333,24 +334,23 @@ export default function CommunityLearning() {
 
             <div className="text-center bg-gradient-to-r from-osu-scarlet/5 via-osu-scarlet/10 to-osu-scarlet/5 rounded-2xl p-6 sm:p-12 px-4">
               <Button 
-                onClick={() => setShowApplication(true)} 
+                onClick={() => setShowVetting(true)}
                 size="lg"
-                variant="osu-gradient"
-                className="text-lg px-6 sm:px-12 py-6 shadow-xl hover:shadow-2xl transition-all duration-300 w-full max-w-sm sm:max-w-none sm:w-auto"
+                className="get-involved-gold-button border-none text-lg px-6 sm:px-12 py-6 shadow-xl w-full max-w-sm sm:max-w-none sm:w-auto"
               >
-                Start Your Journey Today
+                Check Your Qualifications
                 <ArrowRight className="ml-3 h-6 w-6" />
               </Button>
-              <p className="text-foreground/70 text-base mt-4">Join our supportive community</p>
+              <p className="text-foreground/70 text-base mt-4">Direct entry to the <strong>{SITE_CONFIG.services.skool}</strong> (Skool Community) after vetting</p>
             </div>
           </section>
         </div>
       </main>
 
-      {/* Application Modal */}
-      <CommunityApplication 
-        isOpen={showApplication} 
-        onClose={() => setShowApplication(false)} 
+      {/* Vetting Modal */}
+      <VettingQuestionnaire
+        isOpen={showVetting}
+        onClose={() => setShowVetting(false)}
       />
       
       {/* Reentry Navigator AI */}

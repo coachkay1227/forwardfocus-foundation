@@ -2,6 +2,7 @@ import { useState } from "react";
 import { AiErrorBoundary } from "@/components/ui/AiErrorBoundary";
 import { SEOHead } from "@/components/seo/SEOHead";
 import { StructuredData } from "@/components/seo/StructuredData";
+import { SITE_CONFIG } from "@/config/site";
 import type { LucideIcon } from "lucide-react";
 import {
   ChevronRight,
@@ -95,9 +96,9 @@ export default function VictimServices() {
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "MedicalWebPage",
-    "name": "Healing & Safety Hub",
+    "name": SITE_CONFIG.services.healing,
     "description": "Comprehensive support for crime victims: crisis intervention, advocacy, legal aid, and trauma-informed healing resources",
-    "url": "https://forward-focus-elevation.org/victim-services",
+    "url": `${SITE_CONFIG.baseUrl}/victim-services`,
     "medicalAudience": [
       {
         "@type": "MedicalAudience",
@@ -110,7 +111,7 @@ export default function VictimServices() {
     },
     "provider": {
       "@type": "Organization",
-      "name": "Forward Focus Elevation"
+      "name": SITE_CONFIG.name
     }
   };
 
@@ -170,8 +171,8 @@ export default function VictimServices() {
   return (
     <>
       <SEOHead
-        title="Healing & Safety Hub"
-        description="Comprehensive support for crime victims: crisis intervention, advocacy, legal aid, and trauma-informed healing resources. Find immediate help and long-term recovery support."
+        title={`Trauma-Informed Digital Sanctuary | ${SITE_CONFIG.services.healing}`}
+        description="A safe, trauma-informed digital sanctuary providing somatic release, guided journaling, and Ohio trauma recovery tools. Empowering survivors on their healing journey."
         path="/victim-services"
       />
       <StructuredData data={structuredData} />
@@ -192,21 +193,20 @@ export default function VictimServices() {
             <div className="max-w-5xl mx-auto text-center">
               <div className="flex items-center justify-center gap-3 mb-8">
                 <Shield className="h-8 w-8 text-white" />
-                <span className="text-sm uppercase tracking-wider font-medium bg-white/10 backdrop-blur-sm border border-white/20 px-4 py-2 rounded-full">Healing & Safety Hub</span>
+                <span className="text-sm uppercase tracking-widest font-bold bg-white/10 backdrop-blur-md border border-white/30 px-6 py-2 rounded-full shadow-inner">Healing Hub & Sanctuary</span>
               </div>
-              <h1 className="font-heading text-4xl md:text-6xl font-bold mb-6 leading-tight text-center">
-                You Are Not Alone.
-                <span className="block text-white/80 mt-2">Healing Starts Here.</span>
+              <h1 className="font-heading text-4xl md:text-7xl font-bold mb-6 leading-tight text-center">
+                Your Sanctuary for
+                <span className="block text-white/80 mt-2">Release & Recovery</span>
               </h1>
-              <p className="text-lg md:text-xl text-white/90 mb-12 leading-relaxed max-w-3xl mx-auto">
-                Comprehensive support for crime victims and survivors. Crisis intervention, advocacy, 
-                legal aid, and trauma-informed healing resources available 24/7.
+              <p className="text-lg md:text-2xl text-white/90 mb-12 leading-relaxed max-w-3xl mx-auto font-light">
+                A trauma-informed digital safe haven for Ohio survivors. Access somatic tools,
+                guided reflection, and state-wide advocacy resources 24/7.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 max-w-sm sm:max-w-lg mx-auto px-4">
                 <Button 
                   size="lg" 
-                  variant="secondary"
-                  className="bg-white text-osu-scarlet hover:bg-white/90 w-full sm:flex-1"
+                  className="get-involved-gold-button border-none w-full sm:flex-1 shadow-xl"
                   onClick={() => setShowVictimAI(true)}
                 >
                   <Bot className="h-5 w-5 mr-2" />
@@ -316,7 +316,7 @@ export default function VictimServices() {
               
               <Button 
                 size="lg" 
-                className="bg-osu-scarlet hover:bg-osu-scarlet-dark text-white"
+                className="get-involved-gold-button border-none shadow-xl"
                 onClick={() => setShowVictimAI(true)}
               >
                 <Bot className="h-5 w-5 mr-2" />

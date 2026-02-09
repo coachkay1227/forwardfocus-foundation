@@ -1,0 +1,17 @@
+{
+  "name": "Forward Focus Elevation",
+  "short_name": "FFE",
+  "description": "Empowering justice-impacted families and survivors with AI-powered support and resources.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#9b2226",
+  "icons": [
+    {
+      "src": "/logo-new.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

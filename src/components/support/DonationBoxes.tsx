@@ -28,15 +28,25 @@ export default function DonationBoxes({}: DonationBoxesProps) {
   const [lastAttemptedOption, setLastAttemptedOption] = useState<typeof donationOptions[0] | null>(null);
   const { toast } = useToast();
 
+  const [customAmount, setCustomAmount] = useState("");
+
   const handleDonationClick = async (option: typeof donationOptions[0]) => {
     setLastAttemptedOption(option);
+
+    let finalAmount = option.amount;
     if (option.amount === "custom") {
-      // For custom amounts, we'll redirect to external crowdfunding for now
-      window.open("https://collect.crowded.me/collection/1ce13f25-4d6e-4f06-b463-13606ff31f2b", '_blank', 'noopener,noreferrer');
-      return;
+      if (!customAmount || isNaN(Number(customAmount)) || Number(customAmount) <= 0) {
+        toast({
+          title: "Invalid Amount",
+          description: "Please enter a valid donation amount.",
+          variant: "destructive",
+        });
+        return;
+      }
+      finalAmount = Number(customAmount);
     }
 
-    if (!option.price_id) {
+    if (!option.price_id && option.amount !== "custom") {
       toast({
         title: "Error",
         description: "Payment option is not configured properly.",
@@ -52,8 +62,8 @@ export default function DonationBoxes({}: DonationBoxesProps) {
       const { data, error } = await supabase.functions.invoke('create-donation-payment', {
         body: {
           price_id: option.price_id,
-          amount: option.amount,
-          donor_name: "Anonymous" // Could be enhanced to collect name
+          amount: finalAmount,
+          donor_name: "Anonymous"
         }
       });
 
@@ -107,22 +117,32 @@ export default function DonationBoxes({}: DonationBoxesProps) {
             <Heart className="h-6 w-6 text-osu-scarlet-foreground" />
           </div>
           <h3 className="text-xl font-semibold text-foreground mb-2">{featuredOption.name}</h3>
-          <p className="text-foreground/70 mb-4">{featuredOption.description}</p>
-          <Button 
-            onClick={() => handleDonationClick(featuredOption)}
-            className="w-full bg-osu-scarlet hover:bg-osu-scarlet-dark text-osu-scarlet-foreground"
-            size="lg"
-            disabled={loadingOption === featuredOption.name}
-          >
-            {loadingOption === featuredOption.name ? (
-              <>
-                <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                Processing...
-              </>
-            ) : (
-              "Donate Any Amount"
-            )}
-          </Button>
+          <p className="text-foreground/70 mb-6">{featuredOption.description}</p>
+
+          <div className="flex gap-2 max-w-xs mx-auto mb-4">
+            <div className="relative flex-1">
+              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">$</span>
+              <input
+                type="number"
+                value={customAmount}
+                onChange={(e) => setCustomAmount(e.target.value)}
+                placeholder="0.00"
+                className="w-full pl-7 pr-3 py-2 rounded-md border border-input bg-background text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              />
+            </div>
+            <Button
+              onClick={() => handleDonationClick(featuredOption)}
+              className="bg-osu-scarlet hover:bg-osu-scarlet-dark text-osu-scarlet-foreground"
+              disabled={loadingOption === featuredOption.name}
+            >
+              {loadingOption === featuredOption.name ? (
+                <Loader2 className="h-4 w-4 animate-spin" />
+              ) : (
+                "Donate"
+              )}
+            </Button>
+          </div>
+          <p className="text-xs text-muted-foreground">Every contribution helps keep our services free for the community.</p>
         </CardContent>
       </Card>
 

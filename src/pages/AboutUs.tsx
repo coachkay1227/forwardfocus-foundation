@@ -6,8 +6,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import ContactForm from "@/components/forms/ContactForm";
 import ChatbotPopup from "@/components/ui/ChatbotPopup";
 import { CoachKaySection } from "@/components/home/CoachKaySection";
+import FounderOnePager from "@/components/about/FounderOnePager";
 import { SEOHead } from "@/components/seo/SEOHead";
 import { StructuredData } from "@/components/seo/StructuredData";
+import { SITE_CONFIG } from "@/config/site";
 
 // Import images
 import coachKayProfessional from "@/assets/coach-kay-professional.jpg";
@@ -17,22 +19,22 @@ export default function AboutUs() {
   const [showConsultation, setShowConsultation] = useState(false);
   return <>
       <SEOHead
-        title="About Forward Focus Elevation | Empowering Justice-Impacted Families"
-        description="We exist to empower justice-impacted individuals and families to rebuild, thrive, and rise — with dignity, hope, and community. AI-powered platform with human support."
+        title="About Our Mission | Accredited AI Life Transformation Coaching"
+        description="Meet Coach Kay, an Accredited AI Life Transformation Coach and Master Certified expert. We provide trauma-informed support and AI-driven second chances."
         path="/about"
       />
       <StructuredData
         data={{
           "@context": "https://schema.org",
           "@type": "Organization",
-          name: "Forward Focus Elevation",
-          url: "https://forward-focus-elevation.org",
-          description: "Empowering justice-impacted individuals and families to rebuild, thrive, and rise with dignity, hope, and community.",
+          name: SITE_CONFIG.name,
+          url: SITE_CONFIG.baseUrl,
+          description: SITE_CONFIG.description,
           areaServed: "Ohio",
-          serviceType: ["Healing & Safety Hub", "Reentry Community", "AI-Powered Guidance", "Trauma Recovery Support"]
+          serviceType: ["Healing Hub", "The Collective", "Focus Flow Elevation Hub", "AI & Life Transformation", "Trauma Recovery Support"]
         }}
       />
-      <main id="main">
+      <main id="main" className="bg-cream/30">
       {/* Hero Section */}
       <header className="relative bg-gradient-osu-primary text-white overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-muted/90 via-osu-scarlet/80 to-osu-scarlet-dark/70"></div>
@@ -58,16 +60,16 @@ export default function AboutUs() {
             </div>
             
             <div className="flex flex-col sm:flex-row gap-4 max-w-lg justify-center mx-auto">
-              <Button asChild size="lg" variant="secondary" className="flex-1 bg-white text-osu-scarlet hover:bg-white/90">
+              <Button asChild size="lg" className="get-involved-gold-button border-none flex-1 shadow-xl">
                 <Link to="/victim-services">
                   <Shield className="h-5 w-5 mr-2" />
-                  Explore the Healing Hub
+                  Healing Hub
                 </Link>
               </Button>
-              <Button asChild size="lg" className="bg-osu-gray hover:bg-osu-gray-dark text-white flex-1">
+              <Button asChild size="lg" className="bg-osu-gray hover:bg-osu-gray-dark text-white flex-1 shadow-xl border-none">
                 <Link to="/learn">
                   <Users className="h-5 w-5 mr-2" />
-                  Join the Community
+                  The Collective
                 </Link>
               </Button>
             </div>
@@ -85,10 +87,9 @@ export default function AboutUs() {
                   Our Story
                 </h2>
                 <div className="space-y-8 text-foreground">
-                  <p className="text-xl leading-relaxed">Forward Focus Elevation was born from lived experiences. We saw firsthand how hard it is for justice-impacted individuals and their families to access real support. Traditional systems were fragmented, outdated, and often left people behind.</p>
+                  <p className="text-xl leading-relaxed">Forward Focus Elevation was born from the intersection of lived experience and accredited expertise. We saw firsthand how hard it is for justice-impacted families to access real support when traditional systems are fragmented and outdated.</p>
                   <p className="text-xl leading-relaxed">
-                    So, we built something different — a trauma-informed, AI-powered platform that's available 
-                    anytime, anywhere. A community designed not just to provide resources, but to empower transformation.
+                    So, we built something different — a trauma-informed, AI-powered platform led by an **Accredited AI Consultant and Master Certified Transformation Coach**. A community designed not just to provide resources, but to scale human empowerment through technology.
                   </p>
                   <div className="bg-gradient-to-br from-primary/10 to-accent/10 p-8 rounded-2xl border-l-4 border-primary">
                     <p className="text-lg font-semibold text-foreground mb-4">Forward is the Only Direction</p>
@@ -127,12 +128,12 @@ export default function AboutUs() {
             </div>
             
             <div className="grid md:grid-cols-3 gap-8 mb-16">
-              <Card className="text-center p-8 border-l-4 border-l-primary hover:shadow-xl transition-all">
+              <Card className="text-center p-8 border border-osu-gray/10 bg-white/40 backdrop-blur-md hover:shadow-xl transition-all duration-300">
                 <CardHeader>
-                  <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <Shield className="h-8 w-8 text-primary" />
+                  <div className="w-16 h-16 bg-osu-scarlet/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <Shield className="h-8 w-8 text-osu-scarlet" />
                   </div>
-                  <CardTitle className="text-2xl">Dignity First</CardTitle>
+                  <CardTitle className="text-2xl font-heading">Dignity First</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <p className="text-foreground/70 leading-relaxed">
@@ -141,12 +142,12 @@ export default function AboutUs() {
                 </CardContent>
               </Card>
               
-              <Card className="text-center p-8 border-l-4 border-l-accent hover:shadow-xl transition-all">
+              <Card className="text-center p-8 border border-osu-gray/10 bg-white/40 backdrop-blur-md hover:shadow-xl transition-all duration-300">
                 <CardHeader>
-                  <div className="w-16 h-16 bg-accent/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <Heart className="h-8 w-8 text-accent" />
+                  <div className="w-16 h-16 bg-osu-gray/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <Heart className="h-8 w-8 text-osu-gray" />
                   </div>
-                  <CardTitle className="text-2xl">Hope-Centered</CardTitle>
+                  <CardTitle className="text-2xl font-heading">Hope-Centered</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <p className="text-foreground/70 leading-relaxed">
@@ -155,12 +156,12 @@ export default function AboutUs() {
                 </CardContent>
               </Card>
               
-              <Card className="text-center p-8 border-l-4 border-l-secondary hover:shadow-xl transition-all">
+              <Card className="text-center p-8 border border-osu-gray/10 bg-white/40 backdrop-blur-md hover:shadow-xl transition-all duration-300">
                 <CardHeader>
-                  <div className="w-16 h-16 bg-secondary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <Users className="h-8 w-8 text-secondary" />
+                  <div className="w-16 h-16 bg-white/20 border border-white/30 shadow-inner rounded-full flex items-center justify-center mx-auto mb-4">
+                    <Users className="h-8 w-8 text-foreground" />
                   </div>
-                  <CardTitle className="text-2xl">Community Power</CardTitle>
+                  <CardTitle className="text-2xl font-heading">Community Power</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <p className="text-foreground/70 leading-relaxed">
@@ -170,13 +171,26 @@ export default function AboutUs() {
               </Card>
             </div>
             
-            <div className="bg-gradient-to-br from-primary/5 to-accent/5 rounded-2xl p-12 text-center">
-              <h3 className="text-3xl font-bold text-foreground mb-6">Our Mission</h3>
-              <p className="text-xl text-foreground/80 leading-relaxed max-w-4xl mx-auto">
+            <div className="bg-gradient-to-br from-osu-scarlet/5 to-osu-gray/5 rounded-2xl p-12 text-center border border-osu-gray/10 shadow-inner">
+              <h3 className="text-3xl font-heading font-bold text-foreground mb-6">Our Mission</h3>
+              <p className="text-xl text-foreground/80 leading-relaxed max-w-4xl mx-auto font-light">
                 To create a trauma-informed, AI-powered ecosystem where justice-impacted individuals and families 
                 can access the tools, community, and support they need to not just survive, but thrive. We're building 
                 a future where everyone has the opportunity to write their next chapter with hope and dignity.
               </p>
+            </div>
+
+            {/* Accredited Social Impact Section */}
+            <div className="mt-16 bg-white/40 backdrop-blur-md rounded-2xl p-8 border border-osu-scarlet/10 flex flex-col md:flex-row items-center gap-8 shadow-sm">
+              <div className="p-4 bg-osu-scarlet/10 rounded-full">
+                <Award className="h-12 w-12 text-osu-scarlet" />
+              </div>
+              <div className="flex-1 text-center md:text-left">
+                <h4 className="text-xl font-bold text-foreground mb-2">Accredited Social Impact</h4>
+                <p className="text-muted-foreground leading-relaxed">
+                  Our platform is built on evidence-based methodologies. With Master Certifications in Mindfulness, Life Purpose, and Transformation, we provide more than just "help"—we provide a structured, accredited pathway to emotional and professional stability.
+                </p>
+              </div>
             </div>
 
             {/* What Makes Us Different */}
@@ -214,6 +228,27 @@ export default function AboutUs() {
           </div>
         </section>
 
+        {/* Printable One-Pager Section */}
+        <section className="scroll-mt-16 py-16 bg-white/50 border-y border-osu-gray/5">
+          <div className="max-w-4xl mx-auto px-4 text-center">
+            <h2 className="font-heading text-3xl font-bold text-foreground mb-4">The FFE Vision One-Pager</h2>
+            <p className="text-muted-foreground mb-8">Download or print a summary of our mission and Coach Kay's accredited expert profile.</p>
+
+            <div className="mb-8 transform scale-[0.8] md:scale-100 origin-top">
+              <FounderOnePager />
+            </div>
+
+            <Button
+              onClick={() => window.print()}
+              size="lg"
+              className="get-involved-gold-button border-none px-8"
+            >
+              <Calendar className="h-5 w-5 mr-2" />
+              Download Expert Profile
+            </Button>
+          </div>
+        </section>
+
         {/* Contact Section */}
         <section className="scroll-mt-16">
           <div className="max-w-4xl mx-auto text-center">
@@ -224,16 +259,16 @@ export default function AboutUs() {
               Whether you have questions, need support, or want to get involved — we're here for you.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 max-w-lg mx-auto">
-              <Button asChild size="lg" variant="default" className="flex-1">
+              <Button asChild size="lg" className="get-involved-gold-button border-none flex-1 shadow-xl">
                 <Link to="/victim-services">
                   <Shield className="h-5 w-5 mr-2" />
                   Explore the Healing Hub
                 </Link>
               </Button>
-              <Button asChild size="lg" variant="secondary" className="flex-1">
+              <Button asChild size="lg" variant="secondary" className="flex-1 shadow-xl">
                 <Link to="/learn">
                   <Users className="h-5 w-5 mr-2" />
-                  Join the Community
+                  Access The Collective
                 </Link>
               </Button>
             </div>

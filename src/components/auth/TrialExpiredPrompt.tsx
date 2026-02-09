@@ -16,10 +16,10 @@ export const TrialExpiredPrompt = ({ isOpen, onClose }: TrialExpiredPromptProps)
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Clock className="h-5 w-5 text-primary" />
-            Trial Complete!
+            Daily Trial Limit Reached
           </DialogTitle>
           <DialogDescription>
-            Your 3-minute trial has ended. Ready to continue your healing journey?
+            You've reached your daily limit for guest access. Ready to continue your healing journey with full community access?
           </DialogDescription>
         </DialogHeader>
         

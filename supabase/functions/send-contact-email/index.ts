@@ -124,7 +124,7 @@ const handler = async (req: Request): Promise<Response> => {
 
     // Send confirmation to user
     const userEmailResponse = await resend.emails.send({
-      from: "Forward Focus Elevation <support@forward-focus-elevation.org>",
+      from: "Forward Focus Elevation <support@ffeservices.net>",
       to: [email],
       subject: "Thank you for reaching out to Forward Focus Elevation",
       html: emailHtml,
@@ -157,8 +157,8 @@ const handler = async (req: Request): Promise<Response> => {
 
     // Send notification to admin/Coach Kay
     const adminEmailResponse = await resend.emails.send({
-      from: "Forward Focus Contact <noreply@forward-focus-elevation.org>",
-      to: ["support@forward-focus-elevation.org"],
+      from: "Forward Focus Contact <noreply@ffeservices.net>",
+      to: ["support@ffeservices.net"],
       subject: `New ${type} inquiry from ${name}`,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">

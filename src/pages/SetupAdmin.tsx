@@ -12,9 +12,13 @@ import { toast } from "sonner";
 const SetupAdmin = () => {
   const navigate = useNavigate();
   const [adminEmail, setAdminEmail] = useState('');
+  const [setupKey, setSetupKey] = useState('');
   const [loading, setLoading] = useState(false);
   const [adminExists, setAdminExists] = useState<boolean | null>(null);
   const [checkingAdmin, setCheckingAdmin] = useState(true);
+
+  const isDevelopment = import.meta.env.DEV;
+  const requiredSetupKey = import.meta.env.VITE_ADMIN_SETUP_KEY;
 
   const checkAdminExists = async () => {
     try {
@@ -40,6 +44,18 @@ const SetupAdmin = () => {
       return;
     }
 
+    // Security check for production
+    if (!isDevelopment) {
+      if (!requiredSetupKey) {
+        toast.error('Admin setup is disabled in this environment');
+        return;
+      }
+      if (setupKey !== requiredSetupKey) {
+        toast.error('Invalid setup key');
+        return;
+      }
+    }
+
     // Basic email validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(adminEmail)) {
@@ -49,15 +65,19 @@ const SetupAdmin = () => {
 
     setLoading(true);
     try {
-      const { data, error } = await supabase.rpc('create_first_admin_user', {
-        admin_email: adminEmail.toLowerCase().trim()
+      // Use secure Edge Function for admin setup in production
+      const { data, error } = await supabase.functions.invoke('validate-auth-security', {
+        body: {
+          action: 'create-first-admin',
+          email: adminEmail.toLowerCase().trim(),
+          setupKey: setupKey
+        }
       });
 
       if (error) {
         throw error;
       }
 
-      // Check the response
       const result = data as { success: boolean; message: string };
       
       if (result.success) {
@@ -144,30 +164,45 @@ const SetupAdmin = () => {
             </AlertDescription>
           </Alert>
           
-          <div className="space-y-2">
-            <Label htmlFor="adminEmail">Admin User Email</Label>
-            <Input
-              id="adminEmail"
-              type="email"
-              value={adminEmail}
-              onChange={(e) => setAdminEmail(e.target.value)}
-              onKeyPress={(e) => {
-                if (e.key === 'Enter' && adminEmail.trim()) {
-                  createFirstAdmin();
-                }
-              }}
-              placeholder="user@example.com"
-              className="bg-white"
-              disabled={loading}
-            />
-            <p className="text-xs text-muted-foreground">
-              Enter the email address of the account you just registered
-            </p>
+          <div className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="adminEmail">Admin User Email</Label>
+              <Input
+                id="adminEmail"
+                type="email"
+                value={adminEmail}
+                onChange={(e) => setAdminEmail(e.target.value)}
+                placeholder="user@example.com"
+                className="bg-white"
+                disabled={loading}
+              />
+              <p className="text-xs text-muted-foreground">
+                Enter the email address of the account you just registered
+              </p>
+            </div>
+
+            {!isDevelopment && (
+              <div className="space-y-2">
+                <Label htmlFor="setupKey">Setup Authorization Key</Label>
+                <Input
+                  id="setupKey"
+                  type="password"
+                  value={setupKey}
+                  onChange={(e) => setSetupKey(e.target.value)}
+                  placeholder="Enter security key"
+                  className="bg-white"
+                  disabled={loading}
+                />
+                <p className="text-xs text-muted-foreground">
+                  Required for production environment setup
+                </p>
+              </div>
+            )}
           </div>
           
           <Button 
             onClick={createFirstAdmin} 
-            disabled={loading || !adminEmail.trim()}
+            disabled={loading || !adminEmail.trim() || (!isDevelopment && !setupKey)}
             className="w-full"
           >
             {loading ? (

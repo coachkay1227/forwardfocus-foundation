@@ -11,20 +11,19 @@ import AIConsultationForm from "@/components/support/AIConsultationForm";
 import CorporateTrainingForm from "@/components/support/CorporateTrainingForm";
 import ContactForm from "@/components/forms/ContactForm";
 import { useCalendlyPopup } from "@/hooks/useCalendlyPopup";
-import { SUPPORT_EMAIL } from "@/config/contact";
+import { SUPPORT_EMAIL, ORGANIZATION_NAME, CONTACT_CONFIG } from "@/config/contact";
 import { SEOHead } from "@/components/seo/SEOHead";
+import { SITE_CONFIG } from "@/config/site";
 
 const Support = () => {
   const [activeDialog, setActiveDialog] = useState<string | null>(null);
   const { openCalendly, calendlyReady } = useCalendlyPopup();
 
-  const sponsorshipUrl = "https://collect.crowded.me/collection/219ea37a-28de-4930-b00f-dceb78a90e10";
-  
   return (
     <>
       <SEOHead
         title="Get Involved"
-        description="Support Forward Focus Elevation through donations, sponsorships, speaking engagements, or corporate training. Multiple ways to invest in second chances."
+        description={`Support ${SITE_CONFIG.name} through donations, sponsorships, speaking engagements, or corporate training. Multiple ways to invest in second chances.`}
         path="/support"
       />
     <main id="main">
@@ -42,16 +41,15 @@ const Support = () => {
             <div className="flex flex-col sm:flex-row justify-center gap-4">
               <Button 
                 size="lg" 
-                variant="secondary" 
-                className="bg-white text-osu-scarlet hover:bg-white/90"
+                className="get-involved-gold-button border-none shadow-xl px-12"
                 onClick={() => setActiveDialog('donate')}
               >
                 Donate
               </Button>
               <Button 
                 size="lg" 
-                className="bg-osu-gray hover:bg-osu-gray-dark text-white"
-                onClick={() => window.open(sponsorshipUrl, '_blank', 'noopener,noreferrer')}
+                className="bg-osu-gray hover:bg-osu-gray-dark text-white shadow-xl px-12"
+                onClick={() => setActiveDialog('donate')}
               >
                 Sponsor
               </Button>
@@ -65,7 +63,7 @@ const Support = () => {
         {/* Ways to Support Grid */}
         <section className="bg-secondary/5 py-16 rounded-2xl border-2 border-osu-scarlet/20 overflow-hidden">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <Card className="bg-background rounded-xl p-6 h-full border-2 border-osu-scarlet/30 shadow-lg hover:shadow-xl hover:shadow-osu-scarlet/20 transition-all duration-300 md:hover:scale-105 md:hover:-translate-y-1 active:scale-95 cursor-pointer">
+            <Card className="bg-background rounded-xl p-6 h-full border-2 border-osu-scarlet/30 shadow-lg hover:shadow-xl hover:shadow-osu-scarlet/20 transition-all duration-300 md:hover:scale-105 md:hover:-translate-y-1 active:scale-95 cursor-pointer" onClick={() => setActiveDialog('donate')}>
               <CardHeader className="pb-4">
                 <div className="flex items-center gap-3 mb-3">
                   <div className="p-3 bg-osu-scarlet/10 rounded-full">
@@ -74,14 +72,14 @@ const Support = () => {
                   <CardTitle className="text-xl font-semibold text-foreground">Start Small, Think Big</CardTitle>
                 </div>
                 <CardDescription className="text-foreground/70 text-base leading-relaxed">
-                  Every dollar powers our AI digital hub providing free mental health, reentry, business, and credit education courses to justice-impacted families.
+                  Every dollar powers our AI digital hub providing free resources through <strong>{SITE_CONFIG.services.collective}</strong> and the <strong>{SITE_CONFIG.services.healing}</strong> for justice-impacted families.
                 </CardDescription>
               </CardHeader>
               <CardContent className="pt-0 flex-1 flex flex-col justify-between">
                 <Dialog open={activeDialog === 'donate'} onOpenChange={(open) => setActiveDialog(open ? 'donate' : null)}>
                   <DialogTrigger asChild>
-                    <Button variant="link" className="p-0 text-primary font-medium text-lg justify-start">
-                      Donate Now →
+                    <Button className="get-involved-gold-button border-none w-full shadow-md mt-4">
+                      Donate Now
                     </Button>
                   </DialogTrigger>
                   <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
@@ -94,7 +92,7 @@ const Support = () => {
               </CardContent>
             </Card>
 
-            <Card className="bg-background rounded-xl p-6 h-full border-2 border-osu-scarlet/30 shadow-lg hover:shadow-xl hover:shadow-osu-scarlet/20 transition-all duration-300 md:hover:scale-105 md:hover:-translate-y-1 active:scale-95 cursor-pointer">
+            <Card className="bg-background rounded-xl p-6 h-full border-2 border-osu-scarlet/30 shadow-lg hover:shadow-xl hover:shadow-osu-scarlet/20 transition-all duration-300 md:hover:scale-105 md:hover:-translate-y-1 active:scale-95 cursor-pointer" onClick={() => setActiveDialog('donate')}>
               <CardHeader className="pb-4">
                 <div className="flex items-center gap-3 mb-3">
                   <div className="p-3 bg-osu-scarlet/10 rounded-full">
@@ -107,23 +105,13 @@ const Support = () => {
                 </CardDescription>
               </CardHeader>
               <CardContent className="pt-0 flex-1 flex flex-col justify-between">
-                <div className="space-y-4">
-                  <div className="bg-osu-scarlet/5 p-4 rounded-lg border border-osu-scarlet/20">
-                    <h4 className="font-semibold text-foreground mb-2">Pay Any Amount</h4>
-                    <p className="text-sm text-foreground/70 mb-3">Custom sponsorship levels to match your impact goals</p>
-                    <Button 
-                      onClick={() => window.open(sponsorshipUrl, '_blank', 'noopener,noreferrer')}
-                      className="bg-osu-scarlet hover:bg-osu-scarlet-dark text-osu-scarlet-foreground"
-                      size="sm"
-                    >
-                      Sponsor Now
-                    </Button>
-                  </div>
-                </div>
+                <Button className="get-involved-gold-button border-none w-full shadow-md mt-4">
+                  Explore Sponsorship
+                </Button>
               </CardContent>
             </Card>
 
-            <Card className="bg-background rounded-xl p-6 h-full border-2 border-osu-scarlet/30 shadow-lg hover:shadow-xl hover:shadow-osu-scarlet/20 transition-all duration-300 md:hover:scale-105 md:hover:-translate-y-1 active:scale-95 cursor-pointer">
+            <Card className="bg-background rounded-xl p-6 h-full border-2 border-osu-scarlet/30 shadow-lg hover:shadow-xl hover:shadow-osu-scarlet/20 transition-all duration-300 md:hover:scale-105 md:hover:-translate-y-1 active:scale-95 cursor-pointer" onClick={() => setActiveDialog('speaker')}>
               <CardHeader className="pb-4">
                 <div className="flex items-center gap-3 mb-3">
                   <div className="p-3 bg-osu-scarlet/10 rounded-full">
@@ -138,8 +126,8 @@ const Support = () => {
               <CardContent className="pt-0 flex-1 flex flex-col justify-between">
                 <Dialog open={activeDialog === 'speaker'} onOpenChange={(open) => setActiveDialog(open ? 'speaker' : null)}>
                   <DialogTrigger asChild>
-                    <Button variant="link" className="p-0 text-primary font-medium text-lg justify-start">
-                      Apply Now →
+                    <Button className="get-involved-gold-button border-none w-full shadow-md mt-4">
+                      Apply to Speak
                     </Button>
                   </DialogTrigger>
                   <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
@@ -149,7 +137,7 @@ const Support = () => {
               </CardContent>
             </Card>
 
-            <Card className="bg-background rounded-xl p-6 h-full border-2 border-osu-scarlet/30 shadow-lg hover:shadow-xl hover:shadow-osu-scarlet/20 transition-all duration-300 md:hover:scale-105 md:hover:-translate-y-1 active:scale-95 cursor-pointer">
+            <Card className="bg-background rounded-xl p-6 h-full border-2 border-osu-scarlet/30 shadow-lg hover:shadow-xl hover:shadow-osu-scarlet/20 transition-all duration-300 md:hover:scale-105 md:hover:-translate-y-1 active:scale-95 cursor-pointer" onClick={() => setActiveDialog('consultation')}>
               <CardHeader className="pb-4">
                 <div className="flex items-center gap-3 mb-3">
                   <div className="p-3 bg-osu-scarlet/10 rounded-full">
@@ -164,8 +152,8 @@ const Support = () => {
               <CardContent className="pt-0 flex-1 flex flex-col justify-between">
                 <Dialog open={activeDialog === 'consultation'} onOpenChange={(open) => setActiveDialog(open ? 'consultation' : null)}>
                   <DialogTrigger asChild>
-                    <Button variant="link" className="p-0 text-primary font-medium text-lg justify-start">
-                      Request Consultation →
+                    <Button className="get-involved-gold-button border-none w-full shadow-md mt-4">
+                      Request Consultation
                     </Button>
                   </DialogTrigger>
                   <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
@@ -175,7 +163,7 @@ const Support = () => {
               </CardContent>
             </Card>
 
-            <Card className="bg-background rounded-xl p-6 h-full border-2 border-osu-scarlet/30 shadow-lg hover:shadow-xl hover:shadow-osu-scarlet/20 transition-all duration-300 md:hover:scale-105 md:hover:-translate-y-1 active:scale-95 cursor-pointer">
+            <Card className="bg-background rounded-xl p-6 h-full border-2 border-osu-scarlet/30 shadow-lg hover:shadow-xl hover:shadow-osu-scarlet/20 transition-all duration-300 md:hover:scale-105 md:hover:-translate-y-1 active:scale-95 cursor-pointer" onClick={() => setActiveDialog('grant')}>
               <CardHeader className="pb-4">
                 <div className="flex items-center gap-3 mb-3">
                   <div className="p-3 bg-osu-scarlet/10 rounded-full">
@@ -190,8 +178,8 @@ const Support = () => {
               <CardContent className="pt-0 flex-1 flex flex-col justify-between">
                 <Dialog open={activeDialog === 'grant'} onOpenChange={(open) => setActiveDialog(open ? 'grant' : null)}>
                   <DialogTrigger asChild>
-                    <Button variant="link" className="p-0 text-primary font-medium text-lg justify-start">
-                      Submit Inquiry →
+                    <Button className="get-involved-gold-button border-none w-full shadow-md mt-4">
+                      Submit Grant Inquiry
                     </Button>
                   </DialogTrigger>
                   <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
@@ -201,7 +189,7 @@ const Support = () => {
               </CardContent>
             </Card>
 
-            <Card className="bg-background rounded-xl p-6 h-full border-2 border-osu-scarlet/30 shadow-lg hover:shadow-xl hover:shadow-osu-scarlet/20 transition-all duration-300 md:hover:scale-105 md:hover:-translate-y-1 active:scale-95 cursor-pointer">
+            <Card className="bg-background rounded-xl p-6 h-full border-2 border-osu-scarlet/30 shadow-lg hover:shadow-xl hover:shadow-osu-scarlet/20 transition-all duration-300 md:hover:scale-105 md:hover:-translate-y-1 active:scale-95 cursor-pointer" onClick={() => setActiveDialog('training')}>
               <CardHeader className="pb-4">
                 <div className="flex items-center gap-3 mb-3">
                   <div className="p-3 bg-osu-scarlet/10 rounded-full">
@@ -216,8 +204,8 @@ const Support = () => {
               <CardContent className="pt-0 flex-1 flex flex-col justify-between">
                 <Dialog open={activeDialog === 'training'} onOpenChange={(open) => setActiveDialog(open ? 'training' : null)}>
                   <DialogTrigger asChild>
-                    <Button variant="link" className="p-0 text-primary font-medium text-lg justify-start">
-                      Request Training →
+                    <Button className="get-involved-gold-button border-none w-full shadow-md mt-4">
+                      Request Training
                     </Button>
                   </DialogTrigger>
                   <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
@@ -264,7 +252,7 @@ const Support = () => {
                       </div>
                       <div className="flex items-center gap-4 text-lg">
                         <Phone className="h-6 w-6 text-muted-foreground" />
-                        <span className="text-foreground">(380) 287-4505</span>
+                        <span className="text-foreground">{CONTACT_CONFIG.phone.main}</span>
                       </div>
                       <div className="flex items-center gap-4 text-lg">
                         <MapPin className="h-6 w-6 text-muted-foreground" />

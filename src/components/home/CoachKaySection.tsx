@@ -1,4 +1,4 @@
-import { Calendar } from "lucide-react";
+import { Calendar, Award } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import AskCoachKay from "@/components/ui/AskCoachKay";
 import { useCalendlyPopup } from "@/hooks/useCalendlyPopup";
@@ -12,15 +12,22 @@ export const CoachKaySection = () => {
         <div className="max-w-6xl mx-auto">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             <div>
-              <h2 className="font-heading text-4xl md:text-5xl font-bold text-foreground mb-8">
+              <div className="inline-flex items-center gap-2 bg-osu-scarlet/10 text-osu-scarlet px-4 py-2 rounded-full text-xs font-bold uppercase tracking-widest mb-6">
+                <Award className="h-4 w-4" />
+                Master Certified Transformation Coach
+              </div>
+              <h2 className="font-heading text-4xl md:text-5xl font-bold text-foreground mb-4">
                 Meet Coach Kay
               </h2>
+              <h3 className="text-xl font-semibold text-osu-scarlet mb-8">
+                AI Life Transformation Coach & Consultant
+              </h3>
               <div className="space-y-6 text-foreground">
                 <p className="text-xl leading-relaxed">
-                  Behind Forward Focus Elevation is Coach Kay, a passionate advocate with lived proximity to the justice system. She's seen firsthand how generational harm, lack of resources, and broken systems impact entire families.
+                  Behind Forward Focus Elevation is Coach Kay, an accredited expert in bridging the gap between human potential and artificial intelligence.
                 </p>
                 <p className="text-lg leading-relaxed">
-                  Coach Kay combined her spiritual practice, trauma-informed education, and deep commitment to equity to create AI-powered resources, healing programs, and safe spaces that center justice-impacted individuals and their families.
+                  As a Master Certified coach in Transformation, Mindfulness, and Life Purpose, she combines clinical-adjacent wisdom with her background as an Accredited AI Prompt Engineer to build the world's first true "Hub for Second Chances."
                 </p>
               </div>
               

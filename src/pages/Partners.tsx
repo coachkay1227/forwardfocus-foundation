@@ -96,54 +96,54 @@ const Partners = () => {
 
   const partnerBenefits = [
     {
-      icon: Users,
-      title: "Direct Community Impact",
-      description: "Connect directly with justice-impacted individuals seeking support and resources.",
+      icon: Plus,
+      title: "Contribute Resources",
+      description: "Add your organization's services to our 88-county directory and reach those who need them most.",
     },
     {
-      icon: BarChart3,
-      title: "Impact Analytics",
-      description: "Track your organization's impact with detailed analytics and success metrics.",
+      icon: UserCheck,
+      title: "Streamlined Referrals",
+      description: "Submit and track referrals directly through our secure portal to ensure no one falls through the cracks.",
     },
     {
       icon: Handshake,
-      title: "Collaborative Network",
-      description: "Join a network of partner organizations working together for systemic change.",
+      title: "Strategic Collaboration",
+      description: "Join a high-impact network of Ohio organizations committed to second chances and healing.",
     },
     {
-      icon: Award,
-      title: "Recognition & Visibility",
-      description: "Gain recognition as a justice-friendly partner in our community directory.",
+      icon: BarChart3,
+      title: "Visibility & Data",
+      description: "Gain recognition as a verified partner and track your contribution to community outcomes.",
     },
   ];
 
   const quickActions = [
     {
-      title: "Submit New Referral",
-      description: "Refer someone to our community resources",
-      icon: UserCheck,
-      href: "/partners/submit-referral",
+      title: "Add a Resource",
+      description: "List your services in our directory",
+      icon: Plus,
+      href: "/partners/add-resource",
       variant: "default" as const,
     },
     {
-      title: "Add Resource",
-      description: "Share a new resource with the community",
-      icon: Plus,
-      href: "/partners/add-resource",
+      title: "Submit a Referral",
+      description: "Connect someone with support",
+      icon: UserCheck,
+      href: "/partners/submit-referral",
       variant: "secondary" as const,
     },
     {
-      title: "AI Resource Discovery",
-      description: "AI-powered resource finder",
+      title: "AI Resource Hub",
+      description: "Find and share local services",
       icon: FileText,
       href: "/discover",
       variant: "outline" as const,
     },
     {
       title: "Request Partnership",
-      description: "Apply to become an official partner",
+      description: "Become a verified organization",
       icon: Building2,
-      href: "/RequestPartnership",
+      href: "/partners/request",
       variant: "outline" as const,
     },
   ];
@@ -183,7 +183,7 @@ const Partners = () => {
                 </div>
                 <h1 className="font-heading text-3xl md:text-4xl font-bold mb-2">Partner Portal</h1>
                 <p className="text-lg md:text-xl leading-relaxed">
-                  Collaborate, contribute, and track your impact in our community network
+                  Join Ohio's Premier Resource Network for Second Chances & Healing
                 </p>
               </div>
             </div>

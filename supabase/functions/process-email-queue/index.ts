@@ -69,7 +69,7 @@ serve(async (req: Request) => {
 
         // Send email via Resend
         const { data, error } = await resend.emails.send({
-          from: "Forward Focus Elevation <support@forward-focus-elevation.org>",
+          from: "Forward Focus Elevation <support@ffeservices.net>",
           to: [email.recipient_email],
           subject: getSubjectForType(email.email_type),
           html: email.email_content,
@@ -159,7 +159,7 @@ function getSubjectForType(emailType: string): string {
     case 'site_usage':
       return "📚 This Week's Resources & Tools - Forward Focus Elevation";
     case 'booking_coaching':
-      return "💫 The Collective: Your Community Awaits";
+      return "💫 Focus Flow Elevation Hub: Your Community Awaits";
     case 'weekly_engagement':
       return "🌟 Week in Review + What's Coming";
     case 'community_call':

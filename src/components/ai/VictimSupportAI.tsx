@@ -25,6 +25,12 @@ interface Message {
     city?: string;
     county?: string;
   }>;
+  webResources?: Array<{
+    name: string;
+    description: string;
+    type: string;
+    source: string;
+  }>;
   victimType?: string;
 }
 
@@ -39,7 +45,7 @@ const VictimSupportAI: React.FC<VictimSupportAIProps> = ({ isOpen, onClose, init
     {
       id: '1',
       type: 'ai',
-      content: "I'm here to support you on your healing journey. What happened to you was not your fault, and seeking help shows tremendous strength. I'm trained to understand the unique challenges faced by crime victims and can help you find trauma-informed resources, legal advocacy, compensation programs, and emotional support. How can I help you today?",
+      content: "I'm here to support you in the Healing Hub. What happened to you was not your fault, and seeking help shows tremendous strength. I'm trained to understand the unique challenges faced by survivors and can help you find trauma-informed resources, legal advocacy, compensation programs, and emotional support. How can I help you today?",
       timestamp: new Date(),
     }
   ]);
@@ -100,6 +106,7 @@ const VictimSupportAI: React.FC<VictimSupportAIProps> = ({ isOpen, onClose, init
         if (lastMessage.type === 'ai') {
           lastMessage.content = data.response;
           lastMessage.resources = data.resources;
+          lastMessage.webResources = data.webResources;
         }
         return newMessages;
       });
@@ -251,7 +258,10 @@ const VictimSupportAI: React.FC<VictimSupportAIProps> = ({ isOpen, onClose, init
 
                 {message.resources && message.resources.length > 0 && (
                   <div className="mt-3 space-y-2">
-                    <p className="text-xs font-semibold text-foreground/80">Recommended Resources:</p>
+                    <p className="text-xs font-semibold text-foreground/80 flex items-center gap-2">
+                      <Shield className="h-3 w-3 text-primary" />
+                      Verified Healing Hub Resources:
+                    </p>
                     {message.resources.map((resource) => (
                       <div key={resource.id} className="bg-card border rounded-lg p-3 text-xs">
                         <div className="font-semibold text-foreground">{resource.name}</div>
@@ -287,6 +297,24 @@ const VictimSupportAI: React.FC<VictimSupportAIProps> = ({ isOpen, onClose, init
                     ))}
                   </div>
                 )}
+
+                {message.webResources && message.webResources.length > 0 && (
+                  <div className="mt-4 space-y-2">
+                    <p className="text-xs font-semibold text-foreground/80 flex items-center gap-2">
+                      <Bot className="h-3 w-3 text-orange-500" />
+                      Latest Web Findings:
+                    </p>
+                    {message.webResources.map((resource, idx) => (
+                      <div key={idx} className="bg-orange-50/30 dark:bg-orange-950/10 border border-orange-200 dark:border-orange-800 rounded-lg p-3 text-xs">
+                        <div className="font-semibold text-foreground">{resource.name}</div>
+                        <p className="text-muted-foreground mt-1 leading-relaxed">{resource.description}</p>
+                        <p className="text-[10px] text-muted-foreground mt-2 italic">
+                          ℹ️ Found via web search. Please verify services before use.
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
             </div>
           ))}
@@ -317,7 +345,7 @@ const VictimSupportAI: React.FC<VictimSupportAIProps> = ({ isOpen, onClose, init
                   setMessages([{
                     id: '1',
                     type: 'ai',
-                    content: "I'm here to support you on your healing journey. What happened to you was not your fault, and seeking help shows tremendous strength. I'm trained to understand the unique challenges faced by crime victims and can help you find trauma-informed resources, legal advocacy, compensation programs, and emotional support. How can I help you today?",
+                    content: "I'm here to support you in the Healing Hub. What happened to you was not your fault, and seeking help shows tremendous strength. I'm trained to understand the unique challenges faced by survivors and can help you find trauma-informed resources, legal advocacy, compensation programs, and emotional support. How can I help you today?",
                     timestamp: new Date(),
                   }]);
                   setConversationContext([]);

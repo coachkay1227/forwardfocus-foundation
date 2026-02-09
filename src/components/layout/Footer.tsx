@@ -19,7 +19,7 @@ const Footer = () => {
             </li>
             <li>
               <Link to="/learn" className="text-foreground/80 hover:text-osu-scarlet transition-colors duration-200 focus:text-osu-scarlet focus:outline-none focus:ring-2 focus:ring-osu-scarlet/20 rounded px-1">
-                Reentry Community
+                The Collective
               </Link>
             </li>
           </ul>
