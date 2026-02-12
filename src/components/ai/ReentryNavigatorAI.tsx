@@ -3,11 +3,11 @@ import { X, Send, Bot, Home, Briefcase, GraduationCap, Heart, Scale, DollarSign,
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
-import { Badge } from '@/components/ui/badge';
 import { supabase } from '@/integrations/supabase/client';
-import { parseTextForLinks, formatAIResponse, type ParsedTextSegment } from '@/lib/text-parser';
 import EmailChatHistoryModal from './EmailChatHistoryModal';
-import DOMPurify from 'dompurify';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
+import { toast } from 'sonner';
 
 const MAX_MESSAGE_LENGTH = 4000;
 
@@ -59,7 +59,6 @@ const ReentryNavigatorAI: React.FC<ReentryNavigatorAIProps> = ({ isOpen, onClose
 
   const [messages, setMessages] = useState<Message[]>([getInitialMessage()]);
   const [showEmailModal, setShowEmailModal] = useState(false);
-  const [userEmail, setUserEmail] = useState('');
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [conversationContext, setConversationContext] = useState<Array<{role: string, content: string}>>([]);
@@ -144,7 +143,8 @@ const ReentryNavigatorAI: React.FC<ReentryNavigatorAIProps> = ({ isOpen, onClose
 
       const data = await response.json();
 
-      const formattedResponse = formatAIResponse(data.response);
+      // We no longer need to format manually as ReactMarkdown handles it
+      const formattedResponse = data.response;
       
       setMessages(prev => {
         const newMessages = [...prev];
@@ -164,6 +164,8 @@ const ReentryNavigatorAI: React.FC<ReentryNavigatorAIProps> = ({ isOpen, onClose
       ]);
     } catch (error) {
       console.error(`${selectedCoach ? selectedCoach.name : 'Coach Kay'} (Reentry Navigator) AI error:`, error);
+      toast.error("I'm having trouble connecting to the AI. Switching to fallback resources.");
+
       // Fallback: client-side reentry resource lookup so users still get help
       try {
         const { data: resources } = await supabase
@@ -173,7 +175,6 @@ const ReentryNavigatorAI: React.FC<ReentryNavigatorAIProps> = ({ isOpen, onClose
           .eq('verified', true)
           .limit(10);
 
-        const coachName = selectedCoach ? selectedCoach.name.split(' ')[1] : 'Coach Kay';
         const content = `I'm experiencing a technical hiccup right now, but don't worry - I've still got your back! Here are some solid reentry resources that can help with common needs. Your success matters, and there are people ready to support you!`;
         setMessages(prev => {
           const newMessages = [...prev];
@@ -186,7 +187,6 @@ const ReentryNavigatorAI: React.FC<ReentryNavigatorAIProps> = ({ isOpen, onClose
         });
       } catch (fallbackError) {
         console.error('Reentry fallback failed:', fallbackError);
-        const coachName = selectedCoach ? selectedCoach.name.split(' ')[1] : 'Coach Kay';
         const errorMessage = `I'm having technical difficulties, but your reentry journey is still important to me. For immediate support, call **2-1-1** for comprehensive resource navigation, or visit your local reentry program. You've got this!`;
         setMessages(prev => {
           const newMessages = [...prev];
@@ -378,42 +378,19 @@ const ReentryNavigatorAI: React.FC<ReentryNavigatorAIProps> = ({ isOpen, onClose
                   </div>
                   <div className="flex-grow min-w-0">
                     <div className="bg-muted/30 rounded-2xl px-4 py-3 max-w-[90%] border border-border/40">
-                      <div className="text-sm leading-relaxed space-y-3">
-                        {parseTextForLinks(message.content).map((segment, segIndex) => (
-                          <span key={segIndex} className="inline">
-                            {segment.type === 'text' ? (
-                              <span 
-                                dangerouslySetInnerHTML={{ 
-                                  __html: DOMPurify.sanitize(
-                                    segment.content
-                                      .replace(/\*\*(.*?)\*\*/g, '<strong class="font-semibold">$1</strong>')
-                                      .replace(/\*(.*?)\*/g, '<em class="italic">$1</em>')
-                                      .replace(/\n/g, '<br />'),
-                                    { 
-                                      ALLOWED_TAGS: ['strong', 'em', 'br'],
-                                      ALLOWED_ATTR: []
-                                    }
-                                  )
-                                }} 
-                              />
-                            ) : (
-                              <a
-                                href={segment.href}
-                                className="text-primary hover:text-primary/80 underline underline-offset-2 font-medium transition-colors"
-                                target={segment.type === 'website' ? '_blank' : undefined}
-                                rel={segment.type === 'website' ? 'noopener noreferrer' : undefined}
-                                onClick={(e) => {
-                                  if (segment.type === 'phone') {
-                                    // Allow default tel: behavior
-                                    console.log(`Calling ${segment.content}`);
-                                  }
-                                }}
-                              >
-                                {segment.content}
-                              </a>
-                            )}
-                          </span>
-                        ))}
+                      <div className="text-sm leading-relaxed prose dark:prose-invert max-w-none">
+                        <ReactMarkdown
+                          remarkPlugins={[remarkGfm]}
+                          components={{
+                            a: ({node, ...props}) => <a {...props} className="text-primary hover:text-primary/80 underline font-medium" target="_blank" rel="noopener noreferrer" />,
+                            p: ({node, ...props}) => <p {...props} className="mb-2 last:mb-0" />,
+                            ul: ({node, ...props}) => <ul {...props} className="list-disc ml-4 mb-2" />,
+                            ol: ({node, ...props}) => <ol {...props} className="list-decimal ml-4 mb-2" />,
+                            li: ({node, ...props}) => <li {...props} className="mb-1" />,
+                          }}
+                        >
+                          {message.content}
+                        </ReactMarkdown>
                       </div>
 
                       {message.resources && message.resources.length > 0 && (

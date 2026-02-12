@@ -1,11 +1,14 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { X, Send, Bot, Heart, Shield, Scale, DollarSign, Mail } from 'lucide-react';
+import { X, Send, Heart, Shield, Scale, DollarSign, Mail, Phone } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { Badge } from '@/components/ui/badge';
 import { supabase } from '@/integrations/supabase/client';
 import EmailChatHistoryModal from './EmailChatHistoryModal';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
+import { toast } from 'sonner';
 
 const MAX_MESSAGE_LENGTH = 4000;
 
@@ -39,7 +42,7 @@ const VictimSupportAI: React.FC<VictimSupportAIProps> = ({ isOpen, onClose, init
     {
       id: '1',
       type: 'ai',
-      content: "I'm here to support you on your healing journey. What happened to you was not your fault, and seeking help shows tremendous strength. I'm trained to understand the unique challenges faced by crime victims and can help you find trauma-informed resources, legal advocacy, compensation programs, and emotional support. How can I help you today?",
+      content: "I'm here to support you on your healing journey. What happened to you was not your fault, and seeking help shows tremendous strength.\n\nI'm trained to understand the unique challenges faced by crime victims and can help you find:\n\n*   Trauma-informed resources\n*   Legal advocacy\n*   Compensation programs\n*   Emotional support\n\nHow can I help you today?",
       timestamp: new Date(),
     }
   ]);
@@ -105,6 +108,8 @@ const VictimSupportAI: React.FC<VictimSupportAIProps> = ({ isOpen, onClose, init
       });
     } catch (error) {
       console.error('Victim Support AI error:', error);
+      toast.error("I'm having trouble connecting. Showing offline resources.");
+
       // Fallback: client-side victim services lookup so users still get help
       try {
         const { data: resources } = await supabase
@@ -128,7 +133,7 @@ const VictimSupportAI: React.FC<VictimSupportAIProps> = ({ isOpen, onClose, init
         const errorMessage: Message = {
           id: (Date.now() + 1).toString(),
           type: 'ai',
-          content: "I apologize for the technical difficulty. Let me connect you with local victim services that can provide direct support. Please visit your nearest family justice center or contact local law enforcement victim advocacy services.",
+          content: "I apologize for the technical difficulty. Let me connect you with local victim services that can provide direct support.\n\nPlease visit your nearest **Family Justice Center** or contact local law enforcement victim advocacy services.",
           timestamp: new Date(),
         };
         setMessages(prev => [...prev, errorMessage]);
@@ -155,7 +160,7 @@ const VictimSupportAI: React.FC<VictimSupportAIProps> = ({ isOpen, onClose, init
     const aiMessage: Message = {
       id: (Date.now() + 1).toString(),
       type: 'ai',
-      content: '...',
+      content: 'Thinking...',
       timestamp: new Date(),
     };
     setMessages(prev => [...prev, aiMessage]);
@@ -211,7 +216,7 @@ const VictimSupportAI: React.FC<VictimSupportAIProps> = ({ isOpen, onClose, init
         </div>
 
         {/* Static Safety Disclaimer */}
-        <div className="bg-destructive/10 border-l-4 border-destructive px-4 py-2 mx-4">
+        <div className="bg-destructive/10 border-l-4 border-destructive px-4 py-2 mx-4 mt-2">
           <div className="flex gap-2">
             <Shield className="h-4 w-4 text-destructive flex-shrink-0 mt-0.5" />
             <div className="text-xs space-y-1">
@@ -247,7 +252,24 @@ const VictimSupportAI: React.FC<VictimSupportAIProps> = ({ isOpen, onClose, init
                   ? 'bg-primary text-primary-foreground' 
                   : 'bg-muted text-foreground border'
               }`}>
-                <p className="text-sm leading-relaxed">{message.content}</p>
+                <div className="text-sm leading-relaxed prose dark:prose-invert max-w-none">
+                   {message.type === 'user' ? (
+                      message.content
+                    ) : (
+                      <ReactMarkdown
+                        remarkPlugins={[remarkGfm]}
+                        components={{
+                          a: ({node, ...props}) => <a {...props} className="text-primary hover:text-primary/80 underline font-medium" target="_blank" rel="noopener noreferrer" />,
+                          p: ({node, ...props}) => <p {...props} className="mb-2 last:mb-0" />,
+                          ul: ({node, ...props}) => <ul {...props} className="list-disc ml-4 mb-2" />,
+                          ol: ({node, ...props}) => <ol {...props} className="list-decimal ml-4 mb-2" />,
+                          li: ({node, ...props}) => <li {...props} className="mb-1" />,
+                        }}
+                      >
+                        {message.content}
+                      </ReactMarkdown>
+                    )}
+                </div>
 
                 {message.resources && message.resources.length > 0 && (
                   <div className="mt-3 space-y-2">
