@@ -1,16 +1,12 @@
 import { useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Slider } from "@/components/ui/slider";
 import { Button } from "@/components/ui/button";
-import { Phone, MessageCircle, Play, Pause, Timer, TrendingUp, Award, Info, Heart, Sparkles, BookOpen } from "lucide-react";
+import { Phone, MessageCircle, Play, Pause, Timer, TrendingUp, Award } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import { useHealingProgress } from "@/hooks/useHealingProgress";
 import BreathingExercise from "./BreathingExercise";
 import FrequencyPlayer from "./FrequencyPlayer";
-import DigitalRelease from "./DigitalRelease";
-import SoulJournal from "./SoulJournal";
-import BodyTensionMap from "./BodyTensionMap";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 const affirmations = [
   "I am stronger than my struggles. Every day I choose healing.",
@@ -90,77 +86,20 @@ const DailyHealingToolkit = () => {
   };
 
   return (
-    <section className="py-24 bg-gradient-to-br from-cream/20 via-background to-cream/10">
+    <section className="py-16 bg-gradient-to-br from-background via-muted/20 to-background">
       <div className="container mx-auto px-4">
-        <div className="text-center mb-20">
-          <h2 className="text-4xl md:text-5xl font-heading font-bold text-foreground mb-6">
-            Digital Healing Sanctuary
+        <div className="text-center mb-12">
+          <h2 className="text-4xl font-bold bg-gradient-osu-primary bg-clip-text text-transparent mb-4">
+            Your Daily Healing Toolkit
           </h2>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-            Clinically-informed digital tools for stabilization, release, and long-term recovery.
-            Designed to help you navigate trauma and find peace at your own pace.
+          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+            Powerful tools designed to support your healing journey every single day
           </p>
-        </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-7xl mx-auto mb-16">
-          {/* Somatic Map - High Impact */}
-          <div className="lg:col-span-1">
-            <div className="flex items-center gap-2 mb-4 px-2">
-              <span className="text-xs font-bold uppercase tracking-widest text-osu-scarlet">Stabilize</span>
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger>
-                    <Info className="h-3 w-3 text-muted-foreground" />
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p className="w-60 text-xs">Somatic exercises help regulate the nervous system by shifting focus from distressing thoughts to physical sensations.</p>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
-            </div>
-            <BodyTensionMap />
-          </div>
-
-          {/* Digital Release - High Impact */}
-          <div className="lg:col-span-1">
-             <div className="flex items-center gap-2 mb-4 px-2">
-              <span className="text-xs font-bold uppercase tracking-widest text-blue-600">Release</span>
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger>
-                    <Info className="h-3 w-3 text-muted-foreground" />
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p className="w-60 text-xs">Expressive writing facilitates emotional processing and provides a safe outlet for intrusive thoughts.</p>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
-            </div>
-            <DigitalRelease />
-          </div>
-
-          {/* Soul Journal - High Impact */}
-          <div className="lg:col-span-1">
-             <div className="flex items-center gap-2 mb-4 px-2">
-              <span className="text-xs font-bold uppercase tracking-widest text-purple-600">Reflect</span>
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger>
-                    <Info className="h-3 w-3 text-muted-foreground" />
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p className="w-60 text-xs">Guided reflection encourages cognitive reframing and helps build resilience through positive narrative formation.</p>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
-            </div>
-            <SoulJournal />
-          </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
           {/* Crisis Relief Toolkit */}
-          <Card className="crisis-toolkit border-2 border-red-200 bg-red-50/50 hover:shadow-xl transition-all duration-300 md:hover:-translate-y-1 backdrop-blur-sm">
+          <Card className="crisis-toolkit border-2 border-red-200 bg-red-50/50 hover:shadow-xl transition-all duration-300 md:hover:-translate-y-1">
             <CardHeader className="text-center">
               <div className="text-4xl mb-2 transform hover:scale-110 transition-transform duration-300" style={{
                 textShadow: '2px 2px 4px rgba(0,0,0,0.3), 4px 4px 8px rgba(0,0,0,0.2), -1px -1px 2px rgba(255,255,255,0.8)',

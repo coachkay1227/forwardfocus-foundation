@@ -116,7 +116,7 @@ const handler = async (req: Request): Promise<Response> => {
       await Promise.all(batch.map(async (subscriber) => {
         try {
           await resend.emails.send({
-            from: "Coach Kay <support@ffeservices.net>",
+            from: "Coach Kay <support@forward-focus-elevation.org>",
             to: [subscriber.email],
             subject,
             html: emailContent.replace(/{{name}}/g, subscriber.name || 'Friend'),

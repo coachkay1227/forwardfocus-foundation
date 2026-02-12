@@ -47,7 +47,7 @@ export const TestEmailSender = () => {
 
       const subjects: Record<string, string> = {
         'site_usage': '📚 This Week\'s Resources & Tools - Forward Focus Elevation',
-        'booking_coaching': '💫 Focus Flow Elevation Hub: Your Community Awaits',
+        'booking_coaching': '💫 The Collective: Your Community Awaits',
         'weekly_engagement': '🌟 Week in Review + What\'s Coming',
         'community_call': '🎙️ Tonight at 6 PM: Weekly Community Call'
       };

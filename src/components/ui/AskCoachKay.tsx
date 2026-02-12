@@ -40,7 +40,7 @@ const AskCoachKay = () => {
       canUseAI,
       checkAccess,
       trialActive,
-      turnsRemaining
+      timeRemaining
     }) => {
       const AskCoachKayComponent = () => {
         const scrollToBottom = () => {
@@ -193,7 +193,7 @@ const AskCoachKay = () => {
                 <Button size="lg" className="w-full bg-primary hover:bg-primary/90 text-primary-foreground">
                   <MessageCircle className="h-5 w-5 mr-2" />
                   Connect with Coach Kay
-                  {trialActive && ` (${turnsRemaining} left)`}
+                  {trialActive}
                 </Button>
               </DialogTrigger>
               <DialogContent className="sm:max-w-lg">

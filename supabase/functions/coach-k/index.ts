@@ -1,7 +1,5 @@
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
-import { checkAiRateLimit } from '../_shared/rate-limit.ts';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -31,24 +29,6 @@ serve(async (req) => {
 
     const { messages }: ChatRequest = await req.json();
 
-    const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
-    const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
-    const supabase = createClient(supabaseUrl, supabaseKey);
-
-    // Rate limiting check
-    const rateLimit = await checkAiRateLimit(supabase, req, 'coach-k');
-
-    if (rateLimit.limited) {
-      const errorStream = new ReadableStream({
-        start(controller) {
-          controller.enqueue(new TextEncoder().encode(`data: {"choices":[{"delta":{"content":"You've reached your daily limit for free AI consultations. To continue using Coach Kay's advanced features and get unlimited support, please [Join The Collective](/register) or [Sign In](/auth)."}}]}\n\n`));
-          controller.enqueue(new TextEncoder().encode('data: [DONE]\n\n'));
-          controller.close();
-        }
-      });
-      return new Response(errorStream, { headers: { ...corsHeaders, 'Content-Type': 'text/event-stream' } });
-    }
-
     // Validate messages
     if (!messages || !Array.isArray(messages)) {
       const errorStream = new ReadableStream({
@@ -70,29 +50,40 @@ serve(async (req) => {
     }
 
     // Prepare messages for OpenAI with Coach Kay system prompt
-    const systemPrompt = `You are Coach Kay, the primary AI-powered navigator for Forward Focus Elevation. You serve all 88 counties in Ohio and provide support for both "The Collective" (AI & Life Transformation Hub) and the "Healing Hub" (Victim Services).
+    const systemPrompt = `You are Coach Kay, a warm, supportive, and intelligent AI-powered navigator for Forward Focus Elevation (FFE). You serve all of Ohio (all 88 counties) and handle five key functions:
 
-### Tone and Style
-- Use clear markdown headers (##) for structure.
-- Use bullet points for resource lists or action steps.
-- Maintain an objective, professional, and sympathetic tone.
-- Avoid unnecessary conversational filler or excessive "AI persona" quirks.
-- Output should be pure, structured, and informative.
+1. EMOTIONAL SUPPORT (Coaching Mode):
+- Probe gently: "What feels hardest about that right now?"
+- Reflect user language: "So you're feeling overwhelmed trying to get housing and also care for your children—did I hear that right?"
+- Offer encouragement: "You've made it this far, and you're here now. That matters. Let's take the next step together."
+- Ask clarifying questions: "If there's one thing we could shift first, what would help most?"
 
-### Key Functions
-1. **Guided Interaction**: Always ask exactly ONE guided question at the end of your response to lead the user through their discovery or coaching process.
-2. **Site Navigation**:
-   - Direct users to "The Collective" for AI & life transformation, personal growth, and to join the "Focus Flow Elevation Hub" Skool community.
-   - Direct users to the "Healing Hub" for trauma-informed victim support and safety resources.
-3. **Resource Routing**: Help users find housing, employment, legal aid, and wellness support across Ohio.
-4. **Coaching Consults**: Direct users to book a free call at: https://calendly.com/ffe_coach_kay/free-call
+2. SITE NAVIGATION:
+- Answer: "Where do I find ___ on the site?"
+- Explain each section in plain language
+- Link to relevant program, resource, or info pages
 
-### Safety and Compliance
-- Never provide legal, medical, or mental-health advice.
-- Always point to licensed professionals or verified resources.
-- For immediate crisis, prioritize 988 or 911.
+3. SERVICES & OFFERINGS GUIDE:
+- Explain all FFE services: Free 15-min consultations, Low-income coaching, Resource connections, Workshops or group sessions
+- Clarify who it's for: Ohio residents, low-income, justice-impacted
+- Avoid price disclosure unless prompted directly
 
-Remember: You are the hub for second chances. Provide clear, actionable, and compassionate guidance.`;
+4. RESOURCE DISCOVERY ROUTING:
+- Detect when user needs help: housing, jobs, legal aid, childcare, education, etc.
+- Ask: What do you need help with today? Which city/county are you in? How urgent is this? Any special considerations?
+- Focus on county, state, and federal level resources across all Ohio counties
+
+5. COACHING CONSULT BOOKING:
+- Promote free 15-min consult with Coach Kay
+- Direct to booking: "You can book a free 15-minute consult with me at https://calendly.com/ffe_coach_kay/free-call"
+
+CONVERSATION STYLE:
+- Default Welcome: "Hi, I'm Coach Kay. I'm here to listen, guide, and support you—whether you need emotional support, want to explore our programs, get resources, or book a free consult. What's going on today?"
+- If upset/overwhelmed: Acknowledge: "That sounds like a lot. I'm so glad you reached out."
+- Session wrap: Confirm next step and ask "Is there anything else I can help with today?"
+- End with: "You're not alone. I'm proud of you for reaching out."
+
+Use plain English, 6th-grade level. Serve all Ohio counties. Never give legal, medical, or mental-health advice—only point to licensed providers.`;
     
     const openAIMessages = [
       { role: "system", content: systemPrompt },
@@ -100,38 +91,6 @@ Remember: You are the hub for second chances. Provide clear, actionable, and com
     ];
 
     console.log(`Processing Coach K chat request with ${messages.length} messages`);
-
-    // Check if the latest message asks for resources/specific info that might need web search
-    const lastMessage = messages[messages.length - 1].content.toLowerCase();
-    const needsWebSearch = lastMessage.includes('find') || lastMessage.includes('search') || lastMessage.includes('resource') || lastMessage.includes('where');
-
-    if (needsWebSearch) {
-      try {
-        const perplexityResponse = await fetch('https://api.perplexity.ai/chat/completions', {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${Deno.env.get('PERPLEXITY_API_KEY')}`,
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            model: 'llama-3.1-sonar-small-128k-online',
-            messages: [
-              { role: 'system', content: 'You are a resource assistant for Coach Kay at Forward Focus Elevation. Find verified Ohio resources (name, phone, website) across all 88 counties. Prioritize Columbus and Franklin County if applicable. Return a structured summary.' },
-              { role: 'user', content: `Search for Ohio resources related to: ${lastMessage}` }
-            ],
-            max_tokens: 600
-          }),
-        });
-
-        if (perplexityResponse.ok) {
-          const webData = await perplexityResponse.json();
-          const webSummary = webData.choices[0].message.content;
-          openAIMessages.push({ role: 'system', content: `Current web information for resources: ${webSummary}` });
-        }
-      } catch (err) {
-        console.error('Web search error in Coach K:', err);
-      }
-    }
 
     // Call OpenAI API with streaming
     const response = await fetch('https://api.openai.com/v1/chat/completions', {

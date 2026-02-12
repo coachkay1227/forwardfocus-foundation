@@ -1,6 +1,7 @@
 import React, { Component, ReactNode } from 'react';
 import { AlertTriangle, Home, RefreshCw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import logo from '@/assets/logo-transparent.png';
 
 interface Props {
   children: ReactNode;
@@ -40,7 +41,7 @@ export class BrandedErrorBoundary extends Component<Props, State> {
           <div className="text-center max-w-2xl px-4 py-12">
             <div className="mb-8 flex justify-center">
               <img 
-                src="/logo-new.png"
+                src={logo}
                 alt="Forward Focus Elevation" 
                 className="h-20 w-auto"
               />

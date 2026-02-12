@@ -1,8 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { RefreshCw, Check, X, Loader2 } from 'lucide-react';
-import { supabase } from '@/integrations/supabase/client';
+import { RefreshCw, Check, X } from 'lucide-react';
 
 interface SimpleCaptchaProps {
   onVerify: (verified: boolean) => void;
@@ -10,26 +9,23 @@ interface SimpleCaptchaProps {
 }
 
 export const SimpleCaptcha = ({ onVerify, onTokenGenerated }: SimpleCaptchaProps) => {
-  const [challenge, setChallenge] = useState<{ num1: number, num2: number, operator: string } | null>(null);
-  const [signature, setSignature] = useState<string | null>(null);
+  const [challenge, setChallenge] = useState({ num1: 0, num2: 0, operator: '+' });
   const [userAnswer, setUserAnswer] = useState('');
   const [verified, setVerified] = useState(false);
-  const [verifying, setVerifying] = useState(false);
   const [error, setError] = useState(false);
 
-  const generateChallenge = useCallback(async () => {
-    try {
-      const { data, error: invokeError } = await supabase.functions.invoke('validate-auth-security', {
-        body: { action: 'generate-captcha' }
-      });
+  const generateChallenge = useCallback(() => {
+    const operators = ['+', '-', '×'];
+    const operator = operators[Math.floor(Math.random() * operators.length)];
+    let num1 = Math.floor(Math.random() * 10) + 1;
+    let num2 = Math.floor(Math.random() * 10) + 1;
 
-      if (!invokeError && data) {
-        setChallenge(data.challenge);
-        setSignature(data.signature);
-      }
-    } catch (err) {
-      console.error('Failed to generate captcha:', err);
+    // Ensure subtraction doesn't result in negative numbers
+    if (operator === '-' && num2 > num1) {
+      [num1, num2] = [num2, num1];
     }
+
+    setChallenge({ num1, num2, operator });
     setUserAnswer('');
     setVerified(false);
     setError(false);
@@ -49,39 +45,24 @@ export const SimpleCaptcha = ({ onVerify, onTokenGenerated }: SimpleCaptchaProps
     }
   };
 
-  const handleVerify = async () => {
+  const handleVerify = () => {
+    const correctAnswer = calculateAnswer();
     const userAnswerNum = parseInt(userAnswer, 10);
-    if (isNaN(userAnswerNum) || !challenge || !signature) return;
 
-    setVerifying(true);
-    setError(false);
+    if (userAnswerNum === correctAnswer) {
+      setVerified(true);
+      setError(false);
+      onVerify(true);
 
-    try {
-      const { data, error: invokeError } = await supabase.functions.invoke('validate-auth-security', {
-        body: {
-          action: 'verify-captcha',
-          captchaAnswer: userAnswerNum,
-          challenge,
-          signature
-        }
-      });
-
-      if (!invokeError && data?.valid) {
-        setVerified(true);
-        setError(false);
-        onVerify(true);
-        onTokenGenerated?.(signature); // Use signature as token
-      } else {
-        throw new Error('Verification failed');
-      }
-    } catch (err) {
+      // Generate a simple token for verification
+      const token = btoa(`captcha-verified-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`);
+      onTokenGenerated?.(token);
+    } else {
       setError(true);
       setVerified(false);
       onVerify(false);
       // Generate new challenge after wrong answer
-      setTimeout(generateChallenge, 1500);
-    } finally {
-      setVerifying(false);
+      setTimeout(generateChallenge, 1000);
     }
   };
 
@@ -110,8 +91,8 @@ export const SimpleCaptcha = ({ onVerify, onTokenGenerated }: SimpleCaptchaProps
 
       <div className="flex items-center gap-3">
         <div className="flex-1 flex items-center gap-2">
-          <span className="text-lg font-mono bg-background px-3 py-2 rounded border min-w-[120px] text-center">
-            {challenge ? `${challenge.num1} ${challenge.operator} ${challenge.num2} = ?` : 'Loading...'}
+          <span className="text-lg font-mono bg-background px-3 py-2 rounded border">
+            {challenge.num1} {challenge.operator} {challenge.num2} = ?
           </span>
           <Input
             type="number"
@@ -126,18 +107,12 @@ export const SimpleCaptcha = ({ onVerify, onTokenGenerated }: SimpleCaptchaProps
         <Button
           type="button"
           onClick={handleVerify}
-          disabled={!userAnswer || verified || verifying}
+          disabled={!userAnswer || verified}
           size="sm"
           variant={verified ? 'default' : 'outline'}
           className={verified ? 'bg-green-600 hover:bg-green-600' : ''}
         >
-          {verifying ? (
-            <Loader2 className="h-4 w-4 animate-spin" />
-          ) : verified ? (
-            <Check className="h-4 w-4" />
-          ) : (
-            'Verify'
-          )}
+          {verified ? <Check className="h-4 w-4" /> : 'Verify'}
         </Button>
       </div>
 

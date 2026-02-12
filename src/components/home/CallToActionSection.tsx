@@ -10,7 +10,7 @@ export const CallToActionSection = () => {
         <div className="grid md:grid-cols-2 gap-8 items-center">
           {/* Get Involved Section */}
           <div className="text-center md:text-left">
-            <h3 className="font-heading text-3xl md:text-4xl font-bold text-foreground mb-4">
+            <h3 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
               Want to Get Involved?
             </h3>
             <p className="text-lg mb-8 text-muted-foreground leading-relaxed">
@@ -18,7 +18,7 @@ export const CallToActionSection = () => {
             </p>
             <Button 
               size="lg" 
-              className="get-involved-gold-button border-none h-12 px-8 text-base"
+              className="bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary text-primary-foreground shadow-lg h-12 px-8 text-base font-semibold hover:shadow-xl transition-all duration-300"
               asChild
             >
               <Link to="/partners">Join the Movement</Link>
@@ -30,7 +30,7 @@ export const CallToActionSection = () => {
             <CardContent className="p-6">
               <div className="flex items-center gap-3 mb-4">
                 <Sparkles className="w-6 h-6 text-primary" />
-                <h3 className="font-heading text-xl font-semibold text-foreground">
+                <h3 className="text-xl font-semibold text-foreground">
                   Support Our Mission
                 </h3>
               </div>
@@ -51,7 +51,7 @@ export const CallToActionSection = () => {
               </div>
               
               <Button 
-                className="w-full mt-6 get-involved-gold-button border-none font-bold h-11"
+                className="w-full mt-6 bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary text-primary-foreground font-semibold h-11"
                 asChild
               >
                 <Link to="/support">

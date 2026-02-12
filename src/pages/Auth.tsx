@@ -15,7 +15,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { PasswordStrengthIndicator } from "@/components/security/PasswordStrengthIndicator";
 import { SimpleCaptcha } from "@/components/security/SimpleCaptcha";
 import { RateLimitWarning } from "@/components/security/RateLimitWarning";
-import { authFormSchema, registrationFormSchema } from "@/lib/validationSchemas";
+import { authFormSchema } from "@/lib/validationSchemas";
 
 const Auth = () => {
   const { user, signIn, signUp, signInWithGoogle, signInWithApple, loading } = useAuth();
@@ -99,26 +99,28 @@ const Auth = () => {
       return;
     }
 
-    // Validate email and password for signup using registration schema
+    // Validate password strength for signup
     if (!isLogin) {
       try {
-        registrationFormSchema.parse({ email, password, confirmPassword });
+        authFormSchema.parse({ email, password });
       } catch (error: any) {
-        const firstError = error.errors?.[0];
-        const errorMessage = firstError?.message || "Validation requirements not met";
-        const errorTitle = firstError?.path?.includes('password')
-          ? "Password Requirements Not Met"
-          : firstError?.path?.includes('confirmPassword')
-            ? "Password Mismatch"
-            : "Validation Error";
-
+        const errorMessage = error.errors?.[0]?.message || "Password does not meet requirements";
         toast({
-          title: errorTitle,
+          title: "Password Requirements Not Met",
           description: errorMessage,
           variant: "destructive",
         });
         return;
       }
+    }
+
+    if (!isLogin && password !== confirmPassword) {
+      toast({
+        title: "Error",
+        description: "Passwords do not match",
+        variant: "destructive",
+      });
+      return;
     }
 
     setAuthLoading(true);
@@ -174,6 +176,7 @@ const Auth = () => {
           
           // Send welcome email
           try {
+            const { supabase } = await import("@/integrations/supabase/client");
             await supabase.functions.invoke('send-auth-email', {
               body: { 
                 email, 

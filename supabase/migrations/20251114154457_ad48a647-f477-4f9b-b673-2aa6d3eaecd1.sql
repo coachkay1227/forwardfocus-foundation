@@ -152,7 +152,7 @@ INSERT INTO public.email_templates (template_name, subject, content_blocks, vari
 ('monday_newsletter', '📚 This Week''s Resources & Tools - Forward Focus Elevation', 
  '{"hero": "Your Weekly Dose of Growth & Support", "featuredResource": "", "aiToolSpotlight": "", "healingHubReminder": "", "coachKayCTA": "Book Your Breakthrough Session", "communityUpdate": "", "supportCTA": "Support Our Mission"}'::jsonb,
  '["firstName", "newResourcesCount", "lastLogin", "coachAvailability"]'::jsonb, true),
-('wednesday_collective', '💫 Focus Flow Elevation Hub: Your Community Awaits',
+('wednesday_collective', '💫 The Collective: Your Community Awaits',
  '{"hero": "You''re Part of Something Special", "communityHighlight": "", "coachingInvitation": "", "peerSupport": "", "sessionTopics": "", "joinSessionCTA": "Join a Session", "shareStoryCTA": "Share Your Story"}'::jsonb,
  '["firstName", "memberSince", "sessionsAttended", "nextAvailableSession"]'::jsonb, true),
 ('friday_recap', '🌟 Week in Review + What''s Coming',

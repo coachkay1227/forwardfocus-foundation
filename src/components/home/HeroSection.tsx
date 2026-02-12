@@ -25,7 +25,7 @@ export const HeroSection = ({ selectedState, onShowStateModal, onShowAIDiscovery
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 max-w-2xl mx-auto mb-8 items-center justify-center">
-            <Button size="lg" className="get-involved-gold-button border-none" asChild>
+            <Button size="lg" variant="osu-gray" asChild>
               <Link 
                 to="/help" 
                 aria-label="Get immediate help and support services"

@@ -84,7 +84,7 @@ export const ReminderEmailManager = () => {
             subject: type === 'site_usage' 
               ? "📚 This Week's Resources & Tools - Forward Focus Elevation" 
               : type === 'booking_coaching'
-              ? "💫 Focus Flow Elevation Hub: Your Community Awaits"
+              ? "💫 The Collective: Your Community Awaits"
               : type === 'weekly_engagement'
               ? "🌟 Week in Review + What's Coming"
               : "🎙️ Tonight at 6 PM: Weekly Community Call"

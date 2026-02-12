@@ -118,7 +118,7 @@ const emailHtml = await renderAsync(
 
 // Send with Resend
 const response = await resend.emails.send({
-  from: "Forward Focus Elevation <support@ffeservices.net>",
+  from: "Forward Focus Elevation <support@forward-focus-elevation.org>",
   to: ["recipient@example.com"],
   subject: "Your Subject",
   html: emailHtml,
@@ -222,4 +222,4 @@ Added tracking fields:
 For issues or questions:
 - Check edge function logs in Admin Dashboard
 - Review Resend dashboard for delivery issues
-- Contact: support@ffeservices.net
+- Contact: support@forward-focus-elevation.org

@@ -25,12 +25,6 @@ interface Message {
     city?: string;
     county?: string;
   }>;
-  webResources?: Array<{
-    name: string;
-    description: string;
-    type: string;
-    source: string;
-  }>;
 }
 
 interface CrisisEmergencyBotProps {
@@ -72,7 +66,7 @@ export const CrisisEmergencyBot = ({ trigger }: CrisisEmergencyBotProps) => {
       
       // Initialize with crisis support greeting focused on Ohio resources
       addMessage(
-        "Hi, I'm your Crisis Emergency Support AI Assistant here at Forward Focus Elevation, serving all 88 counties across Ohio.\n\nI'm here to provide immediate, compassionate support with:\n\n🤖 AI-Enhanced Crisis Support - Intelligent guidance tailored to your specific situation\n\n💝 Trauma-Informed Care - Every interaction designed with safety, trust, and empowerment\n\n🏛️ Ohio-Wide Resources - Access to crisis services across all Ohio counties\n\n🤝 Immediate Connection - Direct links to local support in your area\n\nI'm here to listen and help you find the right support. What's bringing you here today?",
+        "Hi, I'm your Crisis Emergency Support AI Assistant serving all 88 counties across Ohio.\n\nI'm here to provide immediate, compassionate support with:\n\n🤖 AI-Enhanced Crisis Support - Intelligent guidance tailored to your specific situation\n\n💝 Trauma-Informed Care - Every interaction designed with safety, trust, and empowerment\n\n🏛️ Ohio-Wide Resources - Access to crisis services across all Ohio counties\n\n🤝 Immediate Connection - Direct links to local support in your area\n\nI'm here to listen and help you find the right support. What's bringing you here today?",
         false
       );
       
@@ -128,8 +122,7 @@ export const CrisisEmergencyBot = ({ trigger }: CrisisEmergencyBotProps) => {
         text: data.response,
         isUser: false,
         timestamp: new Date(),
-        resources: data.resources,
-        webResources: data.webResources
+        resources: data.resources
       };
       
       setMessages(prev => [...prev, aiMessage]);
@@ -221,7 +214,7 @@ export const CrisisEmergencyBot = ({ trigger }: CrisisEmergencyBotProps) => {
                     
                     {message.resources && message.resources.length > 0 && (
                       <div className="mt-3 space-y-2">
-                        <p className="text-xs font-semibold text-foreground/80">Verified Ohio Resources:</p>
+                        <p className="text-xs font-semibold text-foreground/80">Ohio Resources:</p>
                         {message.resources.map((resource) => (
                           <div key={resource.id} className="bg-card border rounded-lg p-3 text-xs">
                             <div className="font-semibold text-foreground">{resource.name}</div>
@@ -250,24 +243,6 @@ export const CrisisEmergencyBot = ({ trigger }: CrisisEmergencyBotProps) => {
                                 {resource.city}, {resource.county} County
                               </div>
                             )}
-                          </div>
-                        ))}
-                      </div>
-                    )}
-
-                    {message.webResources && message.webResources.length > 0 && (
-                      <div className="mt-4 space-y-2">
-                        <p className="text-xs font-semibold text-foreground/80 flex items-center gap-2">
-                          <Bot className="h-4 w-4 text-orange-500" />
-                          Web Search Results:
-                        </p>
-                        {message.webResources.map((resource, idx) => (
-                          <div key={idx} className="bg-orange-50/50 dark:bg-orange-950/10 border border-orange-200 dark:border-orange-800 rounded-lg p-3 text-xs">
-                            <div className="font-semibold text-foreground">{resource.name}</div>
-                            <p className="text-muted-foreground mt-1 leading-relaxed">{resource.description}</p>
-                            <p className="text-[10px] text-muted-foreground mt-2 italic">
-                              ℹ️ Additional help found via web search.
-                            </p>
                           </div>
                         ))}
                       </div>

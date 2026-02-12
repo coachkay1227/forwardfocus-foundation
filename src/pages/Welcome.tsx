@@ -67,9 +67,9 @@ const Welcome = () => {
   const pathways = [
     {
       icon: Home,
-      title: "Seeking Healing",
-      description: "Find resources, support, and guidance in our Healing Hub",
-      action: "Explore Healing Hub",
+      title: "Seeking Help",
+      description: "Find resources, support, and guidance for your journey",
+      action: "Explore Resources",
       link: "/help",
       color: "from-osu-scarlet to-osu-scarlet-dark"
     },
@@ -144,7 +144,7 @@ const Welcome = () => {
                     <div className={`mx-auto w-16 h-16 rounded-full bg-gradient-to-br ${pathway.color} flex items-center justify-center group-hover:scale-110 transition-transform`}>
                       <pathway.icon className="h-8 w-8 text-white" />
                     </div>
-                    <h3 className="font-heading text-xl font-bold text-white">{pathway.title}</h3>
+                    <h3 className="text-xl font-bold text-white">{pathway.title}</h3>
                     <p className="text-white/80 text-sm">{pathway.description}</p>
                     <Button 
                       variant="ghost" 
@@ -244,7 +244,7 @@ const Welcome = () => {
               <Button 
                 size="lg" 
                 onClick={() => navigate("/help")}
-                className="get-involved-gold-button border-none font-bold shadow-xl"
+                className="bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary"
               >
                 Start Your Journey Today
                 <ArrowRight className="ml-2 h-5 w-5" />
@@ -343,7 +343,7 @@ const Welcome = () => {
                 <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
                   <Button 
                     size="lg"
-                    className="get-involved-gold-button border-none font-bold shadow-xl"
+                    className="bg-gradient-to-r from-osu-scarlet to-osu-scarlet-dark hover:from-osu-scarlet-dark hover:to-osu-scarlet text-white"
                     onClick={() => navigate("/help")}
                   >
                     <Heart className="mr-2 h-5 w-5" />
@@ -419,9 +419,9 @@ const Welcome = () => {
               <Button 
                 size="lg" 
                 onClick={() => navigate("/help")}
-                className="get-involved-gold-button border-none font-bold h-14 px-12 text-lg shadow-2xl"
+                className="bg-white text-primary hover:bg-white/90 font-semibold h-14 px-8 text-lg"
               >
-                Explore Healing Hub
+                Explore Resources
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
               <Button 

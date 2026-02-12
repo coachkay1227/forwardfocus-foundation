@@ -30,12 +30,6 @@ interface Message {
     city?: string;
     county?: string;
   }>;
-  webResources?: Array<{
-    name: string;
-    description: string;
-    type: string;
-    source: string;
-  }>;
   reentryStage?: string;
 }
 
@@ -58,8 +52,8 @@ const ReentryNavigatorAI: React.FC<ReentryNavigatorAIProps> = ({ isOpen, onClose
     id: 'initial',
     type: 'ai',
     content: selectedCoach
-      ? `Hey there! I'm ${selectedCoach.name.split(' ')[1]}, your ${selectedCoach.specialty} specialist here at The Collective (AI & Life Transformation Hub). ${selectedCoach.description}\n\nI'm here to provide personalized support in my area of expertise. What specific challenge can I help you tackle today?`
-      : "Hey there! I'm Coach Kay, your personal Reentry Navigator at The Collective (AI & Life Transformation Hub). I've helped hundreds of people successfully rebuild their lives after incarceration, and I'm here to help you too!\n\nI know this journey takes real courage, and every small step forward is worth celebrating. I can help you with housing, employment, legal matters, education, healthcare, family connections, and financial stability.\n\nWhat's your biggest priority right now? Let's tackle it together!",
+      ? `Hey there! I'm ${selectedCoach.name.split(' ')[1]}, your ${selectedCoach.specialty} specialist. ${selectedCoach.description}\n\nI'm here to provide personalized support in my area of expertise. What specific challenge can I help you tackle today?`
+      : "Hey there! I'm Coach Kay, your personal Reentry Navigator. I've helped hundreds of people successfully rebuild their lives after incarceration, and I'm here to help you too!\n\nI know this journey takes real courage, and every small step forward is worth celebrating. I can help you with housing, employment, legal matters, education, healthcare, family connections, and financial stability.\n\nWhat's your biggest priority right now? Let's tackle it together!",
     timestamp: new Date(),
   });
 
@@ -158,7 +152,6 @@ const ReentryNavigatorAI: React.FC<ReentryNavigatorAIProps> = ({ isOpen, onClose
         if (lastMessage.type === 'ai') {
           lastMessage.content = formattedResponse;
           lastMessage.resources = data.resources || [];
-          lastMessage.webResources = data.webResources || [];
         }
         return newMessages;
       });
@@ -427,7 +420,7 @@ const ReentryNavigatorAI: React.FC<ReentryNavigatorAIProps> = ({ isOpen, onClose
                         <div className="mt-4 space-y-3">
                           <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wider border-b border-border/30 pb-1 flex items-center gap-2">
                             <FileText className="h-3 w-3" />
-                            Verified Collective Resources
+                            Recommended Resources
                           </div>
                           <div className="space-y-3">
                             {message.resources.map((resource, resourceIndex) => (
@@ -496,26 +489,6 @@ const ReentryNavigatorAI: React.FC<ReentryNavigatorAIProps> = ({ isOpen, onClose
                                     </div>
                                   )}
                                 </div>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-                      )}
-
-                      {message.webResources && message.webResources.length > 0 && (
-                        <div className="mt-4 space-y-3">
-                          <div className="text-xs font-semibold text-orange-600 uppercase tracking-wider border-b border-orange-200 pb-1 flex items-center gap-2">
-                            <Bot className="h-3 w-3" />
-                            Additional Web Findings
-                          </div>
-                          <div className="space-y-3">
-                            {message.webResources.map((resource, idx) => (
-                              <div key={idx} className="bg-orange-50/50 dark:bg-orange-950/10 border border-orange-200 dark:border-orange-800 rounded-xl p-4 text-sm">
-                                <div className="font-semibold text-foreground mb-1">{resource.name}</div>
-                                <p className="text-muted-foreground leading-relaxed">{resource.description}</p>
-                                <p className="text-[10px] text-muted-foreground mt-2 italic">
-                                  ℹ️ Verified source not found in database. Please confirm services.
-                                </p>
                               </div>
                             ))}
                           </div>

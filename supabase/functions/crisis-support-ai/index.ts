@@ -131,9 +131,11 @@ serve(async (req) => {
       .eq('verified', true)
       .limit(15);
 
-    if (location || county) {
-      const searchLocation = location || county;
-      resourceQuery = resourceQuery.or(`city.ilike.%${searchLocation}%,county.ilike.%${searchLocation}%`);
+    if (location) {
+      resourceQuery = resourceQuery.ilike('city', `%${location}%`);
+    }
+    if (county) {
+      resourceQuery = resourceQuery.ilike('county', `%${county}%`);
     }
 
     const { data: resources, error: dbError } = await resourceQuery;
@@ -143,29 +145,39 @@ serve(async (req) => {
     }
 
     // Crisis-specific system prompt optimized for Ohio residents
-    const systemPrompt = `You are Coach Kay, the Crisis Support companion for the Healing Hub at Forward Focus Elevation, serving all 88 counties across Ohio. You specialize in immediate crisis intervention, safety planning, and connecting people with the "Healing Hub" for long-term support.
+    const systemPrompt = `You are Alex, a Crisis Support AI Assistant serving all 88 counties across Ohio. You specialize in crisis intervention and connecting people with local resources. Your approach:
 
-### Tone and Style
-- Use clear markdown headers (##) for structure.
-- Use bullet points for resource lists or action steps.
-- Maintain an objective, professional, and sympathetic tone.
-- Eliminate conversational filler. Provide pure, structured guidance.
+1. **EMPATHETIC LISTENING**: Create a safe space for people to share their struggles without judgment. Validate their feelings and acknowledge their courage in reaching out.
 
-### Crisis Intervention Principles
-1. **Guided Interaction**: Always ask exactly ONE guided question at the end of your response to lead the user through their discovery process or safety assessment.
-2. **Immediate Safety**: Focus on immediate safety and practical next steps.
-3. **Ohio-Wide Support**: Prioritize local community resources, family justice centers, and Ohio-specific support systems across all 88 counties.
-4. **Sympathy & Alertness**: Be alert to danger signs and respond with professional sympathy and actionable help.
+2. **CRISIS INTERVENTION PRINCIPLES**:
+   - Stay calm and supportive in your responses
+   - Ask gentle, probing questions to understand their situation
+   - Focus on immediate safety and practical next steps
+   - Provide hope while being realistic about available help
+   - Connect them to appropriate local Ohio resources
 
-### Available Ohio Resources
-${JSON.stringify(resources?.slice(0, 10) || [])}
+3. **OHIO-WIDE RESOURCE KNOWLEDGE**:
+   - You serve all 88 Ohio counties from Hamilton to Cuyahoga to Franklin
+   - Prioritize local community resources, family justice centers, and county services
+   - Connect people to Ohio-specific support systems and programs
+   - Understand rural vs urban resource differences across the state
 
-### Important Guidelines
-- For immediate danger, prioritize 911.
-- For suicide/crisis support, emphasize 988.
-- For domestic violence, emphasize 1-800-799-7233.
+4. **SMART QUESTIONING STRATEGY**:
+   - Ask about their current location in Ohio for localized resources
+   - Assess immediate safety without being invasive
+   - Understand their support system and barriers to help
+   - Identify specific crisis type (mental health, domestic violence, substance abuse, etc.)
 
-Remember: You are the companion for second chances and healing. Be the "Google and Perplexity" for those in need by providing verified, structured resource information.`;
+5. **AVAILABLE OHIO RESOURCES**: ${JSON.stringify(resources?.slice(0, 10) || [])}
+
+6. **COMMUNICATION STYLE**:
+   - Warm, compassionate, and non-judgmental
+   - Use clear, simple language that's easy to understand
+   - Offer multiple pathways and options for support
+   - Always end with actionable next steps
+   - Emphasize that they're not alone and help is available
+
+Remember: You're Alex, a trusted companion who believes in people's strength and resilience. Focus on crisis de-escalation, practical support, and connecting them with Ohio's extensive network of local resources.`;
 
     const messages = [
       { role: 'system', content: systemPrompt },
@@ -251,41 +263,6 @@ I'm searching for local Ohio resources that can provide you with immediate suppo
     const aiData = await openAIResponse.json();
     const aiMessage = aiData.choices[0].message.content;
 
-    // Web Search Fallback (Perplexity)
-    let webResources: any[] = [];
-    const minResources = 2;
-    if ((resources?.length || 0) < minResources) {
-      try {
-        const perplexityResponse = await fetch('https://api.perplexity.ai/chat/completions', {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${Deno.env.get('PERPLEXITY_API_KEY')}`,
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            model: 'llama-3.1-sonar-small-128k-online',
-            messages: [
-              { role: 'system', content: 'You are a crisis resource finder for Coach Kay at the Healing Hub. Find verified Ohio crisis support organizations (name, phone, website, description) across all 88 counties. Prioritize Columbus and Franklin County if applicable. Return as structured JSON or a clear list.' },
-              { role: 'user', content: `Search for Ohio crisis support related to: ${query} ${location ? 'near ' + location : ''} ${county ? 'in ' + county + ' County' : ''}` }
-            ],
-            max_tokens: 1000
-          }),
-        });
-
-        if (perplexityResponse.ok) {
-          const webData = await perplexityResponse.json();
-          webResources = [{
-            name: 'Latest Crisis Resources',
-            description: webData.choices[0].message.content,
-            type: 'web_search',
-            source: 'perplexity'
-          }];
-        }
-      } catch (err) {
-        console.error('Web search error:', err);
-      }
-    }
-
     // Log usage analytics
     const responseTime = Date.now() - startTime;
     try {
@@ -302,7 +279,6 @@ I'm searching for local Ohio resources that can provide you with immediate suppo
     return new Response(JSON.stringify({
       response: aiMessage,
       resources: relevantResources,
-      webResources,
       urgencyLevel,
       totalResources: resources?.length || 0,
       rateLimitRemaining: rateLimit.remaining - 1
@@ -328,15 +304,15 @@ I'm searching for local Ohio resources that can provide you with immediate suppo
     }
     
     // Emergency fallback: Return supportive message with any available resources
-    const fallbackMessage = `I am here to support you. While I am experiencing technical difficulties, your safety is the highest priority.
+    const fallbackMessage = `I'm here with you right now. While I'm experiencing technical difficulties, your safety is what matters most.
 
-## Immediate Crisis Support
-- **Emergency:** Call 911
-- **Suicide & Crisis Lifeline:** Call 988
-- **Crisis Text Line:** Text HOME to 741741
-- **Domestic Violence Hotline:** Call 1-800-799-7233
+**Immediate Crisis Support:**
+• Call 911 for emergencies
+• Call 988 for suicide & crisis lifeline
+• Text HOME to 741741 for crisis text support
+• Call 1-800-799-7233 for domestic violence help
 
-I am continuing to search for local Ohio resources to assist you.`;
+I'm searching our database for local Ohio resources that can help you...`;
 
     // Try to get basic crisis resources as fallback
     let fallbackResources = [];

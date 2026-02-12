@@ -17,8 +17,7 @@ serve(async (req) => {
     const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
-    const body = await req.json();
-    const { action, email, ipAddress, userAgent, success, failureReason, attemptType, captchaToken, setupKey, captchaAnswer, signature, challenge } = body;
+    const { action, email, ipAddress, userAgent, success, failureReason, attemptType, captchaToken } = await req.json();
 
     // Get client IP from headers or request
     const clientIp = ipAddress || 
@@ -65,42 +64,6 @@ serve(async (req) => {
       );
     }
 
-    if (action === 'create-first-admin') {
-      const internalSetupKey = Deno.env.get('ADMIN_SETUP_KEY');
-
-      if (!internalSetupKey) {
-        return new Response(
-          JSON.stringify({ success: false, message: 'Admin setup is disabled' }),
-          { status: 403, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-        );
-      }
-
-      if (setupKey !== internalSetupKey) {
-        return new Response(
-          JSON.stringify({ success: false, message: 'Invalid setup key' }),
-          { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-        );
-      }
-
-      // Key is valid, proceed with admin creation
-      const { data, error } = await supabase.rpc('create_first_admin_user', {
-        admin_email: email?.toLowerCase().trim()
-      });
-
-      if (error) {
-        console.error('Admin creation error:', error);
-        return new Response(
-          JSON.stringify({ success: false, message: error.message }),
-          { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-        );
-      }
-
-      return new Response(
-        JSON.stringify(data),
-        { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-      );
-    }
-
     if (action === 'record-attempt') {
       // Record login attempt
       const { data, error } = await supabase.rpc('record_login_attempt', {
@@ -126,66 +89,20 @@ serve(async (req) => {
       );
     }
 
-    if (action === 'generate-captcha') {
-      const operators = ['+', '-', '×'];
-      const operator = operators[Math.floor(Math.random() * operators.length)];
-      let num1 = Math.floor(Math.random() * 10) + 1;
-      let num2 = Math.floor(Math.random() * 10) + 1;
-
-      if (operator === '-' && num2 > num1) {
-        [num1, num2] = [num2, num1];
-      }
-
-      // Create a signed challenge (simple version)
-      const challenge = { num1, num2, operator, ts: Date.now() };
-      const challengeStr = JSON.stringify(challenge);
-      // In a real app, we'd use a real HMAC. Here we'll use a simple base64 + key suffix
-      const signature = btoa(challengeStr + supabaseServiceKey);
-
-      return new Response(
-        JSON.stringify({ challenge, signature }),
-        { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-      );
-    }
-
     if (action === 'verify-captcha') {
-      if (!signature || !challenge) {
+      // For now, we'll implement a simple verification
+      // In production, you'd integrate with reCAPTCHA or hCaptcha API
+      if (!captchaToken) {
         return new Response(
-          JSON.stringify({ valid: false, error: 'Missing captcha data' }),
+          JSON.stringify({ valid: false, error: 'No captcha token provided' }),
           { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
         );
       }
 
-      // Verify signature
-      const expectedSignature = btoa(JSON.stringify(challenge) + supabaseServiceKey);
-      if (signature !== expectedSignature) {
-        return new Response(
-          JSON.stringify({ valid: false, error: 'Invalid signature' }),
-          { status: 403, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-        );
-      }
-
-      // Verify timestamp (5 minute window)
-      if (Date.now() - challenge.ts > 5 * 60 * 1000) {
-        return new Response(
-          JSON.stringify({ valid: false, error: 'Captcha expired' }),
-          { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-        );
-      }
-
-      // Calculate expected answer
-      let expected;
-      switch (challenge.operator) {
-        case '+': expected = challenge.num1 + challenge.num2; break;
-        case '-': expected = challenge.num1 - challenge.num2; break;
-        case '×': expected = challenge.num1 * challenge.num2; break;
-        default: expected = null;
-      }
-
-      const isValid = expected !== null && Number(captchaAnswer) === expected;
-
+      // Placeholder for captcha verification
+      // TODO: Integrate with reCAPTCHA/hCaptcha API
       return new Response(
-        JSON.stringify({ valid: isValid }),
+        JSON.stringify({ valid: true }),
         { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }

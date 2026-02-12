@@ -197,7 +197,7 @@ export default function ContactForm({
             <Textarea id="message" name="message" value={formData.message} onChange={handleInputChange} placeholder={type === 'coaching' ? "Tell Coach Kay about your current situation, goals, and how she can best support you..." : type === 'booking' ? "Let us know your preferred dates and times, and what you'd like to discuss during your consultation..." : "How can we help you? Share your questions, concerns, or feedback..."} className="min-h-32" required />
           </div>
           
-          <Button type="submit" className="w-full get-involved-gold-button border-none" size="lg" disabled={isSubmitting}>
+          <Button type="submit" className="w-full bg-primary hover:bg-primary/90 text-primary-foreground" size="lg" disabled={isSubmitting}>
             {isSubmitting ? <>
                 <AlertCircle className="h-4 w-4 mr-2 animate-spin" />
                 Sending...

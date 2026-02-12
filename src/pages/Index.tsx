@@ -8,8 +8,6 @@ import { PathwaysSection } from "@/components/home/PathwaysSection";
 import { CallToActionSection } from "@/components/home/CallToActionSection";
 import { SEOHead } from "@/components/seo/SEOHead";
 import { StructuredData } from "@/components/seo/StructuredData";
-import { SITE_CONFIG } from "@/config/site";
-import { NewsletterPopup } from "@/components/ui/NewsletterPopup";
 
 import { STATES } from "@/data/states";
 import diverseCommunityMeeting from "@/assets/diverse-community-meeting.jpg";
@@ -22,10 +20,10 @@ const Index = () => {
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "Organization",
-    "name": SITE_CONFIG.name,
-    "url": SITE_CONFIG.baseUrl,
-    "logo": `${SITE_CONFIG.baseUrl}${SITE_CONFIG.logo.default}`,
-    "description": SITE_CONFIG.description,
+    "name": "Forward Focus Elevation",
+    "url": "https://forward-focus-elevation.org",
+    "logo": "https://forward-focus-elevation.org/logo-new.png",
+    "description": "Empowering justice-impacted families with the tools to rebuild and thrive",
     "sameAs": [],
     "contactPoint": {
       "@type": "ContactPoint",
@@ -39,8 +37,8 @@ const Index = () => {
   return (
     <>
       <SEOHead
-        title="Home | Empowering Families"
-        description={SITE_CONFIG.description}
+        title="Empowering Justice-Impacted Families"
+        description="Empowering justice-impacted families with the tools to rebuild and thrive. AI-enhanced guidance and comprehensive resources for justice-impacted individuals, families, and crime victims."
         path="/"
       />
       <StructuredData data={structuredData} />
@@ -84,8 +82,6 @@ const Index = () => {
         initialQuery="" 
         location={stateForAI} 
       />
-
-      <NewsletterPopup />
       
       <StateModal 
         isOpen={showStateModal} 

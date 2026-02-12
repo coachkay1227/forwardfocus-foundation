@@ -12,8 +12,8 @@ const IS_PRODUCTION = true;
 
 // Domain configurations
 const DOMAINS = {
-  preview: 'forwardfocus.lovable.app',
-  production: 'forward-focus-elevation.org',
+  preview: "forwardfocus.lovable.app",
+  production: "forward-focus-elevation.org",
 } as const;
 
 // Get the active domain based on environment
@@ -48,27 +48,20 @@ export const SITE_CONFIG = {
   },
   
   // Site identity
-  name: 'Forward Focus Elevation',
-  shortName: 'FFE',
-  tagline: 'Empowering Justice-Impacted Families',
-  description: 'Empowering justice-impacted families with the tools to rebuild and thrive. Launching in Ohio with AI-powered support.',
-
-  // Brand Service Names
-  services: {
-    collective: 'The Collective',
-    skool: 'Focus Flow Elevation Hub',
-    healing: 'Healing Hub',
-  },
+  name: "Forward Focus Elevation",
+  shortName: "FFE",
+  tagline: "Empowering Justice-Impacted Families",
+  description: "Empowering justice-impacted families with the tools to rebuild and thrive. Launching in Ohio with AI-powered support.",
   
   // Social media
   social: {
-    twitter: '@FFEServices',
+    twitter: "@FFEServices",
   },
   
   // Logo paths (relative to public folder)
   logo: {
-    default: '/logo-new.png',
-    transparent: '/src/assets/logo-transparent.png',
+    default: "/logo-new.png",
+    transparent: "/src/assets/logo-transparent.png",
   },
   
   // Copyright and legal
@@ -76,25 +69,25 @@ export const SITE_CONFIG = {
   
   // Allowed domains for anti-whitelabel protection
   allowedDomains: [
-    'localhost',
-    '127.0.0.1',
-    'lovable.app',
-    'lovable.dev',
-    'forwardfocus.lovable.app',
-    'forward-focus-elevation.org',
-    'www.forward-focus-elevation.org',
+    "localhost",
+    "127.0.0.1",
+    "lovable.app",
+    "lovable.dev",
+    "forwardfocus.lovable.app",
+    "forward-focus-elevation.org",
+    "www.forward-focus-elevation.org",
   ],
 } as const;
 
 // Helper function to get full URL for a path
-export const getSiteUrl = (path: string = '') => {
-  const cleanPath = path.startsWith('/') ? path : `/${path}`;
+export const getSiteUrl = (path: string = "") => {
+  const cleanPath = path.startsWith("/") ? path : `/${path}`;
   return `${SITE_CONFIG.baseUrl}${cleanPath}`;
 };
 
 // Helper function to get full image URL
 export const getImageUrl = (imagePath: string) => {
-  const cleanPath = imagePath.startsWith('/') ? imagePath : `/${imagePath}`;
+  const cleanPath = imagePath.startsWith("/") ? imagePath : `/${imagePath}`;
   return `${SITE_CONFIG.baseUrl}${cleanPath}`;
 };
 

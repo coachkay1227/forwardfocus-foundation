@@ -333,7 +333,7 @@ export const PATHWAYS: Pathway[] = [
   },
   {
     id: "ai-basics",
-    title: "AI Basics - AI & Life Transformation Hub: Navigate Technology with Confidence",
+    title: "AI Basics - Reentry Community: Navigate Technology with Confidence",
     description:
       "Learn how AI tools can support your reentry journey with practical, beginner-friendly education.",
     category: "Technology & AI Literacy",

@@ -8,7 +8,6 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
 import AuthLayout from "@/components/layout/AuthLayout";
 import { PasswordStrengthIndicator } from "@/components/security/PasswordStrengthIndicator";
-import { registrationFormSchema } from "@/lib/validationSchemas";
 import learningCommunityImage from "@/assets/learning-community-diverse.jpg";
 
 const Register = () => {
@@ -23,21 +22,49 @@ const Register = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Validate using Zod schema
-    try {
-      registrationFormSchema.parse({ email, password, confirmPassword });
-    } catch (error: any) {
-      const firstError = error.errors?.[0];
-      const errorMessage = firstError?.message || "Validation requirements not met";
-      const errorTitle = firstError?.path?.includes('password')
-        ? "Password Requirements Not Met"
-        : firstError?.path?.includes('confirmPassword')
-          ? "Password Mismatch"
-          : "Validation Error";
-
+    // Validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
       toast({
-        title: errorTitle,
-        description: errorMessage,
+        title: "Invalid Email",
+        description: "Please enter a valid email address",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      toast({
+        title: "Password Mismatch",
+        description: "Passwords do not match",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // Enhanced password validation (8+ characters, uppercase, number)
+    if (password.length < 8) {
+      toast({
+        title: "Weak Password",
+        description: "Password must be at least 8 characters long",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (!/[A-Z]/.test(password)) {
+      toast({
+        title: "Weak Password",
+        description: "Password must contain at least one uppercase letter",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (!/[0-9]/.test(password)) {
+      toast({
+        title: "Weak Password",
+        description: "Password must contain at least one number",
         variant: "destructive",
       });
       return;

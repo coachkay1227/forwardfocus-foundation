@@ -5,21 +5,21 @@
 
 export const CONTACT_CONFIG = {
   // Primary support email
-  supportEmail: "support@ffeservices.net",
+  supportEmail: "support@forward-focus-elevation.org",
   
   // Organization name
   organizationName: "Forward Focus Elevation",
   
   // From email addresses for different purposes
   fromEmails: {
-    support: "Forward Focus Elevation <support@ffeservices.net>",
-    contact: "Forward Focus Contact <noreply@ffeservices.net>",
-    newsletter: "Forward Focus Newsletter <newsletter@ffeservices.net>",
+    support: "Forward Focus Elevation <support@forward-focus-elevation.org>",
+    contact: "Forward Focus Contact <noreply@forward-focus-elevation.org>",
+    newsletter: "Forward Focus Newsletter <newsletter@forward-focus-elevation.org>",
   },
   
   // Phone numbers (if applicable in future)
   phone: {
-    main: "380-287-7936",
+    main: "", // Add when available
     crisis: "988", // Crisis hotline
   },
   
