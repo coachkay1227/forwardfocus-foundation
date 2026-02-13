@@ -12,8 +12,6 @@ This document provides step-by-step procedures for rotating API keys used in the
 | RESEND_API_KEY | 90 days | Critical | Email Delivery |
 | STRIPE_SECRET_KEY | 90 days | Critical | Payment Processing |
 | PERPLEXITY_API_KEY | 90 days | Standard | AI Search |
-| SPARKLOOP_API_KEY | 180 days | Standard | Newsletter Growth |
-| BEEHIVE_API_KEY | 180 days | Standard | Newsletter Integration |
 | CRON_SECRET_TOKEN | 180 days | Standard | Scheduled Jobs |
 
 ## General Rotation Process
@@ -103,32 +101,6 @@ This document provides step-by-step procedures for rotating API keys used in the
 6. Revoke the old key
 
 **Verification**: Test the AI Resource Discovery feature.
-
----
-
-### SparkLoop API Key (SPARKLOOP_API_KEY)
-
-**Location**: SparkLoop Dashboard
-
-1. Log in to SparkLoop
-2. Navigate to Settings > API
-3. Generate new API key
-4. Update in Lovable Cloud Secrets
-5. Verify newsletter referral tracking works
-6. Revoke old key
-
----
-
-### Beehive API Key (BEEHIVE_API_KEY)
-
-**Location**: Beehive Dashboard
-
-1. Log in to Beehive
-2. Go to Settings > API Access
-3. Create new API key
-4. Update in Lovable Cloud Secrets
-5. Test newsletter functionality
-6. Disable old key
 
 ---
 

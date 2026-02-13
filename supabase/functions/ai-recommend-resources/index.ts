@@ -1,10 +1,6 @@
-import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2.7.1";
-
-const corsHeaders = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
-};
+import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2.57.2";
+import { corsHeaders, errorResponse } from "../_shared/utils.ts";
 
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
@@ -12,16 +8,30 @@ serve(async (req) => {
   }
 
   try {
+    const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
+    const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
+    const supabase = createClient(supabaseUrl, supabaseServiceKey);
+
+    // SECURE: Mandatory authentication check
+    const authHeader = req.headers.get('Authorization');
+    if (!authHeader) {
+      return errorResponse('Authentication required', 401);
+    }
+
+    const token = authHeader.replace('Bearer ', '');
+    const { data: { user }, error: authError } = await supabase.auth.getUser(token);
+
+    if (authError || !user) {
+      console.error('Auth error:', authError);
+      return errorResponse('Invalid or expired token', 401);
+    }
+
     const { userNeeds, location, category } = await req.json();
     
     const LOVABLE_API_KEY = Deno.env.get('LOVABLE_API_KEY');
     if (!LOVABLE_API_KEY) {
       throw new Error('LOVABLE_API_KEY not configured');
     }
-
-    const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
-    const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
-    const supabase = createClient(supabaseUrl, supabaseKey);
 
     // Fetch available resources
     const { data: resources, error } = await supabase
@@ -60,7 +70,7 @@ serve(async (req) => {
       "summary": "brief summary of recommendations"
     }`;
 
-    const response = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
+    const aiResponse = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${LOVABLE_API_KEY}`,
@@ -101,27 +111,27 @@ serve(async (req) => {
       }),
     });
 
-    if (!response.ok) {
-      if (response.status === 429) {
+    if (!aiResponse.ok) {
+      if (aiResponse.status === 429) {
         return new Response(JSON.stringify({ error: 'Rate limit exceeded. Please try again later.' }), {
           status: 429,
           headers: { ...corsHeaders, 'Content-Type': 'application/json' },
         });
       }
-      if (response.status === 402) {
+      if (aiResponse.status === 402) {
         return new Response(JSON.stringify({ error: 'AI service requires payment. Please contact support.' }), {
           status: 402,
           headers: { ...corsHeaders, 'Content-Type': 'application/json' },
         });
       }
-      throw new Error(`AI API error: ${response.status}`);
+      throw new Error(`AI API error: ${aiResponse.status}`);
     }
 
-    const data = await response.json();
+    const data = await aiResponse.json();
     const toolCall = data.choices[0].message.tool_calls?.[0];
     const result = JSON.parse(toolCall.function.arguments);
 
-    console.log('AI recommendations generated:', result);
+    console.log('AI recommendations generated for user:', user.id);
 
     return new Response(JSON.stringify(result), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },

@@ -15,19 +15,14 @@ import {
   Search, 
   Filter,
   ShieldCheck,
-  Star,
   Users,
   Calendar,
   ExternalLink
 } from "lucide-react";
-import { toast } from "sonner";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
 import { useAdminCheck } from "@/hooks/useAdminCheck";
 import { ContactAccessRequest } from "@/components/security/ContactAccessRequest";
-
-// Import hero image
-import partnerOrgsHero from "@/assets/partner-organizations-hero.jpg";
 
 interface Organization {
   id: string;
@@ -55,7 +50,74 @@ const Organizations = () => {
   const { isAdmin } = useAdminCheck(user);
   const { toast } = useToast();
 
-  // Redirect non-authenticated users or non-admins
+  useEffect(() => {
+    document.title = "Partner Organizations | Forward Focus Elevation";
+  }, []);
+
+  const fetchOrganizations = async () => {
+    try {
+      // Direct query to organizations table
+      const { data, error } = await supabase
+        .from('organizations')
+        .select('*')
+        .eq('verified', true)
+        .order('name', { ascending: true });
+
+      if (error) {
+        throw error;
+      }
+
+      setOrganizations(data || []);
+    } catch (error) {
+      console.error("Error fetching organizations:", error);
+      toast({
+        title: "Error",
+        description: "Failed to load organizations. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (isAdmin) {
+      fetchOrganizations();
+    } else {
+      setLoading(false); // Stop loading if not admin (so we can show the restricted view)
+    }
+  }, [isAdmin]);
+
+  useEffect(() => {
+    const filterOrganizations = () => {
+      let filtered = organizations;
+
+      // Search term filter
+      if (searchTerm.trim()) {
+        filtered = filtered.filter(org =>
+          org.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          org.city?.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+      }
+
+      // City filter
+      if (cityFilter && cityFilter !== "all") {
+        filtered = filtered.filter(org => org.city === cityFilter);
+      }
+
+      // Verified filter
+      if (verifiedFilter && verifiedFilter !== "all") {
+        const isVerified = verifiedFilter === "verified";
+        filtered = filtered.filter(org => org.verified === isVerified);
+      }
+
+      setFilteredOrgs(filtered);
+    };
+
+    filterOrganizations();
+  }, [organizations, searchTerm, cityFilter, verifiedFilter]);
+
+  // Early returns MUST be after all hooks
   if (!user) {
     return (
       <main id="main" className="container py-10 flex items-center justify-center min-h-[400px]">
@@ -95,71 +157,6 @@ const Organizations = () => {
     );
   }
 
-  useEffect(() => {
-    document.title = "Partner Organizations | Forward Focus Elevation";
-  }, []);
-
-  useEffect(() => {
-    if (isAdmin) {
-      fetchOrganizations();
-    }
-  }, [isAdmin]);
-
-  useEffect(() => {
-    filterOrganizations();
-  }, [organizations, searchTerm, cityFilter, verifiedFilter]);
-
-  const fetchOrganizations = async () => {
-    try {
-      // Direct query to organizations table
-      const { data, error } = await supabase
-        .from('organizations')
-        .select('*')
-        .eq('verified', true)
-        .order('name', { ascending: true });
-
-      if (error) {
-        throw error;
-      }
-
-      setOrganizations(data || []);
-    } catch (error) {
-      console.error("Error fetching organizations:", error);
-      toast({
-        title: "Error",
-        description: "Failed to load organizations. Please try again.",
-        variant: "destructive",
-      });
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const filterOrganizations = () => {
-    let filtered = organizations;
-
-    // Search term filter
-    if (searchTerm.trim()) {
-      filtered = filtered.filter(org =>
-        org.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        org.city?.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-    }
-
-    // City filter
-    if (cityFilter && cityFilter !== "all") {
-      filtered = filtered.filter(org => org.city === cityFilter);
-    }
-
-    // Verified filter
-    if (verifiedFilter && verifiedFilter !== "all") {
-      const isVerified = verifiedFilter === "verified";
-      filtered = filtered.filter(org => org.verified === isVerified);
-    }
-
-    setFilteredOrgs(filtered);
-  };
-
   // All major Ohio cities
   const allOhioCities = [
     "Akron", "Athens", "Barberton", "Beavercreek", "Bowling Green", "Canton", "Cincinnati",
@@ -190,17 +187,6 @@ const Organizations = () => {
     if (!phone) return null;
     return phone.startsWith('tel:') ? phone : `tel:${phone}`;
   };
-
-  if (loading) {
-    return (
-      <main id="main" className="container py-10 flex items-center justify-center min-h-[400px]">
-        <div className="text-center">
-          <div className="animate-spin h-8 w-8 border-4 border-primary border-t-transparent rounded-full mx-auto"></div>
-          <p className="mt-2 text-muted-foreground">Loading partner organizations...</p>
-        </div>
-      </main>
-    );
-  }
 
   return (
     <main id="main" className="container py-8">

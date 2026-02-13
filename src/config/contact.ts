@@ -15,6 +15,8 @@ export const CONTACT_CONFIG = {
     support: "Forward Focus Elevation <support@ffeservices.net>",
     contact: "Forward Focus Contact <noreply@ffeservices.net>",
     newsletter: "Forward Focus Newsletter <newsletter@ffeservices.net>",
+    support: "Forward Focus Elevation <support@forward-focus-elevation.org>",
+    contact: "Forward Focus Contact <noreply@forward-focus-elevation.org>",
   },
   
   // Phone numbers (if applicable in future)

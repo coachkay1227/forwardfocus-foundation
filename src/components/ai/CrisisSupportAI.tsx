@@ -1,13 +1,15 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { X, Send, Bot, AlertTriangle, Phone, MessageSquare, Heart, Shield, Mail } from 'lucide-react';
+import { Send, Heart, Shield, Phone, MessageSquare, Mail } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { Badge } from '@/components/ui/badge';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { supabase } from '@/integrations/supabase/client';
-import { parseTextForLinks, ParsedTextSegment } from '@/lib/text-parser';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 import EmailChatHistoryModal from './EmailChatHistoryModal';
+import { toast } from 'sonner';
 
 const MAX_MESSAGE_LENGTH = 4000;
 
@@ -48,6 +50,7 @@ const CrisisSupportAI: React.FC<CrisisSupportAIProps> = ({ isOpen, onClose, init
       id: '1',
       type: 'ai',
       content: "Hi, I'm Alex, your crisis support companion at Forward Focus Elevation. I'm here to listen and help you find immediate support. Your safety matters deeply to me. If you're in immediate danger, please call 911 right now. Can you tell me what's bringing you here today? I want to understand so I can help you best.",
+      content: "Hi, I'm Alex, your crisis support companion. I'm here to listen and help you find immediate support. Your safety matters deeply to me. If you're in immediate danger, please call **911** right now.\n\nCan you tell me what's bringing you here today? I want to understand so I can help you best.",
       timestamp: new Date(),
     }
   ]);
@@ -129,6 +132,8 @@ const CrisisSupportAI: React.FC<CrisisSupportAIProps> = ({ isOpen, onClose, init
       setUserResponse(prev => [...prev, userQuery]);
     } catch (error) {
       console.error('Crisis AI error:', error);
+      toast.error("I'm having trouble connecting right now. Switching to offline support mode.");
+
       // Fallback: client-side crisis resource lookup so users still get help
       try {
         const { data: resources } = await supabase
@@ -138,7 +143,7 @@ const CrisisSupportAI: React.FC<CrisisSupportAIProps> = ({ isOpen, onClose, init
           .eq('verified', true)
           .limit(8);
 
-        const content = "I'm experiencing technical difficulties, but your safety is my priority. For immediate support: Call 911 (emergency), 988 (suicide & crisis), or text HOME to 741741. Here are crisis resources I found:";
+        const content = "I'm experiencing technical difficulties, but your safety is my priority.\n\nFor immediate support:\n\n*   **Emergency:** Call 911\n*   **Suicide & Crisis:** Call 988\n*   **Crisis Text Line:** Text HOME to 741741\n\nHere are crisis resources I found:";
         const aiMessage: Message = {
           id: (Date.now() + 1).toString(),
           type: 'ai',
@@ -152,7 +157,7 @@ const CrisisSupportAI: React.FC<CrisisSupportAIProps> = ({ isOpen, onClose, init
         const errorMessage: Message = {
           id: (Date.now() + 1).toString(),
           type: 'ai',
-          content: "I'm experiencing technical difficulties. For immediate crisis support: Call 911 for emergencies, 988 for suicide crisis support, or text HOME to 741741.",
+          content: "I'm experiencing technical difficulties. For immediate crisis support:\n\n*   Call **911** for emergencies\n*   Call **988** for suicide crisis support\n*   Text **HOME** to **741741**",
           timestamp: new Date(),
         };
         setMessages(prev => [...prev, errorMessage]);
@@ -219,30 +224,6 @@ const CrisisSupportAI: React.FC<CrisisSupportAIProps> = ({ isOpen, onClose, init
     "I need someone to talk to right now"
   ];
 
-  const renderMessageContent = (content: string) => {
-    const segments = parseTextForLinks(content);
-    return (
-      <div className="space-y-2">
-        {segments.map((segment, index) => {
-          if (segment.type === 'text') {
-            return <span key={index}>{segment.content}</span>;
-          }
-          return (
-            <a
-              key={index}
-              href={segment.href}
-              className="text-primary hover:text-primary/80 underline font-medium"
-              target={segment.type === 'website' ? '_blank' : undefined}
-              rel={segment.type === 'website' ? 'noopener noreferrer' : undefined}
-            >
-              {segment.content}
-            </a>
-          );
-        })}
-      </div>
-    );
-  };
-
   if (!isOpen) return null;
 
   return (
@@ -305,8 +286,23 @@ const CrisisSupportAI: React.FC<CrisisSupportAIProps> = ({ isOpen, onClose, init
                     ? 'bg-primary text-primary-foreground' 
                     : 'bg-muted text-foreground'
                 }`}>
-                  <div className="text-sm leading-relaxed">
-                    {renderMessageContent(message.content)}
+                  <div className="text-sm leading-relaxed prose dark:prose-invert max-w-none">
+                    {message.type === 'user' ? (
+                      message.content
+                    ) : (
+                      <ReactMarkdown
+                        remarkPlugins={[remarkGfm]}
+                        components={{
+                          a: ({node, ...props}) => <a {...props} className="text-primary hover:text-primary/80 underline font-medium" target="_blank" rel="noopener noreferrer" />,
+                          p: ({node, ...props}) => <p {...props} className="mb-2 last:mb-0" />,
+                          ul: ({node, ...props}) => <ul {...props} className="list-disc ml-4 mb-2" />,
+                          ol: ({node, ...props}) => <ol {...props} className="list-decimal ml-4 mb-2" />,
+                          li: ({node, ...props}) => <li {...props} className="mb-1" />,
+                        }}
+                      >
+                        {message.content}
+                      </ReactMarkdown>
+                    )}
                   </div>
                   
                   {message.urgencyLevel && (

@@ -1,6 +1,6 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.39.3";
-import { Resend } from "npm:resend@2.0.0";
+import { Resend } from "https://esm.sh/resend@4.0.0";
 
 const resend = new Resend(Deno.env.get("RESEND_API_KEY"));
 const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
@@ -85,7 +85,7 @@ serve(async (req: Request) => {
           const daysLeft = Math.ceil((expiresAt.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
 
           await resend.emails.send({
-            from: "Forward Focus Elevation <no-reply@forwardfocuselevation.com>",
+            from: "Forward Focus Elevation <noreply@forward-focus-elevation.org>",
             to: [verification.profiles.email],
             subject: "Partner Verification Renewal Reminder - 30 Days",
             html: `
@@ -121,7 +121,7 @@ serve(async (req: Request) => {
 
           if (daysLeft <= 7 && daysLeft > 0) {
             await resend.emails.send({
-              from: "Forward Focus Elevation <no-reply@forwardfocuselevation.com>",
+              from: "Forward Focus Elevation <noreply@forward-focus-elevation.org>",
               to: [verification.profiles.email],
               subject: "URGENT: Partner Verification Expiring in 7 Days",
               html: `
@@ -160,7 +160,7 @@ serve(async (req: Request) => {
 
           // Send expiration notice
           await resend.emails.send({
-            from: "Forward Focus Elevation <no-reply@forwardfocuselevation.com>",
+            from: "Forward Focus Elevation <noreply@forward-focus-elevation.org>",
             to: [verification.profiles.email],
             subject: "Partner Verification Expired - Immediate Action Required",
             html: `

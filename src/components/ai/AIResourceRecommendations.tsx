@@ -5,9 +5,11 @@ import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
-import { Sparkles, Loader2, TrendingUp } from "lucide-react";
+import { Sparkles, Loader2, TrendingUp, Lock } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
+import { useAuth } from "@/contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 interface Recommendation {
   resourceName: string;
@@ -21,12 +23,24 @@ interface RecommendationResult {
 }
 
 export const AIResourceRecommendations = () => {
+  const { user } = useAuth();
+  const navigate = useNavigate();
   const [userNeeds, setUserNeeds] = useState('');
   const [location, setLocation] = useState('');
   const [loading, setLoading] = useState(false);
   const [results, setResults] = useState<RecommendationResult | null>(null);
 
   const getRecommendations = async () => {
+    if (!user) {
+      toast({
+        title: "Authentication Required",
+        description: "Please sign in to use AI-powered recommendations",
+        variant: "destructive",
+      });
+      navigate("/auth");
+      return;
+    }
+
     if (!userNeeds.trim()) {
       toast({
         title: "Input Required",
@@ -47,6 +61,9 @@ export const AIResourceRecommendations = () => {
       });
 
       if (error) {
+        if (error.message?.includes('401')) {
+          throw new Error('Please sign in to access this feature.');
+        }
         if (error.message?.includes('429')) {
           throw new Error('Too many requests. Please try again in a moment.');
         }
@@ -81,7 +98,7 @@ export const AIResourceRecommendations = () => {
 
   return (
     <div className="space-y-6">
-      <Card>
+      <Card className={!user ? "bg-muted/50" : ""}>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Sparkles className="w-5 h-5 text-primary" />
@@ -92,44 +109,63 @@ export const AIResourceRecommendations = () => {
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="needs">What kind of help are you looking for? *</Label>
-            <Textarea
-              id="needs"
-              value={userNeeds}
-              onChange={(e) => setUserNeeds(e.target.value)}
-              placeholder="e.g., I need housing assistance after release, looking for job training programs, need mental health support..."
-              rows={4}
-            />
-          </div>
+          {!user ? (
+            <div className="flex flex-col items-center justify-center py-6 text-center space-y-4">
+              <div className="p-3 bg-primary/10 rounded-full">
+                <Lock className="w-8 h-8 text-primary" />
+              </div>
+              <div className="space-y-2">
+                <h3 className="text-lg font-semibold">Sign in Required</h3>
+                <p className="text-sm text-muted-foreground max-w-xs mx-auto">
+                  AI-powered resource recommendations are available for registered community members.
+                </p>
+              </div>
+              <Button onClick={() => navigate("/auth")} variant="default">
+                Sign In to Get Started
+              </Button>
+            </div>
+          ) : (
+            <>
+              <div className="space-y-2">
+                <Label htmlFor="needs">What kind of help are you looking for? *</Label>
+                <Textarea
+                  id="needs"
+                  value={userNeeds}
+                  onChange={(e) => setUserNeeds(e.target.value)}
+                  placeholder="e.g., I need housing assistance after release, looking for job training programs, need mental health support..."
+                  rows={4}
+                />
+              </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="location">Your Location (Optional)</Label>
-            <Input
-              id="location"
-              value={location}
-              onChange={(e) => setLocation(e.target.value)}
-              placeholder="e.g., Columbus, OH"
-            />
-          </div>
+              <div className="space-y-2">
+                <Label htmlFor="location">Your Location (Optional)</Label>
+                <Input
+                  id="location"
+                  value={location}
+                  onChange={(e) => setLocation(e.target.value)}
+                  placeholder="e.g., Columbus, OH"
+                />
+              </div>
 
-          <Button 
-            onClick={getRecommendations} 
-            disabled={loading || !userNeeds.trim()}
-            className="w-full"
-          >
-            {loading ? (
-              <>
-                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                Analyzing...
-              </>
-            ) : (
-              <>
-                <Sparkles className="w-4 h-4 mr-2" />
-                Get AI Recommendations
-              </>
-            )}
-          </Button>
+              <Button
+                onClick={getRecommendations}
+                disabled={loading || !userNeeds.trim()}
+                className="w-full"
+              >
+                {loading ? (
+                  <>
+                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                    Analyzing...
+                  </>
+                ) : (
+                  <>
+                    <Sparkles className="w-4 h-4 mr-2" />
+                    Get AI Recommendations
+                  </>
+                )}
+              </Button>
+            </>
+          )}
         </CardContent>
       </Card>
 

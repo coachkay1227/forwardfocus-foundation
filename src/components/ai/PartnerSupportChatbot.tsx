@@ -5,9 +5,10 @@ import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Badge } from "@/components/ui/badge";
 import { MessageCircle, Send, Loader2, Bot, User } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
 const MAX_MESSAGE_LENGTH = 4000;
 
@@ -164,7 +165,24 @@ export const PartnerSupportChatbot = () => {
                       : 'bg-muted'
                   }`}
                 >
-                  <p className="text-sm whitespace-pre-wrap break-words">{msg.content}</p>
+                  <div className="text-sm leading-relaxed prose dark:prose-invert max-w-none">
+                    {msg.role === 'user' ? (
+                      msg.content
+                    ) : (
+                      <ReactMarkdown
+                        remarkPlugins={[remarkGfm]}
+                        components={{
+                          a: ({node, ...props}) => <a {...props} className="text-primary hover:text-primary/80 underline font-medium" target="_blank" rel="noopener noreferrer" />,
+                          p: ({node, ...props}) => <p {...props} className="mb-2 last:mb-0" />,
+                          ul: ({node, ...props}) => <ul {...props} className="list-disc ml-4 mb-2" />,
+                          ol: ({node, ...props}) => <ol {...props} className="list-decimal ml-4 mb-2" />,
+                          li: ({node, ...props}) => <li {...props} className="mb-1" />,
+                        }}
+                      >
+                        {msg.content}
+                      </ReactMarkdown>
+                    )}
+                  </div>
                 </div>
                 {msg.role === 'user' && (
                   <div className="w-8 h-8 rounded-full bg-secondary/10 flex items-center justify-center flex-shrink-0">

@@ -3,7 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { CheckCircle2, Circle, ExternalLink, AlertTriangle, Copy, Check } from "lucide-react";
+import { CheckCircle2, Circle, ExternalLink, AlertTriangle } from "lucide-react";
 import { toast } from "sonner";
 
 interface ChecklistItem {
@@ -12,7 +12,6 @@ interface ChecklistItem {
   description: string;
   steps: string[];
   url?: string;
-  webhookUrl?: string;
   priority: "critical" | "high" | "medium";
   estimatedTime: string;
 }
@@ -26,7 +25,7 @@ const CHECKLIST_ITEMS: ChecklistItem[] = [
     estimatedTime: "2 minutes",
     url: `https://supabase.com/dashboard/project/${import.meta.env.VITE_SUPABASE_PROJECT_ID}/auth/settings`,
     steps: [
-      "Click the button below to open Supabase Auth Settings",
+      "Click the button below to open Auth Settings",
       "Scroll down to 'Password Security' section",
       "Toggle ON 'Enable Leaked Password Protection'",
       "Click 'Save' at the bottom of the page",
@@ -34,57 +33,16 @@ const CHECKLIST_ITEMS: ChecklistItem[] = [
     ]
   },
   {
-    id: "sparkloop-webhook",
-    title: "Configure SparkLoop Webhook",
-    description: "Track newsletter referral earnings automatically",
-    priority: "critical",
-    estimatedTime: "5 minutes",
-    url: "https://app.sparkloop.app/settings/webhooks",
-    webhookUrl: `https://${import.meta.env.VITE_SUPABASE_PROJECT_ID}.supabase.co/functions/v1/sparkloop-webhook`,
-    steps: [
-      "Click the button below to open SparkLoop Settings",
-      "Navigate to 'Webhooks' section",
-      "Click 'Add New Webhook'",
-      "Copy the webhook URL from the box above",
-      "Paste it into the 'Webhook URL' field",
-      "Select events: 'New Referral' and 'Earnings Updated'",
-      "Click 'Save'",
-      "Mark this item as complete below"
-    ]
-  },
-  {
-    id: "beehiiv-webhook",
-    title: "Configure Beehiiv Webhook",
-    description: "Sync subscriber data and track partner earnings",
-    priority: "critical",
-    estimatedTime: "5 minutes",
-    url: "https://app.beehiiv.com/settings/integrations",
-    webhookUrl: `https://${import.meta.env.VITE_SUPABASE_PROJECT_ID}.supabase.co/functions/v1/beehiiv-webhook`,
-    steps: [
-      "Click the button below to open Beehiiv Settings",
-      "Navigate to 'Integrations' or 'Webhooks' section",
-      "Click 'Add Webhook'",
-      "Copy the webhook URL from the box above",
-      "Paste it into the 'Webhook URL' field",
-      "Select events: 'Subscription Created' and 'Earnings Updated'",
-      "Click 'Save'",
-      "Mark this item as complete below"
-    ]
-  },
-  {
-    id: "test-newsletter",
-    title: "Test Newsletter Flow",
-    description: "Verify end-to-end newsletter signup and monetization",
+    id: "test-email-delivery",
+    title: "Test Email Delivery",
+    description: "Verify email campaigns and reminders are working correctly",
     priority: "high",
-    estimatedTime: "15 minutes",
+    estimatedTime: "10 minutes",
     steps: [
-      "Open the /welcome page in a new tab",
-      "Subscribe with a test email address",
-      "Check your email inbox (should receive welcome email)",
-      "Check Supabase database: Open the link below and verify subscriber in 'newsletter_subscriptions' table",
-      "Check SparkLoop dashboard: Verify subscriber appears (may take 5-10 minutes)",
-      "Check Beehiiv dashboard: Verify subscriber synced",
-      "Check Admin → Email Marketing → 💰 Earnings tab (should show subscriber with $0.00 initial earnings)",
+      "Navigate to the Admin Dashboard → Email tab",
+      "Use the Test Email Sender to send a test email",
+      "Verify the email is received and formatted correctly",
+      "Check the Email Deliverability dashboard for delivery status",
       "Mark this item as complete below"
     ]
   }
@@ -94,7 +52,6 @@ export function PreLaunchChecklist() {
   const [completedItems, setCompletedItems] = useState<Set<string>>(
     new Set(JSON.parse(localStorage.getItem("prelaunch-checklist") || "[]"))
   );
-  const [copiedWebhook, setCopiedWebhook] = useState<string | null>(null);
 
   const toggleComplete = (id: string) => {
     const newCompleted = new Set(completedItems);
@@ -109,13 +66,6 @@ export function PreLaunchChecklist() {
     toast.success(
       newCompleted.has(id) ? "Item marked as complete ✓" : "Item marked as incomplete"
     );
-  };
-
-  const copyWebhookUrl = (url: string, id: string) => {
-    navigator.clipboard.writeText(url);
-    setCopiedWebhook(id);
-    toast.success("Webhook URL copied to clipboard!");
-    setTimeout(() => setCopiedWebhook(null), 2000);
   };
 
   const completionPercentage = Math.round((completedItems.size / CHECKLIST_ITEMS.length) * 100);
@@ -193,35 +143,6 @@ export function PreLaunchChecklist() {
               </CardHeader>
               
               <CardContent className="space-y-4">
-                {/* Webhook URL (if applicable) */}
-                {item.webhookUrl && (
-                  <div className="bg-muted p-4 rounded-lg space-y-2">
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm font-medium">Webhook URL:</span>
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        onClick={() => copyWebhookUrl(item.webhookUrl!, item.id)}
-                      >
-                        {copiedWebhook === item.id ? (
-                          <>
-                            <Check className="h-4 w-4 mr-2" />
-                            Copied
-                          </>
-                        ) : (
-                          <>
-                            <Copy className="h-4 w-4 mr-2" />
-                            Copy URL
-                          </>
-                        )}
-                      </Button>
-                    </div>
-                    <code className="text-xs bg-background p-2 rounded block break-all">
-                      {item.webhookUrl}
-                    </code>
-                  </div>
-                )}
-
                 {/* Steps */}
                 <div className="space-y-2">
                   <div className="text-sm font-medium">Steps:</div>
@@ -247,29 +168,8 @@ export function PreLaunchChecklist() {
                       className="bg-osu-scarlet hover:bg-osu-scarlet-dark"
                     >
                       <ExternalLink className="h-4 w-4 mr-2" />
-                      Open {item.id.includes("password") ? "Supabase" : item.id.includes("sparkloop") ? "SparkLoop" : "Beehiiv"}
+                      Open Settings
                     </Button>
-                  )}
-                  
-                  {item.id === "test-newsletter" && (
-                    <>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => window.open("/welcome", "_blank")}
-                      >
-                        <ExternalLink className="h-4 w-4 mr-2" />
-                        Open Welcome Page
-                      </Button>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => window.open(`https://supabase.com/dashboard/project/${import.meta.env.VITE_SUPABASE_PROJECT_ID}/editor`, "_blank")}
-                      >
-                        <ExternalLink className="h-4 w-4 mr-2" />
-                        Open Database
-                      </Button>
-                    </>
                   )}
                   
                   <Button

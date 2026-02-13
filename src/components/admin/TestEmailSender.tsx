@@ -87,7 +87,7 @@ export const TestEmailSender = () => {
 
   const getEmailTypeLabel = (type: string) => {
     const labels: Record<string, string> = {
-      'site_usage': '📚 Monday Newsletter',
+      'site_usage': '📚 Monday Update',
       'booking_coaching': '💫 Wednesday Collective',
       'weekly_engagement': '🌟 Friday Recap',
       'community_call': '🎙️ Sunday Community Call'
