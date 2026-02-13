@@ -1,41 +1,30 @@
 
-# Domain Update Plan: Migrate to forward-focus-elevation.org
+# Fix Build Error and Remaining Branding Issues
 
-## ✅ COMPLETED
+## Build Error Fix
+The build error is caused by `npm:resend@X.X.X` import syntax not being supported in the edge function environment. All 8 affected edge functions need to switch to `https://esm.sh/resend@4.0.0` imports instead.
 
-All domain references have been updated from `ffeservices.net` to `forward-focus-elevation.org`.
+**Files to update (import line only):**
+1. `supabase/functions/check-verification-expiration/index.ts` - change `npm:resend@2.0.0` to `https://esm.sh/resend@4.0.0`
+2. `supabase/functions/send-verification-email/index.ts` - same change
+3. `supabase/functions/send-support-email/index.ts` - same change
+4. `supabase/functions/send-referral-notification/index.ts` - same change
+5. `supabase/functions/process-email-queue/index.ts` - same change
+6. `supabase/functions/send-reminder-emails/index.ts` - change `npm:resend@4.0.0` to `https://esm.sh/resend@4.0.0`
+7. `supabase/functions/send-partnership-email/index.ts` - same
+8. `supabase/functions/send-contact-email/index.ts` - same
+9. `supabase/functions/send-auth-email/index.ts` - same
+10. `supabase/functions/process-automation-queue/index.ts` - same
 
-### Changes Made:
+Also update `npm:react@18.3.1` and `npm:@react-email/components@0.0.22` imports in `process-automation-queue` and `send-contact-email` to use `https://esm.sh/` equivalents.
 
-1. ✅ **Frontend Configuration** - Updated `src/config/site.ts` and `src/config/contact.ts`
-2. ✅ **Edge Functions Configuration** - Updated `supabase/functions/_shared/site-config.ts`
-3. ✅ **HTML Meta Tags** - Updated `index.html` (og:url, og:image, twitter:image, canonical)
-4. ✅ **Sitemap** - Updated all 14 URLs in `public/sitemap.xml`
-5. ✅ **Robots.txt** - Updated sitemap reference
-6. ✅ **Anti-Whitelabel Protection** - Updated allowed domains in both security files
-7. ✅ **Structured Data** - Updated JSON-LD in Index, AboutUs, GetHelpNow, SuccessStories, VictimServices pages
-8. ✅ **Edge Functions** - Updated all email-related functions with new domain and email addresses
-9. ✅ **Documentation** - Updated LAUNCH_TONIGHT_CHECKLIST.md and EMAIL_AUTOMATION_SETUP.md
+## Remaining Branding Fixes
 
----
+1. **`send-verification-email/index.ts` (line 181):** Change `"FFE Services <onboarding@resend.dev>"` to `"Forward Focus Elevation <noreply@forward-focus-elevation.org>"`
 
-## Post-Migration Tasks (Manual)
+2. **`check-verification-expiration/index.ts` (lines 88, 124, 163):** Change `no-reply@forwardfocuselevation.com` to `noreply@forward-focus-elevation.org` (3 occurrences - wrong domain)
 
-After publishing, you'll need to:
-
-1. **Verify domain in Resend dashboard**
-   - Go to https://resend.com/domains
-   - Add `forward-focus-elevation.org`
-   - Add required DNS records (SPF, DKIM, DMARC)
-
-2. **Update Google Search Console**
-   - Submit new sitemap at `https://forward-focus-elevation.org/sitemap.xml`
-   - Request re-indexing of important pages
-
-3. **Set up redirects (optional)**
-   - If you still own `ffeservices.net`, set up 301 redirects to the new domain
-
----
-
-**Migration Date**: February 2026
-**Status**: ✅ COMPLETE
+## Summary
+- 10 edge function files updated for import fix
+- 2 files updated for branding corrections
+- No frontend changes needed
