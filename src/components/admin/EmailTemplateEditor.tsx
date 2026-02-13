@@ -102,7 +102,8 @@ export const EmailTemplateEditor = () => {
 
   const getTemplateLabel = (name: string) => {
     const labels: Record<string, string> = {
-      'monday_newsletter': 'Monday Newsletter',
+      'monday_newsletter': 'Monday Update',
+      'monday_update': 'Monday Update',
       'wednesday_collective': 'Wednesday Collective',
       'friday_recap': 'Friday Recap',
       'sunday_community_call': 'Sunday Community Call'

@@ -105,7 +105,7 @@ export function getBaseTemplate(content: string, variables: EmailVariables): str
   `.trim();
 }
 
-export function getMondayNewsletterTemplate(variables: EmailVariables): string {
+export function getMondayUpdateTemplate(variables: EmailVariables): string {
   const resourcesCount = variables.newResourcesCount || 0;
   const coachAvailability = variables.coachAvailability || 'limited availability';
   const lastLogin = variables.lastLogin || '';

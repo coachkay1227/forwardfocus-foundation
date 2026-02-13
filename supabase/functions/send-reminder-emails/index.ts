@@ -70,7 +70,7 @@ const handler = async (req: Request): Promise<Response> => {
 
     console.log(`Sending ${reminderType.type} reminders...`);
 
-    // Get active newsletter subscribers
+    // Get active subscribers
     const { data: subscribers, error: subsError } = await supabaseClient
       .from('newsletter_subscriptions')
       .select('email, name')

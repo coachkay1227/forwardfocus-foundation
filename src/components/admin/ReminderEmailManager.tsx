@@ -120,7 +120,7 @@ export const ReminderEmailManager = () => {
           Automated Reminder Emails
         </CardTitle>
         <CardDescription>
-          Send engagement reminders to active newsletter subscribers
+          Send engagement reminders to active community members
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
