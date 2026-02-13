@@ -62,8 +62,6 @@ const handler = async (req: Request): Promise<Response> => {
     let emailType = 'general';
     if (data.subject?.toLowerCase().includes('contact') || data.subject?.toLowerCase().includes('inquiry')) {
       emailType = 'contact';
-    } else if (data.subject?.toLowerCase().includes('newsletter')) {
-      emailType = 'newsletter';
     } else if (data.subject?.toLowerCase().includes('reminder')) {
       emailType = 'reminder';
     } else if (data.subject?.toLowerCase().includes('verification')) {

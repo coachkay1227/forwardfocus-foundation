@@ -14,7 +14,6 @@ export const CONTACT_CONFIG = {
   fromEmails: {
     support: "Forward Focus Elevation <support@forward-focus-elevation.org>",
     contact: "Forward Focus Contact <noreply@forward-focus-elevation.org>",
-    newsletter: "Forward Focus Newsletter <newsletter@forward-focus-elevation.org>",
   },
   
   // Phone numbers (if applicable in future)

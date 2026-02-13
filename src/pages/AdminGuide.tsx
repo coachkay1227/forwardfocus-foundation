@@ -161,7 +161,7 @@ const AdminGuide = () => {
                     <li>Create a new campaign with subject and content</li>
                     <li>Preview email before sending</li>
                     <li>Send test emails to verify formatting</li>
-                    <li>Send to all newsletter subscribers</li>
+                    <li>Send to all active community members</li>
                   </ol>
                 </div>
                 <div>
@@ -361,7 +361,7 @@ const AdminGuide = () => {
                   <ul className="list-disc list-inside space-y-2 text-sm">
                     <li>Review and approve partnership applications</li>
                     <li>Verify partner documentation</li>
-                    <li>Send newsletter campaigns to subscribers</li>
+                    <li>Send email campaigns to community members</li>
                     <li>Review website performance metrics</li>
                     <li>Update success stories with new content</li>
                   </ul>
@@ -419,7 +419,7 @@ const AdminGuide = () => {
                     <div>
                       <p className="font-medium text-sm">Email Campaign Not Sending</p>
                       <p className="text-sm text-muted-foreground">
-                        <strong>Solution:</strong> Verify newsletter subscribers exist, check 
+                        <strong>Solution:</strong> Verify active subscribers exist, check 
                         campaign status, and ensure all required fields are filled.
                       </p>
                     </div>

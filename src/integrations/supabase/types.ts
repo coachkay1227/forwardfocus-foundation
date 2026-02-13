@@ -1071,36 +1071,11 @@ export type Database = {
         }
         Relationships: []
       }
-      newsletter_subscribers: {
-        Row: {
-          created_at: string
-          email: string
-          id: string
-          subscribed: boolean | null
-          updated_at: string
-        }
-        Insert: {
-          created_at?: string
-          email: string
-          id?: string
-          subscribed?: boolean | null
-          updated_at?: string
-        }
-        Update: {
-          created_at?: string
-          email?: string
-          id?: string
-          subscribed?: boolean | null
-          updated_at?: string
-        }
-        Relationships: []
-      }
       newsletter_subscriptions: {
         Row: {
           created_at: string
           email: string
           id: string
-          ip_address: string | null
           last_login_at: string | null
           name: string | null
           status: string
@@ -1111,13 +1086,11 @@ export type Database = {
           unsubscribe_token: string | null
           unsubscribed_at: string | null
           updated_at: string
-          user_agent: string | null
         }
         Insert: {
           created_at?: string
           email: string
           id?: string
-          ip_address?: string | null
           last_login_at?: string | null
           name?: string | null
           status?: string
@@ -1128,13 +1101,11 @@ export type Database = {
           unsubscribe_token?: string | null
           unsubscribed_at?: string | null
           updated_at?: string
-          user_agent?: string | null
         }
         Update: {
           created_at?: string
           email?: string
           id?: string
-          ip_address?: string | null
           last_login_at?: string | null
           name?: string | null
           status?: string
@@ -1145,7 +1116,6 @@ export type Database = {
           unsubscribe_token?: string | null
           unsubscribed_at?: string | null
           updated_at?: string
-          user_agent?: string | null
         }
         Relationships: []
       }
