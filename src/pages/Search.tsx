@@ -10,6 +10,7 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { useToast } from "@/hooks/use-toast";
 import { usePagination } from "@/hooks/usePagination";
+import { useDebounce } from "@/hooks/useDebounce";
 import { DataPagination } from "@/components/ui/data-pagination";
 import { Skeleton } from "@/components/ui/skeleton";
 
@@ -46,6 +47,7 @@ interface Resource {
 const Search = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [searchTerm, setSearchTerm] = useState(searchParams.get("q") || "");
+  const debouncedSearchTerm = useDebounce(searchTerm, 500);
   const [county, setCounty] = useState(searchParams.get("county") || "");
   const [selectedTypes, setSelectedTypes] = useState<string[]>([]);
   const [quickFilter, setQuickFilter] = useState<QuickFilter>("all");
@@ -59,7 +61,7 @@ const Search = () => {
   useEffect(() => {
     document.title = "Search Resources | Forward Focus Elevation";
     fetchResources();
-  }, [searchTerm, county, selectedTypes, quickFilter]);
+  }, [debouncedSearchTerm, county, selectedTypes, quickFilter]);
 
   useEffect(() => {
     const q = searchParams.get("q");
@@ -74,8 +76,8 @@ const Search = () => {
       let query = supabase.from("resources").select("*");
 
       // Apply search term filter
-      if (searchTerm.trim()) {
-        query = query.or(`name.ilike.%${searchTerm}%,organization.ilike.%${searchTerm}%,description.ilike.%${searchTerm}%`);
+      if (debouncedSearchTerm.trim()) {
+        query = query.or(`name.ilike.%${debouncedSearchTerm}%,organization.ilike.%${debouncedSearchTerm}%,description.ilike.%${debouncedSearchTerm}%`);
       }
 
       // Apply county filter
