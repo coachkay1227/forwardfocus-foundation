@@ -39,14 +39,7 @@ export const NewsletterPopup = () => {
         .insert([{ email }]);
 
       if (error) {
-        // If that table doesn't exist or has an error, try newsletter_subscribers as fallback
-        if (error.code === "PGRST116" || error.code === "42P01") {
-           const { error: error2 } = await supabase
-            .from("newsletter_subscribers")
-            .insert([{ email }]);
-
-           if (error2) throw error2;
-        } else if (error.code === "23505") {
+        if (error.code === "23505") {
           toast({
             title: "Already subscribed",
             description: "This email is already on our list.",

@@ -74,7 +74,6 @@ export const CrisisEmergencyBot = ({ trigger }: CrisisEmergencyBotProps) => {
       
       // Initialize with crisis support greeting focused on Ohio resources
       addMessage(
-        "Hi, I'm your Crisis Emergency Support AI Assistant here at Forward Focus Elevation, serving all 88 counties across Ohio.\n\nI'm here to provide immediate, compassionate support with:\n\n🤖 AI-Enhanced Crisis Support - Intelligent guidance tailored to your specific situation\n\n💝 Trauma-Informed Care - Every interaction designed with safety, trust, and empowerment\n\n🏛️ Ohio-Wide Resources - Access to crisis services across all Ohio counties\n\n🤝 Immediate Connection - Direct links to local support in your area\n\nI'm here to listen and help you find the right support. What's bringing you here today?",
         "Hi, I'm your Crisis Emergency Support AI Assistant serving all 88 counties across Ohio.\n\nI'm here to provide immediate, compassionate support with:\n\n*   **AI-Enhanced Crisis Support** - Intelligent guidance tailored to your specific situation\n*   **Trauma-Informed Care** - Every interaction designed with safety, trust, and empowerment\n*   **Ohio-Wide Resources** - Access to crisis services across all Ohio counties\n*   **Immediate Connection** - Direct links to local support in your area\n\nI'm here to listen and help you find the right support. What's bringing you here today?",
         false
       );

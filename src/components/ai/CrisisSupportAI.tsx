@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Send, Heart, Shield, Phone, MessageSquare, Mail } from 'lucide-react';
+import { Send, Heart, Shield, Phone, MessageSquare, Mail, Bot } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
@@ -49,7 +49,6 @@ const CrisisSupportAI: React.FC<CrisisSupportAIProps> = ({ isOpen, onClose, init
     {
       id: '1',
       type: 'ai',
-      content: "Hi, I'm Alex, your crisis support companion at Forward Focus Elevation. I'm here to listen and help you find immediate support. Your safety matters deeply to me. If you're in immediate danger, please call 911 right now. Can you tell me what's bringing you here today? I want to understand so I can help you best.",
       content: "Hi, I'm Alex, your crisis support companion. I'm here to listen and help you find immediate support. Your safety matters deeply to me. If you're in immediate danger, please call **911** right now.\n\nCan you tell me what's bringing you here today? I want to understand so I can help you best.",
       timestamp: new Date(),
     }

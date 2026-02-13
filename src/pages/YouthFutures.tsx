@@ -23,7 +23,8 @@ import {
   GraduationCap,
   Sparkles,
   Zap,
-  CheckCircle2
+  CheckCircle2,
+  DollarSign
 } from "lucide-react";
 
 export default function YouthFutures() {

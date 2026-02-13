@@ -35,12 +35,12 @@ export const TrialTimer = ({ turnsRemaining, onTurnsDepleted, className = "" }: 
 
   return (
     <>
-      <Card className={`border-0 shadow-lg ${isCriticalTime ? 'bg-red-50 border-red-200' : isLowTime ? 'bg-orange-50 border-orange-200' : 'bg-blue-50 border-blue-200'} ${className}`}>
+      <Card className={`border-0 shadow-lg ${isCriticalTurns ? 'bg-red-50 border-red-200' : isLowTurns ? 'bg-orange-50 border-orange-200' : 'bg-blue-50 border-blue-200'} ${className}`}>
         <CardContent className="p-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <div className={`p-2 rounded-full ${isCriticalTime ? 'bg-red-100' : isLowTime ? 'bg-orange-100' : 'bg-blue-100'}`}>
-                <Clock className={`h-4 w-4 ${isCriticalTime ? 'text-red-600' : isLowTime ? 'text-orange-600' : 'text-blue-600'}`} />
+              <div className={`p-2 rounded-full ${isCriticalTurns ? 'bg-red-100' : isLowTurns ? 'bg-orange-100' : 'bg-blue-100'}`}>
+                <Clock className={`h-4 w-4 ${isCriticalTurns ? 'text-red-600' : isLowTurns ? 'text-orange-600' : 'text-blue-600'}`} />
               </div>
               <div>
                 <p className="text-sm font-medium text-foreground">

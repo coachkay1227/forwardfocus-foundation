@@ -1,4 +1,5 @@
-import { expect, test, describe } from "bun:test";
+// @ts-nocheck
+import { expect, test, describe } from "vitest";
 import {
   authFormSchema,
   registrationFormSchema,
