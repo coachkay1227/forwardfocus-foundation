@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { X, Send, Heart, Shield, Scale, DollarSign, Mail, Phone } from 'lucide-react';
+import { X, Send, Heart, Shield, Scale, DollarSign, Mail, Phone, Bot } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
@@ -48,7 +48,6 @@ const VictimSupportAI: React.FC<VictimSupportAIProps> = ({ isOpen, onClose, init
     {
       id: '1',
       type: 'ai',
-      content: "I'm here to support you in the Healing Hub. What happened to you was not your fault, and seeking help shows tremendous strength. I'm trained to understand the unique challenges faced by survivors and can help you find trauma-informed resources, legal advocacy, compensation programs, and emotional support. How can I help you today?",
       content: "I'm here to support you on your healing journey. What happened to you was not your fault, and seeking help shows tremendous strength.\n\nI'm trained to understand the unique challenges faced by crime victims and can help you find:\n\n*   Trauma-informed resources\n*   Legal advocacy\n*   Compensation programs\n*   Emotional support\n\nHow can I help you today?",
       timestamp: new Date(),
     }
