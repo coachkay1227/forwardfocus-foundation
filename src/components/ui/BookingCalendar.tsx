@@ -5,6 +5,7 @@ import { Calendar } from "@/components/ui/calendar";
 import { MessageCircle, Calendar as CalendarIcon, Clock, CheckCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
+import { toast } from "sonner";
 
 const BookingCalendar = () => {
   const [selectedDate, setSelectedDate] = useState<Date>();
@@ -70,7 +71,12 @@ const BookingCalendar = () => {
         );
 
         const result = await response.json();
-        console.log('Booking confirmation email result:', result);
+
+        if (result.success) {
+          toast.success("Booking Confirmed", {
+            description: "You will receive a confirmation email shortly.",
+          });
+        }
       } catch (error) {
         console.error('Error processing booking:', error);
         // Don't fail the booking if there's an error
