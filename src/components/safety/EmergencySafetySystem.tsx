@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { X, Phone, MessageCircle, MapPin, MessageSquare, ExternalLink } from "lucide-react";
+import { X, Phone, MessageCircle, MapPin, MessageSquare, ExternalLink, Users, Heart, Shield, BookOpen } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import AIResourceDiscovery from "@/components/ai/AIResourceDiscovery";
@@ -112,6 +112,12 @@ export const EmergencySafetySystem = () => {
       case "chat":
         // Open AI Navigator instead of trying to find chat button
         setShowAIDiscovery(true);
+        break;
+      case "collective":
+        navigate("/learn");
+        break;
+      case "healing":
+        navigate("/victim-services");
         break;
       case "exit":
         setShowAIDiscovery(false);
@@ -382,6 +388,44 @@ export const EmergencySafetySystem = () => {
                 </span>
               </button>
               
+              <button
+                onClick={() => handleEmergencyAction("collective")}
+                className="flex flex-col items-center gap-3 p-2 bg-transparent border-0 cursor-pointer"
+              >
+                <span
+                  className="w-20 h-20 rounded-full flex items-center justify-center relative transition-all duration-200 md:hover:translate-y-[-2px] md:hover:scale-105"
+                  style={{
+                    background: 'radial-gradient(120% 120% at 30% 20%, #6366f1 0%, #4338ca 55%, #312e81 100%)',
+                    boxShadow: 'inset 0 -10px 24px rgba(255,255,255,.08), 0 10px 22px rgba(0,0,0,.25)'
+                  }}
+                >
+                  <Users className="w-7 h-7 text-white opacity-95" />
+                </span>
+                <span className="text-center leading-tight">
+                  <strong className="block font-bold text-sm text-white">The</strong>
+                  <em className="block font-semibold text-xs text-blue-300 opacity-90 not-italic">Collective</em>
+                </span>
+              </button>
+
+              <button
+                onClick={() => handleEmergencyAction("healing")}
+                className="flex flex-col items-center gap-3 p-2 bg-transparent border-0 cursor-pointer"
+              >
+                <span
+                  className="w-20 h-20 rounded-full flex items-center justify-center relative transition-all duration-200 md:hover:translate-y-[-2px] md:hover:scale-105"
+                  style={{
+                    background: 'radial-gradient(120% 120% at 30% 20%, #ec4899 0%, #db2777 55%, #831843 100%)',
+                    boxShadow: 'inset 0 -10px 24px rgba(255,255,255,.08), 0 10px 22px rgba(0,0,0,.25)'
+                  }}
+                >
+                  <Heart className="w-7 h-7 text-white opacity-95" />
+                </span>
+                <span className="text-center leading-tight">
+                  <strong className="block font-bold text-sm text-white">Healing</strong>
+                  <em className="block font-semibold text-xs text-blue-300 opacity-90 not-italic">Hub</em>
+                </span>
+              </button>
+
               <button
                 onClick={() => handleEmergencyAction("exit")}
                 className="flex flex-col items-center gap-3 p-2 bg-transparent border-0 cursor-pointer"

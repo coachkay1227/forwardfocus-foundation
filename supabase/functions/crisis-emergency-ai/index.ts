@@ -1,6 +1,7 @@
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+import { checkAiRateLimit } from '../_shared/rate-limit.ts';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -30,19 +31,31 @@ serve(async (req) => {
     const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
     const supabase = createClient(supabaseUrl, supabaseKey);
 
+    // Rate limiting check
+    const rateLimit = await checkAiRateLimit(supabase, req, 'crisis-emergency-ai');
+
+    if (rateLimit.limited) {
+      return new Response(JSON.stringify({
+        error: "You've reached your daily limit for free AI consultations. For immediate support, please call 988 or 211. To get unlimited access to our AI tools, please sign in.",
+        resources: [],
+        rateLimitExceeded: true
+      }), {
+        status: 429,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
+
     // Enhanced resource filtering for emergency situations
     let resourceQuery = supabase
       .from('resources')
       .select('*')
       .or('type.ilike.%crisis%,type.ilike.%emergency%,type.ilike.%mental health%,type.ilike.%support%,type.ilike.%advocacy%')
-      .eq('verified', 'verified')
+      .eq('verified', true)
       .limit(15);
 
-    if (location) {
-      resourceQuery = resourceQuery.ilike('city', `%${location}%`);
-    }
-    if (county) {
-      resourceQuery = resourceQuery.ilike('county', `%${county}%`);
+    if (location || county) {
+      const searchLocation = location || county;
+      resourceQuery = resourceQuery.or(`city.ilike.%${searchLocation}%,county.ilike.%${searchLocation}%`);
     }
 
     const { data: resources, error: dbError } = await resourceQuery;
@@ -52,39 +65,29 @@ serve(async (req) => {
     }
 
     // Emergency-specific system prompt optimized for Ohio
-    const systemPrompt = `You are a Crisis Emergency Support AI Assistant serving all 88 counties across Ohio. Your role is to provide immediate, compassionate support during crisis situations. Your approach:
+    const systemPrompt = `You are Coach Kay, the lead Crisis Emergency navigator for Forward Focus Elevation. You serve all 88 counties across Ohio, providing immediate support and connecting users with the Healing Hub or emergency services.
 
-1. **IMMEDIATE ASSESSMENT & SUPPORT**: Quickly assess the person's current situation and provide immediate emotional support and practical guidance.
+### Tone and Style
+- Use clear markdown headers (##) for structure.
+- Use bullet points for resource lists or action steps.
+- Maintain an objective, professional, and sympathetic tone.
+- Avoid conversational filler. Provide pure, structured, and informative output.
 
-2. **OHIO-FOCUSED CRISIS INTERVENTION**:
-   - Serve all Ohio residents from rural counties to major cities
-   - Provide trauma-informed, compassionate responses
-   - Focus on immediate safety and stabilization
-   - Connect to local Ohio resources and support systems
-   - Understand county-specific resources across all 88 Ohio counties
+### Core Principles
+1. **Guided Interaction**: Always ask exactly ONE guided question at the end of your response to lead the user through their discovery or stabilization process.
+2. **Immediate Assessment**: Quickly assess the person's current situation and safety. Focus on immediate stabilization.
+3. **Ohio-Wide Support**: Prioritize local Ohio resources and emergency services across all 88 counties.
+4. **Sympathy & Alertness**: Be alert to danger signs and respond with professional sympathy and actionable help.
 
-3. **SMART CRISIS QUESTIONING**:
-   - Ask about their immediate safety and current location in Ohio
-   - Assess their support system and immediate needs
-   - Identify the type of crisis (mental health, domestic situation, etc.)
-   - Determine what kind of immediate help would be most beneficial
+### Available Ohio Resources
+${JSON.stringify(resources?.slice(0, 10) || [])}
 
-4. **AVAILABLE OHIO RESOURCES**: ${JSON.stringify(resources?.slice(0, 10) || [])}
+### Important Guidelines:
+- For immediate danger, prioritize 911.
+- For suicide/crisis support, emphasize 988.
+- For domestic violence, emphasize 1-800-799-7233.
 
-5. **COMMUNICATION APPROACH**:
-   - Be immediately supportive and non-judgmental
-   - Use calm, clear, and reassuring language
-   - Provide hope and practical next steps
-   - Emphasize that they made the right choice reaching out
-   - Focus on their strength and resilience
-
-6. **CRISIS DE-ESCALATION TECHNIQUES**:
-   - Validate their feelings and experiences
-   - Break down overwhelming situations into manageable steps
-   - Provide grounding techniques when appropriate
-   - Connect them with ongoing support resources
-
-Remember: You're here to provide immediate emotional support and connect people with the right Ohio resources for their specific situation. Focus on safety, hope, and practical next steps.`;
+Remember: Safety first. Your role is to stabilize and connect users with verified Ohio help and second chances.`;
 
     const messages = [
       { role: 'system', content: systemPrompt },
@@ -113,6 +116,40 @@ Remember: You're here to provide immediate emotional support and connect people 
 
     const aiData = await openAIResponse.json();
     const aiMessage = aiData.choices[0].message.content;
+
+    // Web Search Fallback (Perplexity)
+    let webResources: any[] = [];
+    if ((resources?.length || 0) < 2) {
+      try {
+        const perplexityResponse = await fetch('https://api.perplexity.ai/chat/completions', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${Deno.env.get('PERPLEXITY_API_KEY')}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            model: 'llama-3.1-sonar-small-128k-online',
+            messages: [
+              { role: 'system', content: 'You are an emergency resource finder for Coach Kay at Forward Focus Elevation. Find verified Ohio crisis services (name, phone, website) across all 88 counties. Prioritize Columbus and Franklin County if applicable. Return as structured JSON or a clear list.' },
+              { role: 'user', content: `Search for immediate Ohio crisis support related to: ${query} ${location ? 'near ' + location : ''}` }
+            ],
+            max_tokens: 1000
+          }),
+        });
+
+        if (perplexityResponse.ok) {
+          const webData = await perplexityResponse.json();
+          webResources = [{
+            name: 'Latest Emergency Resources',
+            description: webData.choices[0].message.content,
+            type: 'web_search',
+            source: 'perplexity'
+          }];
+        }
+      } catch (err) {
+        console.error('Web search error:', err);
+      }
+    }
 
     // Filter resources based on query context
     const relevantResources = resources?.filter(resource => {
@@ -151,6 +188,7 @@ Remember: You're here to provide immediate emotional support and connect people 
     return new Response(JSON.stringify({
       response: aiMessage,
       resources: relevantResources,
+      webResources,
       urgencyLevel,
       totalResources: resources?.length || 0
     }), {

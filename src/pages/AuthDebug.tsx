@@ -3,8 +3,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { CheckCircle2, XCircle, Loader2 } from "lucide-react";
+import { CheckCircle2, XCircle, Loader2, ShieldAlert } from "lucide-react";
 import AuthLayout from "@/components/layout/AuthLayout";
+import { useAuth } from "@/contexts/AuthContext";
+import { useAdminCheck } from "@/hooks/useAdminCheck";
 
 interface TestResult {
   name: string;
@@ -14,6 +16,10 @@ interface TestResult {
 }
 
 const AuthDebug = () => {
+  const { user, loading: authLoading } = useAuth();
+  const { isAdmin, isChecking: adminLoading } = useAdminCheck(user);
+  const isDevelopment = import.meta.env.DEV;
+
   const [tests, setTests] = useState<TestResult[]>([
     { name: "Environment Variables", status: "pending", message: "Checking..." },
     { name: "Supabase Connection", status: "pending", message: "Checking..." },
@@ -164,6 +170,32 @@ const AuthDebug = () => {
 
   const allTestsComplete = tests.every(t => t.status !== "pending");
   const hasErrors = tests.some(t => t.status === "error");
+
+  // Restrict access in production to admins only
+  if (!isDevelopment && !authLoading && !adminLoading && !isAdmin) {
+    return (
+      <AuthLayout>
+        <div className="col-span-full">
+          <Card className="max-w-md mx-auto border-destructive/50">
+            <CardHeader className="text-center">
+              <div className="flex justify-center mb-4">
+                <ShieldAlert className="h-12 w-12 text-destructive" />
+              </div>
+              <CardTitle className="text-xl font-bold text-destructive">Access Restricted</CardTitle>
+            </CardHeader>
+            <CardContent className="text-center space-y-4">
+              <p className="text-sm text-muted-foreground">
+                Diagnostics are only available to administrators in production environments.
+              </p>
+              <Button onClick={() => window.location.href = '/auth'} className="w-full">
+                Back to Login
+              </Button>
+            </CardContent>
+          </Card>
+        </div>
+      </AuthLayout>
+    );
+  }
 
   return (
     <AuthLayout>

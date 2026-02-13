@@ -332,6 +332,6 @@ CREATE TRIGGER on_my_table_event
 ## Support
 
 Questions or issues?
-- Email: support@forward-focus-elevation.org
+- Email: support@ffeservices.net
 - Check Admin Dashboard → Email → Automation for queue status
 - Review edge function logs for detailed error messages

@@ -1,0 +1,238 @@
+import React from "react";
+import { SEOHead } from "@/components/seo/SEOHead";
+import { SITE_CONFIG } from "@/config/site";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  CareerQuizGame,
+  ComparisonGame,
+  BudgetGame,
+  TriviaGame
+} from "@/components/youth/YouthGames";
+import {
+  Rocket,
+  Target,
+  Users,
+  Shield,
+  Briefcase,
+  Calendar,
+  Mail,
+  Phone,
+  ArrowRight,
+  GraduationCap,
+  Sparkles,
+  Zap,
+  CheckCircle2
+} from "lucide-react";
+
+export default function YouthFutures() {
+  return (
+    <div className="min-h-screen bg-background">
+      <SEOHead
+        title="Youth Futures Elevation Program | Empowerment for Justice-Impacted Youth"
+        description="AI-powered career tools and mentorship for justice-impacted youth ages 14-26. 100% free participation powered by sponsors."
+        path="/youth-futures"
+      />
+
+      {/* Hero Section */}
+      <section className="relative py-20 overflow-hidden bg-gradient-to-br from-osu-gray/10 via-cream/30 to-osu-gray/10">
+        <div className="container px-4">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div className="space-y-6 animate-fade-in">
+              <Badge className="bg-osu-scarlet text-white hover:bg-osu-scarlet/90 px-4 py-1">Ages 14-26</Badge>
+              <h1 className="font-heading text-4xl md:text-6xl font-bold text-foreground leading-tight">
+                Youth Futures <br />
+                <span className="text-osu-scarlet">Elevation Program</span>
+              </h1>
+              <p className="text-xl text-muted-foreground leading-relaxed">
+                AI-powered career tools and mentorship for justice-impacted youth ages 14-26.
+                Build your future with cutting-edge technology and community support.
+              </p>
+              <div className="flex flex-wrap gap-4">
+                <Button className="get-involved-gold-button h-12 px-8" asChild>
+                  <a href="#apply">Apply Now <ArrowRight className="ml-2 h-5 w-5" /></a>
+                </Button>
+                <Button variant="outline" className="h-12 px-8 border-osu-scarlet text-osu-scarlet hover:bg-osu-scarlet hover:text-white" asChild>
+                  <a href="#games">Try the Games</a>
+                </Button>
+              </div>
+            </div>
+            <div className="relative rounded-2xl overflow-hidden shadow-2xl border-4 border-white">
+              <img
+                src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&q=80"
+                alt="Youth working on laptop"
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-osu-scarlet/40 to-transparent"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Intro Section */}
+      <section className="py-16 bg-white">
+        <div className="container px-4 max-w-4xl text-center">
+          <p className="text-2xl font-medium text-foreground leading-relaxed italic">
+            "Forward Focus Elevation's Youth Futures Program equips young people with
+            cutting-edge AI tools to build careers, master finances, and create opportunities.
+            100% free for youth participants. Powered by organizational sponsors and grants."
+          </p>
+        </div>
+      </section>
+
+      {/* Programs Section */}
+      <section className="py-20 bg-osu-gray/5">
+        <div className="container px-4">
+          <div className="text-center mb-16">
+            <h2 className="font-heading text-3xl md:text-4xl font-bold mb-4">Three Program Pathways</h2>
+            <div className="h-1.5 w-24 bg-osu-scarlet mx-auto rounded-full"></div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <Card className="border-2 hover:border-osu-scarlet/50 transition-all duration-300">
+              <CardHeader className="text-center space-y-2">
+                <div className="w-12 h-12 bg-osu-scarlet/10 rounded-full flex items-center justify-center mx-auto">
+                  <Rocket className="h-6 w-6 text-osu-scarlet" />
+                </div>
+                <CardTitle className="text-xl font-bold">🚀 Weekend Accelerator</CardTitle>
+                <Badge variant="secondary">3-Day Intensive</Badge>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                <ul className="space-y-3 text-sm">
+                  <li className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-green-500" /> 8 AI career tools</li>
+                  <li className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-green-500" /> Resume & LinkedIn</li>
+                  <li className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-green-500" /> Budget mastery</li>
+                  <li className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-green-500" /> Business ideation</li>
+                </ul>
+                <div className="pt-4 border-t text-center">
+                  <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">Sponsor Investment</p>
+                  <p className="text-2xl font-bold text-osu-scarlet">$150 / youth</p>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="border-2 hover:border-osu-scarlet/50 transition-all duration-300 transform scale-105 shadow-xl bg-white z-10">
+              <CardHeader className="text-center space-y-2">
+                <div className="w-12 h-12 bg-osu-scarlet/10 rounded-full flex items-center justify-center mx-auto">
+                  <Target className="h-6 w-6 text-osu-scarlet" />
+                </div>
+                <CardTitle className="text-xl font-bold">💪 6-Week Intensive</CardTitle>
+                <Badge className="bg-osu-scarlet text-white">Thursday Evenings</Badge>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                <ul className="space-y-3 text-sm">
+                  <li className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-green-500" /> 14 advanced AI tools</li>
+                  <li className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-green-500" /> Job search support</li>
+                  <li className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-green-500" /> Weekly mentorship</li>
+                  <li className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-green-500" /> Interview training</li>
+                </ul>
+                <div className="pt-4 border-t text-center">
+                  <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">Sponsor Investment</p>
+                  <p className="text-2xl font-bold text-osu-scarlet">$400 / youth</p>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="border-2 hover:border-osu-scarlet/50 transition-all duration-300">
+              <CardHeader className="text-center space-y-2">
+                <div className="w-12 h-12 bg-osu-scarlet/10 rounded-full flex items-center justify-center mx-auto">
+                  <Sparkles className="h-6 w-6 text-osu-scarlet" />
+                </div>
+                <CardTitle className="text-xl font-bold">🎯 Complete Elevation</CardTitle>
+                <Badge variant="secondary">12-Week Transformation</Badge>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                <ul className="space-y-3 text-sm">
+                  <li className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-green-500" /> All 23 premium tools</li>
+                  <li className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-green-500" /> Personal mentor</li>
+                  <li className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-green-500" /> Family support</li>
+                  <li className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-green-500" /> Lifetime access</li>
+                </ul>
+                <div className="pt-4 border-t text-center">
+                  <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">Sponsor Investment</p>
+                  <p className="text-2xl font-bold text-osu-scarlet">$1,200 / youth</p>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </section>
+
+      {/* Games Section */}
+      <section id="games" className="py-20 bg-white">
+        <div className="container px-4">
+          <div className="text-center mb-16">
+            <h2 className="font-heading text-3xl md:text-4xl font-bold mb-4">Level Up Your Skills</h2>
+            <p className="text-muted-foreground">Interactive mini-games to jumpstart your career journey.</p>
+          </div>
+
+          <div className="grid grid-cols-1 xl:grid-cols-2 gap-8 max-w-6xl mx-auto">
+            <CareerQuizGame />
+            <ComparisonGame />
+            <BudgetGame />
+            <TriviaGame />
+          </div>
+        </div>
+      </section>
+
+      {/* How It Works Section */}
+      <section id="apply" className="py-20 bg-gradient-to-r from-osu-gray to-osu-gray-dark text-white">
+        <div className="container px-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 divide-y md:divide-y-0 md:divide-x divide-white/20">
+            <div className="space-y-6 pb-8 md:pb-0">
+              <h2 className="text-3xl font-bold">For Youth</h2>
+              <ul className="space-y-4 text-lg opacity-90">
+                <li className="flex items-center gap-3"><Zap className="h-6 w-6 text-yellow-400" /> 100% FREE to participate</li>
+                <li className="flex items-center gap-3"><Users className="h-6 w-6 text-blue-400" /> Ages 14-26</li>
+                <li className="flex items-center gap-3"><Shield className="h-6 w-6 text-green-400" /> Justice-impacted or community-referred</li>
+                <li className="flex items-center gap-3"><CheckCircle2 className="h-6 w-6 text-osu-scarlet" /> Apply online in minutes</li>
+              </ul>
+              <Button size="lg" className="get-involved-gold-button border-none w-full sm:w-auto h-14 text-lg">
+                Youth: Apply Now
+              </Button>
+            </div>
+            <div className="space-y-6 pt-8 md:pt-0 md:pl-12">
+              <h2 className="text-3xl font-bold">For Organizations</h2>
+              <ul className="space-y-4 text-lg opacity-90">
+                <li className="flex items-center gap-3"><Briefcase className="h-6 w-6 text-yellow-400" /> Sponsor youth through your organization</li>
+                <li className="flex items-center gap-3"><Users className="h-6 w-6 text-blue-400" /> Schools, nonprofits, courts, faith-based</li>
+                <li className="flex items-center gap-3"><DollarSign className="h-6 w-6 text-green-400" /> Tax-deductible support</li>
+                <li className="flex items-center gap-3"><Calendar className="h-6 w-6 text-osu-scarlet" /> Impact reporting included</li>
+              </ul>
+              <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-osu-gray w-full sm:w-auto h-14 text-lg">
+                Partner With Us
+              </Button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Contact Section */}
+      <section className="py-20 bg-white">
+        <div className="container px-4 max-w-4xl">
+          <Card className="border-4 border-osu-scarlet/20 bg-cream/30">
+            <CardContent className="p-12 text-center space-y-8">
+              <h2 className="font-heading text-4xl font-bold">Questions about Youth Futures?</h2>
+              <div className="flex flex-col md:flex-row gap-8 justify-center items-center">
+                <div className="flex items-center gap-3 text-lg">
+                  <Mail className="h-6 w-6 text-osu-scarlet" />
+                  <a href="mailto:hello@coachkayelevates.org" className="hover:text-osu-scarlet transition-colors">hello@coachkayelevates.org</a>
+                </div>
+                <div className="flex items-center gap-3 text-lg">
+                  <Phone className="h-6 w-6 text-osu-scarlet" />
+                  <a href="tel:3802877936" className="hover:text-osu-scarlet transition-colors">380-287-7936</a>
+                </div>
+              </div>
+              <Button size="lg" className="get-involved-gold-button border-none h-14 px-12 text-lg shadow-2xl transform hover:scale-105 transition-all" asChild>
+                <a href="https://calendly.com/ffe_coach_kay/free-call" target="_blank" rel="noopener noreferrer">
+                  Schedule Info Call
+                </a>
+              </Button>
+            </CardContent>
+          </Card>
+        </div>
+      </section>
+    </div>
+  );
+}

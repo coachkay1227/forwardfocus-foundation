@@ -2,8 +2,9 @@ import { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { MessageCircle, Send, Bot, User } from "lucide-react";
+import { MessageCircle, Send, Bot, User, RotateCcw, History, Mail } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import EmailChatHistoryModal from "@/components/ai/EmailChatHistoryModal";
 
 const MAX_MESSAGE_LENGTH = 4000;
 
@@ -18,7 +19,7 @@ const ChatbotPopup = () => {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
-      text: "Hi! I'm Coach K, your crisis-support navigator. I'm here to help you find local resources and support in Columbus, Ohio. How can I assist you today?",
+      text: "Hi! I'm Coach Kay, your crisis-support navigator here at Forward Focus Elevation. I'm here to help you find local resources and support in Columbus, Ohio. How can I assist you today?",
       isBot: true,
       timestamp: new Date()
     }
@@ -26,6 +27,7 @@ const ChatbotPopup = () => {
   const [inputMessage, setInputMessage] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [showEmailModal, setShowEmailModal] = useState(false);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
@@ -160,6 +162,19 @@ const ChatbotPopup = () => {
     setIsLoading(false);
   };
 
+  const handleNewChat = () => {
+    setMessages([
+      {
+        id: '1',
+        text: "Hi! I'm Coach Kay, your crisis-support navigator here at Forward Focus Elevation. I'm here to help you find local resources and support in Columbus, Ohio. How can I assist you today?",
+        isBot: true,
+        timestamp: new Date()
+      }
+    ]);
+    setInputMessage("");
+    setIsLoading(false);
+  };
+
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
@@ -187,6 +202,16 @@ const ChatbotPopup = () => {
         </div>
 
         <div className="space-y-4">
+          <div className="flex justify-end gap-2 px-1">
+            <Button variant="ghost" size="sm" onClick={handleNewChat} className="h-7 text-xs">
+              <RotateCcw className="h-3 w-3 mr-1" />
+              New Chat
+            </Button>
+            <Button variant="ghost" size="sm" onClick={() => setShowEmailModal(true)} className="h-7 text-xs">
+              <Mail className="h-3 w-3 mr-1" />
+              Email History
+            </Button>
+          </div>
           <ScrollArea className="h-80 pr-4" ref={scrollAreaRef}>
             <div className="space-y-4">
               {messages.map((message) => (
@@ -237,6 +262,18 @@ const ChatbotPopup = () => {
           </div>
         </div>
       </DialogContent>
+
+      <EmailChatHistoryModal
+        isOpen={showEmailModal}
+        onClose={() => setShowEmailModal(false)}
+        messages={messages.map(msg => ({
+          id: msg.id,
+          type: msg.isBot ? 'ai' : 'user',
+          content: msg.text,
+          timestamp: msg.timestamp
+        }))}
+        coachName="Coach Kay"
+      />
     </Dialog>
   );
 };

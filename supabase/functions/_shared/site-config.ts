@@ -14,6 +14,13 @@ export const SITE_CONFIG = {
   name: "Forward Focus Elevation",
   shortName: "FFE",
   
+  // Brand Service Names
+  services: {
+    collective: "The Collective",
+    skool: "Focus Flow Elevation Hub",
+    healing: "Healing Hub",
+  },
+
   // Logo URL (hosted on Supabase storage)
   logoUrl: "https://mdwkkgancoocvkmecwkm.supabase.co/storage/v1/object/public/assets/logo-new.png",
   

@@ -160,7 +160,7 @@ Resolve any HIGH or CRITICAL findings
 2. **Email Issues**
    - Check Resend dashboard for delivery logs
    - Pause automated sends if needed
-   - Contact support@forward-focus-elevation.org
+   - Contact support@ffeservices.net
 
 3. **Database Issues**
    - Review audit_logs table

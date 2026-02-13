@@ -6,49 +6,32 @@ import { TrialPrompt } from "./TrialPrompt";
 import { Link } from "react-router-dom";
 
 interface TrialTimerProps {
-  timeRemaining: number;
-  onTimeUp: () => void;
+  turnsRemaining: number;
+  onTurnsDepleted: () => void;
   className?: string;
 }
 
-export const TrialTimer = ({ timeRemaining, onTimeUp, className = "" }: TrialTimerProps) => {
+export const TrialTimer = ({ turnsRemaining, onTurnsDepleted, className = "" }: TrialTimerProps) => {
   const [showPrompt, setShowPrompt] = useState(false);
-  const [lastTimeRemaining, setLastTimeRemaining] = useState(timeRemaining);
 
-  // Format time as MM:SS
-  const formatTime = (seconds: number): string => {
-    if (seconds <= 0) return "00:00";
-    const minutes = Math.floor(seconds / 60);
-    const remainingSeconds = seconds % 60;
-    return `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
-  };
-
-  // Show prompt when time is low
+  // Show prompt when turns are low
   useEffect(() => {
-    // Show prompt at 60 seconds, then every 30 seconds, then every 10 seconds
-    if (timeRemaining <= 60 && timeRemaining > 0) {
-      if (timeRemaining === 60 ||
-          (timeRemaining <= 30 && timeRemaining % 30 === 0) ||
-          (timeRemaining <= 10 && timeRemaining % 10 === 0)) {
-        setShowPrompt(true);
-      }
+    if (turnsRemaining === 1) {
+      setShowPrompt(true);
     }
 
-    // Call onTimeUp when time expires
-    if (timeRemaining <= 0 && lastTimeRemaining > 0) {
-      onTimeUp();
+    if (turnsRemaining <= 0) {
+      onTurnsDepleted();
     }
-
-    setLastTimeRemaining(timeRemaining);
-  }, [timeRemaining, lastTimeRemaining, onTimeUp]);
+  }, [turnsRemaining, onTurnsDepleted]);
 
   // Don't render if trial has ended
-  if (timeRemaining <= 0) {
+  if (turnsRemaining <= 0) {
     return null;
   }
 
-  const isLowTime = timeRemaining <= 60;
-  const isCriticalTime = timeRemaining <= 30;
+  const isLowTurns = turnsRemaining <= 2;
+  const isCriticalTurns = turnsRemaining <= 1;
 
   return (
     <>
@@ -61,10 +44,10 @@ export const TrialTimer = ({ timeRemaining, onTimeUp, className = "" }: TrialTim
               </div>
               <div>
                 <p className="text-sm font-medium text-foreground">
-                  Free Trial Active
+                  Trial Active
                 </p>
                 <p className="text-xs text-muted-foreground">
-                  {formatTime(timeRemaining)} remaining
+                  {turnsRemaining} {turnsRemaining === 1 ? 'turn' : 'turns'} remaining
                 </p>
               </div>
             </div>
@@ -82,7 +65,7 @@ export const TrialTimer = ({ timeRemaining, onTimeUp, className = "" }: TrialTim
       <TrialPrompt
         isOpen={showPrompt}
         onClose={() => setShowPrompt(false)}
-        timeRemaining={formatTime(timeRemaining)}
+        timeRemaining={`${turnsRemaining} turns`}
         onSignUp={() => setShowPrompt(false)}
       />
     </>

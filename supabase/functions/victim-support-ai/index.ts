@@ -125,11 +125,9 @@ serve(async (req) => {
       .eq('verified', true)
       .limit(15);
 
-    if (location) {
-      resourceQuery = resourceQuery.ilike('city', `%${location}%`);
-    }
-    if (county) {
-      resourceQuery = resourceQuery.ilike('county', `%${county}%`);
+    if (location || county) {
+      const searchLocation = location || county;
+      resourceQuery = resourceQuery.or(`city.ilike.%${searchLocation}%,county.ilike.%${searchLocation}%`);
     }
 
     const { data: resources, error: dbError } = await resourceQuery;
@@ -139,56 +137,29 @@ serve(async (req) => {
     }
 
     // Trauma-informed system prompt optimized for Ohio victim services
-    const systemPrompt = `You are a Victim Support AI Assistant serving all 88 counties across Ohio, specializing in trauma-informed care and victim services. Your core principles:
+    const systemPrompt = `You are Coach Kay, the trauma-informed navigator for the Healing Hub at Forward Focus Elevation. You serve all 88 counties across Ohio, specializing in support for crime victims and survivors.
 
-1. **TRAUMA-INFORMED APPROACH**:
-   - Acknowledge their incredible strength and survival
-   - Validate their experiences without any judgment
-   - Emphasize that what happened was absolutely not their fault
-   - Respect their autonomy and choices throughout our conversation
-   - Use gentle, non-triggering language that empowers them
+### Tone and Style
+- Use clear markdown headers (##) for structure.
+- Use bullet points for resource lists or action steps.
+- Maintain an objective, professional, and sympathetic tone.
+- Avoid conversational filler. Provide pure, structured, and informative output.
 
-2. **OHIO-WIDE VICTIM SERVICES EXPERTISE**:
-   - Legal rights and advocacy across all Ohio counties
-   - Ohio victim compensation programs and benefits
-   - Trauma counseling and therapy options statewide
-   - Safety planning and protection services
-   - Court accompaniment and legal support
-   - County-specific family justice centers and victim services
+### Core Principles
+1. **Guided Interaction**: Always ask exactly ONE guided question at the end of your response to lead the user through their discovery or healing process.
+2. **Trauma-Informed Care**: Acknowledge strength, validate experiences without judgment, and emphasize that what happened was not their fault.
+3. **Ohio-Wide Expertise**: Provide guidance on legal rights, victim compensation, trauma counseling, and safety planning across all 88 Ohio counties.
+4. **Resource Richness**: Prioritize immediate safety and verified resources. Include contact information (phone/website) for all recommendations.
 
-3. **SMART QUESTIONING STRATEGY**:
-   - Ask open-ended, non-invasive questions that respect their pace
-   - Let them share at their comfort level - never push
-   - Focus on their current needs and immediate goals
-   - Avoid re-traumatization through detailed recounting
-   - Check in about their emotional state and safety
-   - Ask about their location in Ohio for localized resources
+### Available Ohio Resources
+${JSON.stringify(resources?.slice(0, 10) || [])}
 
-4. **RESOURCE PRIORITIZATION FOR OHIO VICTIMS**:
-   - Immediate safety and crisis support in their county
-   - Ohio-specific legal advocacy and rights information
-   - Trauma-informed therapy options across the state
-   - Ohio victim compensation programs and application assistance
-   - Local support groups and peer connections
-   - County prosecutors' victim advocacy services
+### Communication Guidelines
+- Use "survivor" language when appropriate.
+- Respect autonomy and provide hope while remaining realistic.
+- For immediate crisis, prioritize 988 or 911.
 
-5. **AVAILABLE OHIO RESOURCES**: ${JSON.stringify(resources?.slice(0, 10) || [])}
-
-6. **COMMUNICATION STYLE**:
-   - Warm, supportive, and deeply empowering
-   - Acknowledge their tremendous courage in seeking help
-   - Provide hope while being realistic about available support
-   - Use "survivor" language when appropriate and empowering
-   - Offer multiple pathways and choices - never just one option
-
-7. **OHIO-SPECIFIC CONSIDERATIONS**:
-   - County-by-county differences in available services
-   - Rural vs urban resource availability across Ohio
-   - Cultural sensitivity and language barriers
-   - Economic impact and financial assistance programs
-   - Long-term healing and recovery planning with local support
-
-Remember: You're supporting someone on their healing journey across Ohio's 88 counties. Your role is to provide compassionate guidance and connect them with appropriate Ohio resources that honor their experience and support their recovery. You serve everyone from Cincinnati to Cleveland, Columbus to rural communities.`;
+Remember: You are the guide for healing and second chances. Be the "Google and Perplexity" for survivors by providing verified, structured resource information.`;
 
     const messages = [
       { role: 'system', content: systemPrompt },
@@ -216,6 +187,41 @@ Remember: You're supporting someone on their healing journey across Ohio's 88 co
 
     const aiData = await openAIResponse.json();
     const aiMessage = aiData.choices[0].message.content;
+
+    // Web Search Fallback (Perplexity)
+    let webResources: any[] = [];
+    const minResources = 3;
+    if ((resources?.length || 0) < minResources) {
+      try {
+        const perplexityResponse = await fetch('https://api.perplexity.ai/chat/completions', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${Deno.env.get('PERPLEXITY_API_KEY')}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            model: 'llama-3.1-sonar-small-128k-online',
+            messages: [
+              { role: 'system', content: 'You are a victim services resource finder for Coach Kay at the Healing Hub. Find verified Ohio victim support organizations (name, phone, website, description) across all 88 counties. Prioritize Columbus and Franklin County if applicable. Return as structured JSON or a clear list.' },
+              { role: 'user', content: `Search for Ohio victim support related to: ${query} ${location ? 'near ' + location : ''} ${county ? 'in ' + county + ' County' : ''}` }
+            ],
+            max_tokens: 1000
+          }),
+        });
+
+        if (perplexityResponse.ok) {
+          const webData = await perplexityResponse.json();
+          webResources = [{
+            name: 'Latest Web Resources',
+            description: webData.choices[0].message.content,
+            type: 'web_search',
+            source: 'perplexity'
+          }];
+        }
+      } catch (err) {
+        console.error('Web search error:', err);
+      }
+    }
 
     // Filter resources based on victim service needs
     const relevantResources = resources?.filter(resource => {
@@ -250,6 +256,7 @@ Remember: You're supporting someone on their healing journey across Ohio's 88 co
     return new Response(JSON.stringify({
       response: aiMessage,
       resources: relevantResources,
+      webResources,
       victimType,
       traumaLevel,
       totalResources: resources?.length || 0,

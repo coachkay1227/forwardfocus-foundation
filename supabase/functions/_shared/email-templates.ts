@@ -176,7 +176,7 @@ export function getWednesdayCollectiveTemplate(variables: EmailVariables): strin
 
   const content = `
     <p class="text">
-      You're part of something special. The Collective is more than a program—it's a community
+      You're part of something special. Focus Flow Elevation Hub is more than a program—it's a community
       of resilient individuals supporting each other through transformation.
     </p>
 

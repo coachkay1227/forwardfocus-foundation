@@ -72,7 +72,7 @@ const handler = async (req: Request): Promise<Response> => {
 
           <p style="font-size: 14px; color: #6b7280; margin-top: 30px;">
             If you have any questions, feel free to reach out to our team at 
-            <a href="mailto:support@forward-focus-elevation.org" style="color: #2563eb;">support@forward-focus-elevation.org</a>
+            <a href="mailto:support@ffeservices.net" style="color: #2563eb;">support@ffeservices.net</a>
           </p>
 
           <hr style="border: none; border-top: 1px solid #e5e7eb; margin: 30px 0;">
@@ -121,7 +121,7 @@ const handler = async (req: Request): Promise<Response> => {
 
           <p style="font-size: 14px; color: #6b7280; margin-top: 30px;">
             Have questions? Contact us at 
-            <a href="mailto:support@forward-focus-elevation.org" style="color: #2563eb;">support@forward-focus-elevation.org</a>
+            <a href="mailto:support@ffeservices.net" style="color: #2563eb;">support@ffeservices.net</a>
           </p>
 
           <hr style="border: none; border-top: 1px solid #e5e7eb; margin: 30px 0;">
@@ -164,7 +164,7 @@ const handler = async (req: Request): Promise<Response> => {
 
           <p style="font-size: 14px; color: #6b7280; margin-top: 30px;">
             Questions about your application? Contact us at 
-            <a href="mailto:support@forward-focus-elevation.org" style="color: #2563eb;">support@forward-focus-elevation.org</a>
+            <a href="mailto:support@ffeservices.net" style="color: #2563eb;">support@ffeservices.net</a>
           </p>
 
           <hr style="border: none; border-top: 1px solid #e5e7eb; margin: 30px 0;">
@@ -178,6 +178,7 @@ const handler = async (req: Request): Promise<Response> => {
     }
 
     const emailResponse = await resend.emails.send({
+      from: "Forward Focus Elevation <support@ffeservices.net>",
       from: "Forward Focus Elevation <noreply@forward-focus-elevation.org>",
       to: [userEmail],
       subject: subject,

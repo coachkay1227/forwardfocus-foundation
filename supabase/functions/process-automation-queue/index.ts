@@ -114,7 +114,7 @@ const handler = async (req: Request): Promise<Response> => {
 
         // Send email
         const emailResponse = await resend.emails.send({
-          from: "Forward Focus Elevation <support@forward-focus-elevation.org>",
+          from: "Forward Focus Elevation <support@ffeservices.net>",
           to: [recipientEmail],
           subject: rule.email_subject,
           html: emailHtml,
