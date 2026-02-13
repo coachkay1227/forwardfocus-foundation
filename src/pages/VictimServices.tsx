@@ -199,7 +199,7 @@ export default function VictimServices() {
                 <span className="block text-white/80 mt-2">Healing Starts Here.</span>
               </h1>
               <p className="text-lg md:text-xl text-white/90 mb-12 leading-relaxed max-w-3xl mx-auto">
-                Comprehensive support for crime victims and survivors. Crisis intervention, advocacy, 
+                Comprehensive support for crime victims and survivors. Crisis intervention, advocacy,
                 legal aid, and trauma-informed healing resources available 24/7.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 max-w-sm sm:max-w-lg mx-auto px-4">

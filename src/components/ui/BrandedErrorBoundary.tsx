@@ -41,7 +41,7 @@ export class BrandedErrorBoundary extends Component<Props, State> {
           <div className="text-center max-w-2xl px-4 py-12">
             <div className="mb-8 flex justify-center">
               <img 
-                src={logo} 
+                src={logo}
                 alt="Forward Focus Elevation" 
                 className="h-20 w-auto"
               />

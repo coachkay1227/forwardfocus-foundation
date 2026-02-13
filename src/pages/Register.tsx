@@ -45,7 +45,7 @@ const Register = () => {
     // Enhanced password validation (8+ characters, uppercase, number)
     if (password.length < 8) {
       toast({
-        title: "Weak Password", 
+        title: "Weak Password",
         description: "Password must be at least 8 characters long",
         variant: "destructive",
       });
@@ -63,7 +63,7 @@ const Register = () => {
 
     if (!/[0-9]/.test(password)) {
       toast({
-        title: "Weak Password", 
+        title: "Weak Password",
         description: "Password must contain at least one number",
         variant: "destructive",
       });

@@ -18,7 +18,7 @@ export const CallToActionSection = () => {
             </p>
             <Button 
               size="lg" 
-              className="bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary text-primary-foreground shadow-lg h-12 px-8 text-base font-semibold hover:shadow-xl transition-all duration-300" 
+              className="bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary text-primary-foreground shadow-lg h-12 px-8 text-base font-semibold hover:shadow-xl transition-all duration-300"
               asChild
             >
               <Link to="/partners">Join the Movement</Link>

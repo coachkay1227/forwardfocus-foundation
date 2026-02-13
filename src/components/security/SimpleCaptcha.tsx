@@ -53,7 +53,7 @@ export const SimpleCaptcha = ({ onVerify, onTokenGenerated }: SimpleCaptchaProps
       setVerified(true);
       setError(false);
       onVerify(true);
-      
+
       // Generate a simple token for verification
       const token = btoa(`captcha-verified-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`);
       onTokenGenerated?.(token);

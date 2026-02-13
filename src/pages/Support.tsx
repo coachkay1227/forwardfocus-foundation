@@ -19,7 +19,7 @@ const Support = () => {
   const { openCalendly, calendlyReady } = useCalendlyPopup();
 
   const sponsorshipUrl = "https://collect.crowded.me/collection/219ea37a-28de-4930-b00f-dceb78a90e10";
-  
+
   return (
     <>
       <SEOHead
@@ -42,7 +42,7 @@ const Support = () => {
             <div className="flex flex-col sm:flex-row justify-center gap-4">
               <Button 
                 size="lg" 
-                variant="secondary" 
+                variant="secondary"
                 className="bg-white text-osu-scarlet hover:bg-white/90"
                 onClick={() => setActiveDialog('donate')}
               >
@@ -111,7 +111,7 @@ const Support = () => {
                   <div className="bg-osu-scarlet/5 p-4 rounded-lg border border-osu-scarlet/20">
                     <h4 className="font-semibold text-foreground mb-2">Pay Any Amount</h4>
                     <p className="text-sm text-foreground/70 mb-3">Custom sponsorship levels to match your impact goals</p>
-                    <Button 
+                    <Button
                       onClick={() => window.open(sponsorshipUrl, '_blank', 'noopener,noreferrer')}
                       className="bg-osu-scarlet hover:bg-osu-scarlet-dark text-osu-scarlet-foreground"
                       size="sm"

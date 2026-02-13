@@ -308,7 +308,7 @@ I'm searching for local Ohio resources that can provide you with immediate suppo
 
 **Immediate Crisis Support:**
 • Call 911 for emergencies
-• Call 988 for suicide & crisis lifeline  
+• Call 988 for suicide & crisis lifeline
 • Text HOME to 741741 for crisis text support
 • Call 1-800-799-7233 for domestic violence help
 

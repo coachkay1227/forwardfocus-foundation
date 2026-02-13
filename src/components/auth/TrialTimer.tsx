@@ -27,7 +27,7 @@ export const TrialTimer = ({ timeRemaining, onTimeUp, className = "" }: TrialTim
   useEffect(() => {
     // Show prompt at 60 seconds, then every 30 seconds, then every 10 seconds
     if (timeRemaining <= 60 && timeRemaining > 0) {
-      if (timeRemaining === 60 || 
+      if (timeRemaining === 60 ||
           (timeRemaining <= 30 && timeRemaining % 30 === 0) ||
           (timeRemaining <= 10 && timeRemaining % 10 === 0)) {
         setShowPrompt(true);

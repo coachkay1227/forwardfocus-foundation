@@ -33,15 +33,15 @@ export const CommunityApplication = ({ isOpen, onClose }: CommunityApplicationPr
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    
+
     // Simulate API call with loading state
     await new Promise(resolve => setTimeout(resolve, 2000));
-    
+
     toast({
       title: "Application submitted successfully!",
       description: "We've received your application. You'll hear back within 24-48 hours via email."
     });
-    
+
     setIsSubmitting(false);
     onClose();
     setFormData({
@@ -73,8 +73,8 @@ export const CommunityApplication = ({ isOpen, onClose }: CommunityApplicationPr
               <h3 className="text-xl font-semibold text-foreground">Join Our Learning Community</h3>
               <p className="text-muted-foreground">Free education • Peer support • Safe space</p>
             </div>
-            <button 
-              onClick={onClose} 
+            <button
+              onClick={onClose}
               className="p-2 hover:bg-muted rounded"
               aria-label="Close application form"
             >
@@ -150,7 +150,7 @@ export const CommunityApplication = ({ isOpen, onClose }: CommunityApplicationPr
 
             <div>
               <label className="block text-sm font-medium mb-1 text-foreground">Release Timeline *</label>
-              <select 
+              <select
                 className="w-full p-2 border border-input rounded-md bg-background text-foreground"
                 value={formData.releaseDate}
                 onChange={(e) => setFormData({...formData, releaseDate: e.target.value})}
@@ -170,7 +170,7 @@ export const CommunityApplication = ({ isOpen, onClose }: CommunityApplicationPr
 
             <div>
               <label className="block text-sm font-medium mb-1 text-foreground">Current Housing Situation *</label>
-              <select 
+              <select
                 className="w-full p-2 border border-input rounded-md bg-background text-foreground"
                 value={formData.housing}
                 onChange={(e) => setFormData({...formData, housing: e.target.value})}
@@ -190,7 +190,7 @@ export const CommunityApplication = ({ isOpen, onClose }: CommunityApplicationPr
 
             <div>
               <label className="block text-sm font-medium mb-1 text-foreground">Employment Status *</label>
-              <select 
+              <select
                 className="w-full p-2 border border-input rounded-md bg-background text-foreground"
                 value={formData.employment}
                 onChange={(e) => setFormData({...formData, employment: e.target.value})}
@@ -210,7 +210,7 @@ export const CommunityApplication = ({ isOpen, onClose }: CommunityApplicationPr
 
             <div>
               <label className="block text-sm font-medium mb-1 text-foreground">Family Situation</label>
-              <select 
+              <select
                 className="w-full p-2 border border-input rounded-md bg-background text-foreground"
                 value={formData.family}
                 onChange={(e) => setFormData({...formData, family: e.target.value})}
@@ -229,7 +229,7 @@ export const CommunityApplication = ({ isOpen, onClose }: CommunityApplicationPr
 
             <div>
               <label className="block text-sm font-medium mb-1 text-foreground">Legal Concerns</label>
-              <select 
+              <select
                 className="w-full p-2 border border-input rounded-md bg-background text-foreground"
                 value={formData.legal}
                 onChange={(e) => setFormData({...formData, legal: e.target.value})}
@@ -272,7 +272,7 @@ export const CommunityApplication = ({ isOpen, onClose }: CommunityApplicationPr
 
             <div>
               <label className="block text-sm font-medium mb-1 text-foreground">Community Readiness *</label>
-              <select 
+              <select
                 className="w-full p-2 border border-input rounded-md bg-background text-foreground"
                 value={formData.readiness}
                 onChange={(e) => setFormData({...formData, readiness: e.target.value})}
@@ -322,8 +322,8 @@ export const CommunityApplication = ({ isOpen, onClose }: CommunityApplicationPr
                 <li>• Report safety concerns to community moderators</li>
               </ul>
               <label className="flex items-start gap-2">
-                <input 
-                  type="checkbox" 
+                <input
+                  type="checkbox"
                   checked={formData.agreement}
                   onChange={(e) => setFormData({...formData, agreement: e.target.checked})}
                   className="mt-1"
@@ -337,8 +337,8 @@ export const CommunityApplication = ({ isOpen, onClose }: CommunityApplicationPr
             </div>
 
             <div className="flex gap-3">
-              <Button 
-                type="submit" 
+              <Button
+                type="submit"
                 className="flex-1 bg-secondary hover:bg-secondary/90"
                 disabled={isSubmitting}
               >
@@ -354,9 +354,9 @@ export const CommunityApplication = ({ isOpen, onClose }: CommunityApplicationPr
                   </>
                 )}
               </Button>
-              <Button 
-                type="button" 
-                variant="outline" 
+              <Button
+                type="button"
+                variant="outline"
                 onClick={onClose}
                 disabled={isSubmitting}
               >

@@ -147,7 +147,7 @@ const Header = ({
             <div className="col-span-10 md:col-span-2 flex justify-center md:justify-start">
               <NavLink to="/" className="flex items-center md:hover:scale-105 transition-all duration-300 group">
                 <img 
-                  src={logoTransparent} 
+                  src={logoTransparent}
                   alt="Forward Focus Elevation" 
                   className="h-32 w-auto drop-shadow-2xl filter brightness-105 contrast-105 group-hover:scale-105 group-hover:drop-shadow-2xl transition-all duration-300" 
                 />

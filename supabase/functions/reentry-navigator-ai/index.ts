@@ -71,7 +71,7 @@ function getClientIdentifier(req: Request, authHeader: string | null): string {
       // Fall through to IP
     }
   }
-  
+
   const forwarded = req.headers.get('x-forwarded-for');
   const ip = forwarded ? forwarded.split(',')[0].trim() : 'unknown';
   return `ip:${ip}`;
@@ -96,7 +96,7 @@ serve(async (req) => {
     
     if (rateLimit.limited) {
       console.log(`Rate limit exceeded for ${identifier}`);
-      
+
       await supabase.from('audit_logs').insert({
         action: 'AI_RATE_LIMIT_EXCEEDED',
         resource_type: 'ai_endpoint',
@@ -110,8 +110,8 @@ serve(async (req) => {
         retryAfter: RATE_LIMIT_WINDOW_MINUTES * 60
       }), {
         status: 429,
-        headers: { 
-          ...corsHeaders, 
+        headers: {
+          ...corsHeaders,
           'Content-Type': 'application/json',
           'Retry-After': String(RATE_LIMIT_WINDOW_MINUTES * 60)
         },

@@ -108,7 +108,7 @@ export default function DonationBoxes({}: DonationBoxesProps) {
           </div>
           <h3 className="text-xl font-semibold text-foreground mb-2">{featuredOption.name}</h3>
           <p className="text-foreground/70 mb-4">{featuredOption.description}</p>
-          <Button 
+          <Button
             onClick={() => handleDonationClick(featuredOption)}
             className="w-full bg-osu-scarlet hover:bg-osu-scarlet-dark text-osu-scarlet-foreground"
             size="lg"

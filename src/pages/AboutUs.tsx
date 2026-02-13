@@ -87,7 +87,7 @@ export default function AboutUs() {
                 <div className="space-y-8 text-foreground">
                   <p className="text-xl leading-relaxed">Forward Focus Elevation was born from lived experiences. We saw firsthand how hard it is for justice-impacted individuals and their families to access real support. Traditional systems were fragmented, outdated, and often left people behind.</p>
                   <p className="text-xl leading-relaxed">
-                    So, we built something different — a trauma-informed, AI-powered platform that's available 
+                    So, we built something different — a trauma-informed, AI-powered platform that's available
                     anytime, anywhere. A community designed not just to provide resources, but to empower transformation.
                   </p>
                   <div className="bg-gradient-to-br from-primary/10 to-accent/10 p-8 rounded-2xl border-l-4 border-primary">
