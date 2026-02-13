@@ -27,6 +27,12 @@ interface Message {
     city?: string;
     county?: string;
   }>;
+  webResources?: Array<{
+    name: string;
+    description: string;
+    type: string;
+    source: string;
+  }>;
   urgencyLevel?: 'immediate' | 'urgent' | 'moderate' | 'informational';
 }
 
@@ -41,7 +47,7 @@ const CrisisSupportAI: React.FC<CrisisSupportAIProps> = ({ isOpen, onClose, init
     {
       id: '1',
       type: 'ai',
-      content: "Hi, I'm Alex, your crisis support companion. I'm here to listen and help you find immediate support. Your safety matters deeply to me. If you're in immediate danger, please call 911 right now. Can you tell me what's bringing you here today? I want to understand so I can help you best.",
+      content: "Hi, I'm Alex, your crisis support companion at Forward Focus Elevation. I'm here to listen and help you find immediate support. Your safety matters deeply to me. If you're in immediate danger, please call 911 right now. Can you tell me what's bringing you here today? I want to understand so I can help you best.",
       timestamp: new Date(),
     }
   ]);
@@ -106,6 +112,7 @@ const CrisisSupportAI: React.FC<CrisisSupportAIProps> = ({ isOpen, onClose, init
         if (lastMessage.type === 'ai') {
           lastMessage.content = data.response;
           lastMessage.resources = data.resources;
+          lastMessage.webResources = data.webResources;
           lastMessage.urgencyLevel = data.urgencyLevel;
         }
         return newMessages;
@@ -251,7 +258,7 @@ const CrisisSupportAI: React.FC<CrisisSupportAIProps> = ({ isOpen, onClose, init
               <Heart className="h-5 w-5" />
             </div>
             <div>
-              <h3 className="font-bold text-lg" id="crisis-support-title">Alex - Crisis Support</h3>
+              <h3 className="font-bold text-lg" id="crisis-support-title">Coach Kay - Crisis Support</h3>
               <p className="text-sm opacity-90" id="crisis-support-description">Your compassionate crisis companion, available 24/7</p>
             </div>
           </div>
@@ -314,7 +321,7 @@ const CrisisSupportAI: React.FC<CrisisSupportAIProps> = ({ isOpen, onClose, init
 
                   {message.resources && message.resources.length > 0 && (
                     <div className="mt-4 space-y-3">
-                      <p className="text-sm font-semibold text-foreground">Immediate Resources:</p>
+                      <p className="text-sm font-semibold text-foreground">Verified Crisis Resources:</p>
                       <div className="grid gap-2">
                         {message.resources.map((resource) => (
                           <div key={resource.id} className="bg-card border rounded-lg p-3 text-sm">
@@ -350,6 +357,26 @@ const CrisisSupportAI: React.FC<CrisisSupportAIProps> = ({ isOpen, onClose, init
                       </div>
                     </div>
                   )}
+
+                  {message.webResources && message.webResources.length > 0 && (
+                    <div className="mt-4 space-y-3">
+                      <p className="text-sm font-semibold text-foreground flex items-center gap-2">
+                        <Bot className="h-4 w-4 text-orange-500" />
+                        Web Search Support Results:
+                      </p>
+                      <div className="grid gap-2">
+                        {message.webResources.map((resource, idx) => (
+                          <div key={idx} className="bg-orange-50/50 dark:bg-orange-950/10 border border-orange-200 dark:border-orange-800 rounded-lg p-3 text-sm">
+                            <div className="font-semibold text-foreground">{resource.name}</div>
+                            <p className="text-muted-foreground mt-1 text-xs leading-relaxed">{resource.description}</p>
+                            <p className="text-[10px] text-muted-foreground mt-2 italic">
+                              ℹ️ Additional help found via web search.
+                            </p>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
             ))}
@@ -359,7 +386,7 @@ const CrisisSupportAI: React.FC<CrisisSupportAIProps> = ({ isOpen, onClose, init
                 <div className="bg-muted rounded-lg p-4 max-w-[85%]">
                   <div className="flex items-center space-x-2 text-sm text-muted-foreground">
                     <Heart className="h-4 w-4 text-destructive animate-pulse" />
-                    <span>Alex is listening and thinking...</span>
+                    <span>Coach Kay is listening and thinking...</span>
                     <div className="flex space-x-1">
                       <div className="h-2 w-2 bg-muted-foreground rounded-full animate-bounce" />
                       <div className="h-2 w-2 bg-muted-foreground rounded-full animate-bounce" style={{ animationDelay: '0.1s' }} />
@@ -378,7 +405,7 @@ const CrisisSupportAI: React.FC<CrisisSupportAIProps> = ({ isOpen, onClose, init
           <div>
             <p className="text-sm font-medium mb-3 flex items-center gap-2">
               <Heart className="h-4 w-4 text-destructive" />
-              How can Alex help you right now?
+              How can Coach Kay help you right now?
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-4">
               {quickActions.map((action, index) => (
@@ -416,7 +443,7 @@ const CrisisSupportAI: React.FC<CrisisSupportAIProps> = ({ isOpen, onClose, init
             </div>
           </div>
           <div className="flex items-center justify-between text-xs text-muted-foreground">
-            <span>Alex is here 24/7 • Confidential • Trauma-informed support</span>
+            <span>Coach Kay is here 24/7 • Confidential • Trauma-informed support</span>
             <div className="flex gap-2">
               <Button
                 variant="ghost"
@@ -425,7 +452,7 @@ const CrisisSupportAI: React.FC<CrisisSupportAIProps> = ({ isOpen, onClose, init
                   setMessages([{
                     id: '1',
                     type: 'ai',
-                    content: "Hi, I'm Alex, your crisis support companion. I'm here to listen and help you find immediate support. Your safety matters deeply to me. Can you tell me what's bringing you here today? I want to understand so I can help you best.",
+                    content: "Hi, I'm Alex, your crisis support companion at Forward Focus Elevation. I'm here to listen and help you find immediate support. Your safety matters deeply to me. Can you tell me what's bringing you here today? I want to understand so I can help you best.",
                     timestamp: new Date(),
                   }]);
                   setConversationContext([]);
@@ -458,7 +485,7 @@ const CrisisSupportAI: React.FC<CrisisSupportAIProps> = ({ isOpen, onClose, init
         isOpen={showEmailModal}
         onClose={() => setShowEmailModal(false)}
         messages={messages}
-        coachName="Alex - Crisis Support"
+        coachName="Coach Kay - Crisis Support"
       />
     </Dialog>
   );

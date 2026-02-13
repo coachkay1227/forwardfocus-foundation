@@ -1,6 +1,7 @@
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+import { checkAiRateLimit } from '../_shared/rate-limit.ts';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -21,62 +22,6 @@ interface ReentryQuery {
   previousContext?: Array<{role: string, content: string}>;
 }
 
-// Rate limiting configuration
-const RATE_LIMIT_MAX_REQUESTS = 10;
-const RATE_LIMIT_WINDOW_MINUTES = 5;
-
-async function checkRateLimit(supabase: any, identifier: string, endpoint: string): Promise<{ limited: boolean; remaining: number }> {
-  try {
-    const { data, error } = await supabase.rpc('check_ai_rate_limit', {
-      p_identifier: identifier,
-      p_endpoint: endpoint,
-      p_max_requests: RATE_LIMIT_MAX_REQUESTS,
-      p_window_minutes: RATE_LIMIT_WINDOW_MINUTES
-    });
-
-    if (error) {
-      console.error('Rate limit check error:', error);
-      return { limited: false, remaining: RATE_LIMIT_MAX_REQUESTS };
-    }
-
-    const result = data?.[0] || { is_rate_limited: false, current_count: 0 };
-    return {
-      limited: result.is_rate_limited,
-      remaining: Math.max(0, RATE_LIMIT_MAX_REQUESTS - result.current_count)
-    };
-  } catch (err) {
-    console.error('Rate limit error:', err);
-    return { limited: false, remaining: RATE_LIMIT_MAX_REQUESTS };
-  }
-}
-
-async function recordRequest(supabase: any, identifier: string, endpoint: string): Promise<void> {
-  try {
-    await supabase.rpc('record_ai_request', {
-      p_identifier: identifier,
-      p_endpoint: endpoint
-    });
-  } catch (err) {
-    console.error('Failed to record request:', err);
-  }
-}
-
-function getClientIdentifier(req: Request, authHeader: string | null): string {
-  if (authHeader && authHeader.startsWith('Bearer ')) {
-    try {
-      const token = authHeader.split(' ')[1];
-      const payload = JSON.parse(atob(token.split('.')[1]));
-      if (payload.sub) return `user:${payload.sub}`;
-    } catch (e) {
-      // Fall through to IP
-    }
-  }
-
-  const forwarded = req.headers.get('x-forwarded-for');
-  const ip = forwarded ? forwarded.split(',')[0].trim() : 'unknown';
-  return `ip:${ip}`;
-}
-
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
@@ -88,37 +33,18 @@ serve(async (req) => {
 
   try {
     // Rate limiting check
-    const authHeader = req.headers.get('authorization');
-    const identifier = getClientIdentifier(req, authHeader);
-    const endpoint = 'reentry-navigator-ai';
-
-    const rateLimit = await checkRateLimit(supabase, identifier, endpoint);
+    const rateLimit = await checkAiRateLimit(supabase, req, 'reentry-navigator-ai');
     
     if (rateLimit.limited) {
-      console.log(`Rate limit exceeded for ${identifier}`);
-
-      await supabase.from('audit_logs').insert({
-        action: 'AI_RATE_LIMIT_EXCEEDED',
-        resource_type: 'ai_endpoint',
-        details: { endpoint, identifier },
-        severity: 'warn'
-      });
-
       return new Response(JSON.stringify({
-        error: 'Rate limit exceeded. Please wait a few minutes before trying again.',
+        error: "You've reached your daily limit for free AI consultations. To get unlimited access to our AI tools and specialized coaching, please sign in.",
         supportMessage: 'For immediate reentry support, please call 211 for resource navigation.',
-        retryAfter: RATE_LIMIT_WINDOW_MINUTES * 60
+        rateLimitExceeded: true
       }), {
         status: 429,
-        headers: {
-          ...corsHeaders,
-          'Content-Type': 'application/json',
-          'Retry-After': String(RATE_LIMIT_WINDOW_MINUTES * 60)
-        },
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       });
     }
-
-    await recordRequest(supabase, identifier, endpoint);
 
     const { query, location, county, reentryStage = 'recently_released', priorityNeeds = [], selectedCoach, previousContext = [] }: ReentryQuery = await req.json();
 
@@ -130,11 +56,9 @@ serve(async (req) => {
       .eq('verified', true)
       .limit(20);
 
-    if (location) {
-      resourceQuery = resourceQuery.ilike('city', `%${location}%`);
-    }
-    if (county) {
-      resourceQuery = resourceQuery.ilike('county', `%${county}%`);
+    if (location || county) {
+      const searchLocation = location || county;
+      resourceQuery = resourceQuery.or(`city.ilike.%${searchLocation}%,county.ilike.%${searchLocation}%`);
     }
 
     const { data: resources, error: dbError } = await resourceQuery;
@@ -173,6 +97,41 @@ serve(async (req) => {
     const aiData = await openAIResponse.json();
     const aiMessage = aiData.choices[0].message.content;
 
+    // Web Search Fallback (Perplexity)
+    let webResources: any[] = [];
+    const minResources = 3;
+    if ((resources?.length || 0) < minResources) {
+      try {
+        const perplexityResponse = await fetch('https://api.perplexity.ai/chat/completions', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${Deno.env.get('PERPLEXITY_API_KEY')}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            model: 'llama-3.1-sonar-small-128k-online',
+            messages: [
+              { role: 'system', content: 'You are a reentry resource finder. Find verified Ohio organizations (name, phone, website, description) that help justice-impacted individuals and return as JSON.' },
+              { role: 'user', content: `Ohio reentry support for ${query} ${location ? 'near ' + location : ''} ${county ? 'in ' + county + ' County' : ''}` }
+            ],
+            max_tokens: 1000
+          }),
+        });
+
+        if (perplexityResponse.ok) {
+          const webData = await perplexityResponse.json();
+          webResources = [{
+            name: 'Latest Web Resources',
+            description: webData.choices[0].message.content,
+            type: 'web_search',
+            source: 'perplexity'
+          }];
+        }
+      } catch (err) {
+        console.error('Web search error:', err);
+      }
+    }
+
     // Filter resources based on reentry needs
     const relevantResources = resources?.filter(resource => {
       const queryLower = query.toLowerCase();
@@ -209,6 +168,7 @@ serve(async (req) => {
     return new Response(JSON.stringify({
       response: aiMessage,
       resources: relevantResources,
+      webResources,
       reentryStage,
       priorityNeeds,
       totalResources: resources?.length || 0,
@@ -242,51 +202,28 @@ serve(async (req) => {
 
 // Add coach-specific system prompt function
 function getCoachSystemPrompt(coach?: { name: string; specialty: string; description: string; }, resources: any[] = []): string {
-  const basePrompt = `You are a Reentry Navigator AI, a compassionate digital guide specializing in supporting justice-impacted individuals as they rebuild their lives.
+  const basePrompt = `You are Coach Kay, the lead navigator for "The Collective" (AI & Life Transformation Hub) at Forward Focus Elevation. You serve all 88 counties across Ohio, specializing in AI & Life Transformation for individuals seeking a second chance.
 
-**Core Mission:** Provide personalized, trauma-informed guidance for housing, employment, legal matters, family reunification, financial stability, and mental wellness during the reentry process.
+### Tone and Style
+- Use clear markdown headers (##) for structure.
+- Use bullet points for resource lists or action steps.
+- Maintain an objective, professional, and sympathetic tone.
+- Avoid conversational filler. Provide pure, structured, and informative output.
 
-**Reentry Dimensions Expertise:**
-1. **Housing Security** - Transitional housing, rental applications, tenant rights, housing vouchers
-2. **Employment Pathways** - Job training, fair-chance employers, resume building, interview skills
-3. **Legal Navigation** - Expungement, court obligations, documentation, legal aid resources
-4. **Family Healing** - Communication strategies, boundary setting, rebuilding trust
-5. **Financial Foundations** - Banking basics, budgeting, credit repair, benefit applications
-6. **Mental Wellness** - Trauma support, coping strategies, mental health resources
+### Core Principles
+1. **Guided Interaction**: Always ask exactly ONE guided question at the end of your response to lead the user through their discovery or transformation process.
+2. **Transformation Expertise**: Provide guidance on housing, employment, legal aid, mindfulness-based success, financial foundations, and AI-driven growth.
+3. **Ohio-Wide Support**: Ensure coverage across all 88 Ohio counties, prioritizing Columbus/Franklin County when applicable.
+4. **Resource Richness**: Connect users with verified, justice-friendly resources. Include contact info for all recommendations.
 
-**Assessment Strategy:**
-- Ask clarifying questions to understand immediate vs. long-term needs
-- Identify barriers (transportation, documentation, time constraints)
-- Assess support systems and existing resources
-- Prioritize urgent safety or stability concerns
+### Available Ohio Resources
+${JSON.stringify(resources)}
 
-**Specialized Knowledge:**
-- Fair-chance hiring practices and felon-friendly employers
-- Housing discrimination laws and tenant protections
-- Expungement eligibility and process requirements
-- Family court systems and custody considerations
-- Benefits eligibility (SNAP, housing assistance, healthcare)
-- Crisis intervention and de-escalation techniques
+### Important Guidelines
+- For mental health crises, direct to 988 Suicide & Crisis Lifeline.
+- Focus on empowerment, dignity, and self-advocacy.
 
-**Communication Style:**
-- Speak with warmth, respect, and dignity
-- Use clear, jargon-free language
-- Acknowledge the courage it takes to seek help
-- Celebrate small wins and progress
-- Never judge or shame
-- Be honest about challenges while maintaining hope
-
-**Available Resources:** ${JSON.stringify(resources)}
-
-**Important Guidelines:**
-- Always prioritize immediate safety concerns
-- For mental health crises, direct to 988 Suicide & Crisis Lifeline
-- For emergencies, direct to 911
-- Maintain strict confidentiality
-- Be culturally sensitive and trauma-informed
-- Focus on empowerment and self-advocacy
-
-Remember: Every person deserves a second chance and the support to rebuild their life with dignity.`;
+Remember: You are the guide for second chances and AI-driven life transformation. Be the "Google and Perplexity" for justice-impacted individuals by providing verified, structured resource information.`;
 
   if (!coach) return basePrompt;
 

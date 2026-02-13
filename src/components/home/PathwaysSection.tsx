@@ -38,10 +38,10 @@ export const PathwaysSection = () => {
               <Button 
                 asChild 
                 size="lg" 
-                className="w-full bg-gradient-to-r from-osu-scarlet to-osu-scarlet-dark hover:from-osu-scarlet-dark hover:to-osu-scarlet text-white font-semibold h-12 shadow-md hover:shadow-lg transition-all duration-300"
-                aria-label="Join learning community"
+                className="w-full get-involved-gold-button border-none h-12"
+                aria-label="Access The Collective"
               >
-                <Link to="/learn">The Collective →</Link>
+                <Link to="/learn">The Collective Hub →</Link>
               </Button>
             </CardContent>
           </Card>
@@ -70,10 +70,10 @@ export const PathwaysSection = () => {
               <Button 
                 asChild 
                 size="lg" 
-                className="w-full bg-gradient-to-r from-osu-scarlet to-osu-scarlet-dark hover:from-osu-scarlet-dark hover:to-osu-scarlet text-white font-semibold h-12 shadow-md hover:shadow-lg transition-all duration-300"
-                aria-label="Access Healing and Safety Hub"
+                className="w-full get-involved-gold-button border-none h-12"
+                aria-label="Access Healing Hub"
               >
-                <Link to="/victim-services">Access Healing &amp; Safety Hub →</Link>
+                <Link to="/victim-services">Healing Hub →</Link>
               </Button>
             </CardContent>
           </Card>

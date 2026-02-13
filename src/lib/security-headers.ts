@@ -1,10 +1,12 @@
 // Enhanced security headers and configuration for the application
 export const setupSecurityHeaders = () => {
   // Enhanced Content Security Policy
-  // Enhanced CSP - external APIs removed (calls routed through edge functions)
+  const isProd = import.meta.env.PROD;
+
+  // Enhanced CSP - tightened for production
   const csp = [
     "default-src 'self'",
-    "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://unpkg.com https://js.stripe.com https://assets.calendly.com",
+    `script-src 'self' 'unsafe-inline' ${isProd ? '' : "'unsafe-eval'"} https://js.stripe.com https://assets.calendly.com`,
     "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://assets.calendly.com",
     "font-src 'self' https://fonts.gstatic.com data:",
     "img-src 'self' data: blob: https: https://*.supabase.co",
@@ -52,13 +54,6 @@ export const setupSecurityHeaders = () => {
 
 // Additional security setup
 const setupAdditionalSecurity = () => {
-  // Disable right-click context menu in production
-  if (import.meta.env.PROD) {
-    document.addEventListener('contextmenu', (e) => {
-      e.preventDefault();
-    });
-  }
-
   // Disable text selection for sensitive content
   const sensitiveSelectors = ['.contact-info', '.admin-panel', '.sensitive-data'];
   sensitiveSelectors.forEach(selector => {

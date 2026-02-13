@@ -10,7 +10,7 @@ interface AIWithTrialProps {
     canUseAI: boolean;
     checkAccess: () => Promise<boolean>;
     trialActive: boolean;
-    timeRemaining: number;
+    turnsRemaining: number;
   }) => React.ReactNode;
   aiEndpoint: string;
   className?: string;
@@ -18,15 +18,17 @@ interface AIWithTrialProps {
 
 export const AIWithTrial = ({ children, aiEndpoint, className = "" }: AIWithTrialProps) => {
   const { user } = useAuth();
-  const { sessionState, checkTrialAccess, transferToUser, timeRemainingFormatted } = useAnonymousSession();
+  const { sessionState, checkTrialAccess, transferToUser } = useAnonymousSession();
   const [showTrialExpired, setShowTrialExpired] = useState(false);
   const [canUseAI, setCanUseAI] = useState(false);
+  const [turnsRemaining, setTurnsRemaining] = useState(5);
 
   // Check access function
   const checkAccess = useCallback(async (): Promise<boolean> => {
-    // Authenticated users have unlimited access
+    // Authenticated users have high limit (effectively unlimited for normal use)
     if (user) {
       setCanUseAI(true);
+      setTurnsRemaining(50);
       return true;
     }
 
@@ -34,12 +36,12 @@ export const AIWithTrial = ({ children, aiEndpoint, className = "" }: AIWithTria
     const hasAccess = await checkTrialAccess(aiEndpoint);
     setCanUseAI(hasAccess);
     
-    if (!hasAccess && sessionState?.trialExpired) {
+    if (!hasAccess) {
       setShowTrialExpired(true);
     }
     
     return hasAccess;
-  }, [user, checkTrialAccess, aiEndpoint, sessionState?.trialExpired]);
+  }, [user, checkTrialAccess, aiEndpoint]);
 
   // Initial access check
   useEffect(() => {
@@ -71,8 +73,7 @@ export const AIWithTrial = ({ children, aiEndpoint, className = "" }: AIWithTria
     }
   }, [user, sessionState?.sessionToken, transferToUser]);
 
-  const trialActive = !user && sessionState && !sessionState.trialExpired;
-  const timeRemaining = sessionState?.timeRemaining || 0;
+  const trialActive = !user && turnsRemaining > 0;
 
   return (
     <div className={className}>
@@ -81,7 +82,7 @@ export const AIWithTrial = ({ children, aiEndpoint, className = "" }: AIWithTria
         canUseAI,
         checkAccess,
         trialActive: trialActive || false,
-        timeRemaining
+        turnsRemaining
       })}
 
       {/* Trial Expired Prompt */}

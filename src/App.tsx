@@ -50,6 +50,7 @@ const SetupAdmin = lazy(() => import("./pages/SetupAdmin"));
 const AdminGuide = lazy(() => import("./pages/AdminGuide"));
 const SuccessStories = lazy(() => import("./pages/SuccessStories"));
 const SetupGuide = lazy(() => import("./pages/SetupGuide"));
+const YouthFutures = lazy(() => import("./pages/YouthFutures"));
 
 const queryClient = new QueryClient();
 
@@ -109,6 +110,8 @@ const App = () => {
                           <Route path="/portal/*" element={<AuthenticatedRoute><Navigate to="/" replace /></AuthenticatedRoute>} />
                           <Route path="/search" element={<Search />} />
                           <Route path="/discover" element={<Discover />} />
+                          <Route path="/youth-futures" element={<YouthFutures />} />
+                          <Route path="/youth" element={<Navigate to="/youth-futures" replace />} />
                           <Route path="/partners" element={<Partners />} />
                           <Route path="/partners/submit-referral" element={<SubmitReferral />} />
                           <Route path="/partners/add-resource" element={<AddResource />} />

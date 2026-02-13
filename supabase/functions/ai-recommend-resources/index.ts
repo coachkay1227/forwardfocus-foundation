@@ -37,8 +37,8 @@ serve(async (req) => {
       `${r.name}: ${r.description} (Category: ${r.category}, Location: ${r.city}, ${r.state})`
     ).join('\n');
 
-    const systemPrompt = `You are an expert resource recommendation assistant for Forward Focus Elevation,
-    helping individuals find the best community resources for their needs. You have access to a database of
+    const systemPrompt = `You are an expert resource recommendation assistant for "The Collective" (AI & Life Transformation Hub) at Forward Focus Elevation,
+    helping individuals find the best community and AI transformation resources for their needs. You have access to a database of
     verified resources. Analyze the user's needs and recommend the 3-5 most relevant resources with explanations.`;
 
     const userPrompt = `User needs: ${userNeeds}

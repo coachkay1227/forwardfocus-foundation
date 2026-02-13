@@ -76,6 +76,23 @@ const AddResource = () => {
         throw error;
       }
 
+      // Send email notification
+      try {
+        await supabase.functions.invoke('send-resource-notification', {
+          body: {
+            organization: formData.organization,
+            resourceName: formData.name,
+            category: formData.category,
+            website: formData.website,
+            phone: formData.phone,
+            description: formData.description,
+            partnerEmail: user.email
+          }
+        });
+      } catch (emailError) {
+        console.error('Error sending notification email:', emailError);
+      }
+
       toast({ 
         title: "Resource submitted", 
         description: "Thanks! Our team will review and publish shortly." 

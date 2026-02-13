@@ -16,8 +16,8 @@ serve(async (req) => {
   try {
     const { price_id, amount, donor_name } = await req.json();
 
-    if (!price_id) {
-      throw new Error("Price ID is required");
+    if (!price_id && !amount) {
+      throw new Error("Price ID or Amount is required");
     }
 
     // Initialize Stripe
@@ -60,16 +60,26 @@ serve(async (req) => {
       console.log("No authenticated user, proceeding with guest donation");
     }
 
+    // Prepare line items
+    const line_items = price_id
+      ? [{ price: price_id, quantity: 1 }]
+      : [{
+          price_data: {
+            currency: "usd",
+            product_data: {
+              name: "Custom Donation",
+              description: "Thank you for supporting Forward Focus Elevation",
+            },
+            unit_amount: Math.round(parseFloat(amount) * 100),
+          },
+          quantity: 1,
+        }];
+
     // Create a one-time payment session
     const session = await stripe.checkout.sessions.create({
       customer: customerId,
       customer_email: customerId ? undefined : customerEmail,
-      line_items: [
-        {
-          price: price_id,
-          quantity: 1,
-        },
-      ],
+      line_items,
       mode: "payment",
       success_url: `${req.headers.get("origin")}/donation-success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${req.headers.get("origin")}/support`,
