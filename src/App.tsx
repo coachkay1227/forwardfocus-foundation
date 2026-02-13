@@ -50,6 +50,7 @@ const SetupAdmin = lazy(() => import("./pages/SetupAdmin"));
 const AdminGuide = lazy(() => import("./pages/AdminGuide"));
 const SuccessStories = lazy(() => import("./pages/SuccessStories"));
 const SetupGuide = lazy(() => import("./pages/SetupGuide"));
+const YouthElevation = lazy(() => import("./pages/YouthElevation"));
 
 const queryClient = new QueryClient();
 
@@ -90,6 +91,7 @@ const App = () => {
                           <Route path="/collective" element={<Navigate to="/learn" replace />} />
                           <Route path="/community" element={<Navigate to="/learn" replace />} />
                           <Route path="/about" element={<AboutUs />} />
+                          <Route path="/youth" element={<YouthElevation />} />
                           <Route path="/support" element={<Support />} />
                           <Route path="/auth" element={<Auth />} />
                           <Route path="/auth-debug" element={<AuthDebug />} />
