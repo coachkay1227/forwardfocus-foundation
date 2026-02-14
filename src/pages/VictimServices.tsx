@@ -23,7 +23,8 @@ import {
   LogIn,
   Eye,
   EyeOff,
-  Brain
+  Brain,
+  Search
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -36,61 +37,51 @@ import { Badge } from "@/components/ui/badge";
 import SignupModal from "@/components/healing/SignupModal";
 import VictimSupportAI from "@/components/ai/VictimSupportAI";
 import DailyHealingToolkit from "@/components/healing/DailyHealingToolkit";
+import AIResourceDiscovery from "@/components/ai/AIResourceDiscovery";
 import diverseFamiliesImage from "@/assets/diverse-families-healing.jpg";
 import healingCommunityImage from "@/assets/healing-community.jpg";
 
+// Consistent Resource Card Component using glassmorphism
+const ResourceCard = ({ resource }: { resource: any }) => (
+  <div className="p-4 rounded-xl bg-white/60 border border-osu-gray/10 hover:border-osu-scarlet/20 transition-all duration-300 group">
+    <div className="flex justify-between items-start mb-2">
+      <h4 className="font-bold text-foreground group-hover:text-osu-scarlet transition-colors">{resource.title}</h4>
+      <Badge variant="outline" className="text-[10px] uppercase tracking-wider border-osu-gray/20 text-muted-foreground">
+        {resource.type}
+      </Badge>
+    </div>
+    <p className="text-sm text-muted-foreground mb-4 leading-relaxed">{resource.description}</p>
 
-// Resource Card Component  
-const ResourceCard = ({ resource, isPreview = false }: { resource: any; isPreview?: boolean }) => (
-  <Card className="transition-all hover:shadow-lg duration-300 border-l-4 border-l-osu-scarlet shadow-md">
-    <CardContent className="p-6">
-      <div className="mb-4 flex items-start justify-between">
-        <div className="flex-1">
-          <h4 className="font-bold text-lg text-foreground">{resource.title}</h4>
-          <p className="text-base text-foreground/80 mt-2">{resource.description}</p>
-        </div>
-        <Badge variant={
-          resource.type === 'Government Resource' ? 'default' :
-          resource.type === 'Crisis Support' ? 'destructive' :
-          resource.type === 'Legal Aid' ? 'secondary' :
-          'outline'
-        } className="ml-3 font-medium bg-osu-scarlet text-white">
-          {resource.type}
-        </Badge>
-      </div>
-      
-      <div className="flex items-center justify-between">
-        <div className="flex gap-3">
-          {resource.url && (
-            <Button asChild size="sm" className="shadow-sm bg-gradient-osu-accent text-white">
-              <a href={resource.url} target="_blank" rel="noopener noreferrer">
-                <ExternalLink className="mr-2 h-4 w-4" />
-                Visit Resource
-              </a>
-            </Button>
-          )}
-          {resource.phone && (
-            <Button asChild size="sm" variant="secondary" className="shadow-sm bg-osu-gray text-white hover:bg-osu-gray-dark">
-              <a href={`tel:${resource.phone}`}>
-                <Phone className="mr-2 h-4 w-4" />
-                Call
-              </a>
-            </Button>
-          )}
-        </div>
-        {resource.available && (
-          <Badge variant="outline" className="text-xs font-medium border-osu-scarlet text-osu-scarlet-dark">
-            {resource.available}
-          </Badge>
+    <div className="flex items-center justify-between mt-auto">
+      <div className="flex gap-2">
+        {resource.url && (
+          <Button asChild variant="ghost" size="sm" className="h-8 px-3 text-xs font-medium hover:text-osu-scarlet hover:bg-osu-scarlet/5">
+            <a href={resource.url} target="_blank" rel="noopener noreferrer">
+              Visit <ExternalLink className="ml-1 h-3 w-3" />
+            </a>
+          </Button>
+        )}
+        {resource.phone && (
+          <Button asChild variant="ghost" size="sm" className="h-8 px-3 text-xs font-medium hover:text-osu-scarlet hover:bg-osu-scarlet/5">
+            <a href={`tel:${resource.phone.replace(/[^0-9]/g, '')}`}>
+              Call {resource.phone}
+            </a>
+          </Button>
+        )}
+        {resource.action && (
+          <span className="text-xs font-medium text-osu-scarlet bg-osu-scarlet/5 px-2 py-1 rounded">
+            {resource.action}
+          </span>
         )}
       </div>
-    </CardContent>
-  </Card>
+    </div>
+  </div>
 );
 
 export default function VictimServices() {
   const [showVictimAI, setShowVictimAI] = useState(false);
   const [showSignupModal, setShowSignupModal] = useState(false);
+  const [showResourceDiscovery, setShowResourceDiscovery] = useState(false);
   const [isSignedUp, setIsSignedUp] = useState(false);
 
   const structuredData = {
@@ -124,46 +115,47 @@ export default function VictimServices() {
     {
       icon: MessageSquare,
       title: "Crisis Intervention",
-      description: "24/7 crisis support, safety planning, and immediate intervention services",
-      color: "bg-red-50 border-red-200 text-red-800",
+      description: "Immediate support for safety and stabilization.",
+      color: "text-red-600",
+      bgColor: "bg-red-50",
       resources: [
-        { title: "National Domestic Violence Hotline", description: "24/7 confidential support for domestic violence survivors", type: "Crisis Support", phone: "1-800-799-7233", available: "24/7" },
-        { title: "Crisis Text Line", description: "Free crisis support via text message", type: "Crisis Support", action: "Text HOME to 741741", available: "24/7" },
-        { title: "National Suicide & Crisis Lifeline", description: "24/7 suicide prevention and crisis support", type: "Crisis Support", phone: "988", available: "24/7" },
-        { title: "RAINN National Sexual Assault Hotline", description: "Confidential support for sexual assault survivors", type: "Crisis Support", phone: "1-800-656-4673", available: "24/7" }
+        { title: "National Domestic Violence Hotline", description: "24/7 confidential support for domestic violence survivors", type: "Crisis", phone: "1-800-799-7233" },
+        { title: "Crisis Text Line", description: "Free crisis support via text message", type: "Crisis", action: "Text HOME to 741741" },
+        { title: "988 Suicide & Crisis Lifeline", description: "24/7 free and confidential support", type: "Emergency", phone: "988" }
       ]
     },
     {
       icon: Scale,
       title: "Legal Advocacy",
-      description: "Navigate the legal system with victim-centered advocacy and support",
-      color: "bg-blue-50 border-blue-200 text-blue-800",
+      description: "Navigate the justice system with expert help.",
+      color: "text-blue-600",
+      bgColor: "bg-blue-50",
       resources: [
-        { title: "Legal Aid Society", description: "Free legal assistance for crime victims", type: "Legal Aid", url: "https://www.legalaid.org", phone: "1-800-LEGAL-AID" },
-        { title: "Victim Rights Law Center", description: "Legal services for sexual assault survivors", type: "Legal Aid", url: "https://www.victimrights.org" },
-        { title: "Court Advocacy Program", description: "Support navigating court proceedings", type: "Legal Aid", phone: "Local courthouse" }
+        { title: "Ohio Legal Aid", description: "Free legal assistance for low-income Ohioans", type: "Legal", url: "https://www.ohiolegalhelp.org" },
+        { title: "Victim Rights Law Center", description: "Legal services for sexual assault survivors", type: "Legal", url: "https://www.victimrights.org" },
+        { title: "VINELink", description: "Offender custody status notification", type: "Safety", url: "https://vinelink.com" }
       ]
     },
     {
       icon: DollarSign,
       title: "Financial Recovery",
-      description: "Access compensation programs and financial assistance resources",
-      color: "bg-green-50 border-green-200 text-green-800",
+      description: "Access compensation and emergency funds.",
+      color: "text-green-600",
+      bgColor: "bg-green-50",
       resources: [
-        { title: "Ohio Victim Compensation Program", description: "Financial assistance for crime-related expenses", type: "Government Resource", url: "https://www.ohioattorneygeneral.gov/Individuals-and-Families/Victims/Victims-Compensation-Application" },
-        { title: "Federal Victim Compensation", description: "Information about federal compensation programs", type: "Government Resource", url: "https://ovc.ojp.gov/topics/victim-compensation" },
-        { title: "Emergency Financial Assistance", description: "Immediate financial help for basic needs", type: "Financial Aid", phone: "211" }
+        { title: "Ohio Victim Compensation", description: "Financial help for crime-related expenses", type: "Compensation", url: "https://www.ohioattorneygeneral.gov/Individuals-and-Families/Victims/Victims-Compensation-Application" },
+        { title: "National Center for Victims of Crime", description: "Financial planning and recovery resources", type: "Financial", url: "https://victimsofcrime.org" }
       ]
     },
     {
       icon: Heart,
       title: "Healing & Wellness",
-      description: "Trauma-informed therapy, support groups, and wellness programs",
-      color: "bg-purple-50 border-purple-200 text-purple-800",
+      description: "Long-term recovery and community connection.",
+      color: "text-purple-600",
+      bgColor: "bg-purple-50",
       resources: [
-        { title: "Trauma Recovery Network", description: "Specialized trauma therapy and counseling", type: "Mental Health", url: "https://www.traumarecoverynetwork.org" },
-        { title: "Support Groups for Survivors", description: "Peer support and group therapy sessions", type: "Mental Health", phone: "Local community center" },
-        { title: "Mindfulness & Wellness Programs", description: "Holistic healing approaches and wellness resources", type: "Wellness", url: "https://www.mindfulness.org" }
+        { title: "Trauma Recovery Network", description: "Find specialized trauma therapists", type: "Therapy", url: "https://www.traumarecoverynetwork.org" },
+        { title: "NAMI Ohio", description: "Mental health support groups and education", type: "Support", url: "https://namiohio.org" }
       ]
     }
   ];
@@ -177,183 +169,151 @@ export default function VictimServices() {
       />
       <StructuredData data={structuredData} />
       
-      <main id="main" className="min-h-screen">
-        {/* Skip to content link */}
-        <a 
-          href="#main-content" 
-          className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:bg-primary focus:text-primary-foreground focus:px-4 focus:py-2 focus:rounded-lg focus:font-medium"
-        >
-          Skip to main content
-        </a>
-
+      <main id="main" className="min-h-screen bg-gradient-to-br from-background via-background to-osu-gray/5">
         {/* Hero Section */}
-        <header className="relative bg-gradient-osu-primary text-white overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-br from-muted/90 via-osu-scarlet/80 to-osu-scarlet-dark/70"></div>
+        <header className="relative bg-gradient-osu-primary text-white overflow-hidden pb-20">
+          <div className="absolute inset-0 bg-gradient-to-br from-osu-gray-dark/90 via-osu-scarlet/80 to-osu-scarlet-dark/90 mix-blend-multiply"></div>
+          <div className="absolute inset-0 bg-[url('/noise.png')] opacity-10 mix-blend-overlay"></div>
+
           <div className="relative container py-24 md:py-32">
-            <div className="max-w-5xl mx-auto text-center">
-              <div className="flex items-center justify-center gap-3 mb-8">
-                <Shield className="h-8 w-8 text-white" />
-                <span className="text-sm uppercase tracking-widest font-bold bg-white/10 backdrop-blur-md border border-white/30 px-6 py-2 rounded-full shadow-inner">Healing Hub & Sanctuary</span>
+            <div className="max-w-4xl mx-auto text-center space-y-8">
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-sm font-medium tracking-wide animate-fade-in">
+                <Shield className="h-4 w-4" />
+                <span>The Healing Hub & Sanctuary</span>
               </div>
-              <h1 className="font-heading text-4xl md:text-7xl font-bold mb-6 leading-tight text-center">
-                Your Sanctuary for
-                <span className="block text-white/80 mt-2">Release & Recovery</span>
+
+              <h1 className="font-heading text-4xl md:text-6xl lg:text-7xl font-bold leading-tight tracking-tight">
+                Your Safe Space for <br/>
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-white/90 to-white/70">Release & Recovery</span>
               </h1>
-              <p className="text-lg md:text-2xl text-white/90 mb-12 leading-relaxed max-w-3xl mx-auto font-light">
-                A trauma-informed digital safe haven for Ohio survivors. Access somatic tools,
-                guided reflection, and state-wide advocacy resources 24/7.
+
+              <p className="text-lg md:text-xl text-white/80 max-w-2xl mx-auto leading-relaxed font-light">
+                A trauma-informed digital sanctuary designed for Ohio survivors.
+                Access clinically-grounded tools for stabilization, reflection, and connection—at your own pace, on your own terms.
               </p>
-              <div className="flex flex-col sm:flex-row gap-4 max-w-sm sm:max-w-lg mx-auto px-4">
+
+              <div className="flex flex-col sm:flex-row gap-4 justify-center pt-8">
                 <Button 
                   size="lg" 
-                  className="get-involved-gold-button border-none w-full sm:flex-1 shadow-xl"
+                  className="get-involved-gold-button border-none shadow-xl px-8 py-6 text-lg"
                   onClick={() => setShowVictimAI(true)}
                 >
                   <Bot className="h-5 w-5 mr-2" />
-                  Get Personalized Help
+                  Ask Coach Kay
                 </Button>
                 <Button 
                   size="lg" 
-                  variant="hero"
-                  className="w-full sm:flex-1"
-                  onClick={() => window.location.href = 'tel:988'}
+                  variant="outline"
+                  className="bg-white/10 backdrop-blur-sm border-white/30 text-white hover:bg-white/20 px-8 py-6 text-lg"
+                  onClick={() => {
+                    document.getElementById('toolkit')?.scrollIntoView({ behavior: 'smooth' });
+                  }}
                 >
-                  <Phone className="h-5 w-5 mr-2" />
-                  Crisis Support: 988
+                  Explore Healing Tools
                 </Button>
               </div>
             </div>
           </div>
+
+          {/* Curved divider */}
+          <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-b from-transparent to-background/5"></div>
         </header>
 
-        {/* Daily Healing Toolkit */}
-        <DailyHealingToolkit />
-
-        <div className="container py-24 space-y-24">
-          {/* Community Visual Banner */}
-          <section className="bg-secondary/5 py-16 rounded-2xl">
-            <div className="max-w-6xl mx-auto">
-              <div className="relative overflow-hidden rounded-2xl shadow-2xl">
-                <img
-                  src={healingCommunityImage}
-                  alt="Diverse healing community supporting each other through trauma recovery"
-                  loading="lazy"
-                  className="w-full h-80 object-cover"
-                />
-                <div className="absolute inset-0 bg-gradient-to-r from-osu-gray/90 to-osu-gray-dark/70 flex items-center">
-                  <div className="container">
-                    <div className="max-w-2xl">
-                      <h2 className="font-heading text-3xl md:text-4xl font-bold text-white mb-4">
-                        Healing happens in community
-                      </h2>
-                      <p className="text-lg text-white/90 leading-relaxed">
-                        Comprehensive support designed by survivors, for survivors. Every resource 
-                        is trauma-informed and respects your journey to healing.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          {/* Support Path Cards */}
-          <section id="main-content" className="scroll-mt-16">
-            <div className="max-w-6xl mx-auto">
-              <div className="text-center mb-16">
-                <h2 className="font-heading text-3xl md:text-4xl font-bold text-foreground mb-6">
-                  Comprehensive Support Pathways
-                </h2>
-                <p className="text-lg text-foreground/70 max-w-3xl mx-auto leading-relaxed">
-                  Our AI assistant and human support team can help with these specialized areas. 
-                  Each pathway is designed with trauma-informed care principles.
-                </p>
-              </div>
-
-              <div className="grid md:grid-cols-2 gap-8">
-                {supportPaths.map((path, index) => {
-                  const IconComponent = path.icon;
-                  return (
-                    <Card key={index} className="p-6 hover:shadow-xl transition-all duration-300 border-l-4 border-l-osu-scarlet">
-                      <div className="flex items-start gap-4 mb-6">
-                        <div className={`p-4 rounded-xl ${path.color} flex-shrink-0`}>
-                          <IconComponent className="h-8 w-8" />
-                        </div>
-                        <div>
-                          <h3 className="text-2xl font-semibold text-foreground mb-2">{path.title}</h3>
-                          <p className="text-foreground/70 leading-relaxed">{path.description}</p>
-                        </div>
-                      </div>
-                      
-                      <div className="space-y-3">
-                        {path.resources.slice(0, 3).map((resource, resourceIndex) => (
-                          <div key={resourceIndex} className="p-3 rounded-lg bg-muted/30 border">
-                            <div className="font-medium text-sm text-foreground">{resource.title}</div>
-                            <div className="text-xs text-foreground/60 mt-1">{resource.description}</div>
-                            {resource.phone && (
-                              <div className="text-xs text-primary font-medium mt-1">{resource.phone}</div>
-                            )}
-                          </div>
-                        ))}
-                      </div>
-                    </Card>
-                  );
-                })}
-              </div>
-            </div>
-          </section>
-
-          {/* AI Support Section */}
-          <section className="scroll-mt-16 bg-primary/5 py-16 rounded-2xl">
-            <div className="max-w-4xl mx-auto text-center">
-              <h2 className="font-heading text-3xl md:text-4xl font-bold text-foreground mb-6">
-                24/7 AI-Powered Support
-              </h2>
-              <p className="text-lg text-foreground/70 mb-8 max-w-2xl mx-auto">
-                Our specialized AI assistant understands trauma and can provide personalized guidance, 
-                resources, and support based on your specific needs and situation.
-              </p>
-              
-              <Button 
-                size="lg" 
-                className="get-involved-gold-button border-none shadow-xl"
-                onClick={() => setShowVictimAI(true)}
-              >
-                <Bot className="h-5 w-5 mr-2" />
-                Start Your Healing Journey
-              </Button>
-            </div>
-          </section>
+        {/* Daily Healing Toolkit (The "Sanctuary") */}
+        <div id="toolkit" className="relative -mt-16 z-10">
+          <DailyHealingToolkit />
         </div>
 
-        {/* Call to Action */}
-        <section className="scroll-mt-16 bg-gradient-to-br from-osu-gray via-osu-scarlet to-osu-scarlet-dark text-white overflow-hidden">
-          <div className="px-8 py-20 md:py-24">
-            <div className="max-w-4xl mx-auto text-center">
-              <h2 className="font-heading text-3xl md:text-5xl font-bold mb-8">
-                You deserve support and healing
+        {/* Professional Support Section (Refactored) */}
+        <section className="py-24 bg-gradient-to-b from-background to-secondary/5">
+          <div className="container max-w-7xl mx-auto px-4">
+            <div className="text-center mb-16 space-y-4">
+              <h2 className="font-heading text-3xl md:text-4xl font-bold text-foreground">
+                Professional & Community Support
               </h2>
-              <p className="text-lg md:text-xl text-white/90 mb-8 max-w-2xl mx-auto leading-relaxed">
-                Take the first step toward recovery. Our community and resources are here to support you 
-                every step of the way.
+              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                Beyond self-guided tools, connect with specialized organizations and resources tailored to your needs.
               </p>
-              <div className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
-                <Button 
-                  size="lg" 
-                  variant="secondary"
-                  className="bg-white text-osu-scarlet hover:bg-white/90 flex-1"
-                  onClick={() => setShowVictimAI(true)}
+
+              {/* Added Resource Discovery Button */}
+              <div className="pt-4">
+                <Button
+                  variant="outline"
+                  className="gap-2 border-osu-scarlet/20 text-osu-scarlet hover:bg-osu-scarlet/5"
+                  onClick={() => setShowResourceDiscovery(true)}
                 >
-                  <Bot className="h-5 w-5 mr-2" />
-                  Get AI Support
+                  <Search className="h-4 w-4" />
+                  Search Local Ohio Resources
                 </Button>
+              </div>
+            </div>
+
+            <div className="grid md:grid-cols-2 gap-8">
+              {supportPaths.map((path, index) => {
+                const Icon = path.icon;
+                return (
+                  <Card key={index} className="border-0 shadow-lg bg-white/50 backdrop-blur-sm overflow-hidden hover:shadow-xl transition-all duration-300">
+                    <CardHeader className="border-b border-gray-100 bg-white/50 pb-4">
+                      <div className="flex items-center gap-4">
+                        <div className={`p-3 rounded-xl ${path.bgColor} ${path.color}`}>
+                          <Icon className="h-6 w-6" />
+                        </div>
+                        <div>
+                          <CardTitle className="text-xl font-bold text-foreground">{path.title}</CardTitle>
+                          <CardDescription className="mt-1">{path.description}</CardDescription>
+                        </div>
+                      </div>
+                    </CardHeader>
+                    <CardContent className="p-6 bg-white/30">
+                      <div className="space-y-4">
+                        {path.resources.map((resource, idx) => (
+                          <ResourceCard key={idx} resource={resource} />
+                        ))}
+                      </div>
+                    </CardContent>
+                  </Card>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+
+        {/* Community & Connection Banner */}
+        <section className="py-16 container">
+          <div className="relative rounded-3xl overflow-hidden shadow-2xl isolate">
+            <div className="absolute inset-0">
+               <img
+                  src={healingCommunityImage}
+                  alt="Supportive community"
+                  className="w-full h-full object-cover opacity-30"
+                />
+               <div className="absolute inset-0 bg-gradient-to-r from-osu-scarlet-dark/90 to-osu-gray-dark/90 mix-blend-multiply" />
+            </div>
+
+            <div className="relative px-6 py-24 sm:px-12 sm:py-32 lg:px-16 text-center max-w-3xl mx-auto space-y-8">
+              <h2 className="text-3xl font-heading font-bold tracking-tight text-white sm:text-4xl">
+                You Don't Have to Walk Alone
+              </h2>
+              <p className="text-lg leading-8 text-white/90 font-light">
+                Join a community of survivors and advocates committed to healing, growth, and systemic change.
+                Your story matters, and your voice deserves to be heard.
+              </p>
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-6 mt-8">
                 <Button 
                   size="lg" 
-                  className="bg-osu-gray hover:bg-osu-gray-dark text-white flex-1"
+                  className="bg-white text-osu-scarlet hover:bg-white/90 font-bold px-8 shadow-lg"
                   onClick={() => setShowSignupModal(true)}
                 >
                   <Users className="h-5 w-5 mr-2" />
-                  Join Community
+                  Join the Community
+                </Button>
+                <Button 
+                  size="lg" 
+                  variant="outline"
+                  className="border-white/30 text-white hover:bg-white/10"
+                  onClick={() => setShowVictimAI(true)}
+                >
+                  Chat with Support
                 </Button>
               </div>
             </div>
@@ -365,11 +325,21 @@ export default function VictimServices() {
       <AiErrorBoundary>
         <VictimSupportAI isOpen={showVictimAI} onClose={() => setShowVictimAI(false)} />
       </AiErrorBoundary>
+
       <SignupModal
         isOpen={showSignupModal}
         onClose={() => setShowSignupModal(false)}
         onSignup={handleSignup}
       />
+
+      <AiErrorBoundary>
+        <AIResourceDiscovery
+          isOpen={showResourceDiscovery}
+          onClose={() => setShowResourceDiscovery(false)}
+          initialQuery="support groups near me"
+          location="Ohio"
+        />
+      </AiErrorBoundary>
     </>
   );
 }
