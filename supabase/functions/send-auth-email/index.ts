@@ -24,7 +24,53 @@ const handler = async (req: Request): Promise<Response> => {
   }
 
   try {
+    // SEC1: Authentication check
+    const authHeader = req.headers.get('Authorization');
+    const anonKey = Deno.env.get('SUPABASE_ANON_KEY');
+    const serviceRoleKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY');
+
+    if (!authHeader ||
+        (authHeader !== `Bearer ${anonKey}` &&
+         authHeader !== `Bearer ${serviceRoleKey}`)) {
+
+      // If it's not a direct key match, it might be a user JWT
+      // For welcome emails sent during signup, we often use the anon key
+      console.error("Unauthorized request to send-auth-email");
+      return new Response(
+        JSON.stringify({ success: false, error: "Unauthorized" }),
+        {
+          status: 401,
+          headers: { ...corsHeaders, "Content-Type": "application/json" }
+        }
+      );
+    }
+
     const { email, type, userData }: AuthEmailRequest = await req.json();
+
+    // SEC2: Input validation
+    if (!email || typeof email !== 'string' || !email.includes('@') || email.length > 255) {
+      console.error("Invalid email provided:", email);
+      return new Response(
+        JSON.stringify({ success: false, error: "Invalid email address" }),
+        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+
+    if (!type || !['welcome', 'password_reset', 'email_change'].includes(type)) {
+      console.error("Invalid email type provided:", type);
+      return new Response(
+        JSON.stringify({ success: false, error: "Invalid email type" }),
+        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+
+    if (userData?.name && (typeof userData.name !== 'string' || userData.name.length > 100)) {
+      console.error("Invalid user name provided:", userData.name);
+      return new Response(
+        JSON.stringify({ success: false, error: "Invalid user name" }),
+        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
     
     console.log("Processing auth email:", { email, type });
 
@@ -89,8 +135,18 @@ const handler = async (req: Request): Promise<Response> => {
   }
 };
 
+function escapeHtml(unsafe: string): string {
+  return unsafe
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
 function generateWelcomeEmail(email: string, name?: string): string {
-  const displayName = name || email.split('@')[0];
+  const escapedEmail = escapeHtml(email);
+  const displayName = escapeHtml(name || email.split('@')[0]);
   
   return `
     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f9fafb;">
@@ -162,7 +218,7 @@ function generateWelcomeEmail(email: string, name?: string): string {
         <p style="margin: 0 0 10px 0; font-size: 18px; font-weight: 600; color: #374151;">Forward Focus Elevation</p>
         <p style="margin: 0; font-size: 14px;">Empowering Justice-Impacted Families Through AI-Powered Education</p>
         <p style="margin: 10px 0 0 0; font-size: 12px;">
-          This email was sent to ${email}. If you have any questions, contact us at support@ffeservices.net
+          This email was sent to ${escapedEmail}. If you have any questions, contact us at support@ffeservices.net
         </p>
       </div>
     </div>
@@ -170,6 +226,7 @@ function generateWelcomeEmail(email: string, name?: string): string {
 }
 
 function generatePasswordResetEmail(email: string): string {
+  const escapedEmail = escapeHtml(email);
   return `
     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
       <div style="background: linear-gradient(135deg, #8B5CF6, #06B6D4); padding: 30px; border-radius: 10px; text-align: center; margin-bottom: 30px;">
@@ -179,7 +236,7 @@ function generatePasswordResetEmail(email: string): string {
       
       <div style="background: #F9FAFB; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
         <p style="color: #374151; margin: 0;">
-          We received a request to reset the password for your account (${email}). If you didn't make this request, you can safely ignore this email.
+          We received a request to reset the password for your account (${escapedEmail}). If you didn't make this request, you can safely ignore this email.
         </p>
       </div>
       
@@ -191,6 +248,7 @@ function generatePasswordResetEmail(email: string): string {
 }
 
 function generateEmailChangeEmail(email: string): string {
+  const escapedEmail = escapeHtml(email);
   return `
     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
       <div style="background: linear-gradient(135deg, #8B5CF6, #06B6D4); padding: 30px; border-radius: 10px; text-align: center; margin-bottom: 30px;">
@@ -200,7 +258,7 @@ function generateEmailChangeEmail(email: string): string {
       
       <div style="background: #F9FAFB; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
         <p style="color: #374151; margin: 0;">
-          Your email address has been successfully changed to: ${email}
+          Your email address has been successfully changed to: ${escapedEmail}
         </p>
       </div>
       
