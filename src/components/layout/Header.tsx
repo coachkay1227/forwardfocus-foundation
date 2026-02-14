@@ -93,6 +93,9 @@ const Header = ({
                       <Button variant="ghost" size="sm" asChild className="justify-start w-full">
                         <NavLink to="/victim-services" onClick={() => setOpen(false)}>Healing Hub</NavLink>
                       </Button>
+                      <Button variant="ghost" size="sm" asChild className="justify-start w-full">
+                        <NavLink to="/youth-futures" onClick={() => setOpen(false)}>Youth Futures</NavLink>
+                      </Button>
                       
                       {/* About Dropdown */}
                       <div className="border-t pt-2 mt-2">
@@ -102,9 +105,6 @@ const Header = ({
                         </Button>
                         <Button variant="ghost" size="sm" asChild className="justify-start w-full pl-6">
                           <NavLink to="/learn" onClick={() => setOpen(false)}>The Collective</NavLink>
-                        </Button>
-                        <Button variant="ghost" size="sm" asChild className="justify-start w-full pl-6">
-                          <NavLink to="/youth-futures" onClick={() => setOpen(false)}>Youth Futures</NavLink>
                         </Button>
                       </div>
 
@@ -173,6 +173,10 @@ const Header = ({
                   </NavigationMenuItem>
                   
                   <NavigationMenuItem>
+                    <NavLink to="/youth-futures" className={linkCls}>Youth Futures</NavLink>
+                  </NavigationMenuItem>
+
+                  <NavigationMenuItem>
                     <NavigationMenuTrigger className="text-foreground hover:bg-gray-100 data-[state=open]:text-red-700 data-[state=open]:bg-red-100 bg-transparent h-auto px-3 py-2 text-sm font-medium rounded-md transition-all duration-150">
                       About
                     </NavigationMenuTrigger>
@@ -195,16 +199,6 @@ const Header = ({
                               className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-all duration-150 hover:bg-gray-100 focus:bg-gray-100"
                             >
                               <div className="text-sm font-medium leading-none">The Collective</div>
-                            </NavLink>
-                          </NavigationMenuLink>
-                        </li>
-                        <li>
-                          <NavigationMenuLink asChild>
-                            <NavLink
-                              to="/youth-futures"
-                              className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-all duration-150 hover:bg-gray-100 focus:bg-gray-100"
-                            >
-                              <div className="text-sm font-medium leading-none">Youth Futures</div>
                             </NavLink>
                           </NavigationMenuLink>
                         </li>
