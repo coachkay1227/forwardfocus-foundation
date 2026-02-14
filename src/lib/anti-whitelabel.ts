@@ -6,7 +6,6 @@ interface DomainConfig {
   allowedDomains: string[];
   brandName: string;
   copyrightNotice: string;
-  licenseKey?: string;
 }
 
 const AUTHORIZED_CONFIG: DomainConfig = {
@@ -20,8 +19,7 @@ const AUTHORIZED_CONFIG: DomainConfig = {
     'mdwkkgancoocvkmecwkm.supabase.co'
   ],
   brandName: 'Forward Focus Elevation',
-  copyrightNotice: '© 2025 Forward Focus Elevation. All rights reserved.',
-  licenseKey: 'FFE-2025-AUTHORIZED'
+  copyrightNotice: '© 2025 Forward Focus Elevation. All rights reserved.'
 };
 
 class AntiWhitelabelProtection {
@@ -41,9 +39,6 @@ class AntiWhitelabelProtection {
     
     // Check for tampering attempts
     this.monitorTampering();
-    
-    // Add copyright watermarks - DISABLED
-    // this.addCopyrightProtection();
   }
 
   private validateDomain(): boolean {
@@ -106,7 +101,6 @@ class AntiWhitelabelProtection {
   private monitorTampering() {
     // Monitor for attempts to modify the protection system
     const originalConsoleLog = console.log;
-    const originalConsoleWarn = console.warn;
     
     console.log = (...args) => {
       if (args.some(arg => typeof arg === 'string' && arg.includes('anti-whitelabel'))) {
@@ -114,25 +108,6 @@ class AntiWhitelabelProtection {
       }
       originalConsoleLog.apply(console, args);
     };
-    
-    console.warn = (...args) => {
-      originalConsoleWarn.apply(console, args);
-    };
-    
-    // Monitor for DOM manipulation attempts
-    const observer = new MutationObserver((mutations) => {
-      mutations.forEach((mutation) => {
-        if (mutation.type === 'childList' && mutation.removedNodes.length > 0) {
-          mutation.removedNodes.forEach((node) => {
-            if (node instanceof Element && node.className?.includes('copyright-protection')) {
-              this.handleTamperingAttempt('Copyright removal detected');
-            }
-          });
-        }
-      });
-    });
-    
-    observer.observe(document.body, { childList: true, subtree: true });
   }
 
   private handleTamperingAttempt(reason: string) {
@@ -146,37 +121,6 @@ class AntiWhitelabelProtection {
         domain: window.location.hostname
       });
     }
-  }
-
-  private addCopyrightProtection() {
-    // Add invisible copyright markers throughout the page
-    const createCopyrightMarker = () => {
-      const marker = document.createElement('div');
-      marker.className = 'copyright-protection';
-      marker.style.cssText = `
-        position: absolute;
-        width: 1px;
-        height: 1px;
-        opacity: 0;
-        pointer-events: none;
-        user-select: none;
-      `;
-      marker.setAttribute('data-copyright', AUTHORIZED_CONFIG.copyrightNotice);
-      marker.setAttribute('data-license', AUTHORIZED_CONFIG.licenseKey || '');
-      return marker;
-    };
-    
-    // Add markers to key elements
-    document.addEventListener('DOMContentLoaded', () => {
-      document.body.appendChild(createCopyrightMarker());
-      
-      // Add to header and footer if they exist
-      const header = document.querySelector('header');
-      const footer = document.querySelector('footer');
-      
-      if (header) header.appendChild(createCopyrightMarker());
-      if (footer) footer.appendChild(createCopyrightMarker());
-    });
   }
 
   public isAuthenticatedDomain(): boolean {
