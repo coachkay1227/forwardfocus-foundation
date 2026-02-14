@@ -37,37 +37,39 @@ serve(async (req: Request) => {
 
     console.log("Starting verification expiration check...");
 
-    // Find verifications expiring in 30 days (first reminder)
-    const { data: expiring30Days, error: error30 } = await supabase
-      .from('partner_verifications')
-      .select('*, profiles(email, full_name)')
-      .eq('status', 'approved')
-      .gte('expires_at', now.toISOString())
-      .lte('expires_at', thirtyDaysFromNow.toISOString())
-      .eq('renewal_reminder_sent', false)
-      .returns<VerificationWithProfile[]>();
+    console.log("Fetching expiring and expired verifications...");
+
+    // Find verifications in parallel
+    const [
+      { data: expiring30Days, error: error30 },
+      { data: expiring7Days, error: error7 },
+      { data: expired, error: errorExpired }
+    ] = await Promise.all([
+      supabase
+        .from('partner_verifications')
+        .select('*, profiles(email, full_name)')
+        .eq('status', 'approved')
+        .gte('expires_at', now.toISOString())
+        .lte('expires_at', thirtyDaysFromNow.toISOString())
+        .eq('renewal_reminder_sent', false)
+        .returns<VerificationWithProfile[]>(),
+      supabase
+        .from('partner_verifications')
+        .select('*, profiles(email, full_name)')
+        .eq('status', 'approved')
+        .gte('expires_at', now.toISOString())
+        .lte('expires_at', sevenDaysFromNow.toISOString())
+        .returns<VerificationWithProfile[]>(),
+      supabase
+        .from('partner_verifications')
+        .select('*, profiles(email, full_name)')
+        .eq('status', 'approved')
+        .lt('expires_at', now.toISOString())
+        .returns<VerificationWithProfile[]>()
+    ]);
 
     if (error30) throw error30;
-
-    // Find verifications expiring in 7 days (final reminder)
-    const { data: expiring7Days, error: error7 } = await supabase
-      .from('partner_verifications')
-      .select('*, profiles(email, full_name)')
-      .eq('status', 'approved')
-      .gte('expires_at', now.toISOString())
-      .lte('expires_at', sevenDaysFromNow.toISOString())
-      .returns<VerificationWithProfile[]>();
-
     if (error7) throw error7;
-
-    // Find expired verifications
-    const { data: expired, error: errorExpired } = await supabase
-      .from('partner_verifications')
-      .select('*, profiles(email, full_name)')
-      .eq('status', 'approved')
-      .lt('expires_at', now.toISOString())
-      .returns<VerificationWithProfile[]>();
-
     if (errorExpired) throw errorExpired;
 
     const results = {
@@ -79,7 +81,7 @@ serve(async (req: Request) => {
 
     // Send 30-day reminders
     if (expiring30Days && expiring30Days.length > 0) {
-      for (const verification of expiring30Days) {
+      await Promise.all(expiring30Days.map(async (verification) => {
         try {
           const expiresAt = new Date(verification.expires_at);
           const daysLeft = Math.ceil((expiresAt.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
@@ -109,12 +111,12 @@ serve(async (req: Request) => {
           console.error(`Failed to send 30-day reminder to ${verification.profiles.email}:`, err);
           results.errors.push(`30-day reminder failed for ${verification.profiles.email}`);
         }
-      }
+      }));
     }
 
     // Send 7-day final reminders
     if (expiring7Days && expiring7Days.length > 0) {
-      for (const verification of expiring7Days) {
+      await Promise.all(expiring7Days.map(async (verification) => {
         try {
           const expiresAt = new Date(verification.expires_at);
           const daysLeft = Math.ceil((expiresAt.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
@@ -145,12 +147,12 @@ serve(async (req: Request) => {
           console.error(`Failed to send 7-day reminder to ${verification.profiles.email}:`, err);
           results.errors.push(`7-day reminder failed for ${verification.profiles.email}`);
         }
-      }
+      }));
     }
 
     // Process expired verifications
     if (expired && expired.length > 0) {
-      for (const verification of expired) {
+      await Promise.all(expired.map(async (verification) => {
         try {
           // Update status to expired
           await supabase
@@ -184,7 +186,7 @@ serve(async (req: Request) => {
           console.error(`Failed to process expired verification for ${verification.profiles.email}:`, err);
           results.errors.push(`Expiration processing failed for ${verification.profiles.email}`);
         }
-      }
+      }));
     }
 
     console.log("Verification expiration check completed:", results);
