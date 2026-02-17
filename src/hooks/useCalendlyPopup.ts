@@ -12,7 +12,6 @@ export const useCalendlyPopup = () => {
   useEffect(() => {
     // Check immediately if already loaded
     if (window.Calendly) {
-      console.log('Calendly already loaded');
       setCalendlyReady(true);
       return;
     }
@@ -22,10 +21,8 @@ export const useCalendlyPopup = () => {
     const maxAttempts = 20; // 10 seconds
     const checkCalendly = setInterval(() => {
       attempts++;
-      console.log(`Checking for Calendly... attempt ${attempts}`);
       
       if (window.Calendly) {
-        console.log('Calendly loaded successfully');
         setCalendlyReady(true);
         clearInterval(checkCalendly);
       } else if (attempts >= maxAttempts) {
@@ -38,10 +35,6 @@ export const useCalendlyPopup = () => {
   }, []);
 
   const openCalendly = (url: string) => {
-    console.log('openCalendly called with url:', url);
-    console.log('calendlyReady:', calendlyReady);
-    console.log('window.Calendly:', window.Calendly);
-    
     if (!calendlyReady || !window.Calendly) {
       console.error('Calendly not ready or not loaded');
       alert('Calendly is still loading. Please wait a moment and try again.');
@@ -54,7 +47,6 @@ export const useCalendlyPopup = () => {
     }
     
     try {
-      console.log('Calling Calendly.initPopupWidget');
       window.Calendly.initPopupWidget({ url });
     } catch (error) {
       console.error('Error opening Calendly:', error);
