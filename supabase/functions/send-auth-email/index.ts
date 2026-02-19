@@ -1,5 +1,6 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { Resend } from "https://esm.sh/resend@4.0.0";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2.76.0";
 
 const resend = new Resend(Deno.env.get("RESEND_API_KEY"));
 
@@ -24,24 +25,28 @@ const handler = async (req: Request): Promise<Response> => {
   }
 
   try {
-    // SEC1: Authentication check
+    // SEC1: JWT Authentication check
     const authHeader = req.headers.get('Authorization');
-    const anonKey = Deno.env.get('SUPABASE_ANON_KEY');
-    const serviceRoleKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY');
+    if (!authHeader?.startsWith('Bearer ')) {
+      return new Response(
+        JSON.stringify({ success: false, error: "Unauthorized" }),
+        { status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
 
-    if (!authHeader ||
-        (authHeader !== `Bearer ${anonKey}` &&
-         authHeader !== `Bearer ${serviceRoleKey}`)) {
+    const supabase = createClient(
+      Deno.env.get('SUPABASE_URL')!,
+      Deno.env.get('SUPABASE_ANON_KEY')!,
+      { global: { headers: { Authorization: authHeader } } }
+    );
 
-      // If it's not a direct key match, it might be a user JWT
-      // For welcome emails sent during signup, we often use the anon key
+    const token = authHeader.replace('Bearer ', '');
+    const { data: claimsData, error: claimsError } = await supabase.auth.getClaims(token);
+    if (claimsError || !claimsData?.claims) {
       console.error("Unauthorized request to send-auth-email");
       return new Response(
         JSON.stringify({ success: false, error: "Unauthorized" }),
-        {
-          status: 401,
-          headers: { ...corsHeaders, "Content-Type": "application/json" }
-        }
+        { status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
 
