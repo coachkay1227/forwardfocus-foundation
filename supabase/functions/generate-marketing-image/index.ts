@@ -12,6 +12,16 @@ serve(async (req) => {
 
   try {
     const { prompt, style = 'professional' } = await req.json();
+
+    // Input validation
+    if (!prompt || typeof prompt !== 'string' || prompt.length > 1000) {
+      return new Response(JSON.stringify({ error: 'Invalid or missing prompt (max 1000 chars)' }), {
+        status: 400,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
+    const validStyles = ['professional', 'inspirational', 'community', 'celebration'];
+    const safeStyle = validStyles.includes(style) ? style : 'professional';
     
     const LOVABLE_API_KEY = Deno.env.get('LOVABLE_API_KEY');
     if (!LOVABLE_API_KEY) {
@@ -26,7 +36,7 @@ serve(async (req) => {
       celebration: 'celebratory, joyful, achievement, success story'
     };
 
-    const enhancedPrompt = `${prompt}. Style: ${styleEnhancements[style as keyof typeof styleEnhancements] || styleEnhancements.professional}. 
+    const enhancedPrompt = `${prompt.substring(0, 1000)}. Style: ${styleEnhancements[safeStyle as keyof typeof styleEnhancements] || styleEnhancements.professional}. 
     High resolution, suitable for social media and marketing materials. Include diverse representation.`;
 
     console.log('Generating image with prompt:', enhancedPrompt);

@@ -33,7 +33,6 @@ const Welcome = () => {
     
     // Track affiliate referral
     if (referralSource) {
-      console.log("Affiliate referral from:", referralSource);
       // Could track this in analytics
     }
   }, [referralSource]);

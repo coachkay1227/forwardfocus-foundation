@@ -12,6 +12,26 @@ serve(async (req) => {
 
   try {
     const { basicInfo, outcome, participantQuote } = await req.json();
+
+    // Input validation
+    if (!basicInfo || typeof basicInfo !== 'string' || basicInfo.length > 2000) {
+      return new Response(JSON.stringify({ error: 'Invalid or missing basicInfo (max 2000 chars)' }), {
+        status: 400,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
+    if (outcome && (typeof outcome !== 'string' || outcome.length > 1000)) {
+      return new Response(JSON.stringify({ error: 'Invalid outcome (max 1000 chars)' }), {
+        status: 400,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
+    if (participantQuote && (typeof participantQuote !== 'string' || participantQuote.length > 1000)) {
+      return new Response(JSON.stringify({ error: 'Invalid participantQuote (max 1000 chars)' }), {
+        status: 400,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
     
     const LOVABLE_API_KEY = Deno.env.get('LOVABLE_API_KEY');
     if (!LOVABLE_API_KEY) {

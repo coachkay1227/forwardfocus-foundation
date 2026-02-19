@@ -27,6 +27,26 @@ serve(async (req) => {
     }
 
     const { userNeeds, location, category } = await req.json();
+
+    // Input validation
+    if (!userNeeds || typeof userNeeds !== 'string' || userNeeds.length > 2000) {
+      return new Response(JSON.stringify({ error: 'Invalid or missing userNeeds (max 2000 chars)' }), {
+        status: 400,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
+    if (location && (typeof location !== 'string' || location.length > 200)) {
+      return new Response(JSON.stringify({ error: 'Invalid location (max 200 chars)' }), {
+        status: 400,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
+    if (category && (typeof category !== 'string' || category.length > 100)) {
+      return new Response(JSON.stringify({ error: 'Invalid category (max 100 chars)' }), {
+        status: 400,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
     
     const LOVABLE_API_KEY = Deno.env.get('LOVABLE_API_KEY');
     if (!LOVABLE_API_KEY) {
