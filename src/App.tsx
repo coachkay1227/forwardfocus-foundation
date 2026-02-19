@@ -56,10 +56,6 @@ const YouthElevation = lazy(() => import("./pages/YouthElevation"));
 const queryClient = new QueryClient();
 
 const App = () => {
-  // Initialize security systems
-  React.useEffect(() => {
-    console.log('Security systems initialized');
-  }, []);
 
   return (
   <BrandedErrorBoundary>
@@ -92,7 +88,6 @@ const App = () => {
                           <Route path="/collective" element={<Navigate to="/learn" replace />} />
                           <Route path="/community" element={<Navigate to="/learn" replace />} />
                           <Route path="/about" element={<AboutUs />} />
-                          <Route path="/youth" element={<YouthElevation />} />
                           <Route path="/support" element={<Support />} />
                           <Route path="/auth" element={<Auth />} />
                           <Route path="/auth-debug" element={<AuthDebug />} />
