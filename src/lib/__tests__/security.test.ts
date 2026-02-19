@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { expect, test, describe, beforeEach, afterEach, mock } from "bun:test";
 
 // Mock dompurify before importing security.ts
