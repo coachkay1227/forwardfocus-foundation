@@ -1,0 +1,18 @@
+# robots.txt for Forward Focus Elevation
+
+User-agent: *
+Allow: /
+
+# Disallow admin and authentication pages
+Disallow: /admin
+Disallow: /auth
+Disallow: /auth-debug
+Disallow: /register
+Disallow: /partner-signin
+Disallow: /partner-signup
+Disallow: /partner-dashboard
+Disallow: /setup-admin
+Disallow: /setup-guide
+
+# Sitemap location
+Sitemap: https://forward-focus-elevation.org/sitemap.xml

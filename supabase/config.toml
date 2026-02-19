@@ -1,0 +1,66 @@
+project_id = "mdwkkgancoocvkmecwkm"
+
+# Public contact/signup forms - Should have rate limiting
+[functions.send-contact-email]
+verify_jwt = false
+
+[functions.send-partnership-email]
+verify_jwt = false
+
+[functions.send-support-email]
+verify_jwt = false
+
+[functions.create-donation-payment]
+verify_jwt = false
+
+# Auth-related - Can be public for password resets
+[functions.send-auth-email]
+verify_jwt = false
+
+# Admin operations - Require authentication
+[functions.check-verification-expiration]
+verify_jwt = true
+
+[functions.send-verification-email]
+verify_jwt = true
+
+[functions.send-referral-notification]
+verify_jwt = true
+
+[functions.generate-success-story]
+verify_jwt = true
+
+[functions.generate-marketing-image]
+verify_jwt = true
+
+# AI endpoints - Require authentication to prevent abuse
+[functions.ai-resource-discovery]
+verify_jwt = true
+
+[functions.chat]
+verify_jwt = true
+
+[functions.coach-k]
+verify_jwt = true
+
+[functions.crisis-emergency-ai]
+verify_jwt = true
+
+[functions.crisis-support-ai]
+verify_jwt = true
+
+[functions.reentry-navigator-ai]
+verify_jwt = true
+
+[functions.victim-support-ai]
+verify_jwt = true
+
+[functions.ai-recommend-resources]
+verify_jwt = true
+
+[functions.partner-support-chat]
+verify_jwt = false
+
+# Email Automation - Public with token authentication
+[functions.send-reminder-emails]
+verify_jwt = false
