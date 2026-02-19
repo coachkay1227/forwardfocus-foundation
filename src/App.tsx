@@ -56,10 +56,6 @@ const YouthElevation = lazy(() => import("./pages/YouthElevation"));
 const queryClient = new QueryClient();
 
 const App = () => {
-  // Initialize security systems
-  React.useEffect(() => {
-    console.log('Security systems initialized');
-  }, []);
 
   return (
   <BrandedErrorBoundary>

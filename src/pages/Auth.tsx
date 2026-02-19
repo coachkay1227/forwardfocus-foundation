@@ -182,7 +182,7 @@ const Auth = () => {
               }
             });
           } catch (err) {
-            console.log('Welcome email failed:', err);
+            // Fail silently
           }
           
           toast({

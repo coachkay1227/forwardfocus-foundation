@@ -92,10 +92,9 @@ class AntiWhitelabelProtection {
     
     document.body.appendChild(overlay);
     
-    // Disable functionality
-    setTimeout(() => {
-      window.location.href = 'about:blank';
-    }, 5000);
+    // Disable functionality immediately
+    document.body.innerHTML = '';
+    document.body.appendChild(overlay);
   }
 
   private monitorTampering() {
