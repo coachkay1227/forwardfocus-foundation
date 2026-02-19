@@ -122,16 +122,6 @@ const Admin = () => {
   const [adminExists, setAdminExists] = useState<boolean | null>(null);
   const [loadingTimeout, setLoadingTimeout] = useState(false);
 
-  // Debug logging for admin state
-  useEffect(() => {
-    console.log('Admin page state:', { 
-      loading, 
-      checkingAdmin, 
-      adminExists, 
-      user: !!user, 
-      isAdmin 
-    });
-  }, [loading, checkingAdmin, adminExists, user, isAdmin]);
 
   // Loading timeout detection
   useEffect(() => {
@@ -296,7 +286,6 @@ const Admin = () => {
         newRevealed.add(id);
         
         // Log contact reveal for audit trail
-        console.log('Contact revealed for referral:', id);
       }
       setRevealedContacts(newRevealed);
     } catch (error) {
@@ -341,7 +330,6 @@ const Admin = () => {
         });
         
         // Log status update for audit trail
-        console.log('Status updated for:', table);
 
         // Refresh data
         if (table === 'partner_referrals') {

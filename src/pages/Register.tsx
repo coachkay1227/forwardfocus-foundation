@@ -90,14 +90,8 @@ const Register = () => {
             }
           );
 
-          const welcomeResult = await welcomeResponse.json();
-          if (import.meta.env.DEV) {
-            console.log('Welcome email result:', welcomeResult);
-          }
+          await welcomeResponse.json();
         } catch (error) {
-          if (import.meta.env.DEV) {
-            console.error('Error sending welcome email:', error);
-          }
           // Don't fail registration if welcome email fails
         }
 

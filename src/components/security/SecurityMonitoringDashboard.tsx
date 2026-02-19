@@ -96,8 +96,6 @@ export const SecurityMonitoringDashboard = () => {
 
   const runSuspiciousActivityDetection = async () => {
     try {
-      console.log('Running suspicious activity detection...');
-      
       const { data, error } = await supabase.rpc('detect_advanced_suspicious_activity');
       
       if (error) {
