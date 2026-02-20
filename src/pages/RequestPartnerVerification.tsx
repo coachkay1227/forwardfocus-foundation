@@ -11,6 +11,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { sanitizeInput } from "@/lib/security";
 import { NavLink, useLocation } from "react-router-dom";
 import { AlertCircle, Shield, CheckCircle, Sparkles } from "lucide-react";
+import { SUPPORT_EMAIL } from "@/config/contact";
 
 const RequestPartnerVerification = () => {
   const { user } = useAuth();
@@ -392,8 +393,8 @@ const RequestPartnerVerification = () => {
           <div className="mt-8 text-center">
             <p className="text-sm text-osu-gray">
               Questions about verification? Contact us at{" "}
-              <a href="mailto:partners@forwardfocus.org" className="text-osu-scarlet hover:underline">
-                partners@forwardfocus.org
+              <a href={`mailto:${SUPPORT_EMAIL}`} className="text-osu-scarlet hover:underline">
+                {SUPPORT_EMAIL}
               </a>
             </p>
           </div>
