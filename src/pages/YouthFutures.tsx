@@ -4,6 +4,9 @@ import { SITE_CONFIG } from "@/config/site";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useAnalyticsContext } from "@/components/layout/AnalyticsProvider";
+import { StructuredData } from "@/components/seo/StructuredData";
+import { SUPPORT_EMAIL } from "@/config/contact";
 import {
   CareerQuizGame,
   ComparisonGame,
@@ -28,13 +31,48 @@ import {
 } from "lucide-react";
 
 export default function YouthFutures() {
+  const { trackClick, trackConversion } = useAnalyticsContext();
+
+  const faqSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: [
+      {
+        '@type': 'Question',
+        name: 'Who is the Youth Futures program for?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Youth Futures is for justice-impacted or community-referred youth ages 14-26.'
+        }
+      },
+      {
+        '@type': 'Question',
+        name: 'How much does it cost youth participants?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Participation is 100% free for youth participants.'
+        }
+      },
+      {
+        '@type': 'Question',
+        name: 'How can organizations partner?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Organizations can partner by submitting a request through the Partner With Us call to action.'
+        }
+      }
+    ]
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <SEOHead
         title="Youth Futures Elevation Program | Empowerment for Justice-Impacted Youth"
         description="AI-powered career tools and mentorship for justice-impacted youth ages 14-26. 100% free participation powered by sponsors."
         path="/youth-futures"
+        imageAlt="Youth Futures participants learning career and AI skills"
       />
+      <StructuredData data={faqSchema} />
 
       {/* Hero Section */}
       <section className="relative py-20 overflow-hidden bg-gradient-to-br from-osu-gray/10 via-cream/30 to-osu-gray/10">
@@ -52,10 +90,10 @@ export default function YouthFutures() {
               </p>
               <div className="flex flex-wrap gap-4">
                 <Button className="get-involved-gold-button h-12 px-8" asChild>
-                  <a href="#apply">Apply Now <ArrowRight className="ml-2 h-5 w-5" /></a>
+                  <a href="#apply" onClick={() => trackClick('youth_futures_hero_apply_anchor')}>Apply Now <ArrowRight className="ml-2 h-5 w-5" /></a>
                 </Button>
                 <Button variant="outline" className="h-12 px-8 border-osu-scarlet text-osu-scarlet hover:bg-osu-scarlet hover:text-white" asChild>
-                  <a href="#games">Try the Games</a>
+                  <a href="#games" onClick={() => trackClick('youth_futures_hero_games_anchor')}>Try the Games</a>
                 </Button>
               </div>
             </div>
@@ -189,8 +227,18 @@ export default function YouthFutures() {
                 <li className="flex items-center gap-3"><Shield className="h-6 w-6 text-green-400" /> Justice-impacted or community-referred</li>
                 <li className="flex items-center gap-3"><CheckCircle2 className="h-6 w-6 text-osu-scarlet" /> Apply online in minutes</li>
               </ul>
-              <Button size="lg" className="get-involved-gold-button border-none w-full sm:w-auto h-14 text-lg">
-                Youth: Apply Now
+              <Button size="lg" className="get-involved-gold-button border-none w-full sm:w-auto h-14 text-lg" asChild>
+                <a
+                  href="https://calendly.com/ffe_coach_kay/free-call"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => {
+                    trackClick('youth_futures_apply_now');
+                    trackConversion('youth_application_interest', { source: 'youth_futures_apply_section' });
+                  }}
+                >
+                  Youth: Apply Now
+                </a>
               </Button>
             </div>
             <div className="space-y-6 pt-8 md:pt-0 md:pl-12">
@@ -201,8 +249,16 @@ export default function YouthFutures() {
                 <li className="flex items-center gap-3"><DollarSign className="h-6 w-6 text-green-400" /> Tax-deductible support</li>
                 <li className="flex items-center gap-3"><Calendar className="h-6 w-6 text-osu-scarlet" /> Impact reporting included</li>
               </ul>
-              <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-osu-gray w-full sm:w-auto h-14 text-lg">
-                Partner With Us
+              <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-osu-gray w-full sm:w-auto h-14 text-lg" asChild>
+                <a
+                  href="/partners/request"
+                  onClick={() => {
+                    trackClick('youth_futures_partner_with_us');
+                    trackConversion('partner_interest', { source: 'youth_futures_apply_section' });
+                  }}
+                >
+                  Partner With Us
+                </a>
               </Button>
             </div>
           </div>
@@ -218,15 +274,15 @@ export default function YouthFutures() {
               <div className="flex flex-col md:flex-row gap-8 justify-center items-center">
                 <div className="flex items-center gap-3 text-lg">
                   <Mail className="h-6 w-6 text-osu-scarlet" />
-                  <a href="mailto:hello@coachkayelevates.org" className="hover:text-osu-scarlet transition-colors">hello@coachkayelevates.org</a>
+                  <a href={`mailto:${SUPPORT_EMAIL}`} className="hover:text-osu-scarlet transition-colors" onClick={() => trackClick('youth_futures_contact_email')}>{SUPPORT_EMAIL}</a>
                 </div>
                 <div className="flex items-center gap-3 text-lg">
                   <Phone className="h-6 w-6 text-osu-scarlet" />
-                  <a href="tel:3802877936" className="hover:text-osu-scarlet transition-colors">380-287-7936</a>
+                  <a href="tel:3802877936" className="hover:text-osu-scarlet transition-colors" onClick={() => trackClick('youth_futures_contact_phone')}>380-287-7936</a>
                 </div>
               </div>
               <Button size="lg" className="get-involved-gold-button border-none h-14 px-12 text-lg shadow-2xl transform hover:scale-105 transition-all" asChild>
-                <a href="https://calendly.com/ffe_coach_kay/free-call" target="_blank" rel="noopener noreferrer">
+                <a href="https://calendly.com/ffe_coach_kay/free-call" target="_blank" rel="noopener noreferrer" onClick={() => { trackClick('youth_futures_schedule_info_call'); trackConversion('youth_info_call', { source: 'youth_futures_contact_section' }); }}>
                   Schedule Info Call
                 </a>
               </Button>

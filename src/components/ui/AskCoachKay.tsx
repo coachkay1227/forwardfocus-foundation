@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { MessageCircle, Send, Bot, User, RotateCcw, Mail, Calendar, ExternalLink } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -218,6 +218,7 @@ const AskCoachKay = () => {
                       </Button>
                     </div>
                   </div>
+                  <DialogDescription className="sr-only">Ask Coach Kay for personalized reentry guidance and resources.</DialogDescription>
                 </DialogHeader>
 
                 {/* Disclaimer */}

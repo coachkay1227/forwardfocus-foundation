@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Calendar } from "@/components/ui/calendar";
 import { MessageCircle, Calendar as CalendarIcon, Clock, CheckCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -113,6 +113,7 @@ const BookingCalendar = () => {
             <CalendarIcon className="h-5 w-5 text-primary" />
             Book Your Consultation
           </DialogTitle>
+          <DialogDescription className="sr-only">Schedule a consultation date and time.</DialogDescription>
         </DialogHeader>
         
         {isBooked ? (

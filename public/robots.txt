@@ -1,9 +1,8 @@
 # robots.txt for Forward Focus Elevation
 
-User-agent: *
+# Explicit crawler allowlist with protected-route disallows
+User-agent: Googlebot
 Allow: /
-
-# Disallow admin and authentication pages
 Disallow: /admin
 Disallow: /auth
 Disallow: /auth-debug
@@ -14,5 +13,304 @@ Disallow: /partner-dashboard
 Disallow: /setup-admin
 Disallow: /setup-guide
 
-# Sitemap location
+User-agent: Bingbot
+Allow: /
+Disallow: /admin
+Disallow: /auth
+Disallow: /auth-debug
+Disallow: /register
+Disallow: /partner-signin
+Disallow: /partner-signup
+Disallow: /partner-dashboard
+Disallow: /setup-admin
+Disallow: /setup-guide
+
+User-agent: DuckDuckBot
+Allow: /
+Disallow: /admin
+Disallow: /auth
+Disallow: /auth-debug
+Disallow: /register
+Disallow: /partner-signin
+Disallow: /partner-signup
+Disallow: /partner-dashboard
+Disallow: /setup-admin
+Disallow: /setup-guide
+
+User-agent: Baiduspider
+Allow: /
+Disallow: /admin
+Disallow: /auth
+Disallow: /auth-debug
+Disallow: /register
+Disallow: /partner-signin
+Disallow: /partner-signup
+Disallow: /partner-dashboard
+Disallow: /setup-admin
+Disallow: /setup-guide
+
+User-agent: YandexBot
+Allow: /
+Disallow: /admin
+Disallow: /auth
+Disallow: /auth-debug
+Disallow: /register
+Disallow: /partner-signin
+Disallow: /partner-signup
+Disallow: /partner-dashboard
+Disallow: /setup-admin
+Disallow: /setup-guide
+
+User-agent: Applebot
+Allow: /
+Disallow: /admin
+Disallow: /auth
+Disallow: /auth-debug
+Disallow: /register
+Disallow: /partner-signin
+Disallow: /partner-signup
+Disallow: /partner-dashboard
+Disallow: /setup-admin
+Disallow: /setup-guide
+
+User-agent: Sogou
+Allow: /
+Disallow: /admin
+Disallow: /auth
+Disallow: /auth-debug
+Disallow: /register
+Disallow: /partner-signin
+Disallow: /partner-signup
+Disallow: /partner-dashboard
+Disallow: /setup-admin
+Disallow: /setup-guide
+
+User-agent: AhrefsBot
+Allow: /
+Disallow: /admin
+Disallow: /auth
+Disallow: /auth-debug
+Disallow: /register
+Disallow: /partner-signin
+Disallow: /partner-signup
+Disallow: /partner-dashboard
+Disallow: /setup-admin
+Disallow: /setup-guide
+
+User-agent: SemrushBot
+Allow: /
+Disallow: /admin
+Disallow: /auth
+Disallow: /auth-debug
+Disallow: /register
+Disallow: /partner-signin
+Disallow: /partner-signup
+Disallow: /partner-dashboard
+Disallow: /setup-admin
+Disallow: /setup-guide
+
+User-agent: MJ12bot
+Allow: /
+Disallow: /admin
+Disallow: /auth
+Disallow: /auth-debug
+Disallow: /register
+Disallow: /partner-signin
+Disallow: /partner-signup
+Disallow: /partner-dashboard
+Disallow: /setup-admin
+Disallow: /setup-guide
+
+User-agent: Twitterbot
+Allow: /
+Disallow: /admin
+Disallow: /auth
+Disallow: /auth-debug
+Disallow: /register
+Disallow: /partner-signin
+Disallow: /partner-signup
+Disallow: /partner-dashboard
+Disallow: /setup-admin
+Disallow: /setup-guide
+
+User-agent: facebookexternalhit
+Allow: /
+Disallow: /admin
+Disallow: /auth
+Disallow: /auth-debug
+Disallow: /register
+Disallow: /partner-signin
+Disallow: /partner-signup
+Disallow: /partner-dashboard
+Disallow: /setup-admin
+Disallow: /setup-guide
+
+User-agent: LinkedInBot
+Allow: /
+Disallow: /admin
+Disallow: /auth
+Disallow: /auth-debug
+Disallow: /register
+Disallow: /partner-signin
+Disallow: /partner-signup
+Disallow: /partner-dashboard
+Disallow: /setup-admin
+Disallow: /setup-guide
+
+User-agent: Pinterestbot
+Allow: /
+Disallow: /admin
+Disallow: /auth
+Disallow: /auth-debug
+Disallow: /register
+Disallow: /partner-signin
+Disallow: /partner-signup
+Disallow: /partner-dashboard
+Disallow: /setup-admin
+Disallow: /setup-guide
+
+User-agent: Discordbot
+Allow: /
+Disallow: /admin
+Disallow: /auth
+Disallow: /auth-debug
+Disallow: /register
+Disallow: /partner-signin
+Disallow: /partner-signup
+Disallow: /partner-dashboard
+Disallow: /setup-admin
+Disallow: /setup-guide
+
+User-agent: Slackbot
+Allow: /
+Disallow: /admin
+Disallow: /auth
+Disallow: /auth-debug
+Disallow: /register
+Disallow: /partner-signin
+Disallow: /partner-signup
+Disallow: /partner-dashboard
+Disallow: /setup-admin
+Disallow: /setup-guide
+
+User-agent: WhatsApp
+Allow: /
+Disallow: /admin
+Disallow: /auth
+Disallow: /auth-debug
+Disallow: /register
+Disallow: /partner-signin
+Disallow: /partner-signup
+Disallow: /partner-dashboard
+Disallow: /setup-admin
+Disallow: /setup-guide
+
+User-agent: TelegramBot
+Allow: /
+Disallow: /admin
+Disallow: /auth
+Disallow: /auth-debug
+Disallow: /register
+Disallow: /partner-signin
+Disallow: /partner-signup
+Disallow: /partner-dashboard
+Disallow: /setup-admin
+Disallow: /setup-guide
+
+User-agent: GPTBot
+Allow: /
+Disallow: /admin
+Disallow: /auth
+Disallow: /auth-debug
+Disallow: /register
+Disallow: /partner-signin
+Disallow: /partner-signup
+Disallow: /partner-dashboard
+Disallow: /setup-admin
+Disallow: /setup-guide
+
+User-agent: ChatGPT-User
+Allow: /
+Disallow: /admin
+Disallow: /auth
+Disallow: /auth-debug
+Disallow: /register
+Disallow: /partner-signin
+Disallow: /partner-signup
+Disallow: /partner-dashboard
+Disallow: /setup-admin
+Disallow: /setup-guide
+
+User-agent: Google-Extended
+Allow: /
+Disallow: /admin
+Disallow: /auth
+Disallow: /auth-debug
+Disallow: /register
+Disallow: /partner-signin
+Disallow: /partner-signup
+Disallow: /partner-dashboard
+Disallow: /setup-admin
+Disallow: /setup-guide
+
+User-agent: PerplexityBot
+Allow: /
+Disallow: /admin
+Disallow: /auth
+Disallow: /auth-debug
+Disallow: /register
+Disallow: /partner-signin
+Disallow: /partner-signup
+Disallow: /partner-dashboard
+Disallow: /setup-admin
+Disallow: /setup-guide
+
+User-agent: ClaudeBot
+Allow: /
+Disallow: /admin
+Disallow: /auth
+Disallow: /auth-debug
+Disallow: /register
+Disallow: /partner-signin
+Disallow: /partner-signup
+Disallow: /partner-dashboard
+Disallow: /setup-admin
+Disallow: /setup-guide
+
+User-agent: Amazonbot
+Allow: /
+Disallow: /admin
+Disallow: /auth
+Disallow: /auth-debug
+Disallow: /register
+Disallow: /partner-signin
+Disallow: /partner-signup
+Disallow: /partner-dashboard
+Disallow: /setup-admin
+Disallow: /setup-guide
+
+User-agent: Bytespider
+Allow: /
+Disallow: /admin
+Disallow: /auth
+Disallow: /auth-debug
+Disallow: /register
+Disallow: /partner-signin
+Disallow: /partner-signup
+Disallow: /partner-dashboard
+Disallow: /setup-admin
+Disallow: /setup-guide
+
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /auth
+Disallow: /auth-debug
+Disallow: /register
+Disallow: /partner-signin
+Disallow: /partner-signup
+Disallow: /partner-dashboard
+Disallow: /setup-admin
+Disallow: /setup-guide
+
 Sitemap: https://forward-focus-elevation.org/sitemap.xml

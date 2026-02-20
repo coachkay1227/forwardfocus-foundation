@@ -63,6 +63,13 @@ export const SITE_CONFIG = {
   // Social media
   social: {
     twitter: '@FFEServices',
+    twitterCreator: '@CoachKayElevates',
+    sameAs: [
+      'https://www.linkedin.com/company/forward-focus-elevation',
+      'https://www.facebook.com/forwardfocuselevation',
+      'https://www.instagram.com/forwardfocuselevation',
+      'https://x.com/FFEServices'
+    ],
   },
   
   // Logo paths (relative to public folder)

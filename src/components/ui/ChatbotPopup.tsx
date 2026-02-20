@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { MessageCircle, Send, Bot, User, RotateCcw, History, Mail } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -192,6 +192,7 @@ const ChatbotPopup = () => {
             <Bot className="h-5 w-5 text-primary" />
             Support Chat
           </DialogTitle>
+          <DialogDescription className="sr-only">Chat with Coach Kay for support resources and guidance.</DialogDescription>
         </DialogHeader>
 
         {/* Disclaimer */}

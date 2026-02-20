@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { X, Send, Heart, Shield, Scale, DollarSign, Mail, Phone, Bot } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Dialog, DialogContent } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Badge } from '@/components/ui/badge';
 import { supabase } from '@/integrations/supabase/client';
 import EmailChatHistoryModal from './EmailChatHistoryModal';
@@ -200,7 +200,11 @@ const VictimSupportAI: React.FC<VictimSupportAIProps> = ({ isOpen, onClose, init
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-2xl h-[700px] p-0 overflow-hidden" aria-describedby="victim-support-description">
+      <DialogContent className="max-w-2xl h-[700px] p-0 overflow-hidden">
+        <DialogHeader className="sr-only">
+          <DialogTitle>Healing & Support Navigator</DialogTitle>
+          <DialogDescription>Trauma-informed victim services and healing resources.</DialogDescription>
+        </DialogHeader>
         {/* Header */}
         <div className="flex items-center justify-between bg-primary p-4 text-primary-foreground">
           <div className="flex items-center gap-3">
