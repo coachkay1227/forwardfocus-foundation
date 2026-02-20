@@ -231,9 +231,12 @@ const ReentryNavigatorAI: React.FC<ReentryNavigatorAIProps> = ({ isOpen, onClose
     };
     setMessages(prev => [...prev, aiMessage]);
 
-    // Send message to the selected coach
-    await sendMessage(userInput);
-    setIsLoading(false);
+    try {
+      // Send message to the selected coach
+      await sendMessage(userInput);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const getCoachSpecificActions = (coachName: string) => {
@@ -555,7 +558,7 @@ const ReentryNavigatorAI: React.FC<ReentryNavigatorAIProps> = ({ isOpen, onClose
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 placeholder={selectedCoach ? `What can ${selectedCoach.name.split(' ')[1]} help you with today?` : "What can Coach Kay help you with today?"}
-                onKeyDown={(e) => e.key === 'Enter' && handleSend()}
+                onKeyDown={(e) => e.key === 'Enter' && !isLoading && handleSend()}
                 disabled={isLoading}
                 maxLength={MAX_MESSAGE_LENGTH}
               />
