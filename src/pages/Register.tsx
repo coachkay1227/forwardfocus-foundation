@@ -72,9 +72,8 @@ const Register = () => {
       } else {
         // Send welcome email using session JWT if available
         try {
-          const { data: sessionData } = await signUp(email.trim().toLowerCase(), password) ? 
-            await (await import("@/integrations/supabase/client")).supabase.auth.getSession() : 
-            { data: null };
+          const { supabase } = await import("@/integrations/supabase/client");
+          const { data: sessionData } = await supabase.auth.getSession();
           
           const token = sessionData?.session?.access_token;
           if (token) {
