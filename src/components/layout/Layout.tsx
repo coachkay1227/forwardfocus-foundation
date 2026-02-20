@@ -3,6 +3,7 @@ import Footer from "./Footer";
 import { EmergencySafetySystem } from "../safety/EmergencySafetySystem";
 import ScrollToTop from "./ScrollToTop";
 import { GlobalStructuredData } from "@/components/seo/GlobalStructuredData";
+import { CookieConsentBanner } from "@/components/ui/CookieConsentBanner";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
@@ -14,6 +15,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
       <div className="flex-1">{children}</div>
       <Footer />
       <EmergencySafetySystem />
+      <CookieConsentBanner />
     </div>
   );
 };
