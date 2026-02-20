@@ -17,7 +17,7 @@ export const NewsletterPopup = () => {
     if (!hasSeenPopup) {
       const timer = setTimeout(() => {
         setIsOpen(true);
-      }, 3000); // Show after 3 seconds
+      }, 30000); // Show after 30 seconds to reduce CLS
       return () => clearTimeout(timer);
     }
   }, []);
@@ -100,6 +100,12 @@ export const NewsletterPopup = () => {
             <Sparkles className="ml-2 h-4 w-4" />
           </Button>
         </form>
+        <p className="text-xs text-center text-muted-foreground">
+          By subscribing, you agree to our{" "}
+          <a href="/privacy" className="underline hover:text-osu-scarlet transition-colors">
+            Privacy Policy
+          </a>.
+        </p>
         <DialogFooter className="sm:justify-center">
           <button
             onClick={handleClose}
