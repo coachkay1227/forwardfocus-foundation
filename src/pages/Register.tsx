@@ -70,28 +70,33 @@ const Register = () => {
           });
         }
       } else {
-        // Send welcome email
+        // Send welcome email using session JWT if available
         try {
-          const welcomeResponse = await fetch(
-            `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/send-auth-email`,
-            {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
-              },
-              body: JSON.stringify({
-                email: email.trim().toLowerCase(),
-                type: 'welcome',
-                userData: {
-                  name: email.split('@')[0] // Use email prefix as name
-                }
-              }),
-            }
-          );
-
-          await welcomeResponse.json();
-        } catch (error) {
+          const { data: sessionData } = await signUp(email.trim().toLowerCase(), password) ? 
+            await (await import("@/integrations/supabase/client")).supabase.auth.getSession() : 
+            { data: null };
+          
+          const token = sessionData?.session?.access_token;
+          if (token) {
+            await fetch(
+              `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/send-auth-email`,
+              {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                  'Authorization': `Bearer ${token}`,
+                },
+                body: JSON.stringify({
+                  email: email.trim().toLowerCase(),
+                  type: 'welcome',
+                  userData: {
+                    name: email.split('@')[0]
+                  }
+                }),
+              }
+            );
+          }
+        } catch {
           // Don't fail registration if welcome email fails
         }
 
