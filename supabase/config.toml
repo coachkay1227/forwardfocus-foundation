@@ -33,30 +33,30 @@ verify_jwt = true
 [functions.generate-marketing-image]
 verify_jwt = true
 
-# AI endpoints - Require authentication to prevent abuse
+# AI endpoints - Public with server-side rate limiting via checkAiRateLimit
 [functions.ai-resource-discovery]
-verify_jwt = true
+verify_jwt = false
 
 [functions.chat]
-verify_jwt = true
+verify_jwt = false
 
 [functions.coach-k]
-verify_jwt = true
+verify_jwt = false
 
 [functions.crisis-emergency-ai]
-verify_jwt = true
+verify_jwt = false
 
 [functions.crisis-support-ai]
-verify_jwt = true
+verify_jwt = false
 
 [functions.reentry-navigator-ai]
-verify_jwt = true
+verify_jwt = false
 
 [functions.victim-support-ai]
-verify_jwt = true
+verify_jwt = false
 
 [functions.ai-recommend-resources]
-verify_jwt = true
+verify_jwt = false
 
 [functions.partner-support-chat]
 verify_jwt = false

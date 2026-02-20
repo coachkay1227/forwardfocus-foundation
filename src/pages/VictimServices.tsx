@@ -173,7 +173,7 @@ export default function VictimServices() {
         {/* Hero Section */}
         <header className="relative bg-gradient-osu-primary text-white overflow-hidden pb-20">
           <div className="absolute inset-0 bg-gradient-to-br from-osu-gray-dark/90 via-osu-scarlet/80 to-osu-scarlet-dark/90 mix-blend-multiply"></div>
-          <div className="absolute inset-0 bg-[url('/noise.png')] opacity-10 mix-blend-overlay"></div>
+          <div className="absolute inset-0 opacity-10 mix-blend-overlay bg-gradient-to-tr from-white/5 to-transparent"></div>
 
           <div className="relative container py-24 md:py-32">
             <div className="max-w-4xl mx-auto text-center space-y-8">
