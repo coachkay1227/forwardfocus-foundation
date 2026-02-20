@@ -50,7 +50,7 @@ serve(async (req) => {
     }
 
     // Validate messages
-    if (!messages || !Array.isArray(messages)) {
+    if (!messages || !Array.isArray(messages) || messages.length === 0) {
       const errorStream = new ReadableStream({
         start(controller) {
           controller.enqueue(new TextEncoder().encode(`data: {"choices":[{"delta":{"content":"Invalid request format. Please try again. Need more help? Reply here any time."}}]}\n\n`));

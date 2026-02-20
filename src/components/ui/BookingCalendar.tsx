@@ -2,6 +2,8 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Calendar } from "@/components/ui/calendar";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { MessageCircle, Calendar as CalendarIcon, Clock, CheckCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
@@ -12,6 +14,9 @@ const BookingCalendar = () => {
   const [selectedTime, setSelectedTime] = useState<string>("");
   const [isOpen, setIsOpen] = useState(false);
   const [isBooked, setIsBooked] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [bookingName, setBookingName] = useState("");
+  const [bookingEmail, setBookingEmail] = useState("");
 
   const timeSlots = [
     "9:00 AM", "10:00 AM", "11:00 AM", 
@@ -19,75 +24,89 @@ const BookingCalendar = () => {
   ];
 
   const handleBooking = async () => {
-    if (selectedDate && selectedTime) {
-      setIsBooked(true);
+    if (!selectedDate || !selectedTime) return;
+
+    if (!bookingName.trim() || !bookingEmail.trim()) {
+      toast.error("Please enter your name and email.");
+      return;
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(bookingEmail.trim())) {
+      toast.error("Please enter a valid email address.");
+      return;
+    }
+
+    setIsSubmitting(true);
       
-      try {
-        const { supabase } = await import("@/integrations/supabase/client");
-        
-        // Save to database first
-        const { error: dbError } = await supabase.from('bookings').insert({
-          user_id: 'anonymous',
-          name: "Valued Community Member",
-          email: "user@example.com",
-          scheduled_date: format(selectedDate, "yyyy-MM-dd"),
-          scheduled_time: selectedTime,
-          booking_type: 'consultation',
-          status: 'confirmed'
-        });
+    try {
+      const { supabase } = await import("@/integrations/supabase/client");
+      
+      const { data: sessionData } = await supabase.auth.getSession();
+      const userId = sessionData?.session?.user?.id || crypto.randomUUID();
 
-        if (dbError) {
-          console.error('Error saving booking to database:', dbError);
-          // Continue with email even if database fails
-        }
+      const { error: dbError } = await supabase.from('bookings').insert({
+        user_id: userId,
+        name: bookingName.trim(),
+        email: bookingEmail.trim(),
+        scheduled_date: format(selectedDate, "yyyy-MM-dd"),
+        scheduled_time: selectedTime,
+        booking_type: 'consultation',
+        status: 'confirmed'
+      });
 
-        // Send booking confirmation email
-        const bookingData = {
-          name: "Valued Community Member",
-          email: "user@example.com",
-          subject: `Consultation Booking Confirmation - ${format(selectedDate, "MMMM do, yyyy")} at ${selectedTime}`,
-          message: `Consultation booked for ${format(selectedDate, "EEEE, MMMM do, yyyy")} at ${selectedTime}. Duration: 30 minutes. Format: Video call.`,
-          type: 'booking'
-        };
+      if (dbError) {
+        console.error('Error saving booking to database:', dbError);
+        toast.error("Booking failed. Please try again.");
+        setIsSubmitting(false);
+        return;
+      }
 
-        const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-        const supabaseKey = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
+      // Send booking confirmation email
+      const bookingData = {
+        name: bookingName.trim(),
+        email: bookingEmail.trim(),
+        subject: `Consultation Booking Confirmation - ${format(selectedDate, "MMMM do, yyyy")} at ${selectedTime}`,
+        message: `Consultation booked for ${format(selectedDate, "EEEE, MMMM do, yyyy")} at ${selectedTime}. Duration: 30 minutes. Format: Video call.`,
+        type: 'booking'
+      };
 
-        if (!supabaseUrl || !supabaseKey) {
-          console.error('Supabase configuration missing in BookingCalendar');
-          throw new Error('Service temporarily unavailable');
-        }
+      const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+      const supabaseKey = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
 
-        const response = await fetch(
-          `${supabaseUrl}/functions/v1/send-contact-email`,
-          {
+      if (supabaseUrl && supabaseKey) {
+        try {
+          await fetch(`${supabaseUrl}/functions/v1/send-contact-email`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
               'Authorization': `Bearer ${supabaseKey}`,
             },
             body: JSON.stringify(bookingData),
-          }
-        );
-
-        const result = await response.json();
-
-        if (result.success) {
-          toast.success("Booking Confirmed", {
-            description: "You will receive a confirmation email shortly.",
           });
+        } catch (emailError) {
+          console.error('Email notification failed:', emailError);
         }
-      } catch (error) {
-        console.error('Error processing booking:', error);
-        // Don't fail the booking if there's an error
       }
-      
+
+      setIsBooked(true);
+      toast.success("Booking Confirmed", {
+        description: "You will receive a confirmation email shortly.",
+      });
+
       setTimeout(() => {
         setIsBooked(false);
         setIsOpen(false);
         setSelectedDate(undefined);
         setSelectedTime("");
+        setBookingName("");
+        setBookingEmail("");
       }, 2000);
+    } catch (error) {
+      console.error('Error processing booking:', error);
+      toast.error("Something went wrong. Please try again.");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -128,6 +147,16 @@ const BookingCalendar = () => {
           </div>
         ) : (
           <div className="space-y-6">
+            <div className="grid gap-3">
+              <div className="space-y-1.5">
+                <Label htmlFor="booking-name" className="text-sm font-medium">Your Name *</Label>
+                <Input id="booking-name" value={bookingName} onChange={(e) => setBookingName(e.target.value)} placeholder="Full name" required />
+              </div>
+              <div className="space-y-1.5">
+                <Label htmlFor="booking-email" className="text-sm font-medium">Email Address *</Label>
+                <Input id="booking-email" type="email" value={bookingEmail} onChange={(e) => setBookingEmail(e.target.value)} placeholder="your@email.com" required />
+              </div>
+            </div>
             <div>
               <h3 className="text-sm font-medium mb-3">Select a Date</h3>
               <Calendar
@@ -175,8 +204,8 @@ const BookingCalendar = () => {
                   <strong>Duration:</strong> 30 minutes<br />
                   <strong>Format:</strong> Video call
                 </p>
-                <Button onClick={handleBooking} className="w-full">
-                  Confirm Booking
+                <Button onClick={handleBooking} className="w-full" disabled={isSubmitting}>
+                  {isSubmitting ? "Booking..." : "Confirm Booking"}
                 </Button>
               </div>
             )}

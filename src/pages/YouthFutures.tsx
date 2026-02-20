@@ -275,6 +275,7 @@ export default function YouthFutures() {
                 <div className="flex items-center gap-3 text-lg">
                   <Mail className="h-6 w-6 text-osu-scarlet" />
                   <a href={`mailto:${SUPPORT_EMAIL}`} className="hover:text-osu-scarlet transition-colors" onClick={() => trackClick('youth_futures_contact_email')}>{SUPPORT_EMAIL}</a>
+                  <a href="mailto:hello@coachkayelevates.org" className="hover:text-osu-scarlet transition-colors" onClick={() => trackClick('youth_futures_contact_email')}>hello@coachkayelevates.org</a>
                 </div>
                 <div className="flex items-center gap-3 text-lg">
                   <Phone className="h-6 w-6 text-osu-scarlet" />
