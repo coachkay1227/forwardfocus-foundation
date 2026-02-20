@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Shield, Send, Clock, CheckCircle, XCircle } from "lucide-react";
@@ -169,6 +169,7 @@ export const ContactAccessRequest = ({
             <DialogContent className="sm:max-w-md">
               <DialogHeader>
                 <DialogTitle>Request Contact Access</DialogTitle>
+                <DialogDescription className="sr-only">Submit reason and justification to request organization contact access.</DialogDescription>
               </DialogHeader>
               
               <div className="space-y-4">
@@ -251,6 +252,7 @@ export const ContactAccessRequest = ({
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle>Request Contact Access</DialogTitle>
+          <DialogDescription className="sr-only">Submit reason and justification to request organization contact access.</DialogDescription>
         </DialogHeader>
         
         <div className="space-y-4">
