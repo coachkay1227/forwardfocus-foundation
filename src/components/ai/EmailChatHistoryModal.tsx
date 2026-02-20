@@ -109,6 +109,7 @@ const EmailChatHistoryModal: React.FC<EmailChatHistoryModalProps> = ({
           email: email,
           subject: `Your Chat History with ${coachName}`,
           message: chatHistory,
+          type: 'contact',
           isAutoResponse: true
         }
       });

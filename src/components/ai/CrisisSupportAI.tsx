@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Send, Heart, Shield, Phone, MessageSquare, Mail, Bot } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Dialog, DialogContent } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Badge } from '@/components/ui/badge';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { supabase } from '@/integrations/supabase/client';
@@ -227,10 +227,11 @@ const CrisisSupportAI: React.FC<CrisisSupportAIProps> = ({ isOpen, onClose, init
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="w-[95vw] sm:w-full sm:max-w-4xl max-h-[90vh] p-0 flex flex-col" aria-describedby="crisis-support-description">
-        <div className="sr-only">
-          <h2 id="crisis-support-dialog-title">Crisis Support AI Chat</h2>
-        </div>
+      <DialogContent className="w-[95vw] sm:w-full sm:max-w-4xl max-h-[90vh] p-0 flex flex-col">
+        <DialogHeader className="sr-only">
+          <DialogTitle>Crisis Support AI Chat</DialogTitle>
+          <DialogDescription>Your compassionate crisis companion, available 24/7.</DialogDescription>
+        </DialogHeader>
         {/* Header */}
         <div className="flex items-center justify-between bg-destructive p-4 text-destructive-foreground shrink-0">
           <div className="flex items-center gap-3">

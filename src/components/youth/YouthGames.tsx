@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
 import { supabase } from "@/integrations/supabase/client";
+import { useAnalyticsContext } from "@/components/layout/AnalyticsProvider";
 import {
   Rocket,
   Target,
@@ -28,6 +29,7 @@ export const CareerQuizGame = () => {
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<string | null>(null);
   const { toast } = useToast();
+  const { trackAIInteraction, trackError, trackClick } = useAnalyticsContext();
 
   const questions = [
     "What do you enjoy doing most in your free time?",
@@ -53,6 +55,30 @@ export const CareerQuizGame = () => {
 
   const generateCareers = async (finalAnswers: string[]) => {
     setLoading(true);
+    trackAIInteraction('chat', { topic: 'youth-futures-quiz' });
+
+    const fallbackResult = [
+      `Based on your answers (${finalAnswers.join(', ')}), here are strong AI-enhanced career paths to explore:`,
+      '',
+      '1. **AI-Assisted Content Creator**',
+      '   - Tools: ChatGPT, Canva Magic Studio, Descript',
+      '   - Next step: Build a 3-piece portfolio and post weekly.',
+      '',
+      '2. **Prompt-Based Product/UX Assistant**',
+      '   - Tools: Figma AI, Notion AI, ChatGPT',
+      '   - Next step: Redesign one real app flow and explain your choices.',
+      '',
+      '3. **Community Data & Outreach Coordinator**',
+      '   - Tools: Google Sheets + AI formulas, Power BI Copilot',
+      '   - Next step: Create a mini impact dashboard from sample data.',
+      '',
+      '4. **Entry-Level AI Operations Support**',
+      '   - Tools: Zapier, Airtable AI, ChatGPT',
+      '   - Next step: Automate one repeat task and document the workflow.',
+      '',
+      'Which of these feels most exciting for your next step?'
+    ].join('\n');
+
     try {
       const { data, error } = await supabase.functions.invoke('chat', {
         body: {
@@ -62,11 +88,28 @@ export const CareerQuizGame = () => {
           ]
         }
       });
+
       if (error) throw error;
-      setResult(data.choices[0].message.content);
+
+      const content =
+        data?.choices?.[0]?.message?.content ??
+        data?.response ??
+        (typeof data === 'string' ? data : null);
+
+      if (!content) {
+        throw new Error('Unexpected AI response format from chat function');
+      }
+
+      setResult(content);
     } catch (err) {
       console.error(err);
-      toast({ title: "AI Error", description: "Couldn't generate careers. Try again!", variant: "destructive" });
+      trackError('youth_futures_ai_quiz_error', err instanceof Error ? err.message : 'Unknown error');
+      setResult(fallbackResult);
+      toast({
+        title: 'AI temporarily unavailable',
+        description: "Showing guidance fallback while we reconnect.",
+        variant: 'default'
+      });
     } finally {
       setLoading(false);
     }
@@ -89,7 +132,7 @@ export const CareerQuizGame = () => {
             </div>
             <div className="flex gap-2">
               <Button onClick={() => { setStep(0); setAnswers([]); setResult(null); }} variant="outline" size="sm">Try Again</Button>
-              <Button className="get-involved-gold-button" size="sm">Try Full AI Tool <ArrowRight className="ml-2 h-4 w-4" /></Button>
+              <Button className="get-involved-gold-button" size="sm" onClick={() => trackClick('youth_futures_try_full_ai_tool')}>Try Full AI Tool <ArrowRight className="ml-2 h-4 w-4" /></Button>
             </div>
           </div>
         ) : loading ? (

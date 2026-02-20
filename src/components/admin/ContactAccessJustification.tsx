@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
@@ -163,6 +163,7 @@ export const ContactAccessJustification = ({
             <Shield className="h-5 w-5 text-primary" />
             Business Justification Required
           </DialogTitle>
+          <DialogDescription className="sr-only">Provide business justification to request protected contact access.</DialogDescription>
         </DialogHeader>
         
         <div className="space-y-4">

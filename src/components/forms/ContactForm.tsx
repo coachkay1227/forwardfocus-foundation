@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Mail, Send, CheckCircle, AlertCircle } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { sanitizeFormData, isValidEmail, RateLimiter, generateCSRFToken } from "@/lib/security";
+import { sanitizeFormData, isValidEmail, RateLimiter } from "@/lib/security";
 interface ContactFormProps {
   type?: 'contact' | 'coaching' | 'booking';
   title?: string;
@@ -28,8 +28,7 @@ export default function ContactForm({
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const [csrfToken] = useState(generateCSRFToken());
-  const rateLimiter = new RateLimiter();
+  const rateLimiter = useRef(new RateLimiter());
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData(prev => ({
       ...prev,
@@ -41,7 +40,7 @@ export default function ContactForm({
 
     // Rate limiting check
     const clientId = `${formData.email || 'anonymous'}_contact`;
-    if (rateLimiter.isRateLimited(clientId, 3, 300000)) {
+    if (rateLimiter.current.isRateLimited(clientId, 3, 300000)) {
       // 3 attempts per 5 minutes
       toast.error("Too many attempts. Please wait 5 minutes before trying again.");
       return;
@@ -89,8 +88,7 @@ export default function ContactForm({
         body: {
           ...sanitizedData,
           type,
-          subject: sanitizedData.subject || getDefaultSubject(),
-          csrfToken
+          subject: sanitizedData.subject || getDefaultSubject()
         }
       });
       
