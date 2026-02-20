@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Mail, Phone, MapPin, Clock, Heart, Building2, Presentation, Landmark, GraduationCap, BookOpenCheck } from "lucide-react";
 import DonationBoxes from "@/components/support/DonationBoxes";
 import SpeakerApplicationForm from "@/components/support/SpeakerApplicationForm";
@@ -85,6 +85,7 @@ const Support = () => {
                   <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
                     <DialogHeader>
                       <DialogTitle className="text-2xl">Choose Your Donation Amount</DialogTitle>
+                      <DialogDescription className="sr-only">Select a donation amount to support the mission.</DialogDescription>
                     </DialogHeader>
                     <DonationBoxes />
                   </DialogContent>
@@ -131,6 +132,10 @@ const Support = () => {
                     </Button>
                   </DialogTrigger>
                   <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+                    <DialogHeader className="sr-only">
+                      <DialogTitle>Apply to Speak</DialogTitle>
+                      <DialogDescription>Complete the speaker application form.</DialogDescription>
+                    </DialogHeader>
                     <SpeakerApplicationForm />
                   </DialogContent>
                 </Dialog>
@@ -157,6 +162,10 @@ const Support = () => {
                     </Button>
                   </DialogTrigger>
                   <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+                    <DialogHeader className="sr-only">
+                      <DialogTitle>Request Consultation</DialogTitle>
+                      <DialogDescription>Submit an AI consultation request for your organization.</DialogDescription>
+                    </DialogHeader>
                     <AIConsultationForm />
                   </DialogContent>
                 </Dialog>
@@ -183,6 +192,10 @@ const Support = () => {
                     </Button>
                   </DialogTrigger>
                   <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+                    <DialogHeader className="sr-only">
+                      <DialogTitle>Grant Inquiry</DialogTitle>
+                      <DialogDescription>Submit a grant inquiry form.</DialogDescription>
+                    </DialogHeader>
                     <GrantInquiryForm />
                   </DialogContent>
                 </Dialog>
@@ -209,6 +222,10 @@ const Support = () => {
                     </Button>
                   </DialogTrigger>
                   <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+                    <DialogHeader className="sr-only">
+                      <DialogTitle>Corporate Training Request</DialogTitle>
+                      <DialogDescription>Submit a request for corporate training services.</DialogDescription>
+                    </DialogHeader>
                     <CorporateTrainingForm />
                   </DialogContent>
                 </Dialog>
