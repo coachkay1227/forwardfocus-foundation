@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
 import { Eye, Shield, AlertTriangle, Copy, CheckCircle } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
@@ -145,12 +145,13 @@ export const ContactReveal = ({
             {maskedContact}
           </Button>
         </DialogTrigger>
-        <DialogContent className="sm:max-w-md" aria-describedby="contact-reveal-description">
+        <DialogContent className="sm:max-w-md">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
               <Shield className="h-5 w-5 text-primary" />
               Reveal Contact Information
             </DialogTitle>
+            <DialogDescription className="sr-only">Securely reveal verified organization contact details.</DialogDescription>
           </DialogHeader>
           
           <div className="space-y-4">
